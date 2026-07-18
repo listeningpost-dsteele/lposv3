@@ -1,0 +1,28 @@
+{
+  "name": "Listening Post Operating System Compact Repository",
+  "version": "3.0.0",
+  "file_count": 21,
+  "files": [
+    "Build/Hermes/BENCHMARKS.md",
+    "Build/Hermes/CRAFT-STANDARD-ROUTING.yaml",
+    "Build/Hermes/CRAFT-STANDARDS.md",
+    "Build/Hermes/GUILDS.md",
+    "Build/Hermes/HERMES-LPOS-V2-COMPLETE-SYSTEM-PROMPT.md",
+    "Build/Hermes/INSTALL-LPOS-COMPACT.md",
+    "Build/Hermes/LPOS-CORE.md",
+    "Build/Hermes/SPECIALISTS.md",
+    "Build/Hermes/STANDING-OPERATIONS.md",
+    "Build/Hermes/skills/independent-reviewer/SKILL.md",
+    "Build/Hermes/skills/quality-router/SKILL.md",
+    "Build/Hermes/skills/system-auditor/SKILL.md",
+    "Build/LPOS-Hermes-Compact-v3.0.zip",
+    "CHANGELOG.md",
+    "Examples/INSTALL-WITH-HERMES.md",
+    "GITHUB-UPLOAD.md",
+    "GOOGLE-DRIVE-UPDATE.md",
+    "README.md",
+    "Source/LPOS-Full-Source-v2.0.zip",
+    "Tests/RELEASE-CHECKLIST.md",
+    "Tests/verify_compact.py"
+  ]
+}
