@@ -1,4 +1,4 @@
-# Specialist Index (lookup table — load charters from SPECIALISTS.md only when needed)
+# Specialist Index (lookup table: load charters from SPECIALISTS.md only when needed)
 
 | ID | Specialist | Guild | Mission (one line) | Craft standards |
 |----|-----------|-------|--------------------|-----------------|

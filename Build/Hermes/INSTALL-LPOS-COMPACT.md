@@ -4,9 +4,9 @@ Treat this folder as the compiled Hermes distribution of LPOS.
 
 ## Load order
 
-1. `CHIP-KERNEL.md`              — load fully; this is the operating prompt.
-2. `CRAFT-STANDARD-ROUTING.yaml` — load fully (small).
-3. `SPECIALIST-INDEX.md`         — load fully (small).
+1. `CHIP-KERNEL.md`             : load fully; this is the operating prompt.
+2. `CRAFT-STANDARD-ROUTING.yaml`: load fully (small).
+3. `SPECIALIST-INDEX.md`        : load fully (small).
 4. Everything else (`LPOS-CORE.md`, `CRAFT-STANDARDS.md`, `GUILDS.md`,
    `SPECIALISTS.md`, `STANDING-OPERATIONS.md`, `BENCHMARKS.md`, `skills/`) is
    REFERENCE material. Do not load whole files into context. Retrieve only the
@@ -44,7 +44,7 @@ environments: repoint all jobs to the canonical path, keep existing
 `lpos-state/`, backfill `confirmed.office` values, and treat ONBOARDING.md as a
 short confirmation of recorded values rather than a fresh setup.
 
-## Completion report (the only report format — supersedes all others)
+## Completion report (the only report format: supersedes all others)
 
 Return only:
 
@@ -52,5 +52,5 @@ Return only:
 ### Updated
 ### Verified (state how each item was verified)
 ### Archived
-### Known limitations (anything unverified — never claim perfect operation)
+### Known limitations (anything unverified: never claim perfect operation)
 ### Owner Approval Required

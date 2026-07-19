@@ -40,13 +40,13 @@ Merged patches 3.0.1 through 3.0.4 into the distribution:
   isolation, single completion report, Standing Operation normalization
   (inputs/outputs/specialists/owner for all), CRAFT-STANDARDS.md formatting
   fix, LPOS-013 contract alignment, v2 residue moved to MIGRATION-FROM-V2.md.
-- 3.0.2 (email loop): SO-021 Principal Feedback Loop — questions, consent, and
+- 3.0.2 (email loop): SO-021 Principal Feedback Loop: questions, consent, and
   approvals by email, 10-minute checks, sender verification, question registry.
 - 3.0.3 (runtime convergence): canonical path discipline, evidence-per-run and
   decision-record rules, single SO-021 collector/registry, collector dedup,
   staffing policy recorded as decision, Standing Operation wiring guidance with
   deferral rules.
-- 3.0.4 (onboarding): ONBOARDING.md first-run flow — office naming (default
+- 3.0.4 (onboarding): ONBOARDING.md first-run flow: office naming (default
   Chip), guided email setup with real verification before SO-021 activates,
   verified reply addresses, channel mapping; office identity parameterized in
   kernel, SO-021, and templates.

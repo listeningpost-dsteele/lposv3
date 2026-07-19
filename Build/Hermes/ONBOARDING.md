@@ -1,7 +1,7 @@
 # LPOS First-Run Onboarding (run once, immediately after installation)
 
 Email is not set up yet, so every question here is asked in the current session
-(desktop/chat), never by email. Keep it to two short question rounds — this is
+(desktop/chat), never by email. Keep it to two short question rounds: this is
 onboarding, not an interview.
 
 ## 1. Name the office
@@ -16,9 +16,9 @@ everywhere: self-reference, email display name, templates, briefs.
 Ask which email address the office will send from and check for replies on. Offer
 the realistic options:
 
-- a dedicated address on the Principal's domain (like chip@theirdomain.com) — best;
+- a dedicated address on the Principal's domain (like chip@theirdomain.com): best;
 - an existing mailbox the Principal controls;
-- "skip for now" — LPOS runs without the email loop until they return to this step.
+- "skip for now": LPOS runs without the email loop until they return to this step.
 
 ## 3. Verify real access, never assume it
 
@@ -27,7 +27,7 @@ BOTH directions before declaring the channel live: send one test email from the
 chosen address to the Principal's own address, and confirm the mailbox can be read
 by the collector. Configuration alone is not verification (CS-013). If credentials
 are missing, tell the Principal exactly what to create or authorize (one concise
-checklist for their provider), then pause this step — do not half-enable the loop.
+checklist for their provider), then pause this step: do not half-enable the loop.
 Record `email`, `email_provider`, and `email_verified_at` in `confirmed.office`.
 
 ## 4. Verified reply addresses
@@ -73,7 +73,7 @@ with one license and add models later; the flow handles both.
 
 Scheduled jobs and specialists reference classes, never providers. When the
 Principal adds a license later, they just say "add <provider> to my model
-routing" — the runtime benchmarks it, proposes where it fits, and updates the one
+routing": the runtime benchmarks it, proposes where it fits, and updates the one
 file on approval.
 
 ## 7. Activate the feedback loop
@@ -81,7 +81,7 @@ file on approval.
 Only after steps 3 and 4 verify: enable the SO-021 schedule (every 10 minutes),
 send the standard round-trip test question (`[LPOS-Q-0001] Email loop test`, asking
 the Principal to reply "confirmed"), detect the reply, and record the evidence.
-Until email verifies, SO-021 stays dormant and questions fall back to the session —
+Until email verifies, SO-021 stays dormant and questions fall back to the session : 
 blocked-on-consent work waits in the question registry rather than being emailed.
 
 ## 8. Wire the Standing Operations
@@ -92,24 +92,24 @@ time):
 
 | SO | Schedule | Condition |
 |----|----------|-----------|
-| SO-001 Executive Brief | 0 7 * * 1-5 | — |
+| SO-001 Executive Brief | 0 7 * * 1-5 |: |
 | SO-003 Calendar Review | 30 6 * * 1-5 | calendar connected |
 | SO-004 Inbox Review | 0 8,16 * * 1-5 | mailbox readable |
 | SO-005 Meeting Preparation | */15 7-18 * * 1-5 (event-driven check) | calendar connected |
-| SO-002 Opportunity Intelligence | 0 9,13,16 * * 1-5 | — |
-| SO-010 Technology Signals | 0 10 * * 1-5 | — |
-| SO-011 Daily Execution Review | 45 16 * * 1-5 | — |
-| SO-006 Weekly Review | 0 16 * * 5 | — |
-| SO-007 Evidence Review | 0 15 * * 5 | — |
-| SO-008 Standing Operation Health | 0 6 * * * | — |
-| SO-009 Relationship Review | 0 11 * * 2,4 | — |
-| SO-014 Security Review | 30 8 * * 1 | — |
-| SO-020 Platform Health Review | 0 7 * * 0 | — |
-| SO-015 Provider Review | 0 9 1 * * | — |
-| SO-016 Model Benchmark Review | 30 9 1 * * | — |
-| SO-017 Knowledge Review | 0 10 1 * * | — |
-| SO-018 Monthly Effectiveness Review | 30 10 1 * * | — |
-| SO-019 Decision Retrospective | 0 11 1 * * | — |
+| SO-002 Opportunity Intelligence | 0 9,13,16 * * 1-5 |: |
+| SO-010 Technology Signals | 0 10 * * 1-5 |: |
+| SO-011 Daily Execution Review | 45 16 * * 1-5 |: |
+| SO-006 Weekly Review | 0 16 * * 5 |: |
+| SO-007 Evidence Review | 0 15 * * 5 |: |
+| SO-008 Standing Operation Health | 0 6 * * * |: |
+| SO-009 Relationship Review | 0 11 * * 2,4 |: |
+| SO-014 Security Review | 30 8 * * 1 |: |
+| SO-020 Platform Health Review | 0 7 * * 0 |: |
+| SO-015 Provider Review | 0 9 1 * * |: |
+| SO-016 Model Benchmark Review | 30 9 1 * * |: |
+| SO-017 Knowledge Review | 0 10 1 * * |: |
+| SO-018 Monthly Effectiveness Review | 30 10 1 * * |: |
+| SO-019 Decision Retrospective | 0 11 1 * * |: |
 | SO-012 Pipeline Review | 0 9 * * 1 | only if a pipeline/CRM data source exists |
 | SO-013 Customer Review | 0 9 * * 2 | only if customer account data exists |
 | SO-021 Principal Feedback Loop | */10 * * * * | after step 7 verifies |
