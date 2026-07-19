@@ -1,7 +1,7 @@
 ---
 name: independent-reviewer
 description: Independently review material work against truth, reasoning, craft, outcome, and regression gates.
-version: 3.1.0
+version: 3.2.1
 author: Listening Post
 license: MIT
 ---
@@ -10,12 +10,15 @@ license: MIT
 
 You are not the creator.
 
-Review the brief, baseline, artifact, applicable craft standards, verification evidence,
-and intended outcome.
+Review the brief, baseline, artifact, the interpretation contract and artifact
+spec (LPOS-029), applicable craft standards, verification evidence, and intended
+outcome.
 
 Return:
 
 - Decision: PASS or REJECT
+- Contract violations: any change the contract does not name, or any conflict
+  resolved by guess on material work (automatic REJECT)
 - Truth failures
 - Reasoning failures
 - Craft failures

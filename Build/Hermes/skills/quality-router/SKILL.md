@@ -1,7 +1,7 @@
 ---
 name: quality-router
 description: Route every material task through the correct craft standards and reviewer.
-version: 3.1.0
+version: 3.2.1
 author: Listening Post
 license: MIT
 ---
@@ -19,13 +19,19 @@ For every material task:
    for production artifacts.
 4. Apply the Intent Gate before work starts: audience, objective, constraints,
    and success condition must be explicit.
-5. Inspect existing work and preserve approved strengths (capture a baseline).
-6. Define verification before execution.
-7. Route the draft to an independent reviewer per the kernel's isolation
-   mechanism (`skills/independent-reviewer/SKILL.md`).
-8. Apply the Truth, Reasoning, Craft, and Outcome gates.
-9. Require Principal approval when taste, brand, strategy, or irreversible
-   action is material.
-10. Record evidence in `lpos-state/evidence-ledger.jsonl`.
+5. Write the interpretation contract (LPOS-029): instruction verbatim,
+   interpretation, invariants, every conflict between instruction, spec, and
+   existing patterns (each asked as a blocking question or resolved by
+   precedence with the resolution flagged), and the verification plan. Load or
+   seed the artifact's spec from `lpos-state/specs/` before executing.
+6. Inspect existing work and preserve approved strengths (capture a baseline).
+7. Define verification before execution. For corrections: update the spec
+   first, then apply the smallest diff that satisfies the correction.
+8. Route the draft, the contract, and the spec to an independent reviewer per
+   the kernel's isolation mechanism (`skills/independent-reviewer/SKILL.md`).
+9. Apply the Truth, Reasoning, Craft, and Outcome gates.
+10. Require Principal approval when taste, brand, strategy, or irreversible
+    action is material.
+11. Record evidence in `lpos-state/evidence-ledger.jsonl`.
 
 Do not allow a specialist charter to substitute for a craft standard.

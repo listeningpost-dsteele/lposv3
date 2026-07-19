@@ -79,6 +79,13 @@ Jobs and specialists reference classes, never providers. With one license, every
 class points at it; adding a model later is an edit to this file plus a decision
 record, never a job-by-job rewrite.
 
+## specs/<artifact>.md — one spec per long-lived artifact (LPOS-029)
+
+Structural decisions (for a site: page inventory, what is a page vs an anchor),
+design tokens, and approved invariants. Seeded from the current approved
+artifact when material work first touches it. Every Principal correction
+updates the spec before the artifact. The artifact is never its own spec.
+
 ## operations/SO-###.yaml — per Standing Operation
 
 id: SO-001

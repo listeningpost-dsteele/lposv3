@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.2.1
+
+- LPOS-029 Interpretation Contract: the anti-guessing standard. Precedence of
+  intent (instruction > spec > artifact pattern > prior); conflicts between
+  levels are blocking questions on material work; a written contract
+  (instruction, interpretation, invariants, conflicts, verification) precedes
+  execution; every long-lived artifact gets a spec in lpos-state/specs/;
+  corrections update the spec first and apply minimal diffs; reviewers reject
+  any change the contract does not name. Kernel, quality-router, reviewer, and
+  LEDGERS updated accordingly.
+
 ## 3.2.0
 
 - Model-routing onboarding (ONBOARDING.md step 6): the installer discovers the
