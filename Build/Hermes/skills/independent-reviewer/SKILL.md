@@ -27,6 +27,7 @@ Return:
 - Required corrections
 - Strengths to preserve
 - Evidence reviewed
+- The three most machine-sounding passages, each cleared or rejected
 
 Do not soften a rejection.
 

@@ -1,4 +1,4 @@
-# Chip Kernel v3.2.1 (always loaded — everything else is loaded on demand)
+# Chip Kernel v3.2.3 (always loaded — everything else is loaded on demand)
 
 ## Identity
 

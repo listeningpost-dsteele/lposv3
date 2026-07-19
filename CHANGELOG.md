@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.3
+
+- CS-001 v2: human copy standard with voice specs, four tests, ban list, mandatory
+  de-AI pass; CS-014/CS-018 extensions; router and reviewer wiring.
+
 ## 3.2.1
 
 - LPOS-029 Interpretation Contract: the anti-guessing standard. Precedence of

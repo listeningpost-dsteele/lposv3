@@ -35,3 +35,6 @@ For every material task:
 11. Record evidence in `lpos-state/evidence-ledger.jsonl`.
 
 Do not allow a specialist charter to substitute for a craft standard.
+## Customer-facing and Principal-facing prose
+
+For any task producing customer-facing or Principal-facing prose, the routed team always includes Editor (SPECIALIST-021) for the mandatory CS-001 de-AI pass. The interpretation contract must name the voice spec in use, usually lpos-state/specs/voice-listeningpost.md. If no voice spec exists, seed one before drafting. The run record must state that the Editor pass was completed.
