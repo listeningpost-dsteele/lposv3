@@ -6,14 +6,14 @@
 ## Source: `craft-standards/CS-001-commercial-copy.md`
 
 ---
-    id: CS-001
-    title: Commercial Copy Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-001
+title: Commercial Copy Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Commercial Copy Standard
+# Commercial Copy Standard
 
 
 Write for the buyer, not for the model.
@@ -28,10 +28,10 @@ Use concrete claims, credible mechanism, real proof, clear hierarchy, and a spec
 next action. No em dashes.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -39,14 +39,14 @@ next action. No em dashes.
 ## Source: `craft-standards/CS-002-web-product-design.md`
 
 ---
-    id: CS-002
-    title: Web and Product Design Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-002
+title: Web and Product Design Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Web and Product Design Standard
+# Web and Product Design Standard
 
 
 Design for the audience, task, trust requirement, and desired action.
@@ -61,10 +61,10 @@ regressions.
 Review the rendered product and primary user journey. Source inspection is not enough.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -72,14 +72,14 @@ Review the rendered product and primary user journey. Source inspection is not e
 ## Source: `craft-standards/CS-003-production-artifact-review.md`
 
 ---
-    id: CS-003
-    title: Production Artifact Review Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-003
+title: Production Artifact Review Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Production Artifact Review Standard
+# Production Artifact Review Standard
 
 
 Every material artifact requires a brief, baseline, creator, domain reviewer, outcome
@@ -89,10 +89,10 @@ Do not ship when the artifact is worse than the approved version, unsupported, u
 visually unreviewed, or missing required Principal approval.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -100,14 +100,14 @@ visually unreviewed, or missing required Principal approval.
 ## Source: `craft-standards/CS-004-research-intelligence.md`
 
 ---
-    id: CS-004
-    title: Research and Intelligence Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-004
+title: Research and Intelligence Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Research and Intelligence Standard
+# Research and Intelligence Standard
 
 
 Begin with the decision or uncertainty the research must improve.
@@ -124,10 +124,10 @@ Outputs must include sources, findings, contradictions, uncertainty, implication
 what evidence would change the conclusion.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -135,14 +135,14 @@ what evidence would change the conclusion.
 ## Source: `craft-standards/CS-005-strategy-decisions.md`
 
 ---
-    id: CS-005
-    title: Strategy and Decision Quality Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-005
+title: Strategy and Decision Quality Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Strategy and Decision Quality Standard
+# Strategy and Decision Quality Standard
 
 
 Define the decision, objective, constraints, time horizon, reversibility, and decision
@@ -158,10 +158,10 @@ Recommendations must state the chosen option, why it wins, what would invalidate
 and the next decision point.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -169,14 +169,14 @@ and the next decision point.
 ## Source: `craft-standards/CS-006-product-management.md`
 
 ---
-    id: CS-006
-    title: Product Management Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-006
+title: Product Management Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Product Management Standard
+# Product Management Standard
 
 
 Start with a validated user problem and desired behavior change.
@@ -190,10 +190,10 @@ theater, and requirements that expose internal implementation.
 Prioritize based on user value, strategic fit, evidence, effort, risk, and learning.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -201,14 +201,14 @@ Prioritize based on user value, strategic fit, evidence, effort, risk, and learn
 ## Source: `craft-standards/CS-007-software-engineering.md`
 
 ---
-    id: CS-007
-    title: Software Engineering Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-007
+title: Software Engineering Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Software Engineering Standard
+# Software Engineering Standard
 
 
 Inspect the repository and runtime before designing.
@@ -224,10 +224,10 @@ Completion requires implementation, tests, real execution, error handling,
 documentation, and rollback where material.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -235,14 +235,14 @@ documentation, and rollback where material.
 ## Source: `craft-standards/CS-008-quality-testing.md`
 
 ---
-    id: CS-008
-    title: Quality Assurance and Testing Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-008
+title: Quality Assurance and Testing Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Quality Assurance and Testing Standard
+# Quality Assurance and Testing Standard
 
 
 Test the real behavior, not only the implementation's claims.
@@ -256,10 +256,10 @@ or rendered output is unverified.
 Report reproducible evidence, severity, impact, and release recommendation.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -267,14 +267,14 @@ Report reproducible evidence, severity, impact, and release recommendation.
 ## Source: `craft-standards/CS-009-security-privacy.md`
 
 ---
-    id: CS-009
-    title: Security and Privacy Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-009
+title: Security and Privacy Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Security and Privacy Standard
+# Security and Privacy Standard
 
 
 Use least authority, explicit trust boundaries, secure defaults, data minimization,
@@ -289,10 +289,10 @@ a security boundary to make a demo work.
 Security recommendations must be practical and proportionate.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -300,14 +300,14 @@ Security recommendations must be practical and proportionate.
 ## Source: `craft-standards/CS-010-finance-economics.md`
 
 ---
-    id: CS-010
-    title: Finance and Economics Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-010
+title: Finance and Economics Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Finance and Economics Standard
+# Finance and Economics Standard
 
 
 State the decision, time horizon, currency, baseline, assumptions, data sources, and
@@ -321,10 +321,10 @@ precision, count unrelated revenue, hide cash timing, or present gross revenue a
 Recommendations must show economics, downside, break-even logic, and validation.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -332,14 +332,14 @@ Recommendations must show economics, downside, break-even logic, and validation.
 ## Source: `craft-standards/CS-011-legal-compliance.md`
 
 ---
-    id: CS-011
-    title: Legal and Compliance Analysis Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-011
+title: Legal and Compliance Analysis Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Legal and Compliance Analysis Standard
+# Legal and Compliance Analysis Standard
 
 
 State jurisdiction, facts, assumptions, issue, authority, uncertainty, and whether
@@ -351,10 +351,10 @@ Do not present incomplete legal research as definitive advice. Cite controlling 
 authoritative sources when available. Identify missing facts and material ambiguity.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -362,14 +362,14 @@ authoritative sources when available. Identify missing facts and material ambigu
 ## Source: `craft-standards/CS-012-data-analytics.md`
 
 ---
-    id: CS-012
-    title: Data and Analytics Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-012
+title: Data and Analytics Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Data and Analytics Standard
+# Data and Analytics Standard
 
 
 Define the question, decision, metric, unit, population, period, source, lineage, and
@@ -384,10 +384,10 @@ Use the simplest analysis that answers the question. Never make a chart or metri
 because data exists.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -395,14 +395,14 @@ because data exists.
 ## Source: `craft-standards/CS-013-operations-automation.md`
 
 ---
-    id: CS-013
-    title: Operations and Automation Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-013
+title: Operations and Automation Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Operations and Automation Standard
+# Operations and Automation Standard
 
 
 Define mission, trigger, inputs, outputs, owner, authority, dependencies, idempotency,
@@ -416,10 +416,10 @@ state, and preserve manual recovery.
 Minimize notification noise and duplicate operations.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -427,14 +427,14 @@ Minimize notification noise and duplicate operations.
 ## Source: `craft-standards/CS-014-executive-communication.md`
 
 ---
-    id: CS-014
-    title: Executive Communication Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-014
+title: Executive Communication Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Executive Communication Standard
+# Executive Communication Standard
 
 
 Prioritize decisions, evidence, material risk, opportunity, preparation, and next action.
@@ -447,10 +447,10 @@ without additional research.
 Use concise direct language. No em dashes. Do not narrate agent activity.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -458,14 +458,14 @@ Use concise direct language. No em dashes. Do not narrate agent activity.
 ## Source: `craft-standards/CS-015-relationship-customer.md`
 
 ---
-    id: CS-015
-    title: Relationship and Customer Intelligence Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-015
+title: Relationship and Customer Intelligence Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Relationship and Customer Intelligence Standard
+# Relationship and Customer Intelligence Standard
 
 
 Use verified identity and relationship context.
@@ -479,10 +479,10 @@ Recommendations must identify the relationship objective, evidence, risk, timing
 appropriate next action.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -490,14 +490,14 @@ appropriate next action.
 ## Source: `craft-standards/CS-016-planning-execution.md`
 
 ---
-    id: CS-016
-    title: Planning and Execution Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-016
+title: Planning and Execution Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Planning and Execution Standard
+# Planning and Execution Standard
 
 
 Translate approved outcomes into milestones, dependencies, owners, completion criteria,
@@ -509,10 +509,10 @@ Keep plans executable and adaptive. Surface blockers early. Verify completion ag
 the original outcome, not task count.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -520,14 +520,14 @@ the original outcome, not task count.
 ## Source: `craft-standards/CS-017-model-provider-evaluation.md`
 
 ---
-    id: CS-017
-    title: Model and Provider Evaluation Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-017
+title: Model and Provider Evaluation Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Model and Provider Evaluation Standard
+# Model and Provider Evaluation Standard
 
 
 Evaluate providers against the required capability using representative tasks.
@@ -540,10 +540,10 @@ Do not route based on popularity, benchmark marketing, or one anecdotal result.
 Preserve provider independence and document fallback behavior.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -551,14 +551,14 @@ Preserve provider independence and document fallback behavior.
 ## Source: `craft-standards/CS-018-knowledge-documentation.md`
 
 ---
-    id: CS-018
-    title: Knowledge and Documentation Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-018
+title: Knowledge and Documentation Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Knowledge and Documentation Standard
+# Knowledge and Documentation Standard
 
 
 Create one authoritative source for each important concept.
@@ -572,10 +572,10 @@ and documentation that describes plans rather than actual behavior.
 Verify links, commands, examples, and ownership.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -583,14 +583,14 @@ Verify links, commands, examples, and ownership.
 ## Source: `craft-standards/CS-019-innovation-experiments.md`
 
 ---
-    id: CS-019
-    title: Innovation and Experiments Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-019
+title: Innovation and Experiments Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Innovation and Experiments Standard
+# Innovation and Experiments Standard
 
 
 Define a falsifiable hypothesis, smallest useful experiment, success and stop criteria,
@@ -602,10 +602,10 @@ Reject innovation theater, vague pilots, uncontrolled scope, and experiments tha
 change a decision.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.
 
 
 ---
@@ -613,14 +613,14 @@ change a decision.
 ## Source: `craft-standards/CS-020-platform-infrastructure.md`
 
 ---
-    id: CS-020
-    title: Platform and Infrastructure Standard
-    version: 1.0.0
-    status: Accepted
-    owner: Listening Post
-    ---
+id: CS-020
+title: Platform and Infrastructure Standard
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+---
 
-    # Platform and Infrastructure Standard
+# Platform and Infrastructure Standard
 
 
 Define service boundaries, reliability targets, capacity, dependencies, observability,
@@ -633,7 +633,7 @@ Do not infer hosting from DNS, confuse configuration with deployment, or call a 
 healthy without real checks.
 
 
-    ## Required review
+## Required review
 
-    Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
-    for material production work. Define verification and evidence before completion.
+Apply LPOS-026 and LPOS-027. Preserve approved strengths. Use an independent reviewer
+for material production work. Define verification and evidence before completion.

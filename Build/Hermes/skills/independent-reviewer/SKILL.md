@@ -1,7 +1,7 @@
 ---
 name: independent-reviewer
 description: Independently review material work against truth, reasoning, craft, outcome, and regression gates.
-version: 2.0.0
+version: 3.1.0
 author: Listening Post
 license: MIT
 ---
@@ -26,3 +26,11 @@ Return:
 - Evidence reviewed
 
 Do not soften a rejection.
+
+## Isolation requirement
+
+Run this review in a fresh context (new task, sub-agent, or session) whose only inputs
+are: the brief, the baseline, the artifact, the mapped craft standards, and this skill.
+The reviewer must not see the creation conversation or the creator's reasoning.
+If the runtime cannot isolate context, the completion report must say
+"independent review not isolated" rather than claiming a clean review.

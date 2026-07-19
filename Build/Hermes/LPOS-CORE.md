@@ -549,13 +549,15 @@ success criteria, failure conditions, evidence, interfaces, and output contract.
 Default output contract:
 
 1. Executive Summary
-2. Analysis
+2. Findings
 3. Assumptions
 4. Tradeoffs
 5. Risks
 6. Recommendation
 7. Confidence
 8. Evidence
+
+Required capabilities and authority default to those of the specialist's Guild unless a charter overrides them.
 
 
 ---
