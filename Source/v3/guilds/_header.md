@@ -1,2 +1,0 @@
-# LPOS Guilds
-

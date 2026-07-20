@@ -1,0 +1,24 @@
+{
+  "so_id": "SO-006",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_evidence",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ANALYZE",
+      "handler": "analyze_evidence",
+      "depends_on": ["STEP-COLLECT"],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "write_report",
+      "depends_on": ["STEP-ANALYZE"],
+      "continue_on_error": false
+    }
+  ]
+}

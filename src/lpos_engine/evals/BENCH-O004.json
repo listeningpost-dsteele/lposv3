@@ -1,0 +1,54 @@
+{
+  "component_id": "SO-004",
+  "component_type": "standing_operation",
+  "evaluation": {
+    "assertions": [
+      "workflow_identity",
+      "model_class",
+      "minimum_steps",
+      "unique_step_ids"
+    ],
+    "method": "workflow_definition_assertions"
+  },
+  "evidence": [
+    "WorkflowDefinition JSON",
+    "step and dependency set",
+    "catalog mapping"
+  ],
+  "expected": {
+    "evidence_record_required": true,
+    "minimum_steps": 3,
+    "model_class": "routine",
+    "result_values": [
+      "ok",
+      "silent",
+      "error"
+    ],
+    "so_id": "SO-004"
+  },
+  "failure_criteria": [
+    "Workflow identity or model class differs from the fixture.",
+    "A dependency references a missing step.",
+    "The workflow has fewer steps than the fixed fixture.",
+    "A live side effect occurs during the core evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-O004",
+  "inputs": {
+    "fixture": {
+      "live_side_effects": false,
+      "records": 3,
+      "source": "packaged deterministic benchmark"
+    },
+    "idempotency_key": "SO-004:2030-01-07T12:00:00Z:fixture-1",
+    "scheduled_for": "2030-01-07T12:00:00Z"
+  },
+  "objective": "Verify the fixed Inbox Review workflow identity, model class, DAG shape, and executable step contract.",
+  "scenario": "Run Inbox Review for the immutable scheduled fixture without live channel or consequential-action adapters.",
+  "success_criteria": [
+    "Workflow resolves as SO-004.",
+    "Step identifiers are unique and dependencies resolve.",
+    "The workflow declares a model class.",
+    "The run contract requires one evidence record."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "$id": "https://lpos.local/schemas/workflow-definition.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "model_class": {
+      "enum": [
+        "executive",
+        "routine",
+        "review",
+        "local"
+      ]
+    },
+    "so_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "steps": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "continue_on_error": {
+            "type": "boolean"
+          },
+          "depends_on": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "handler": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "step_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^\\S+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "handler",
+          "depends_on",
+          "continue_on_error"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "so_id",
+    "model_class",
+    "steps"
+  ],
+  "title": "WorkflowDefinition",
+  "type": "object"
+}

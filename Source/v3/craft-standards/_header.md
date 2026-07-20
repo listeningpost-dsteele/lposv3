@@ -1,2 +1,0 @@
-# LPOS Craft Standards
-

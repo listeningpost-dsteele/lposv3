@@ -1,0 +1,100 @@
+{
+  "$id": "https://lpos.local/schemas/review-result.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "contract_violations": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "craft": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "decision": {
+      "enum": [
+        "PASS",
+        "REJECT"
+      ]
+    },
+    "evidence_reviewed": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "isolation": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "outcome": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "reasoning": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "recomputed": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "regressions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "required_corrections": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "strengths_to_preserve": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "truth": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "decision",
+    "isolation",
+    "recomputed",
+    "contract_violations",
+    "truth",
+    "reasoning",
+    "craft",
+    "outcome",
+    "regressions",
+    "required_corrections",
+    "strengths_to_preserve",
+    "evidence_reviewed"
+  ],
+  "title": "ReviewResult",
+  "type": "object"
+}

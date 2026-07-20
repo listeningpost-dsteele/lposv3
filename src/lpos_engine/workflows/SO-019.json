@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-019",
+  "model_class": "executive",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_decision_retrospective",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ANALYZE",
+      "handler": "analyze_decision_retrospective",
+      "depends_on": [
+        "STEP-COLLECT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_decision_retrospective",
+      "depends_on": [
+        "STEP-ANALYZE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

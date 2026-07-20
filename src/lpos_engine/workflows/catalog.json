@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "os_version": "4.0.0",
+  "operations": [
+    {
+      "so_id": "SO-001",
+      "title": "Executive Brief",
+      "workflow": "SO-001.json",
+      "default_schedule": "0 7 * * 1-5",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-002",
+      "title": "Opportunity Intelligence",
+      "workflow": "SO-002.json",
+      "default_schedule": "0 9,13,16 * * 1-5",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-003",
+      "title": "Calendar Review",
+      "workflow": "SO-003.json",
+      "default_schedule": "30 6 * * 1-5",
+      "requires": [
+        "calendar"
+      ],
+      "enabled_by_default": false
+    },
+    {
+      "so_id": "SO-004",
+      "title": "Inbox Review",
+      "workflow": "SO-004.json",
+      "default_schedule": "0 8,16 * * 1-5",
+      "requires": [
+        "mailbox"
+      ],
+      "enabled_by_default": false
+    },
+    {
+      "so_id": "SO-005",
+      "title": "Meeting Preparation",
+      "workflow": "SO-005.json",
+      "default_schedule": "*/15 7-18 * * 1-5",
+      "requires": [
+        "calendar"
+      ],
+      "enabled_by_default": false
+    },
+    {
+      "so_id": "SO-006",
+      "title": "Weekly Review",
+      "workflow": "SO-006.json",
+      "default_schedule": "0 16 * * 5",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-007",
+      "title": "Evidence Review",
+      "workflow": "SO-007.json",
+      "default_schedule": "0 15 * * 5",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-008",
+      "title": "Standing Operation Health",
+      "workflow": "SO-008.json",
+      "default_schedule": "0 6 * * *",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-009",
+      "title": "Relationship Review",
+      "workflow": "SO-009.json",
+      "default_schedule": "0 11 * * 2,4",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-010",
+      "title": "Technology Signals",
+      "workflow": "SO-010.json",
+      "default_schedule": "0 10 * * 1-5",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-011",
+      "title": "Daily Execution Review",
+      "workflow": "SO-011.json",
+      "default_schedule": "45 16 * * 1-5",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-012",
+      "title": "Pipeline Review",
+      "workflow": "SO-012.json",
+      "default_schedule": "0 9 * * 1",
+      "requires": [
+        "pipeline"
+      ],
+      "enabled_by_default": false
+    },
+    {
+      "so_id": "SO-013",
+      "title": "Customer Review",
+      "workflow": "SO-013.json",
+      "default_schedule": "0 9 * * 2",
+      "requires": [
+        "customer_accounts"
+      ],
+      "enabled_by_default": false
+    },
+    {
+      "so_id": "SO-014",
+      "title": "Security Review",
+      "workflow": "SO-014.json",
+      "default_schedule": "30 8 * * 1",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-015",
+      "title": "Provider Review",
+      "workflow": "SO-015.json",
+      "default_schedule": "0 9 1 * *",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-016",
+      "title": "Model Benchmark Review",
+      "workflow": "SO-016.json",
+      "default_schedule": "30 9 1 * *",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-017",
+      "title": "Knowledge Review",
+      "workflow": "SO-017.json",
+      "default_schedule": "0 10 1 * *",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-018",
+      "title": "Monthly Effectiveness Review",
+      "workflow": "SO-018.json",
+      "default_schedule": "30 10 1 * *",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-019",
+      "title": "Decision Retrospective",
+      "workflow": "SO-019.json",
+      "default_schedule": "0 11 1 * *",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-020",
+      "title": "Platform Health Review",
+      "workflow": "SO-020.json",
+      "default_schedule": "0 7 * * 0",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-021",
+      "title": "Principal Feedback Loop",
+      "workflow": "SO-021.json",
+      "default_schedule": "*/10 * * * *",
+      "requires": [
+        "verified_principal_channel"
+      ],
+      "enabled_by_default": false
+    }
+  ]
+}

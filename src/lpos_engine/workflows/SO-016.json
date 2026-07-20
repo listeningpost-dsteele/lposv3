@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-016",
+  "model_class": "review",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_model_benchmark_review",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ANALYZE",
+      "handler": "analyze_model_benchmark_review",
+      "depends_on": [
+        "STEP-COLLECT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_model_benchmark_review",
+      "depends_on": [
+        "STEP-ANALYZE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

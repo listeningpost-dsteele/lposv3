@@ -1,0 +1,86 @@
+{
+  "$id": "https://lpos.local/schemas/evidence-record.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "baseline": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "expected_outcome": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "fallback_used": {
+      "type": "boolean"
+    },
+    "id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "measurement": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "observed": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "owner": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "recommendation": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "review_date": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status": {
+      "enum": [
+        "Proposed",
+        "Active",
+        "Measured",
+        "Validated",
+        "Refuted",
+        "Inconclusive"
+      ]
+    },
+    "target": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "recommendation",
+    "owner",
+    "expected_outcome",
+    "baseline",
+    "target",
+    "observed",
+    "confidence",
+    "measurement",
+    "fallback_used",
+    "review_date",
+    "status"
+  ],
+  "title": "EvidenceRecord",
+  "type": "object"
+}

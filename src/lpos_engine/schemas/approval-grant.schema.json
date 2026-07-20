@@ -1,0 +1,112 @@
+{
+  "$id": "https://lpos.local/schemas/approval-grant.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "action_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "channel": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "grant_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "granted_action": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "granted_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "message_identity": {
+      "additionalProperties": false,
+      "properties": {
+        "channel": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "message_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "provider": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sender": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "thread_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "channel",
+        "provider",
+        "message_id",
+        "thread_id",
+        "sender"
+      ],
+      "type": "object"
+    },
+    "question_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "verified_identity": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "grant_id",
+    "question_id",
+    "task_id",
+    "action_id",
+    "granted_action",
+    "action_hash",
+    "channel",
+    "message_identity",
+    "verified_identity",
+    "granted_at",
+    "expires_at"
+  ],
+  "title": "ApprovalGrant",
+  "type": "object"
+}

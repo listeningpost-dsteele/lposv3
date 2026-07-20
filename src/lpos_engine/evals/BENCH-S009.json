@@ -1,0 +1,60 @@
+{
+  "component_id": "SPECIALIST-009",
+  "component_type": "specialist",
+  "evaluation": {
+    "assertions": [
+      "lead_specialist",
+      "model_class",
+      "no_missing_capabilities",
+      "craft_standards_present"
+    ],
+    "method": "deterministic_router_assertions"
+  },
+  "evidence": [
+    "RouteDecision JSON",
+    "selected specialist and craft-standard IDs",
+    "missing-capability set"
+  ],
+  "expected": {
+    "craft_standards": [
+      "CS-003",
+      "CS-004"
+    ],
+    "lead_guild": "Research",
+    "lead_specialist": "SPECIALIST-009",
+    "missing_capabilities": [],
+    "model_class": "executive"
+  },
+  "failure_criteria": [
+    "A different lead specialist is selected.",
+    "Any capability is silently omitted.",
+    "The route names a provider instead of a model class.",
+    "The fixture is modified during evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-S009",
+  "inputs": {
+    "facts": {
+      "approved_scope": "Research",
+      "external_action_authorized": false,
+      "fixture_id": "BENCH-S009",
+      "known_constraint": "Preserve the supplied scope and identify uncertainty."
+    },
+    "preferred_model_class": "executive",
+    "principal_instruction": "Fixture BENCH-S009: produce the Competitive Intelligence Analyst analysis from the supplied facts, state assumptions, and propose evidence without taking an external action.",
+    "required_capabilities": [
+      "competitive_intelligence",
+      "market_positioning",
+      "competitor_research",
+      "evidence_synthesis"
+    ]
+  },
+  "objective": "Verify that fixed Competitive Intelligence Analyst work routes to the canonical specialist with complete capability coverage.",
+  "scenario": "The Principal requests a bounded Competitive Intelligence Analyst deliverable using the supplied fixture facts; no external action is authorized.",
+  "success_criteria": [
+    "Lead specialist is SPECIALIST-009.",
+    "All required capabilities are covered.",
+    "Mapped craft standards are present.",
+    "No external action is executed."
+  ]
+}

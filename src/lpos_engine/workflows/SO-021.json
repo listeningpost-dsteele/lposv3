@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-021",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_principal_responses",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-VERIFY",
+      "handler": "verify_principal_identity",
+      "depends_on": [
+        "STEP-COLLECT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-CLOSE",
+      "handler": "close_answered_questions",
+      "depends_on": [
+        "STEP-VERIFY"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

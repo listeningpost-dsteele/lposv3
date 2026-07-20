@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-020",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_platform_health_review",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ANALYZE",
+      "handler": "analyze_platform_health_review",
+      "depends_on": [
+        "STEP-COLLECT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_platform_health_review",
+      "depends_on": [
+        "STEP-ANALYZE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

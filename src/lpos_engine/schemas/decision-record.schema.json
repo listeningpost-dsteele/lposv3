@@ -1,0 +1,88 @@
+{
+  "$id": "https://lpos.local/schemas/decision-record.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "alternatives": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "consequences": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "context": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "date": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "decision": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "implementation_notes": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "owner": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "rationale": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "references": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "risks": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "Accepted",
+        "Superseded"
+      ]
+    },
+    "superseded_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "date",
+    "context",
+    "decision",
+    "rationale",
+    "alternatives",
+    "consequences",
+    "risks",
+    "implementation_notes",
+    "references",
+    "status",
+    "superseded_by",
+    "owner"
+  ],
+  "title": "DecisionRecord",
+  "type": "object"
+}

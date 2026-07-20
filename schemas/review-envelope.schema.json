@@ -1,0 +1,64 @@
+{
+  "$id": "https://lpos.local/schemas/review-envelope.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact": {
+      "type": "object"
+    },
+    "artifact_specification": {
+      "type": "object"
+    },
+    "baseline": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "brief": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "excluded_always": {
+      "const": [
+        "creation_conversation",
+        "creator_private_reasoning",
+        "creator_self_assessment"
+      ]
+    },
+    "intended_outcome": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "interpretation_contract": {
+      "type": "object"
+    },
+    "mapped_craft_standards": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "verification_evidence": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "brief",
+    "baseline",
+    "artifact",
+    "interpretation_contract",
+    "artifact_specification",
+    "mapped_craft_standards",
+    "verification_evidence",
+    "intended_outcome",
+    "excluded_always"
+  ],
+  "title": "ReviewEnvelope",
+  "type": "object"
+}

@@ -1,0 +1,38 @@
+{
+  "$id": "https://lpos.local/schemas/message-identity.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "channel": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "message_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "provider": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "sender": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "thread_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "channel",
+    "provider",
+    "message_id",
+    "thread_id",
+    "sender"
+  ],
+  "title": "MessageIdentity",
+  "type": "object"
+}

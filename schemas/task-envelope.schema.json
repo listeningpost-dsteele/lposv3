@@ -1,0 +1,124 @@
+{
+  "$id": "https://lpos.local/schemas/task-envelope.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "material": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "materiality_basis": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "constraints": {
+      "type": "object"
+    },
+    "craft_standards": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "creator_adapter": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deadline": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "lead_guild": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "lead_specialist": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "material": {
+      "type": "boolean"
+    },
+    "materiality_basis": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "model_class": {
+      "enum": [
+        "executive",
+        "routine",
+        "review",
+        "local"
+      ]
+    },
+    "principal_instruction": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "required_capabilities": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "supporting_specialists": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "task_id",
+    "principal_instruction",
+    "lead_guild",
+    "lead_specialist",
+    "supporting_specialists",
+    "craft_standards",
+    "required_capabilities",
+    "constraints",
+    "material",
+    "materiality_basis",
+    "model_class",
+    "created_at"
+  ],
+  "title": "TaskEnvelope",
+  "type": "object"
+}

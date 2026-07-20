@@ -1,0 +1,73 @@
+{
+  "$id": "https://lpos.local/schemas/standing-operation-run.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "fallback_used": {
+      "type": "boolean"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "idempotency_key": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "model_class": {
+      "enum": [
+        "executive",
+        "routine",
+        "review",
+        "local"
+      ]
+    },
+    "outputs_ref": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "result": {
+      "enum": [
+        "ok",
+        "silent",
+        "error"
+      ]
+    },
+    "run_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "so_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "started_at": {
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "so_id",
+    "run_id",
+    "idempotency_key",
+    "started_at",
+    "finished_at",
+    "result",
+    "outputs_ref",
+    "evidence_id",
+    "fallback_used",
+    "model_class"
+  ],
+  "title": "StandingOperationRun",
+  "type": "object"
+}

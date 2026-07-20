@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-018",
+  "model_class": "executive",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_monthly_effectiveness_review",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ANALYZE",
+      "handler": "analyze_monthly_effectiveness_review",
+      "depends_on": [
+        "STEP-COLLECT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_monthly_effectiveness_review",
+      "depends_on": [
+        "STEP-ANALYZE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

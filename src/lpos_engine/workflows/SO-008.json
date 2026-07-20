@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-008",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_standing_operation_health",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ANALYZE",
+      "handler": "analyze_standing_operation_health",
+      "depends_on": [
+        "STEP-COLLECT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_standing_operation_health",
+      "depends_on": [
+        "STEP-ANALYZE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

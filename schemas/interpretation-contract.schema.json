@@ -1,0 +1,96 @@
+{
+  "$id": "https://lpos.local/schemas/interpretation-contract.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "conflicts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "levels": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "type": "array"
+          },
+          "question_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "resolution": {
+            "enum": [
+              "asked",
+              "precedence",
+              "principal_override"
+            ]
+          }
+        },
+        "required": [
+          "levels",
+          "description",
+          "resolution"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "instruction_verbatim": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "interpretation": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "invariants": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "spec_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "verification_plan": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "task_id",
+    "instruction_verbatim",
+    "interpretation",
+    "invariants",
+    "conflicts",
+    "verification_plan",
+    "spec_ref",
+    "created_at"
+  ],
+  "title": "InterpretationContract",
+  "type": "object"
+}

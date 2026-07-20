@@ -1,0 +1,63 @@
+{
+  "component_id": "SPECIALIST-002",
+  "component_type": "specialist",
+  "evaluation": {
+    "assertions": [
+      "lead_specialist",
+      "model_class",
+      "no_missing_capabilities",
+      "craft_standards_present"
+    ],
+    "method": "deterministic_router_assertions"
+  },
+  "evidence": [
+    "RouteDecision JSON",
+    "selected specialist and craft-standard IDs",
+    "missing-capability set"
+  ],
+  "expected": {
+    "craft_standards": [
+      "CS-003",
+      "CS-005",
+      "CS-014",
+      "CS-016"
+    ],
+    "lead_guild": "Executive",
+    "lead_specialist": "SPECIALIST-002",
+    "missing_capabilities": [],
+    "model_class": "executive"
+  },
+  "failure_criteria": [
+    "A different lead specialist is selected.",
+    "Any capability is silently omitted.",
+    "The route names a provider instead of a model class.",
+    "The fixture is modified during evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-S002",
+  "inputs": {
+    "facts": {
+      "approved_scope": "Executive",
+      "external_action_authorized": false,
+      "fixture_id": "BENCH-S002",
+      "known_constraint": "Preserve the supplied scope and identify uncertainty."
+    },
+    "preferred_model_class": "executive",
+    "principal_instruction": "Fixture BENCH-S002: produce the Decision Analyst analysis from the supplied facts, state assumptions, and propose evidence without taking an external action.",
+    "required_capabilities": [
+      "decision_support",
+      "decision_analysis",
+      "tradeoff_analysis",
+      "recommendations",
+      "confidence_assessment"
+    ]
+  },
+  "objective": "Verify that fixed Decision Analyst work routes to the canonical specialist with complete capability coverage.",
+  "scenario": "The Principal requests a bounded Decision Analyst deliverable using the supplied fixture facts; no external action is authorized.",
+  "success_criteria": [
+    "Lead specialist is SPECIALIST-002.",
+    "All required capabilities are covered.",
+    "Mapped craft standards are present.",
+    "No external action is executed."
+  ]
+}

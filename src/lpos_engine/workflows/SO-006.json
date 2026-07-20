@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-006",
+  "model_class": "executive",
+  "steps": [
+    {
+      "step_id": "STEP-COLLECT",
+      "handler": "collect_weekly_review",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ANALYZE",
+      "handler": "analyze_weekly_review",
+      "depends_on": [
+        "STEP-COLLECT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_weekly_review",
+      "depends_on": [
+        "STEP-ANALYZE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

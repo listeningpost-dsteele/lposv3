@@ -1,0 +1,54 @@
+{
+  "$id": "https://lpos.local/schemas/artifact-specification.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "approved_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "design_tokens": {
+      "type": "object"
+    },
+    "history": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "invariants": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "structural_decisions": {
+      "type": "object"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "type": "string"
+    }
+  },
+  "required": [
+    "artifact_id",
+    "structural_decisions",
+    "design_tokens",
+    "invariants",
+    "approved_by",
+    "updated_at",
+    "history"
+  ],
+  "title": "ArtifactSpecification",
+  "type": "object"
+}

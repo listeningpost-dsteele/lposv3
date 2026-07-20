@@ -1,0 +1,597 @@
+{
+  "schema_version": 4,
+  "os_version": "4.0.0",
+  "specialists": [
+    {
+      "specialist_id": "SPECIALIST-001",
+      "name": "Strategic Planner",
+      "guild": "Executive",
+      "capabilities": [
+        "executive_coordination",
+        "strategy",
+        "strategic_planning",
+        "scenario_planning",
+        "planning",
+        "objectives"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-005",
+        "CS-014",
+        "CS-016"
+      ],
+      "model_class": "executive",
+      "priority": 10
+    },
+    {
+      "specialist_id": "SPECIALIST-002",
+      "name": "Decision Analyst",
+      "guild": "Executive",
+      "capabilities": [
+        "decision_support",
+        "decision_analysis",
+        "tradeoff_analysis",
+        "recommendations",
+        "confidence_assessment"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-005",
+        "CS-014",
+        "CS-016"
+      ],
+      "model_class": "executive",
+      "priority": 12
+    },
+    {
+      "specialist_id": "SPECIALIST-003",
+      "name": "Evidence Analyst",
+      "guild": "Executive",
+      "capabilities": [
+        "evidence_synthesis",
+        "measurement",
+        "outcome_evaluation",
+        "evidence_management",
+        "fact_checking"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-005",
+        "CS-014",
+        "CS-016"
+      ],
+      "model_class": "executive",
+      "priority": 14
+    },
+    {
+      "specialist_id": "SPECIALIST-004",
+      "name": "Risk Analyst",
+      "guild": "Executive",
+      "capabilities": [
+        "risk_triage",
+        "risk_analysis",
+        "scenario_analysis",
+        "mitigation_planning"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-005",
+        "CS-014",
+        "CS-016"
+      ],
+      "model_class": "executive",
+      "priority": 14
+    },
+    {
+      "specialist_id": "SPECIALIST-005",
+      "name": "Initiative Manager",
+      "guild": "Executive",
+      "capabilities": [
+        "initiative_management",
+        "dependency_tracking",
+        "execution_planning",
+        "portfolio_tracking"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-005",
+        "CS-014",
+        "CS-016"
+      ],
+      "model_class": "routine",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-006",
+      "name": "Research Analyst",
+      "guild": "Research",
+      "capabilities": [
+        "research",
+        "evidence_synthesis",
+        "source_evaluation",
+        "fact_checking",
+        "literature_review"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-004"
+      ],
+      "model_class": "executive",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-007",
+      "name": "Technology Scout",
+      "guild": "Research",
+      "capabilities": [
+        "technology_scouting",
+        "technology_research",
+        "weak_signal_detection",
+        "innovation_research"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-004"
+      ],
+      "model_class": "executive",
+      "priority": 22
+    },
+    {
+      "specialist_id": "SPECIALIST-008",
+      "name": "Source Validator",
+      "guild": "Research",
+      "capabilities": [
+        "source_evaluation",
+        "source_validation",
+        "fact_checking",
+        "recency_analysis",
+        "independence_analysis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-004"
+      ],
+      "model_class": "review",
+      "priority": 8
+    },
+    {
+      "specialist_id": "SPECIALIST-009",
+      "name": "Competitive Intelligence Analyst",
+      "guild": "Research",
+      "capabilities": [
+        "competitive_intelligence",
+        "market_positioning",
+        "competitor_research",
+        "evidence_synthesis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-004"
+      ],
+      "model_class": "executive",
+      "priority": 22
+    },
+    {
+      "specialist_id": "SPECIALIST-010",
+      "name": "Market Research Analyst",
+      "guild": "Research",
+      "capabilities": [
+        "market_research",
+        "demand_analysis",
+        "segmentation",
+        "customer_research",
+        "evidence_synthesis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-004"
+      ],
+      "model_class": "executive",
+      "priority": 22
+    },
+    {
+      "specialist_id": "SPECIALIST-011",
+      "name": "Software Architect",
+      "guild": "Engineering",
+      "capabilities": [
+        "software_architecture",
+        "system_design",
+        "data_modeling",
+        "integration_architecture",
+        "security_review"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "executive",
+      "priority": 5
+    },
+    {
+      "specialist_id": "SPECIALIST-012",
+      "name": "Software Engineer",
+      "guild": "Engineering",
+      "capabilities": [
+        "software_implementation",
+        "automation",
+        "integration",
+        "code_generation",
+        "data_modeling"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "executive",
+      "priority": 14
+    },
+    {
+      "specialist_id": "SPECIALIST-013",
+      "name": "Code Reviewer",
+      "guild": "Engineering",
+      "capabilities": [
+        "code_review",
+        "security_review",
+        "quality_assurance",
+        "regression_detection",
+        "policy_audit",
+        "independent_review"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "review",
+      "priority": 6
+    },
+    {
+      "specialist_id": "SPECIALIST-014",
+      "name": "Test Engineer",
+      "guild": "Engineering",
+      "capabilities": [
+        "testing",
+        "test_design",
+        "quality_assurance",
+        "regression_detection",
+        "failure_injection"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "review",
+      "priority": 7
+    },
+    {
+      "specialist_id": "SPECIALIST-015",
+      "name": "Debugging Specialist",
+      "guild": "Engineering",
+      "capabilities": [
+        "debugging",
+        "root_cause_analysis",
+        "incident_diagnosis",
+        "corrective_action"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "executive",
+      "priority": 15
+    },
+    {
+      "specialist_id": "SPECIALIST-016",
+      "name": "Operations Manager",
+      "guild": "Operations",
+      "capabilities": [
+        "operations",
+        "operational_coordination",
+        "incident_response",
+        "process_improvement",
+        "scheduling"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-013",
+        "CS-016"
+      ],
+      "model_class": "routine",
+      "priority": 18
+    },
+    {
+      "specialist_id": "SPECIALIST-017",
+      "name": "Workflow Coordinator",
+      "guild": "Operations",
+      "capabilities": [
+        "workflow_design",
+        "workflow_coordination",
+        "scheduling",
+        "state_tracking",
+        "process_improvement"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-013",
+        "CS-016"
+      ],
+      "model_class": "routine",
+      "priority": 16
+    },
+    {
+      "specialist_id": "SPECIALIST-018",
+      "name": "Dependency Manager",
+      "guild": "Operations",
+      "capabilities": [
+        "dependency_management",
+        "dependency_tracking",
+        "execution_planning",
+        "blocker_resolution"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-013",
+        "CS-016"
+      ],
+      "model_class": "routine",
+      "priority": 18
+    },
+    {
+      "specialist_id": "SPECIALIST-019",
+      "name": "Executive Writer",
+      "guild": "Communications",
+      "capabilities": [
+        "writing",
+        "executive_communication",
+        "brief_writing",
+        "decision_communication",
+        "customer_communication"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-001",
+        "CS-014",
+        "CS-018"
+      ],
+      "model_class": "routine",
+      "priority": 12
+    },
+    {
+      "specialist_id": "SPECIALIST-020",
+      "name": "Technical Writer",
+      "guild": "Communications",
+      "capabilities": [
+        "writing",
+        "technical_writing",
+        "documentation",
+        "developer_communication"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-001",
+        "CS-014",
+        "CS-018"
+      ],
+      "model_class": "routine",
+      "priority": 14
+    },
+    {
+      "specialist_id": "SPECIALIST-021",
+      "name": "Editor",
+      "guild": "Communications",
+      "capabilities": [
+        "editing",
+        "writing_review",
+        "clarity_improvement",
+        "meaning_preservation"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-001",
+        "CS-014",
+        "CS-018"
+      ],
+      "model_class": "review",
+      "priority": 8
+    },
+    {
+      "specialist_id": "SPECIALIST-022",
+      "name": "Financial Analyst",
+      "guild": "Finance",
+      "capabilities": [
+        "financial_analysis",
+        "budgeting",
+        "forecasting",
+        "roi_analysis",
+        "cost_analysis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-010"
+      ],
+      "model_class": "executive",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-023",
+      "name": "Pricing Analyst",
+      "guild": "Finance",
+      "capabilities": [
+        "pricing",
+        "packaging",
+        "unit_economics",
+        "revenue_analysis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-010"
+      ],
+      "model_class": "executive",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-024",
+      "name": "Security Architect",
+      "guild": "Security",
+      "capabilities": [
+        "security_architecture",
+        "security_review",
+        "threat_mitigation",
+        "least_privilege",
+        "privacy_engineering"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-009"
+      ],
+      "model_class": "executive",
+      "priority": 8
+    },
+    {
+      "specialist_id": "SPECIALIST-025",
+      "name": "Threat Analyst",
+      "guild": "Security",
+      "capabilities": [
+        "threat_modeling",
+        "attack_surface_analysis",
+        "security_review",
+        "risk_analysis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-009"
+      ],
+      "model_class": "review",
+      "priority": 8
+    },
+    {
+      "specialist_id": "SPECIALIST-026",
+      "name": "Legal Analyst",
+      "guild": "Legal",
+      "capabilities": [
+        "legal_analysis",
+        "contract_analysis",
+        "legal_risk",
+        "policy_interpretation"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-011"
+      ],
+      "model_class": "executive",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-027",
+      "name": "Product Manager",
+      "guild": "Product",
+      "capabilities": [
+        "product_management",
+        "requirements",
+        "prioritization",
+        "product_strategy",
+        "outcome_definition"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-006"
+      ],
+      "model_class": "executive",
+      "priority": 18
+    },
+    {
+      "specialist_id": "SPECIALIST-028",
+      "name": "Customer Insights Analyst",
+      "guild": "Customer Intelligence",
+      "capabilities": [
+        "customer_research",
+        "customer_insights",
+        "needs_analysis",
+        "evidence_synthesis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-015",
+        "CS-006"
+      ],
+      "model_class": "executive",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-029",
+      "name": "Relationship Analyst",
+      "guild": "Relationship Intelligence",
+      "capabilities": [
+        "relationship_analysis",
+        "stakeholder_analysis",
+        "follow_up_planning",
+        "communication_context"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-015"
+      ],
+      "model_class": "routine",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-030",
+      "name": "Data Analyst",
+      "guild": "Data Intelligence",
+      "capabilities": [
+        "data_analysis",
+        "metrics",
+        "trend_analysis",
+        "data_quality",
+        "measurement"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-012"
+      ],
+      "model_class": "executive",
+      "priority": 18
+    },
+    {
+      "specialist_id": "SPECIALIST-031",
+      "name": "Automation Architect",
+      "guild": "Automation",
+      "capabilities": [
+        "automation",
+        "workflow_design",
+        "integration_architecture",
+        "observability",
+        "reliability_engineering"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-013"
+      ],
+      "model_class": "executive",
+      "priority": 14
+    },
+    {
+      "specialist_id": "SPECIALIST-032",
+      "name": "Web & Product Designer",
+      "guild": "Design",
+      "capabilities": [
+        "product_design",
+        "web_design",
+        "interaction_design",
+        "visual_design",
+        "baseline_preservation"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-002",
+        "CS-001"
+      ],
+      "model_class": "executive",
+      "priority": 18
+    }
+  ]
+}

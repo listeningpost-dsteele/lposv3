@@ -1,0 +1,61 @@
+{
+  "component_id": "SPECIALIST-022",
+  "component_type": "specialist",
+  "evaluation": {
+    "assertions": [
+      "lead_specialist",
+      "model_class",
+      "no_missing_capabilities",
+      "craft_standards_present"
+    ],
+    "method": "deterministic_router_assertions"
+  },
+  "evidence": [
+    "RouteDecision JSON",
+    "selected specialist and craft-standard IDs",
+    "missing-capability set"
+  ],
+  "expected": {
+    "craft_standards": [
+      "CS-003",
+      "CS-010"
+    ],
+    "lead_guild": "Finance",
+    "lead_specialist": "SPECIALIST-022",
+    "missing_capabilities": [],
+    "model_class": "executive"
+  },
+  "failure_criteria": [
+    "A different lead specialist is selected.",
+    "Any capability is silently omitted.",
+    "The route names a provider instead of a model class.",
+    "The fixture is modified during evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-S022",
+  "inputs": {
+    "facts": {
+      "approved_scope": "Finance",
+      "external_action_authorized": false,
+      "fixture_id": "BENCH-S022",
+      "known_constraint": "Preserve the supplied scope and identify uncertainty."
+    },
+    "preferred_model_class": "executive",
+    "principal_instruction": "Fixture BENCH-S022: produce the Financial Analyst analysis from the supplied facts, state assumptions, and propose evidence without taking an external action.",
+    "required_capabilities": [
+      "financial_analysis",
+      "budgeting",
+      "forecasting",
+      "roi_analysis",
+      "cost_analysis"
+    ]
+  },
+  "objective": "Verify that fixed Financial Analyst work routes to the canonical specialist with complete capability coverage.",
+  "scenario": "The Principal requests a bounded Financial Analyst deliverable using the supplied fixture facts; no external action is authorized.",
+  "success_criteria": [
+    "Lead specialist is SPECIALIST-022.",
+    "All required capabilities are covered.",
+    "Mapped craft standards are present.",
+    "No external action is executed."
+  ]
+}

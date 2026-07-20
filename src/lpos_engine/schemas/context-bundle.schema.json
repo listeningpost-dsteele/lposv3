@@ -1,0 +1,73 @@
+{
+  "$id": "https://lpos.local/schemas/context-bundle.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bundle_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "bundle_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "excluded": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "loaded_components": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "missing_components": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "purpose": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "token_estimate": {
+      "minimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "bundle_id",
+    "task_id",
+    "purpose",
+    "content",
+    "loaded_components",
+    "missing_components",
+    "excluded",
+    "token_estimate",
+    "bundle_hash",
+    "created_at"
+  ],
+  "title": "ContextBundle",
+  "type": "object"
+}

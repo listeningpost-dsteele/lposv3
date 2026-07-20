@@ -1,0 +1,121 @@
+{
+  "$id": "https://lpos.local/schemas/artifact.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "oneOf": [
+    {
+      "properties": {
+        "context_bundle_hash": {
+          "type": "null"
+        },
+        "context_bundle_id": {
+          "type": "null"
+        }
+      }
+    },
+    {
+      "properties": {
+        "context_bundle_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "context_bundle_id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "properties": {
+    "artifact_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "artifact_spec_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "baseline_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "content": {
+      "type": "string"
+    },
+    "content_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "context_bundle_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "context_bundle_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "created_by_adapter": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "interpretation_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "media_type": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "verification_evidence": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "artifact_id",
+    "task_id",
+    "media_type",
+    "content",
+    "content_hash",
+    "baseline_ref",
+    "context_bundle_id",
+    "context_bundle_hash",
+    "interpretation_hash",
+    "artifact_spec_hash",
+    "verification_evidence",
+    "created_at",
+    "created_by_adapter"
+  ],
+  "title": "Artifact",
+  "type": "object"
+}

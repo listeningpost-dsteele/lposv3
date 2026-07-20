@@ -1,0 +1,90 @@
+{
+  "$id": "https://lpos.local/schemas/approval-request.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "action_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "exact_action": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "expires_policy": {
+      "enum": [
+        "hold",
+        "timestamp"
+      ]
+    },
+    "kind": {
+      "enum": [
+        "consent",
+        "clarification",
+        "approval"
+      ]
+    },
+    "options": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "question_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "recommended": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "question_id",
+    "task_id",
+    "action_id",
+    "kind",
+    "exact_action",
+    "action_hash",
+    "options",
+    "recommended",
+    "expires_policy",
+    "created_at",
+    "expires_at"
+  ],
+  "title": "ApprovalRequest",
+  "type": "object"
+}
