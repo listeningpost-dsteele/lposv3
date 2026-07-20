@@ -1,7 +1,7 @@
 ---
 name: quality-router
 description: Route every material task through the correct craft standards and reviewer.
-version: 4.0.0
+version: 4.1.0
 author: Listening Post
 license: MIT
 ---

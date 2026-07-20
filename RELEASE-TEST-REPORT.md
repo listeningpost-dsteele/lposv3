@@ -1,9 +1,9 @@
-# LPOS v4.0.0 Release Test Report
+# LPOS v4.1.0 Release Test Report
 
 ## Release identity
 
 - Product: LPOS
-- Version: 4.0.0
+- Version: 4.1.0
 - Distribution: integrated, complete source-and-offline-install bundle
 - Python requirement: 3.11 or later
 - Default consequential-action mode: record-only
@@ -53,7 +53,7 @@ criteria, an evaluation method, and required evidence.
 
 ## Clean-wheel acceptance
 
-The bundled `lpos_os-4.0.0-py3-none-any.whl` was installed with `--no-index` in a newly
+The bundled `lpos_os-4.1.0-py3-none-any.whl` was installed with `--no-index` in a newly
 created virtual environment. The following checks passed:
 
 - `pip check`
@@ -63,7 +63,7 @@ created virtual environment. The following checks passed:
 - `lpos evals`
 - `lpos demo --workspace <fresh workspace>`
 
-The clean install reported LPOS 4.0.0, database integrity `ok`, 32 specialists, 21 Standing
+The clean install reported LPOS 4.1.0, database integrity `ok`, 32 specialists, 21 Standing
 Operations, 53 benchmarks, and a completed independently reviewed material task.
 
 ## Safety boundary

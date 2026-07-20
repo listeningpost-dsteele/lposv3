@@ -1,0 +1,202 @@
+[
+ {
+  "id": "CS001-000",
+  "text": "Our platform is fast and clear \u2014 you will notice the difference immediately.",
+  "expected": [
+   "em_dash"
+  ]
+ },
+ {
+  "id": "CS001-001",
+  "text": "We ship weekly \u2014 every release is reviewed before it goes out.",
+  "expected": [
+   "em_dash"
+  ]
+ },
+ {
+  "id": "CS001-002",
+  "text": "Try it today and see the results!",
+  "expected": [
+   "exclamation"
+  ]
+ },
+ {
+  "id": "CS001-003",
+  "text": "This is the best launch we have ever done!",
+  "expected": [
+   "exclamation"
+  ]
+ },
+ {
+  "id": "CS001-004",
+  "text": "A seamless, effortless way to unlock your team's potential.",
+  "expected": [
+   "banned_vocab"
+  ]
+ },
+ {
+  "id": "CS001-005",
+  "text": "Supercharge your workflow and elevate every result.",
+  "expected": [
+   "banned_vocab"
+  ]
+ },
+ {
+  "id": "CS001-006",
+  "text": "We empower operators with robust, cutting-edge tooling.",
+  "expected": [
+   "banned_vocab"
+  ]
+ },
+ {
+  "id": "CS001-007",
+  "text": "1 coordinator, 32 specialists, 37 guilds, 21 operations.",
+  "expected": [
+   "number_parade"
+  ]
+ },
+ {
+  "id": "CS001-008",
+  "text": "3 plans, 4 tiers, 12 integrations, 99 happy teams.",
+  "expected": [
+   "number_parade"
+  ]
+ },
+ {
+  "id": "CS001-009",
+  "text": "This is not just a tool, it's a whole operating system.",
+  "expected": [
+   "antithesis"
+  ]
+ },
+ {
+  "id": "CS001-010",
+  "text": "It is not just faster but smarter in every way.",
+  "expected": [
+   "antithesis"
+  ]
+ },
+ {
+  "id": "CS001-011",
+  "text": "Faster, smarter, and cleaner than anything you have used.",
+  "expected": [
+   "triad"
+  ]
+ },
+ {
+  "id": "CS001-012",
+  "text": "Simple, reliable, and honest software for real teams.",
+  "expected": [
+   "triad"
+  ]
+ },
+ {
+  "id": "CS001-013",
+  "text": "Not just seamless \u2014 it's revolutionary!",
+  "expected": [
+   "antithesis",
+   "banned_vocab",
+   "em_dash",
+   "exclamation"
+  ]
+ },
+ {
+  "id": "CS001-014",
+  "text": "Unlock 3 new tiers, 5 workflows, and 9 templates today!",
+  "expected": [
+   "banned_vocab",
+   "exclamation",
+   "number_parade"
+  ]
+ },
+ {
+  "id": "CS001-015",
+  "text": "We built this because our own assistant kept shipping work nobody had checked.",
+  "expected": []
+ },
+ {
+  "id": "CS001-016",
+  "text": "Now every piece of work gets a second set of eyes before you see it.",
+  "expected": []
+ },
+ {
+  "id": "CS001-017",
+  "text": "You get one short email when something needs your decision.",
+  "expected": []
+ },
+ {
+  "id": "CS001-018",
+  "text": "Reply by email, on desktop, or in chat, whichever is easiest.",
+  "expected": []
+ },
+ {
+  "id": "CS001-019",
+  "text": "The system keeps a record of what it did and why.",
+  "expected": []
+ },
+ {
+  "id": "CS001-020",
+  "text": "Pricing stays the same on your existing plan.",
+  "expected": []
+ },
+ {
+  "id": "CS001-021",
+  "text": "Ask us anything and a person will get back to you within a day.",
+  "expected": []
+ },
+ {
+  "id": "CS001-022",
+  "text": "It runs quietly and stays out of your way until it matters.",
+  "expected": []
+ },
+ {
+  "id": "CS001-023",
+  "text": "Delve into the data and unlock hidden value.",
+  "expected": [
+   "banned_vocab"
+  ]
+ },
+ {
+  "id": "CS001-024",
+  "text": "A game-changing, cutting-edge approach to operations!",
+  "expected": [
+   "banned_vocab",
+   "exclamation"
+  ]
+ },
+ {
+  "id": "CS001-025",
+  "text": "10 reasons, 5 benefits, 3 guarantees, 1 decision.",
+  "expected": [
+   "number_parade"
+  ]
+ },
+ {
+  "id": "CS001-026",
+  "text": "Not just a dashboard, it's mission control for your day.",
+  "expected": [
+   "antithesis"
+  ]
+ },
+ {
+  "id": "CS001-027",
+  "text": "Bold, clear, and confident writing that sounds human.",
+  "expected": [
+   "triad"
+  ]
+ },
+ {
+  "id": "CS001-028",
+  "text": "Effortless onboarding \u2014 supercharge day one!",
+  "expected": [
+   "banned_vocab",
+   "em_dash",
+   "exclamation"
+  ]
+ },
+ {
+  "id": "CS001-029",
+  "text": "We measure outcomes, not activity, on every engagement.",
+  "expected": []
+ }
+]
