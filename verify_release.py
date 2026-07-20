@@ -33,6 +33,8 @@ def relative_files() -> set[str]:
             continue
         if "__pycache__" in relative.parts or path.suffix == ".pyc":
             continue
+        if any(part.endswith(".egg-info") for part in relative.parts):
+            continue
         if relative.name in IGNORED_NAMES:
             continue
         result.add(relative.as_posix())

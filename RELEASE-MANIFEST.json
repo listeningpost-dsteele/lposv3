@@ -187,7 +187,7 @@
     "tests/test_schemas_cli_adapters.py": "ebb9a8a1ad94a37ae6755d5309204bf0ff8870bbfda5636fbe6fc55bdc574738",
     "tests/test_store.py": "34536117b1c699a3a6654cdc0d3d450cabc7bd9541054de1726488a75ccf50b7",
     "tests/test_v4_integrated_distribution.py": "a897f338e870ed44126b960bce981e297c1a830875a20bc8d6d89e6bff8febff",
-    "verify_release.py": "d2e6ce0a810a5f03a23492c56b55fce405292442c25e0410d98cd5526c31f94f"
+    "verify_release.py": "83617f262b77dc7710caaf2ae2f37d9784250aaa5464c52e2d6e03fb6a02df12"
   },
   "generated_at": "2026-07-20T16:51:19+00:00",
   "hash_algorithm": "sha256",
