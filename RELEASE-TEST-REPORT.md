@@ -18,6 +18,7 @@
 - 53 fixed benchmark fixtures: one per specialist and one per Standing Operation
 - 17 synchronized executable JSON Schemas
 - Model-host and action-adapter boundaries
+- Validation-gated, staging-only Skill Evolution capability and packaged skill
 - Offline wheel and cross-platform installer
 
 ## Source acceptance
@@ -31,14 +32,15 @@ PYTHONPATH=src python -m pytest -q --disable-warnings -o addopts=''
 Result:
 
 ```text
-128 passed, 310 subtests passed
+130 passed, 310 subtests passed
 ```
 
 The suite covers validation, routing, materiality, task and action transitions, exact-action
 approval, verified identities, expiry and replay, context isolation, artifact/contract/spec
 binding, fallback, concurrency, append-only events, migrations, atomic completion, operation
 leases and idempotency, file sandboxing, subprocess boundaries, packaging synchronization,
-all 53 benchmark fixtures, and the integrated CLI.
+Skill Evolution gating and LPOS fixture loading, all 53 benchmark fixtures, and the
+integrated CLI.
 
 ## Schema and benchmark acceptance
 
