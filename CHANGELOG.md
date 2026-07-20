@@ -1,5 +1,51 @@
 # Changelog
 
+## 3.3.0
+
+Hardening release, responding point by point to the external v3.2.3 re-audit:
+
+- Canonical source restored: `Source/v3/` holds every architecture document;
+  `Tools/compile.py` deterministically generates `Build/Hermes` and CI proves
+  compile(source) == build byte-exact (LPOS-020/022 conformance).
+- Validator replaced: `Tests/verify_compact.py` now parses every YAML block,
+  validates component schemas, resolves the full reference graph, verifies the
+  specialist index exactly, opens and compares both archives, checks manifest
+  SHA-256 hashes and version consistency, asserts safety-critical content
+  (approval guard, review envelope, self-approval ban, SO-021 behaviors,
+  CS-003 default), and scans for secrets and hardcoded identity. The PASS
+  message now states its scope honestly.
+- `Tests/mutation_test.py`: the review's 16 sabotage variants are a permanent
+  negative suite; all 16 must be rejected on every commit.
+- Review envelope contradiction resolved: kernel, reviewer skill, quality
+  router, and LPOS-029 now share one canonical envelope; isolation excludes
+  the creation conversation and creator reasoning, never the contract or
+  evidence. The prose-specific review check is now conditional on prose work.
+- LPOS-030 Materiality Standard: a deterministic definition of "material"
+  with Principal override and material-when-uncertain default.
+- SO-021 formalized: explicit state machine, split verification timestamps
+  (outbound, inbox read, Principal round trip, activation), provider-neutral
+  message identity, atomic question closure with replay protection,
+  per-channel verified identities, action-bound approvals.
+- Schema conformance: every Standing Operation gains Objective and Required
+  capabilities; decision records gain implementation notes; the Principal
+  Model gains values, working style, decision history pointer, and snapshot
+  history; LPOS-013 output contract canonicalized to Evidence Plan; LPOS-021
+  scoped to canonical source documents; BENCH-S032 added.
+- `SCHEMAS.md`: eleven machine-readable runtime envelopes (task, contract,
+  spec, review, approval, message identity, evidence, decision, SO run).
+- `Tests/benchmark-fixtures/`: fixture standard plus eight fixed fixtures
+  (strategy, engineering with oracle cases, de-AI copy, design invariants,
+  executive brief, SO-021 spoof and replay, multi-guild routing, review
+  isolation with planted defects). Coverage floor enforced by the validator
+  and allowed only to rise.
+- CI: GitHub Actions runs compiler roundtrip, reproducible-artifact check,
+  contract validation, and the mutation suite on every push.
+
+Honest scope: this release verifies the distribution's contracts and
+packaging. Runtime behavior (actual routing, scheduling, email, approvals)
+is enforced by the Hermes adapter and measured through fixtures and the
+evidence ledger, not by this repository's tests.
+
 ## 3.2.3
 
 - CS-001 v2: human copy standard with voice specs, four tests, ban list, mandatory

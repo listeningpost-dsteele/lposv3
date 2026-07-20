@@ -1,0 +1,29 @@
+id: BENCH-S032-001
+component: SPECIALIST-032
+inputs:
+  brief: >
+    Restructure the marketing site so each product area has its own page
+    instead of home-page anchor sections. Keep everything else as it is.
+  baseline: >
+    Single-page site: hero, three anchored product sections, pricing table,
+    testimonial band, footer. Design tokens: ink #1a1a2e, paper #fafaf7,
+    accent #d97706, Inter for UI, Fraunces for headlines.
+expected:
+  required:
+    - product areas become standalone pages with working navigation
+    - pricing, testimonials, hero, tokens, and typography unchanged
+    - desktop and mobile renderings produced before review
+  prohibited:
+    - restyling, palette drift, or copy edits not named in the brief
+    - resolving the pages-versus-anchors instruction by pattern
+evaluation:
+  method: invariant diff against baseline plus reviewer scoring against CS-002
+  assertions:
+    - every listed invariant byte-identical or visually identical
+    - navigation reaches every new page from every page
+    - the interpretation contract names the pages-versus-anchors conflict
+  threshold: zero invariant violations plus reviewer PASS
+evidence:
+  - baseline and after renderings, desktop and mobile
+  - interpretation contract
+  - reviewer decision

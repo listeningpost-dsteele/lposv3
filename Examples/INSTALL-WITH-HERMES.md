@@ -1,6 +1,6 @@
-# Example Installation (v3.2)
+# Example Installation (v3.3)
 
-1. Download `Build/LPOS-Hermes-Compact-v3.2.zip`.
+1. Download `Build/LPOS-Hermes-Compact-v3.3.zip`.
 2. Extract it.
 3. Start a new Hermes session.
 4. Attach the extracted folder or ZIP.

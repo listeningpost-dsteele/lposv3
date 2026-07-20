@@ -1,16 +1,13 @@
-# Upload This Compact Repository to GitHub
+# Publish This Repository to GitHub
 
-1. Extract `Listening-Post-LPOS-v3.2-Compact.zip`.
-2. Open the existing GitHub `lpos` repository.
-3. Select **Add file** and **Upload files**.
-4. Select everything inside the extracted folder.
-5. Drag it into GitHub.
-6. Commit with:
+The repository is git-native now; prefer SO-022 Release Publication or a
+plain push over drag-and-drop.
 
-```text
-Release LPOS v3.1: merge patches 3.0.1-3.0.4 into the distribution
-```
+1. Edit sources under `Source/v3/`, then run:
+   `python3 Tools/compile.py && python3 Tools/build_release.py <version>`
+2. Run `python3 Tests/verify_compact.py` and `python3 Tests/mutation_test.py`.
+3. Commit with: `Release LPOS v3.3` (match the MANIFEST version).
+4. Push to the `lposv3` repository. CI re-runs every check on the commit.
 
-The full source remains preserved inside `Source/LPOS-Full-Source-v2.0.zip`.
-
-The Hermes-ready package is at `Build/LPOS-Hermes-Compact-v3.2.zip`.
+Manual fallback: GitHub web upload of the full folder, same commit message.
+The Hermes-ready package is `Build/LPOS-Hermes-Compact-v3.3.zip`.

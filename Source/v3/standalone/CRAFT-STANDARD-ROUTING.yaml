@@ -1,0 +1,45 @@
+version: 1.1.0
+default:
+  - LPOS-026
+  - LPOS-027
+# Applies to every material production artifact regardless of guild:
+material_artifact_default:
+  - CS-003
+guild_routes:
+  Executive: [CS-005, CS-014, CS-016]
+  Research: [CS-004]
+  Engineering: [CS-007, CS-008]
+  Operations: [CS-013, CS-016]
+  Communications: [CS-001, CS-014, CS-018]
+  Finance: [CS-010]
+  Security: [CS-009]
+  Legal: [CS-011]
+  Product: [CS-006, CS-002]
+  Design: [CS-002, CS-001, CS-003]
+  Relationship Intelligence: [CS-015]
+  Customer Intelligence: [CS-015, CS-006]
+  Knowledge Management: [CS-018]
+  Intelligence: [CS-004, CS-005]
+  Revenue Operations: [CS-010, CS-013, CS-015]
+  Platform: [CS-020, CS-007, CS-009]
+  Data Intelligence: [CS-012]
+  Innovation: [CS-019]
+  Automation: [CS-013]
+  Infrastructure: [CS-020, CS-009]
+  Quality Assurance: [CS-008]
+  Personal Office: [CS-014, CS-016, CS-015]
+  Learning and Improvement: [CS-008, CS-012]
+  Integration: [CS-007, CS-009, CS-013]
+  Observability: [CS-012, CS-020]
+  AI Strategy: [CS-004, CS-005, CS-017]
+  Governance: [CS-018, CS-008]
+  Model Intelligence: [CS-017, CS-012]
+  Principal Success: [CS-012, CS-014]
+  Execution: [CS-016, CS-013]
+  Principal Intelligence: [CS-015, CS-012]
+  Ecosystem: [CS-004, CS-005]
+  Runtime: [CS-007, CS-013, CS-020]
+  Provider Intelligence: [CS-017, CS-012]
+  Capability Engineering: [CS-007, CS-018]
+  Decision Intelligence: [CS-005]
+  Planning: [CS-016, CS-005]

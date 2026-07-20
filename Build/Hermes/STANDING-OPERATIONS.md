@@ -34,6 +34,16 @@ machine:
 
 Prepare one concise decision-focused briefing for the Principal.
 
+
+## Objective
+
+One decision-ready brief each scheduled morning.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 ## Inputs
 
 - Principal Model
@@ -96,6 +106,16 @@ machine:
 
 Discover, validate, challenge, and prioritize high-value opportunities.
 
+
+## Objective
+
+A ranked, evidence-based opportunity queue.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 ## Inputs
 
 - technology signals
@@ -155,6 +175,17 @@ machine:
 
 Prepare the Principal for upcoming commitments and identify conflicts.
 
+
+## Objective
+
+Conflicts and preparation needs surfaced before commitments.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- calendar read
 ## Inputs
 
 - calendar
@@ -213,6 +244,17 @@ machine:
 
 Identify messages requiring decisions, replies, delegation, or archival.
 
+
+## Objective
+
+Every inbox item triaged to decision, reply, delegation, or archive.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- mailbox read
 ## Inputs
 
 - email
@@ -270,6 +312,18 @@ machine:
 
 Create a concise brief before an important meeting.
 
+
+## Objective
+
+A usable brief before each important meeting.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- calendar read
+- relationship context read
 ## Inputs
 
 - calendar event
@@ -330,6 +384,16 @@ machine:
 
 Evaluate progress, evidence, decisions, and priorities.
 
+
+## Objective
+
+A weekly account of progress, evidence, and next priorities.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 ## Inputs
 
 - decision ledger
@@ -389,6 +453,16 @@ machine:
 
 Evaluate whether implemented work created intended value.
 
+
+## Objective
+
+Each implemented recommendation judged against its expected outcome.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 ## Inputs
 
 - evidence ledger
@@ -447,6 +521,16 @@ machine:
 
 Detect failed, noisy, low-value, or redundant recurring operations.
 
+
+## Objective
+
+Failing, noisy, or redundant operations caught within one day.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 ## Inputs
 
 - operation history
@@ -505,6 +589,16 @@ machine:
 
 Identify important relationship follow-ups and meeting opportunities.
 
+
+## Objective
+
+Timely follow-ups on the relationships that matter.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 ## Inputs
 
 - relationship context
@@ -563,6 +657,16 @@ machine:
 
 Surface weak technical signals rather than obvious news.
 
+
+## Objective
+
+Weak technical signals surfaced before they become news.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 ## Inputs
 
 - repositories
@@ -625,6 +729,16 @@ machine:
 Review active work, blockers, dependencies, and completion risk.
 
 
+## Objective
+
+Blockers and completion risks visible before end of day.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+
 ## Inputs
 
 - active work items
@@ -682,6 +796,17 @@ machine:
 
 Review revenue pipeline health, next actions, and forecast risk.
 
+
+## Objective
+
+Pipeline health and forecast risk quantified weekly.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- pipeline data read
 
 ## Inputs
 
@@ -741,6 +866,17 @@ machine:
 Summarize customer health, needs, risks, and expansion opportunities.
 
 
+## Objective
+
+Customer health, risk, and expansion assessed weekly.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- customer data read
+
 ## Inputs
 
 - customer accounts
@@ -797,6 +933,17 @@ machine:
 
 Review security-relevant changes, permissions, providers, and incidents.
 
+
+## Objective
+
+Security-relevant changes reviewed within a week.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- configuration and log read
 
 ## Inputs
 
@@ -856,6 +1003,17 @@ machine:
 Evaluate provider health, quality, cost, and compatibility.
 
 
+## Objective
+
+Provider quality, cost, and health scored monthly.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- provider telemetry read
+
 ## Inputs
 
 - provider health
@@ -912,6 +1070,17 @@ machine:
 Compare available model providers against LPOS benchmarks.
 
 
+## Objective
+
+Models compared against fixed benchmarks monthly.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- model invocation across configured providers
+
 ## Inputs
 
 - LPOS benchmarks
@@ -966,6 +1135,16 @@ machine:
 
 Identify missing, stale, duplicate, or hard-to-find knowledge.
 
+
+## Objective
+
+Stale, missing, or duplicated knowledge found monthly.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
 
 ## Inputs
 
@@ -1024,6 +1203,16 @@ machine:
 Measure LPOS value, adoption, friction, and Principal outcomes.
 
 
+## Objective
+
+LPOS value and friction measured monthly.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+
 ## Inputs
 
 - evidence ledger
@@ -1081,6 +1270,16 @@ machine:
 Compare important decisions with actual outcomes and assumptions.
 
 
+## Objective
+
+Important decisions compared with actual outcomes.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+
 ## Inputs
 
 - decision ledger
@@ -1135,6 +1334,17 @@ machine:
 
 Review runtime, provider, infrastructure, and integration health.
 
+
+## Objective
+
+Runtime and integration health reviewed weekly.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- runtime telemetry read
 
 ## Inputs
 
@@ -1193,6 +1403,18 @@ machine:
 Carry questions, consent requests, and approvals to the Principal by email, collect
 answers from any channel, and execute new feedback promptly.
 
+
+## Objective
+
+Principal questions answered through verified channels within one cycle.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the listed inputs
+- evidence recording
+- email send and read as the office address
+- secret store access
 ## Activation
 
 This operation is dormant until first-run onboarding (ONBOARDING.md) verifies the
@@ -1239,6 +1461,19 @@ trip. Until then, questions wait in the registry and surface in the session.
 6. Update the question registry and the evidence ledger. Never re-announce items
    already processed (idempotency per CS-013). Read-only inbox collectors must
    exclude message ids already in the SO-021 processed registry.
+
+## State machine
+
+States: disabled -> outbound_verified -> inbox_verified -> round_trip_pending ->
+active -> degraded -> suspended. The scheduler runs the loop only in active or
+degraded. Activation requires outbound, inbox-read, and Principal round-trip
+verification timestamps. Two consecutive failed cycles move active to degraded;
+five move it to suspended with an Operational Alert. Question closure is atomic:
+the first verified answer closes the question in the same operation that records
+it; later answers are logged, never executed. Message identity is provider
+neutral (channel, provider, message_id). A non-email channel counts only after
+its verified identity mapping exists in the Principal Model. An approval is
+bound to the exact proposed action it names; it authorizes nothing else.
 
 ## Success criteria
 

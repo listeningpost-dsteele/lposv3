@@ -1,8 +1,19 @@
-# Listening Post Operating System v3.2 Compact Repository
+# Listening Post Operating System v3.3 Compact Repository
 
 This repository is optimized for GitHub, distribution, and Hermes installation.
-v3.2 merges patches 3.0.1 through 3.0.4 into the distribution and adds
-model-routing onboarding.
+v3.3 is the hardening release: canonical source tree with a deterministic
+compiler, a schema-parsing validator with an adversarial mutation suite,
+machine-readable runtime envelopes, fixed benchmark fixtures, a materiality
+standard, a unified review envelope, an SO-021 state machine, and CI.
+
+Status, stated plainly: this is a constitutional distribution with a verified
+contract and packaging layer. Runtime behavior lives in the Hermes adapter and
+is measured through fixtures and the evidence ledger.
+
+Layout: edit `Source/v3/`, never `Build/Hermes/` (generated). Rebuild with
+`python3 Tools/compile.py`, package with `python3 Tools/build_release.py
+<version>`, and validate with `python3 Tests/verify_compact.py` plus
+`python3 Tests/mutation_test.py`.
 
 ## What changed from v3.0
 
@@ -46,7 +57,7 @@ Examples/
 
 ## Install
 
-Use `Build/LPOS-Hermes-Compact-v3.2.zip` and follow
+Use `Build/LPOS-Hermes-Compact-v3.3.zip` and follow
 `Examples/INSTALL-WITH-HERMES.md`.
 
 ## Develop

@@ -1,0 +1,29 @@
+id: BENCH-S001-001
+component: SPECIALIST-001
+inputs:
+  brief: >
+    The Principal runs a bootstrapped analytics product at 40k USD monthly
+    revenue, growing 4 percent monthly, with one enterprise prospect offering
+    a 200k annual contract that requires SOC 2 within 6 months and would
+    consume half of engineering capacity. Constraint: no outside funding,
+    9 months of runway. Decide whether to pursue the enterprise deal.
+  context: two engineers, one designer; churn 2.5 percent monthly; SOC 2 cost estimate 60k
+expected:
+  required:
+    - at least three real alternatives including declining the deal
+    - explicit runway math under each alternative
+    - a named invalidation condition for the recommendation
+    - the eight-part output contract, ending with an evidence plan
+  prohibited:
+    - invented facts not in the inputs
+    - a recommendation without a next decision point
+evaluation:
+  method: deterministic assertions plus reviewer scoring against CS-005
+  assertions:
+    - output contains all eight contract sections in order
+    - every number used appears in or derives from the inputs
+    - the do-nothing alternative is evaluated, not dismissed
+  threshold: pass requires all assertions plus reviewer PASS
+evidence:
+  - the produced recommendation document
+  - reviewer decision with isolation and recomputed headers

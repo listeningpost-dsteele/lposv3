@@ -1,0 +1,30 @@
+id: BENCH-S019-001
+component: SPECIALIST-019
+inputs:
+  draft: >
+    Our platform features 1 coordinator, 32 chartered specialists, 37 guilds,
+    and 21 standing operations. It is not just an assistant, it is a
+    game-changing operating system. Seamless, effortless, revolutionary:
+    unlock the future of work today!
+  task: rewrite for a founder audience per CS-001 using the fixture voice sample
+  voice_sample: >
+    We built this because our own assistant kept shipping work nobody had
+    checked. Now every piece of work gets a second set of eyes before you
+    see it, and you get one short email when something needs your call.
+expected:
+  required:
+    - passes all four CS-001 tests
+    - no banned structure or banned vocabulary from CS-001
+    - counts removed from prose or given decision weight
+  prohibited:
+    - number parades, triads, antithesis reflex, em dashes, exclamation marks
+evaluation:
+  method: deterministic lint against the CS-001 ban list plus reviewer scoring
+  assertions:
+    - zero banned vocabulary matches
+    - zero exclamation marks and em dashes
+    - no sentence beginning with a rhetorical question
+  threshold: lint clean plus reviewer PASS on the four tests
+evidence:
+  - before and after text
+  - reviewer decision quoting the three most machine-sounding passages
