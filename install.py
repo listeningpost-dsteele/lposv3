@@ -134,7 +134,7 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    print("\nLPOS v4.1.0 installation completed successfully.")
+    print(f"\nLPOS v{release['version']} installation completed successfully.")
     print(f"  Operating system: {root}")
     print(f"  Transactional state: {database}")
     print(f"  Verification flow: {verification_status}")

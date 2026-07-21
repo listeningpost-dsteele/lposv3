@@ -1,0 +1,76 @@
+{
+  "so_id": "SO-022",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-ACK",
+      "handler": "acknowledge_reporter",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPRODUCE",
+      "handler": "reproduce_in_sandbox",
+      "depends_on": [
+        "STEP-ACK"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REGRESSION",
+      "handler": "repro_to_failing_fixture",
+      "depends_on": [
+        "STEP-REPRODUCE"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-DIAGNOSE",
+      "handler": "localize_root_cause",
+      "depends_on": [
+        "STEP-REGRESSION"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REMEDIATE",
+      "handler": "attempt_fix_loop",
+      "depends_on": [
+        "STEP-DIAGNOSE"
+      ],
+      "continue_on_error": true
+    },
+    {
+      "step_id": "STEP-VERIFY",
+      "handler": "verify_fix_and_suite",
+      "depends_on": [
+        "STEP-REMEDIATE"
+      ],
+      "continue_on_error": true
+    },
+    {
+      "step_id": "STEP-REVIEW",
+      "handler": "independent_review",
+      "depends_on": [
+        "STEP-VERIFY"
+      ],
+      "continue_on_error": true
+    },
+    {
+      "step_id": "STEP-RESOLVE",
+      "handler": "resolve_or_escalate",
+      "depends_on": [
+        "STEP-REVIEW"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-NOTIFY",
+      "handler": "notify_reporter_outcome",
+      "depends_on": [
+        "STEP-RESOLVE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

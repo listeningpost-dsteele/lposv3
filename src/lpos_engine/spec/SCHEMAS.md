@@ -48,3 +48,5 @@ packaged set.
 
 Schemas are closed (`additionalProperties: false`) where the contract requires exact
 shape. A runtime must reject malformed envelopes before persistence or adapter use.
+
+- `bug-report.schema.json`: normalized user defect intake envelope for Support Engineering.

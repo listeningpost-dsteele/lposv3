@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bug-report.schema.json",
+  "title": "BugReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_id",
+    "source",
+    "reporter",
+    "submitted_at",
+    "summary",
+    "steps_to_reproduce",
+    "expected",
+    "actual"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "description": "stable id, e.g. BUG-0001"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "web-app",
+        "hermes-desktop",
+        "internal"
+      ]
+    },
+    "reporter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contact",
+        "verified"
+      ],
+      "properties": {
+        "contact": {
+          "type": "string",
+          "description": "consented reply address; used only for status email"
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "email",
+            "desktop",
+            "telegram",
+            "in-app"
+          ]
+        },
+        "verified": {
+          "type": "boolean",
+          "description": "identity verified per LPOS-018 before any outbound reply"
+        }
+      }
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "object",
+      "description": "os, version, model class, build id"
+    },
+    "steps_to_reproduce": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected": {
+      "type": "string"
+    },
+    "actual": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "log refs, screenshots; scanned for secrets before use"
+    },
+    "component_hint": {
+      "type": "string",
+      "description": "optional guild/specialist/component the reporter suspects"
+    }
+  }
+}

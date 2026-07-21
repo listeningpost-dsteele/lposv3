@@ -1,17 +1,17 @@
 {
-  "archive": "LPOS-v4.1.0-Complete.zip",
+  "archive": "LPOS-v4.2.0-Complete.zip",
   "audit_model": "append-only events",
-  "benchmarks": 53,
-  "description": "Complete LPOS v4.1 operating-system distribution with validation-gated skill evolution",
+  "benchmarks": 55,
+  "description": "Complete LPOS v4.2 operating-system distribution with Support Engineering bug remediation",
   "distribution_type": "integrated",
   "external_action_default": "record-only",
   "name": "LPOS",
   "python_requires": ">=3.11",
-  "schemas": 17,
-  "specialists": 32,
-  "standing_operations": 21,
+  "schemas": 18,
+  "specialists": 33,
+  "standing_operations": 22,
   "state_backend": "SQLite",
-  "tests": 130,
-  "version": "4.1.0",
-  "wheel": "lpos_os-4.1.0-py3-none-any.whl"
+  "tests": 132,
+  "version": "4.2.0",
+  "wheel": "lpos_os-4.2.0-py3-none-any.whl"
 }

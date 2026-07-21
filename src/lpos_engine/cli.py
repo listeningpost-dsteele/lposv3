@@ -285,9 +285,9 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         }
     if (
         not kernel
-        or len(registry.profiles) != 32
-        or len(workflows) != 21
-        or len(benchmark_catalog()) != 53
+        or len(registry.profiles) != 33
+        or len(workflows) != 22
+        or len(benchmark_catalog()) != 55
     ):
         result["status"] = "unhealthy"
         _print(result)
@@ -333,13 +333,13 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--schema-dir", type=Path, default=None)
     validate.set_defaults(func=cmd_validate_schemas)
 
-    specialists = sub.add_parser("list-specialists", help="show the 32 capability-routable specialists")
+    specialists = sub.add_parser("list-specialists", help="show the 33 capability-routable specialists")
     specialists.set_defaults(func=cmd_list_specialists)
 
-    workflows = sub.add_parser("list-workflows", help="show the 21 packaged Standing Operations")
+    workflows = sub.add_parser("list-workflows", help="show the 22 packaged Standing Operations")
     workflows.set_defaults(func=cmd_list_workflows)
 
-    benchmarks = sub.add_parser("list-benchmarks", help="show the 53 fixed benchmark fixtures")
+    benchmarks = sub.add_parser("list-benchmarks", help="show the 55 fixed benchmark fixtures")
     benchmarks.set_defaults(func=cmd_list_benchmarks)
 
     evals = sub.add_parser("evals", help="run deterministic core evaluations against all fixtures")

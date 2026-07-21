@@ -1,0 +1,64 @@
+{
+  "component_id": "SPECIALIST-033",
+  "component_type": "specialist",
+  "evaluation": {
+    "assertions": [
+      "lead_specialist",
+      "model_class",
+      "no_missing_capabilities",
+      "craft_standards_present"
+    ],
+    "method": "deterministic_router_assertions"
+  },
+  "evidence": [
+    "RouteDecision JSON",
+    "selected specialist and craft-standard IDs",
+    "missing-capability set"
+  ],
+  "expected": {
+    "craft_standards": [
+      "CS-003",
+      "CS-007",
+      "CS-008",
+      "CS-014"
+    ],
+    "lead_guild": "Support Engineering",
+    "lead_specialist": "SPECIALIST-033",
+    "missing_capabilities": [],
+    "model_class": "executive"
+  },
+  "failure_criteria": [
+    "A different lead specialist is selected.",
+    "Any capability is silently omitted.",
+    "The route names a provider instead of a model class.",
+    "The fixture is modified during evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-S033",
+  "inputs": {
+    "facts": {
+      "approved_scope": "Support Engineering",
+      "external_action_authorized": false,
+      "fixture_id": "BENCH-S033",
+      "known_constraint": "No production merge or deploy without approval."
+    },
+    "preferred_model_class": "executive",
+    "principal_instruction": "Fixture BENCH-S033: reproduce and triage a user-reported defect from a BugReport envelope without taking an external action.",
+    "required_capabilities": [
+      "bug_triage",
+      "bug_reproduction",
+      "root_cause_analysis",
+      "regression_fixture_creation",
+      "diagnostic_packaging",
+      "reporter_status_communication"
+    ]
+  },
+  "objective": "Verify that support defect intake routes to the Bug Triage Analyst with complete capability coverage.",
+  "scenario": "A verified reporter submits a reproducible defect and needs autonomous triage, fixture creation, diagnosis, and status communication.",
+  "success_criteria": [
+    "Lead specialist is SPECIALIST-033.",
+    "All required capabilities are covered.",
+    "Mapped craft standards are present.",
+    "No external action is executed."
+  ]
+}

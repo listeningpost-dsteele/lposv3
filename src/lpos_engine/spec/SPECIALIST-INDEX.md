@@ -34,6 +34,7 @@
 | 030 | Data Analyst | Data Intelligence | Metrics, trends, data quality | CS-012 |
 | 031 | Automation Architect | Automation | Reliable, observable workflows | CS-013 |
 | 032 | Web & Product Designer | Design | Audience-fit web/product design; baseline-preserving changes | CS-002, CS-001, CS-003 |
+| 033 | Bug Triage Analyst | Support Engineering | Reproduce, classify, localize, and package user-reported defects | CS-007, CS-008, CS-014 |
 
 ## Fallback map for unstaffed guilds
 
@@ -43,7 +44,7 @@ Innovation → 007 + 027 · Quality Assurance → 014 · Learning and Improvemen
 Integration → 012 · Observability → 030 · AI Strategy / Ecosystem → 007 + 001 ·
 Governance → 020 + 013 · Model Intelligence / Provider Intelligence → 030 + 007 ·
 Principal Success / Principal Intelligence → 003 + 029 · Execution / Planning → 005 + 001 ·
-Capability Engineering → 011 · Decision Intelligence → 002
+Capability Engineering → 011 · Decision Intelligence → 002 · Support Engineering → 033
 
 ## Staffing policy
 

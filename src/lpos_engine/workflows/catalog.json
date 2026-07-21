@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "os_version": "4.1.0",
+  "os_version": "4.2.0",
   "operations": [
     {
       "so_id": "SO-001",
@@ -179,6 +179,19 @@
       "default_schedule": "*/10 * * * *",
       "requires": [
         "verified_principal_channel"
+      ],
+      "enabled_by_default": false
+    },
+    {
+      "so_id": "SO-022",
+      "title": "Bug Remediation",
+      "workflow": "SO-022.json",
+      "default_schedule": "event-driven",
+      "requires": [
+        "verified_reporter_channel",
+        "sandbox",
+        "test_runner",
+        "review_service"
       ],
       "enabled_by_default": false
     }

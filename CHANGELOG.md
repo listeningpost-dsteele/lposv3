@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.0
+
+- Added the Support Engineering guild and Bug Triage Analyst specialist for autonomous user-reported defect remediation.
+- Added the Bug Remediation Standing Operation with verified reporter notification, sandbox reproduction, regression-first repair, independent review, and escalation floor.
+- Added the BugReport intake schema, deterministic workflow handlers, escalation policy, and resolve/escalate dry-run coverage.
+
 ## 4.1.0
 
 - Added LPOS Skill Evolution, a validation-gated, staging-only capability for improving skills from reviewed evidence.
