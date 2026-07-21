@@ -31,6 +31,16 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Delete and recreate the local .venv before installation.",
     )
+    parser.add_argument(
+        "--no-dashboard",
+        action="store_true",
+        help="Do not start the local Hermes dashboard after installation.",
+    )
+    parser.add_argument(
+        "--open-dashboard",
+        action="store_true",
+        help="Open the local Hermes dashboard in the browser after installation.",
+    )
     return parser.parse_args()
 
 
@@ -100,6 +110,7 @@ def main() -> int:
     database = state_root / "lpos.db"
     run([str(python), "-m", "lpos_engine", "init", "--db", str(database)], cwd=root)
     run([str(python), "-m", "lpos_engine", "doctor", "--db", str(database)], cwd=root)
+    run([str(python), "-m", "lpos_engine", "dashboard", "init"], cwd=root)
 
     verification_status = "skipped"
     if not args.skip_demo:
@@ -134,9 +145,18 @@ def main() -> int:
         encoding="utf-8",
     )
 
+    dashboard_status = "configured"
+    if not args.no_dashboard:
+        command = [str(python), "-m", "lpos_engine", "dashboard", "start"]
+        if args.open_dashboard:
+            command.append("--open")
+        run(command, cwd=root)
+        dashboard_status = "started"
+
     print(f"\nLPOS v{release['version']} installation completed successfully.")
     print(f"  Operating system: {root}")
     print(f"  Transactional state: {database}")
+    print(f"  Hermes dashboard: {dashboard_status} at http://127.0.0.1:4177")
     print(f"  Verification flow: {verification_status}")
     print(f"  External actions: {release['external_action_default']} by default")
     if sys.platform == "win32":

@@ -11,6 +11,7 @@ from pathlib import Path
 from . import __version__
 from .canonical import canonical_json
 from .context import SpecRepository
+from .dashboard import server as dashboard_server
 from .engine import LPOSRuntime, RuntimeConfig
 from .evals import catalog as benchmark_catalog
 from .evals import run_core_evaluations
@@ -296,6 +297,10 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_dashboard(args: argparse.Namespace) -> int:
+    return dashboard_server.main(args.dashboard_args)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="lpos", description="LPOS v4 operating system")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -349,6 +354,10 @@ def build_parser() -> argparse.ArgumentParser:
     doctor.add_argument("--db", type=Path)
     doctor.add_argument("--schema-dir", type=Path, default=None)
     doctor.set_defaults(func=cmd_doctor)
+
+    dashboard = sub.add_parser("dashboard", help="configure, start, and inspect the Hermes project dashboard")
+    dashboard.add_argument("dashboard_args", nargs=argparse.REMAINDER)
+    dashboard.set_defaults(func=cmd_dashboard)
     return parser
 
 

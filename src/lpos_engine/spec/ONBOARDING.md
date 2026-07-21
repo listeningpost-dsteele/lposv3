@@ -52,3 +52,17 @@ Record the office identity, verified channels, model-class assignments, enabled 
 deferred operations, adapter safety boundaries, verification result, and outstanding
 limitations. Do not describe a channel, adapter, review, or operation as active unless the
 corresponding test actually passed.
+
+## 6. Start the Hermes Project Dashboard
+
+The Hermes Project Dashboard is a base LPOS module. The installer configures it from the
+known local Hermes root and default localhost port, then starts it with the system. It is
+the first local pane for active work, research, snoozed items, archive, and disk locations.
+
+```bash
+lpos dashboard status
+lpos dashboard open
+```
+
+Dashboard config and metadata live under `~/.hermes/dashboard/`. Project files remain in
+their original folders and are never modified by bucket, snooze, or archive actions.
