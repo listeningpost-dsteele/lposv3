@@ -65,9 +65,12 @@ Create an implementation PR that changes source code, migrations, tests, release
 
 To be completed after remote publication verification:
 
-- GitHub branch:
-- GitHub pull request:
-- GitHub commit:
-- Google Drive folder:
-- Google Drive uploaded bundle:
-- Wiki page:
+- GitHub branch: `security/soc2-readiness-remediation`
+- GitHub pull request: https://github.com/listeningpost-dsteele/lposv3/pull/1
+- GitHub tracking issue: https://github.com/listeningpost-dsteele/lposv3/issues/2
+- GitHub commit: pending final branch head after publication-record update
+- Google Drive folder: https://drive.google.com/drive/folders/1Hq71QZ87_p-_oPWs2ik8oeE_9JtFUGZS
+- Google Drive uploaded complete bundle: https://drive.google.com/file/d/1vSlxC1h4uVILCCahdFTYWwRZrqs5mGei/view?usp=drivesdk
+- Google Drive uploaded patch: https://drive.google.com/file/d/1FhC0hUL11vbMkPqPHTD2epFtSkFq-JFz/view?usp=drivesdk
+- Google Drive uploaded closure record: https://drive.google.com/file/d/1nfalmolFaW4aZw9yy-E7_MMPx9Jc5SjN/view?usp=drivesdk
+- Wiki page: `docs/wiki/patch-notes/4-2-0-soc2-readiness-remediation.md` in PR 1
