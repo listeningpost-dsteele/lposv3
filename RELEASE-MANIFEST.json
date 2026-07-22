@@ -23,7 +23,7 @@
   "docs/TESTING.md": "03bb86af2962caf5f88a4bb5255724b74721c85e4392cccde60834f075a86812",
   "docs/THREAT-MODEL.md": "e2ecae88494cd19e5ef1eedb8a9beadb152a5d32b6ae09d9f9ba6851cba80c7b",
   "docs/security/audits/2026-07-22/ARTIFACT_SHA256SUMS.txt": "8bf2c654df7bebcbee1267e88f263c8968790826f7b90e8800e72a936fe3d848",
-  "docs/security/audits/2026-07-22/LPOS-Security-Remediation-Closure-4.2.0-audit-bundle.md": "56c1d137a698bb10ee7be4d20ebdbd4adea13d663c62cf73bbe77c4bfc00af8d",
+  "docs/security/audits/2026-07-22/LPOS-Security-Remediation-Closure-4.2.0-audit-bundle.md": "b36eca9f629510b379ca7a583bb07c47714fe866e39fff276729320c848e8d02",
   "docs/security/audits/2026-07-22/LPOS_All_Audit_Files_With_Patch_2026-07-22.zip": "0de98c990836a1a4b8dbe720862c1134c3182cd7c05a9f69339031b457471706",
   "docs/security/audits/2026-07-22/LPOS_Audit_Package_2026-07-22.zip": "1033e077bc82a6b509986faff53d1ca23d117b325a7222f569edc176872b14d5",
   "docs/security/audits/2026-07-22/LPOS_Audit_Package_README_2026-07-22.md": "c0de3f10ec567d44aea4578d6996438638d2187c8cccde5faa02e5c0953ca49f",
@@ -283,7 +283,7 @@
   "tools/reseal.py": "9f91eb53cf28f9a5b9139ac80b1c95670cb05b17d7f2d91d47d018ac6ecac27c",
   "verify_release.py": "0ededcc5884b80f9b8a09cf1f7766db45d3e4d26375c9162e1ca9043d324f78e"
  },
- "generated_at": "2026-07-22T15:28:01Z",
+ "generated_at": "2026-07-22T15:30:57Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.2.0"
