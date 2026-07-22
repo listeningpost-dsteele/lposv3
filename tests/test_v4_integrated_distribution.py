@@ -72,18 +72,18 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         available = {item.name for item in packaged.iterdir()}
         self.assertTrue(expected.issubset(available))
 
-    def test_all_33_specialists_are_canonical_and_routable(self) -> None:
+    def test_all_32_specialists_are_canonical_and_routable(self) -> None:
         registry = CapabilityRegistry.default()
-        expected_ids = tuple(f"SPECIALIST-{index:03d}" for index in range(1, 34))
+        expected_ids = tuple(f"SPECIALIST-{index:03d}" for index in range(1, 33))
         actual_ids = tuple(profile.specialist_id for profile in registry.profiles)
         self.assertEqual(actual_ids, expected_ids)
         self.assertTrue(all(profile.capabilities for profile in registry.profiles))
         self.assertTrue(all(profile.craft_standards for profile in registry.profiles))
 
-    def test_all_22_standing_operations_are_executable_definitions(self) -> None:
+    def test_all_25_standing_operations_are_executable_definitions(self) -> None:
         entries = catalog()
         workflows = load_all()
-        expected_ids = tuple(f"SO-{index:03d}" for index in range(1, 23))
+        expected_ids = tuple(f"SO-{index:03d}" for index in range(1, 26))
         self.assertEqual(tuple(item["so_id"] for item in entries), expected_ids)
         self.assertEqual(tuple(item.so_id for item in workflows), expected_ids)
         for workflow in workflows:
@@ -100,18 +100,18 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         entries = benchmark_catalog()
         fixtures = load_all_benchmarks()
         expected_ids = (
-            *(f"BENCH-S{index:03d}" for index in range(1, 34)),
-            *(f"BENCH-O{index:03d}" for index in range(1, 23)),
+            *(f"BENCH-S{index:03d}" for index in range(1, 33)),
+            *(f"BENCH-O{index:03d}" for index in range(1, 22)),
         )
         self.assertEqual(tuple(item["id"] for item in entries), expected_ids)
         self.assertEqual(tuple(item["id"] for item in fixtures), expected_ids)
         self.assertEqual(
             {item["component_id"] for item in fixtures if item["component_type"] == "specialist"},
-            {f"SPECIALIST-{index:03d}" for index in range(1, 34)},
+            {f"SPECIALIST-{index:03d}" for index in range(1, 33)},
         )
         self.assertEqual(
             {item["component_id"] for item in fixtures if item["component_type"] == "standing_operation"},
-            {f"SO-{index:03d}" for index in range(1, 23)},
+            {f"SO-{index:03d}" for index in range(1, 22)},
         )
         for fixture in fixtures:
             with self.subTest(benchmark=fixture["id"]):
@@ -122,8 +122,8 @@ class IntegratedV4DistributionTests(unittest.TestCase):
 
     def test_all_deterministic_core_benchmarks_pass(self) -> None:
         result = run_core_evaluations()
-        self.assertEqual(result["total"], 55)
-        self.assertEqual(result["passed"], 55)
+        self.assertEqual(result["total"], 53)
+        self.assertEqual(result["passed"], 53)
         self.assertEqual(result["failed"], 0)
 
     def test_all_benchmark_fixtures_match_the_executable_schema(self) -> None:
@@ -193,9 +193,9 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertEqual(report["name"], "LPOS")
         self.assertEqual(report["version"], "4.2.0")
         self.assertEqual(report["status"], "healthy")
-        self.assertEqual(report["specialists"], 33)
-        self.assertEqual(report["standing_operations"], 22)
-        self.assertEqual(report["benchmarks"], 55)
+        self.assertEqual(report["specialists"], 32)
+        self.assertEqual(report["standing_operations"], 25)
+        self.assertEqual(report["benchmarks"], 53)
         self.assertEqual(report["database"]["integrity"], "ok")
 
     def test_package_has_no_runtime_dependency_on_a_separate_spec_tree(self) -> None:

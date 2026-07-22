@@ -11,7 +11,6 @@ from pathlib import Path
 from . import __version__
 from .canonical import canonical_json
 from .context import SpecRepository
-from .dashboard import server as dashboard_server
 from .engine import LPOSRuntime, RuntimeConfig
 from .evals import catalog as benchmark_catalog
 from .evals import run_core_evaluations
@@ -286,19 +285,15 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         }
     if (
         not kernel
-        or len(registry.profiles) != 33
-        or len(workflows) != 22
-        or len(benchmark_catalog()) != 55
+        or len(registry.profiles) != 32
+        or len(workflows) != 25
+        or len(benchmark_catalog()) != 53
     ):
         result["status"] = "unhealthy"
         _print(result)
         return 1
     _print(result)
     return 0
-
-
-def cmd_dashboard(args: argparse.Namespace) -> int:
-    return dashboard_server.main(args.dashboard_args)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -338,13 +333,13 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--schema-dir", type=Path, default=None)
     validate.set_defaults(func=cmd_validate_schemas)
 
-    specialists = sub.add_parser("list-specialists", help="show the 33 capability-routable specialists")
+    specialists = sub.add_parser("list-specialists", help="show the 32 capability-routable specialists")
     specialists.set_defaults(func=cmd_list_specialists)
 
-    workflows = sub.add_parser("list-workflows", help="show the 22 packaged Standing Operations")
+    workflows = sub.add_parser("list-workflows", help="show the 25 packaged Standing Operations")
     workflows.set_defaults(func=cmd_list_workflows)
 
-    benchmarks = sub.add_parser("list-benchmarks", help="show the 55 fixed benchmark fixtures")
+    benchmarks = sub.add_parser("list-benchmarks", help="show the 53 fixed benchmark fixtures")
     benchmarks.set_defaults(func=cmd_list_benchmarks)
 
     evals = sub.add_parser("evals", help="run deterministic core evaluations against all fixtures")
@@ -355,10 +350,61 @@ def build_parser() -> argparse.ArgumentParser:
     doctor.add_argument("--schema-dir", type=Path, default=None)
     doctor.set_defaults(func=cmd_doctor)
 
-    dashboard = sub.add_parser("dashboard", help="configure, start, and inspect the Hermes project dashboard")
-    dashboard.add_argument("dashboard_args", nargs=argparse.REMAINDER)
+    dashboard = sub.add_parser("dashboard", help="serve the Hermes project dashboard on a local port")
+    dashboard.add_argument("--port", type=int, default=7373)
+    dashboard.add_argument("--host", default="127.0.0.1")
+    dashboard.add_argument("--root", type=Path, default=None, help="Hermes root (default ~/.hermes or LPOS_HERMES_ROOT)")
+    dashboard.add_argument("--verbose", action="store_true")
     dashboard.set_defaults(func=cmd_dashboard)
+
+    monitor = sub.add_parser("monitor", help="audit every connector the system runs on and alert on outages")
+    monitor.add_argument("action", nargs="?", default="audit", choices=["audit", "discover", "status"])
+    monitor.add_argument("--root", type=Path, default=None, help="Hermes root (default ~/.hermes or LPOS_HERMES_ROOT)")
+    monitor.add_argument("--no-alert", action="store_true")
+    monitor.add_argument("--timeout", type=float, default=None)
+    monitor.set_defaults(func=cmd_monitor)
+
+    compliance = sub.add_parser("compliance", help="run the SOC 2 compliance guild: audit, report, status")
+    compliance.add_argument("action", nargs="?", default="audit", choices=["audit", "report", "status"])
+    compliance.add_argument("--root", type=Path, default=None, help="Hermes root (default ~/.hermes or LPOS_HERMES_ROOT)")
+    compliance.add_argument("--repo", type=Path, default=None, help="release checkout (default . or LPOS_REPO_ROOT)")
+    compliance.set_defaults(func=cmd_compliance)
     return parser
+
+
+def cmd_dashboard(args: argparse.Namespace) -> int:
+    from .dashboard.server import main as dashboard_main
+
+    argv = [f"--port={args.port}", f"--host={args.host}"]
+    if args.root is not None:
+        argv.append(f"--root={args.root}")
+    if args.verbose:
+        argv.append("--verbose")
+    return int(dashboard_main(argv))
+
+
+def cmd_monitor(args: argparse.Namespace) -> int:
+    from .monitor.__main__ import main as monitor_main
+
+    argv = [args.action]
+    if args.root is not None:
+        argv.append(f"--root={args.root}")
+    if args.no_alert:
+        argv.append("--no-alert")
+    if args.timeout is not None:
+        argv.append(f"--timeout={args.timeout}")
+    return int(monitor_main(argv))
+
+
+def cmd_compliance(args: argparse.Namespace) -> int:
+    from .compliance.__main__ import main as compliance_main
+
+    argv = [args.action]
+    if args.root is not None:
+        argv.append(f"--root={args.root}")
+    if args.repo is not None:
+        argv.append(f"--repo={args.repo}")
+    return int(compliance_main(argv))
 
 
 def main(argv: list[str] | None = None) -> int:

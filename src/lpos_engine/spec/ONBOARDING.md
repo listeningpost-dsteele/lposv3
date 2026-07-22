@@ -27,8 +27,13 @@ SO-021 remains disabled until a real round trip succeeds. Silence never equals c
 
 ## 4. Activate Standing Operations deliberately
 
-The package contains workflow definitions for SO-001 through SO-021. Enable only those
-whose required data and handlers exist. Record each activation or deferral and its revisit
+The package contains workflow definitions for SO-001 through SO-025. Enable only those
+whose required data and handlers exist. SO-023 (Connector Health, hourly) and SO-024
+(Documentation Drift Audit, weekly) ship with packaged handlers
+(`lpos_engine.publication.standard_handlers()`) and are enabled by default; SO-025 (SOC 2 Compliance Audit, daily) also ships
+with packaged handlers and is enabled by default; SO-022
+(Release Publication) is event-driven and stays disabled until a release checkout is
+configured. Record each activation or deferral and its revisit
 condition. Default schedules are visible with:
 
 ```bash
@@ -53,16 +58,19 @@ deferred operations, adapter safety boundaries, verification result, and outstan
 limitations. Do not describe a channel, adapter, review, or operation as active unless the
 corresponding test actually passed.
 
-## 6. Start the Hermes Project Dashboard
+## 6. Start the operating surfaces
 
-The Hermes Project Dashboard is a base LPOS module. The installer configures it from the
-known local Hermes root and default localhost port, then starts it with the system. It is
-the first local pane for active work, research, snoozed items, archive, and disk locations.
+As the final onboarding stage, run the first connector audit and start the Hermes Project
+Dashboard, then surface the dashboard URL to the Principal:
 
 ```bash
-lpos dashboard status
-lpos dashboard open
+lpos monitor audit
+lpos dashboard --port 7373
 ```
 
-Dashboard config and metadata live under `~/.hermes/dashboard/`. Project files remain in
-their original folders and are never modified by bucket, snooze, or archive actions.
+The first audit doubles as a verification pass that every connector configured above
+actually works, with results written to `~/.hermes/monitor/status.json`. The dashboard
+(localhost-only) populates from the Hermes root with everything defaulting to Active and
+shows the health strip from the audit; on a fresh system it explains the buckets and where
+projects will appear as Hermes agents start work. On every subsequent boot both start with
+the system; the Principal never launches them manually.

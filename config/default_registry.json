@@ -592,28 +592,6 @@
       ],
       "model_class": "executive",
       "priority": 18
-    },
-    {
-      "specialist_id": "SPECIALIST-033",
-      "name": "Bug Triage Analyst",
-      "guild": "Support Engineering",
-      "capabilities": [
-        "bug_triage",
-        "bug_reproduction",
-        "root_cause_analysis",
-        "regression_fixture_creation",
-        "support_engineering",
-        "diagnostic_packaging",
-        "reporter_status_communication"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-007",
-        "CS-008",
-        "CS-014"
-      ],
-      "model_class": "executive",
-      "priority": 9
     }
   ]
 }

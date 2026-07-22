@@ -1,77 +1,26 @@
-# LPOS v4.1.0 Release Test Report
+# LPOS v4.2.0 Release Test Report
 
-## Release identity
+Date: 2026-07-22
+Python: 3.11
 
-- Product: LPOS
-- Version: 4.1.0
-- Distribution: integrated, complete source-and-offline-install bundle
-- Python requirement: 3.11 or later
-- Default consequential-action mode: record-only
+## Results
 
-## Integrated contents verified
+- Full suite: `PYTHONPATH=src python3 -m pytest tests/` — **196 passed, 338 subtests passed** (0 failures)
+  - 128 baseline engine/distribution tests (updated for the 24-operation catalog and v4.1.0)
+  - 15 dashboard tests (`tests/test_dashboard.py`): scanner, state, snooze/wake, archive/restore, corrupt-state degradation, search, open-folder path containment, live HTTP round trip
+  - 21 monitor tests (`tests/test_monitor.py`, fully offline): discovery/merge, transition alerting exactly-once, retry-before-offline, timeout handling, undelivered-alert fallback, status.json contract
+  - 8 wiki tests (`tests/test_wiki.py`): clean build, page/nav/search completeness, generated reference pages, combined guide, no broken internal links, version badge
+  - 2 evolution tests (`tests/test_evolution.py`): CS-001 domain — helpful edit accepted and harmful edit rejected by the held-out gate; LPOS loader reads all 53 benchmark fixtures
+  - 14 compliance tests (`tests/test_compliance.py`, fully offline): full audit + status contract, staged remediation with repo-untouched proof, staging refusals of live/in-repo paths, Type 2 effectiveness boundary math, report HTML sections and escaping, SO-025 end-to-end through the runner
+  - 8 publication tests (`tests/test_publication.py`): SO-022 release + docs gates, record-only publication plan, SO-024 enumeration/diff/report, standard handler registry
+- Deterministic core evaluations: 53/53 benchmarks pass (`lpos evals`)
+- Release integrity: `python3 verify_release.py` passes over the resealed tree
+- End-to-end: SO-023 and SO-024 executed through `StandingOperationRunner` with packaged
+  handlers — both OK, `monitor/status.json` and `docs/drift-report.json` written
 
-- Packaged LPOS v4 operating specification and always-loaded Chip kernel
-- Deterministic control plane and state machines
-- Transactional SQLite state and append-only audit events
-- 32 canonical capability-routable specialists
-- 21 machine-readable Standing Operation workflows
-- 53 fixed benchmark fixtures: one per specialist and one per Standing Operation
-- 17 synchronized executable JSON Schemas
-- Model-host and action-adapter boundaries
-- Validation-gated, staging-only Skill Evolution capability and packaged skill
-- Offline wheel and cross-platform installer
+## Notes
 
-## Source acceptance
-
-Command:
-
-```bash
-PYTHONPATH=src python -m pytest -q --disable-warnings -o addopts=''
-```
-
-Result:
-
-```text
-130 passed, 310 subtests passed
-```
-
-The suite covers validation, routing, materiality, task and action transitions, exact-action
-approval, verified identities, expiry and replay, context isolation, artifact/contract/spec
-binding, fallback, concurrency, append-only events, migrations, atomic completion, operation
-leases and idempotency, file sandboxing, subprocess boundaries, packaging synchronization,
-Skill Evolution gating and LPOS fixture loading, all 53 benchmark fixtures, and the
-integrated CLI.
-
-## Schema and benchmark acceptance
-
-```text
-Python compilation: PASS
-JSON Schemas: 17 valid
-Deterministic core evaluations: 53/53 PASS
-```
-
-All benchmark cases contain fixed inputs, expected behavior, success criteria, failure
-criteria, an evaluation method, and required evidence.
-
-## Clean-wheel acceptance
-
-The bundled `lpos_os-4.1.0-py3-none-any.whl` was installed with `--no-index` in a newly
-created virtual environment. The following checks passed:
-
-- `pip check`
-- `lpos version`
-- `lpos validate-schemas`
-- `lpos doctor --db <fresh database>`
-- `lpos evals`
-- `lpos demo --workspace <fresh workspace>`
-
-The clean install reported LPOS 4.1.0, database integrity `ok`, 32 specialists, 21 Standing
-Operations, 53 benchmarks, and a completed independently reviewed material task.
-
-## Safety boundary
-
-The verification flow binds an approval to an exact action hash and consumes it through the
-action state machine, but the bundled consequential-action adapter is intentionally
-record-only. It does not send email, publish, deploy, purchase, or delete. Live adapters must
-be authenticated, least-privileged, idempotent, and tested for their deployment environment
-before registration.
+- The benchmark corpus remains the fixed 53 fixtures; SO-022/023/024 are catalog and
+  workflow additions with packaged handlers, evaluated per LPOS-016 on first production run.
+- The 4.0.1 external-derivation patch was not present in this checkout; `NOTICE-SKILLOPT.md`
+  ships the attribution record at the repo root and in the distribution.

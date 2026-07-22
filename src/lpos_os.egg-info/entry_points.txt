@@ -1,0 +1,2 @@
+[console_scripts]
+lpos = lpos_engine.cli:main

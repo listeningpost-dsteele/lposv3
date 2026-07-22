@@ -33,8 +33,6 @@ def relative_files() -> set[str]:
             continue
         if "__pycache__" in relative.parts or path.suffix == ".pyc":
             continue
-        if any(part.endswith(".egg-info") for part in relative.parts):
-            continue
         if relative.name in IGNORED_NAMES:
             continue
         result.add(relative.as_posix())
@@ -147,15 +145,15 @@ def main() -> int:
 
         specialists = registry_package.get("specialists", [])
         specialist_ids = [item.get("specialist_id") for item in specialists if isinstance(item, dict)]
-        expected_specialists = [f"SPECIALIST-{number:03d}" for number in range(1, 34)]
+        expected_specialists = [f"SPECIALIST-{number:03d}" for number in range(1, 33)]
         if specialist_ids != expected_specialists:
-            fail("capability registry does not contain canonical SPECIALIST-001 through SPECIALIST-033", failures)
+            fail("capability registry does not contain canonical SPECIALIST-001 through SPECIALIST-032", failures)
 
         operations = workflow_catalog.get("operations", [])
         operation_ids = [item.get("so_id") for item in operations if isinstance(item, dict)]
-        expected_operations = [f"SO-{number:03d}" for number in range(1, 23)]
+        expected_operations = [f"SO-{number:03d}" for number in range(1, 26)]
         if operation_ids != expected_operations:
-            fail("workflow catalog does not contain canonical SO-001 through SO-022", failures)
+            fail("workflow catalog does not contain canonical SO-001 through SO-025", failures)
         for item in operations:
             if not isinstance(item, dict):
                 fail("workflow catalog contains a non-object entry", failures)
@@ -176,8 +174,8 @@ def main() -> int:
     package_schema_dir = ROOT / "src" / "lpos_engine" / "schemas"
     root_schema_names = sorted(path.name for path in root_schema_dir.glob("*.schema.json"))
     package_schema_names = sorted(path.name for path in package_schema_dir.glob("*.schema.json"))
-    if root_schema_names != package_schema_names or len(root_schema_names) != 18:
-        fail("root and packaged schema sets are not the same 18 schemas", failures)
+    if root_schema_names != package_schema_names or len(root_schema_names) != 17:
+        fail("root and packaged schema sets are not the same 17 schemas", failures)
     else:
         for name in root_schema_names:
             root_path = root_schema_dir / name
@@ -197,12 +195,12 @@ def main() -> int:
         fail(f"benchmark catalog is missing or invalid: {exc}", failures)
         benchmark_entries = []
     expected_benchmark_ids = [
-        *(f"BENCH-S{number:03d}" for number in range(1, 34)),
-        *(f"BENCH-O{number:03d}" for number in range(1, 23)),
+        *(f"BENCH-S{number:03d}" for number in range(1, 33)),
+        *(f"BENCH-O{number:03d}" for number in range(1, 22)),
     ]
     actual_benchmark_ids = [item.get("id") for item in benchmark_entries if isinstance(item, dict)]
     if actual_benchmark_ids != expected_benchmark_ids:
-        fail("benchmark catalog does not contain 33 specialist and 22 Standing Operation fixtures", failures)
+        fail("benchmark catalog does not contain 32 specialist and 21 Standing Operation fixtures", failures)
     for item in benchmark_entries:
         if not isinstance(item, dict):
             fail("benchmark catalog contains a non-object entry", failures)
@@ -257,7 +255,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 33 specialists, 22 Standing Operations, 55 benchmarks, 18 schemas."
+        f"{len(expected_files)} immutable files, 32 specialists, 25 Standing Operations, 53 benchmarks, 17 schemas."
     )
     return 0
 

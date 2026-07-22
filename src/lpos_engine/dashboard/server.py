@@ -1,312 +1,334 @@
-"""Local HTTP service for the LPOS Hermes dashboard."""
+"""Localhost-only stdlib HTTP server and JSON API for the Hermes dashboard.
+
+The API surface:
+
+- ``GET  /``                              the single-page UI
+- ``GET  /api/projects``                  all projects with computed buckets
+- ``POST /api/projects/<id>/snooze``      body ``{"until": "<ISO 8601>"}``
+- ``POST /api/projects/<id>/archive``
+- ``POST /api/projects/<id>/restore``     body ``{"bucket": "active"|"research"}``
+- ``POST /api/projects/<id>/move``        body ``{"bucket": ...}``
+- ``POST /api/open``                      body ``{"path": ...}`` (inside hermes root only)
+- ``GET  /api/search?q=``                 project-name and file-name search
+- ``GET  /api/health``                    contents of ``<root>/monitor/status.json`` or null
+
+Application logic lives on :class:`DashboardApp` so tests can drive it without
+sockets; the request handler is a thin shim.
+"""
 
 from __future__ import annotations
 
 import argparse
 import json
-import os
 import platform
 import subprocess
 import sys
-import time
-import webbrowser
-from http import HTTPStatus
+from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from importlib.resources import files as resource_files
 from pathlib import Path
-from typing import Any
-from urllib.parse import unquote
+from typing import Any, Callable
+from urllib.parse import parse_qs, unquote, urlsplit
 
-from . import DEFAULT_PORT
-from .scanner import hermes_root, scan
+from . import scanner, state as state_mod
+from .state import DashboardState, WORKING_BUCKETS, iso, parse_iso, utcnow
+from .ui import PAGE_HTML
 
-BUCKETS = {"active", "research", "snoozed", "archive"}
-
-
-def dashboard_root() -> Path:
-    return Path(os.environ.get("LPOS_DASHBOARD_STATE_ROOT", Path.home() / ".hermes" / "dashboard")).expanduser().resolve()
+DEFAULT_PORT = 7373
+DEFAULT_HOST = "127.0.0.1"
 
 
-def config_path() -> Path:
-    return dashboard_root() / "config.json"
+class DashboardError(Exception):
+    """An API-level error carrying an HTTP status code."""
+
+    def __init__(self, status: int, message: str) -> None:
+        super().__init__(message)
+        self.status = status
+        self.message = message
 
 
-def state_path() -> Path:
-    return dashboard_root() / "state.json"
+def open_folder_command(path: str) -> list[str]:
+    """The platform-detected command that opens ``path`` in the file manager."""
+    system = platform.system()
+    if system == "Darwin":
+        return ["open", path]
+    if system == "Windows":
+        return ["explorer", path]
+    return ["xdg-open", path]
 
 
-def pid_path() -> Path:
-    return dashboard_root() / "dashboard.pid"
+def _default_opener(command: list[str]) -> None:
+    subprocess.Popen(
+        command,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        stdin=subprocess.DEVNULL,
+    )
 
 
-def default_config(hermes_root_value: str | None = None, port: int = DEFAULT_PORT, user: str | None = None) -> dict[str, Any]:
-    return {
-        "schema_version": 1,
-        "hermes_root": str(hermes_root(hermes_root_value)),
-        "port": int(port),
-        "host": "127.0.0.1",
-        "user": user or os.environ.get("USER") or os.environ.get("USERNAME") or "local-user",
-        "state_file": str(state_path()),
-        "created_by": "LPOS dashboard onboarding",
-    }
+class DashboardApp:
+    """All dashboard behavior, independent of the HTTP transport."""
 
+    def __init__(
+        self,
+        root: Path | None = None,
+        opener: Callable[[list[str]], None] | None = None,
+    ) -> None:
+        self.root = scanner.hermes_root(root)
+        self.state_file = state_mod.state_path(self.root)
+        self.opener = opener or _default_opener
 
-def load_config() -> dict[str, Any]:
-    try:
-        value = json.loads(config_path().read_text(encoding="utf-8"))
-        if isinstance(value, dict):
-            base = default_config()
-            base.update(value)
-            return base
-    except (OSError, ValueError):
-        pass
-    return default_config()
+    # -- helpers ----------------------------------------------------------
 
+    def _load_state(self) -> DashboardState:
+        return DashboardState.load(self.state_file)
 
-def write_config(config: dict[str, Any]) -> None:
-    dashboard_root().mkdir(parents=True, exist_ok=True)
-    config_path().write_text(json.dumps(config, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    def _annotated_projects(self, now: datetime | None = None) -> list[dict[str, Any]]:
+        state = self._load_state()
+        moment = now or utcnow()
+        projects = scanner.scan_projects(self.root)
+        for project in projects:
+            effective = state.effective(project["id"], project.get("type", "active"), moment)
+            project.update(effective)
+        return projects
 
+    def _require_known(self, project_id: str) -> None:
+        known = {project["id"] for project in scanner.scan_projects(self.root)}
+        if project_id not in known:
+            raise DashboardError(404, f"unknown project: {project_id}")
 
-def read_meta() -> dict[str, Any]:
-    try:
-        value = json.loads(state_path().read_text(encoding="utf-8"))
-        return value if isinstance(value, dict) else {}
-    except (OSError, ValueError):
-        return {}
+    def _default_bucket(self, project_id: str) -> str:
+        for project in scanner.scan_projects(self.root):
+            if project["id"] == project_id:
+                return project.get("type", "active")
+        return "active"
 
+    def _mutate(self, project_id: str, fn: Callable[[DashboardState], None]) -> dict[str, Any]:
+        self._require_known(project_id)
+        state = self._load_state()
+        fn(state)
+        state.save(self.state_file)
+        effective = state.effective(project_id, self._default_bucket(project_id))
+        return {"ok": True, "id": project_id, **effective}
 
-def write_meta(value: dict[str, Any]) -> None:
-    dashboard_root().mkdir(parents=True, exist_ok=True)
-    state_path().write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    # -- API operations ---------------------------------------------------
 
+    def projects(self, now: datetime | None = None) -> dict[str, Any]:
+        return {
+            "root": str(self.root),
+            "generated_at": iso(now or utcnow()),
+            "projects": self._annotated_projects(now),
+        }
 
-def merged_state(config: dict[str, Any]) -> dict[str, Any]:
-    meta = read_meta()
-    projects_meta = meta.setdefault("projects", {})
-    now = int(time.time() * 1000)
-    dirty = False
-    projects = []
-    for project in scan(config.get("hermes_root")):
-        item_meta = projects_meta.get(project["id"], {}) if isinstance(projects_meta.get(project["id"]), dict) else {}
-        if item_meta.get("bucket") == "snoozed" and item_meta.get("snoozeUntil") and int(item_meta["snoozeUntil"]) <= now:
-            item_meta["bucket"] = item_meta.get("prevBucket") or "active"
-            item_meta["snoozeUntil"] = None
-            item_meta["wokeAt"] = now
-            projects_meta[project["id"]] = item_meta
-            dirty = True
-        bucket = item_meta.get("bucket") or project.get("suggestedBucket") or "active"
-        if bucket not in BUCKETS:
-            bucket = "active"
-        project.update({
-            "bucket": bucket,
-            "snoozeUntil": item_meta.get("snoozeUntil"),
-            "prevBucket": item_meta.get("prevBucket"),
-            "archivedAt": item_meta.get("archivedAt"),
-            "wokeAt": item_meta.get("wokeAt"),
-        })
-        projects.append(project)
-    if dirty:
-        write_meta(meta)
-    return {
-        "root": config["hermes_root"],
-        "home": str(Path.home()),
-        "platform": sys.platform,
-        "config": {"port": config["port"], "stateFile": str(state_path()), "user": config.get("user")},
-        "projects": projects,
-    }
+    def snooze(self, project_id: str, until_raw: Any) -> dict[str, Any]:
+        until = parse_iso(until_raw)
+        if until is None:
+            raise DashboardError(400, "snooze requires an ISO 8601 'until' timestamp")
+        default = self._default_bucket(project_id)
+        return self._mutate(project_id, lambda s: s.snooze(project_id, until, default))
 
+    def archive(self, project_id: str) -> dict[str, Any]:
+        return self._mutate(project_id, lambda s: s.archive(project_id))
 
-def open_path(target_value: str, root_value: str) -> bool:
-    root = Path(root_value).expanduser().resolve()
-    target = Path(target_value).expanduser().resolve()
-    try:
-        target.relative_to(root)
-    except ValueError:
-        return False
-    if not target.exists():
-        return False
-    opener = "open" if sys.platform == "darwin" else "explorer" if sys.platform == "win32" else "xdg-open"
-    subprocess.Popen([opener, str(target)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    return True
+    def restore(self, project_id: str, bucket: Any) -> dict[str, Any]:
+        target = bucket if isinstance(bucket, str) and bucket else "active"
+        if target not in WORKING_BUCKETS:
+            raise DashboardError(400, f"restore bucket must be one of {list(WORKING_BUCKETS)}")
+        return self._mutate(project_id, lambda s: s.restore(project_id, target))
+
+    def move(self, project_id: str, bucket: Any) -> dict[str, Any]:
+        if not isinstance(bucket, str) or bucket not in ("active", "research", "archived"):
+            raise DashboardError(400, "move bucket must be active, research, or archived")
+        return self._mutate(project_id, lambda s: s.move(project_id, bucket))
+
+    def open_path(self, raw_path: Any) -> dict[str, Any]:
+        if not isinstance(raw_path, str) or not raw_path.strip():
+            raise DashboardError(400, "open requires a 'path'")
+        candidate = Path(raw_path.strip()).expanduser()
+        try:
+            resolved = candidate.resolve()
+            root_resolved = self.root.resolve()
+        except OSError as exc:
+            raise DashboardError(400, f"unresolvable path: {exc}") from exc
+        if not resolved.is_relative_to(root_resolved):
+            raise DashboardError(403, "refusing to open a path outside the hermes root")
+        if not resolved.exists():
+            raise DashboardError(404, "path does not exist")
+        target = resolved if resolved.is_dir() else resolved.parent
+        command = open_folder_command(str(target))
+        try:
+            self.opener(command)
+        except OSError as exc:
+            raise DashboardError(500, f"could not launch file manager: {exc}") from exc
+        return {"ok": True, "opened": str(target), "command": command}
+
+    def search(self, query: str) -> dict[str, Any]:
+        result = scanner.search(self.root, query, projects=self._annotated_projects())
+        return result
+
+    def health(self) -> dict[str, Any]:
+        status = self.root / "monitor" / "status.json"
+        data = None
+        if status.is_file():
+            try:
+                loaded = json.loads(status.read_text(encoding="utf-8"))
+            except (OSError, ValueError, UnicodeDecodeError):
+                loaded = None
+            if isinstance(loaded, dict):
+                data = loaded
+        return {"health": data}
 
 
 class DashboardHandler(BaseHTTPRequestHandler):
+    """Thin HTTP shim over :class:`DashboardApp`."""
+
     server_version = "LPOSDashboard/1.0"
+    protocol_version = "HTTP/1.1"
 
     @property
-    def config(self) -> dict[str, Any]:
-        return self.server.config  # type: ignore[attr-defined]
+    def app(self) -> DashboardApp:
+        return self.server.app  # type: ignore[attr-defined]
 
-    def _send(self, status: int, body: bytes | str, content_type: str = "application/json") -> None:
-        payload = body.encode("utf-8") if isinstance(body, str) else body
+    def log_message(self, format: str, *args: Any) -> None:  # noqa: A002
+        if getattr(self.server, "verbose", False):
+            super().log_message(format, *args)
+
+    def _send_json(self, status: int, payload: Any) -> None:
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
-        self.send_header("Content-Type", content_type)
-        self.send_header("Content-Length", str(len(payload)))
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
-        self.wfile.write(payload)
+        self.wfile.write(body)
 
-    def _body_json(self) -> dict[str, Any]:
-        length = int(self.headers.get("Content-Length") or 0)
-        raw = self.rfile.read(length) if length else b"{}"
-        value = json.loads(raw.decode("utf-8") or "{}")
-        if not isinstance(value, dict):
-            raise ValueError("request body must be a JSON object")
-        return value
+    def _send_html(self, html: str) -> None:
+        body = html.encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
 
-    def do_GET(self) -> None:
-        if self.path == "/api/state":
-            self._send(HTTPStatus.OK, json.dumps(merged_state(self.config)))
-            return
-        rel = unquote(self.path.split("?", 1)[0])
-        if rel == "/":
-            rel = "/index.html"
-        if ".." in Path(rel).parts:
-            self._send(HTTPStatus.BAD_REQUEST, '{"error":"bad path"}')
-            return
-        public = resource_files("lpos_engine.dashboard.public")
+    def _read_body(self) -> dict[str, Any]:
         try:
-            target = public.joinpath(rel.lstrip("/"))
-            data = target.read_bytes()
-        except (FileNotFoundError, IsADirectoryError, AttributeError):
-            self._send(HTTPStatus.NOT_FOUND, '{"error":"not found"}')
-            return
-        content_type = "text/html; charset=utf-8" if rel.endswith(".html") else "text/plain; charset=utf-8"
-        self._send(HTTPStatus.OK, data, content_type)
-
-    def do_POST(self) -> None:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = 0
+        if length <= 0:
+            return {}
+        raw = self.rfile.read(length)
         try:
-            body = self._body_json()
-            if self.path == "/api/meta":
-                project_id = str(body.get("id") or "")
-                patch = body.get("patch") if isinstance(body.get("patch"), dict) else {}
-                allowed = {"bucket", "snoozeUntil", "prevBucket", "archivedAt", "wokeAt"}
-                clean = {key: value for key, value in patch.items() if key in allowed}
-                if clean.get("bucket") and clean["bucket"] not in BUCKETS:
-                    raise ValueError("invalid bucket")
-                meta = read_meta()
-                projects = meta.setdefault("projects", {})
-                current = projects.get(project_id, {}) if isinstance(projects.get(project_id), dict) else {}
-                current.update(clean)
-                projects[project_id] = current
-                write_meta(meta)
-                self._send(HTTPStatus.OK, '{"ok":true}')
-                return
-            if self.path == "/api/open":
-                ok = open_path(str(body.get("path") or ""), self.config["hermes_root"])
-                self._send(HTTPStatus.OK if ok else HTTPStatus.BAD_REQUEST, json.dumps({"ok": ok}))
-                return
-            self._send(HTTPStatus.NOT_FOUND, '{"error":"not found"}')
-        except Exception as exc:
-            self._send(HTTPStatus.BAD_REQUEST, json.dumps({"error": str(exc)}))
+            data = json.loads(raw.decode("utf-8"))
+        except (ValueError, UnicodeDecodeError):
+            raise DashboardError(400, "request body must be JSON")
+        return data if isinstance(data, dict) else {}
 
-    def log_message(self, fmt: str, *args: Any) -> None:
-        sys.stderr.write("dashboard: " + fmt % args + "\n")
-
-
-def serve(config: dict[str, Any]) -> None:
-    dashboard_root().mkdir(parents=True, exist_ok=True)
-    address = (str(config.get("host") or "127.0.0.1"), int(config.get("port") or DEFAULT_PORT))
-    httpd = ThreadingHTTPServer(address, DashboardHandler)
-    httpd.config = config  # type: ignore[attr-defined]
-    pid_path().write_text(str(os.getpid()) + "\n", encoding="utf-8")
-    print(json.dumps({"status": "running", "url": f"http://{address[0]}:{address[1]}", "hermes_root": config["hermes_root"], "state": str(state_path())}))
-    try:
-        httpd.serve_forever()
-    finally:
+    def _dispatch(self, handler: Callable[[], Any]) -> None:
         try:
-            pid_path().unlink()
-        except OSError:
+            self._send_json(200, handler())
+        except DashboardError as exc:
+            self._send_json(exc.status, {"error": exc.message})
+        except BrokenPipeError:
             pass
+        except Exception as exc:  # never let a request kill the server
+            self._send_json(500, {"error": f"{type(exc).__name__}: {exc}"})
+
+    def do_GET(self) -> None:  # noqa: N802
+        url = urlsplit(self.path)
+        path = url.path
+        if path == "/" or path == "/index.html":
+            self._send_html(PAGE_HTML)
+        elif path == "/api/projects":
+            self._dispatch(self.app.projects)
+        elif path == "/api/search":
+            query = parse_qs(url.query).get("q", [""])[0]
+            self._dispatch(lambda: self.app.search(query))
+        elif path == "/api/health":
+            self._dispatch(self.app.health)
+        else:
+            self._send_json(404, {"error": "not found"})
+
+    def do_POST(self) -> None:  # noqa: N802
+        url = urlsplit(self.path)
+        parts = [unquote(part) for part in url.path.strip("/").split("/")]
+        try:
+            body = self._read_body()
+        except DashboardError as exc:
+            self._send_json(exc.status, {"error": exc.message})
+            return
+        if parts == ["api", "open"]:
+            self._dispatch(lambda: self.app.open_path(body.get("path")))
+            return
+        if len(parts) == 4 and parts[0] == "api" and parts[1] == "projects":
+            project_id, action = parts[2], parts[3]
+            if action == "snooze":
+                self._dispatch(lambda: self.app.snooze(project_id, body.get("until")))
+            elif action == "archive":
+                self._dispatch(lambda: self.app.archive(project_id))
+            elif action == "restore":
+                self._dispatch(lambda: self.app.restore(project_id, body.get("bucket")))
+            elif action == "move":
+                self._dispatch(lambda: self.app.move(project_id, body.get("bucket")))
+            else:
+                self._send_json(404, {"error": f"unknown action: {action}"})
+            return
+        self._send_json(404, {"error": "not found"})
 
 
-def init_dashboard(args: argparse.Namespace) -> dict[str, Any]:
-    config = default_config(args.hermes_root, args.port, args.user)
-    existing = load_config() if config_path().is_file() else {}
-    existing.update({k: v for k, v in config.items() if v is not None})
-    write_config(existing)
-    meta = read_meta()
-    meta.setdefault("schema_version", 1)
-    meta.setdefault("projects", {})
-    write_meta(meta)
-    return existing
+class DashboardServer(ThreadingHTTPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+
+    def __init__(self, app: DashboardApp, host: str = DEFAULT_HOST, port: int = DEFAULT_PORT):
+        super().__init__((host, port), DashboardHandler)
+        self.app = app
+        self.verbose = False
 
 
-def start_background(config: dict[str, Any], *, open_browser: bool) -> dict[str, Any]:
-    command = [sys.executable, "-m", "lpos_engine", "dashboard", "serve"]
-    log_path = dashboard_root() / "dashboard.log"
-    with log_path.open("ab") as log:
-        process = subprocess.Popen(command, stdout=log, stderr=log, cwd=str(Path.cwd()), start_new_session=True)
-    pid_path().write_text(str(process.pid) + "\n", encoding="utf-8")
-    url = f"http://{config.get('host', '127.0.0.1')}:{config.get('port', DEFAULT_PORT)}"
-    if open_browser:
-        webbrowser.open(url)
-    return {"status": "started", "pid": process.pid, "url": url, "log": str(log_path)}
-
-
-def status() -> dict[str, Any]:
-    pid = None
-    alive = False
-    try:
-        pid = int(pid_path().read_text(encoding="utf-8").strip())
-        os.kill(pid, 0)
-        alive = True
-    except Exception:
-        alive = False
-    config = load_config()
-    return {"configured": config_path().is_file(), "running": alive, "pid": pid, "url": f"http://{config.get('host', '127.0.0.1')}:{config.get('port', DEFAULT_PORT)}", "config": str(config_path()), "state": str(state_path())}
-
-
-def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="lpos dashboard", description="LPOS Hermes Project Dashboard")
-    sub = parser.add_subparsers(dest="command", required=True)
-    init = sub.add_parser("init")
-    init.add_argument("--hermes-root")
-    init.add_argument("--port", type=int, default=DEFAULT_PORT)
-    init.add_argument("--user")
-    serve_parser = sub.add_parser("serve")
-    serve_parser.add_argument("--hermes-root")
-    serve_parser.add_argument("--port", type=int)
-    start = sub.add_parser("start")
-    start.add_argument("--open", action="store_true")
-    status_parser = sub.add_parser("status")
-    open_parser = sub.add_parser("open")
-    return parser
+def serve(
+    root: Path | None = None,
+    host: str = DEFAULT_HOST,
+    port: int = DEFAULT_PORT,
+    opener: Callable[[list[str]], None] | None = None,
+) -> DashboardServer:
+    """Build a ready-to-run server bound to localhost. Call ``serve_forever`` on it."""
+    return DashboardServer(DashboardApp(root=root, opener=opener), host=host, port=port)
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = build_parser()
+    parser = argparse.ArgumentParser(
+        prog="lpos dashboard",
+        description="Hermes Project Dashboard: local project status on a localhost port",
+    )
+    parser.add_argument("--port", type=int, default=DEFAULT_PORT, help="port (default 7373)")
+    parser.add_argument(
+        "--root",
+        type=Path,
+        default=None,
+        help="Hermes root (default: $LPOS_HERMES_ROOT or ~/.hermes)",
+    )
+    parser.add_argument("--host", default=DEFAULT_HOST, help="bind address (default 127.0.0.1)")
+    parser.add_argument("--verbose", action="store_true", help="log requests to stderr")
     args = parser.parse_args(argv)
-    if args.command == "init":
-        print(json.dumps({"dashboard": init_dashboard(args)}, indent=2, sort_keys=True))
-        return 0
-    if args.command == "serve":
-        config = load_config()
-        if args.hermes_root:
-            config["hermes_root"] = str(hermes_root(args.hermes_root))
-        if args.port:
-            config["port"] = args.port
-        serve(config)
-        return 0
-    if args.command == "start":
-        config = load_config()
-        if not config_path().is_file():
-            write_config(config)
-        print(json.dumps(start_background(config, open_browser=args.open), indent=2, sort_keys=True))
-        return 0
-    if args.command == "status":
-        print(json.dumps(status(), indent=2, sort_keys=True))
-        return 0
-    if args.command == "open":
-        config = load_config()
-        url = f"http://{config.get('host', '127.0.0.1')}:{config.get('port', DEFAULT_PORT)}"
-        webbrowser.open(url)
-        print(json.dumps({"url": url}, indent=2, sort_keys=True))
-        return 0
-    parser.error("unknown command")
-    return 2
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    server = serve(root=args.root, host=args.host, port=args.port)
+    server.verbose = args.verbose
+    bound_host, bound_port = server.server_address[0], server.server_address[1]
+    print(
+        json.dumps(
+            {
+                "dashboard": f"http://{bound_host}:{bound_port}/",
+                "hermes_root": str(server.app.root),
+                "state": str(server.app.state_file),
+            },
+            indent=2,
+        ),
+        file=sys.stderr,
+    )
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+    return 0

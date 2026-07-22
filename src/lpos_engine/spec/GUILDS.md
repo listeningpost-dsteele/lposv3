@@ -1480,45 +1480,54 @@ decisions for the Principal, or execute unrelated specialist work.
 
 Specialists in this Guild conform to LPOS-013.
 
-
 ---
 
-## Source: `guilds/GUILD-038-support-engineering.md`
+## Source: `guilds/GUILD-038-soc2-compliance.md`
 
 ---
 id: GUILD-038
-title: Support Engineering Guild Charter
+title: SOC 2 Compliance Guild Charter
 version: 1.0.0
 status: Accepted
 owner: Listening Post
 machine:
   type: guild
-  slug: support-engineering
+  slug: soc2-compliance
 ---
 
-# Support Engineering Guild Charter
+# SOC 2 Compliance Guild Charter
 
 ## Mission
 
-Own the domain of user-reported defects: reproduce, diagnose, remediate, and
-verify them autonomously, keep the reporter informed, and escalate to a human
-only what cannot be resolved, with a complete diagnostic package.
+Own the domain of SOC 2 Type 2 compliance: the codified control framework (AICPA 2017
+Trust Services Criteria with the revised 2022 points of focus), the autonomous audit of
+everything the system ships, staged remediation of gaps, and the evidence trail that
+demonstrates operating effectiveness over the observation period.
 
 ## Responsibilities
 
-- Define domain standards.
-- Own relevant capabilities.
-- Govern specialist charters.
-- Maintain benchmarks, including the regression fixtures produced by every fix.
-- Review evidence.
-- Identify capability gaps.
+- Define domain standards: the control catalog in `lpos_engine.compliance.controls`,
+  mapped to the Trust Services Criteria.
+- Own relevant capabilities: SO-025 (SOC 2 Compliance Audit), the compliance status
+  contract, and the compliance report page.
+- Govern remediation: every fix for a failing control is built in the staging test
+  environment, validated, and adopted into the main system only through exact-action
+  Principal approval — never directly.
+- Maintain benchmarks: the Type 2 effectiveness record in `compliance/history.jsonl`
+  is the guild's evidence ledger; controls must demonstrate effectiveness over the
+  window, not merely pass once.
+- Review evidence: every control result cites the exact files and values inspected.
+- Identify capability gaps: controls that cannot yet be machine-checked (e.g. the
+  Privacy category) are recorded as codified-but-unchecked, never silently omitted.
 
 ## Boundaries
 
-The Guild defines quality and structure. It does not replace Chip, make
-consequential decisions for the Principal, or execute unrelated specialist work.
-It never merges or deploys to production without approval.
+The Guild defines quality and structure. It does not replace Chip, make consequential
+decisions for the Principal, or execute unrelated specialist work. It enforces controls
+over the LPOS system itself; it does not issue attestations — a SOC 2 Type 2 report is
+issued by an independent CPA firm after an observation period.
 
 ## Conformance
 
-Specialists in this Guild conform to LPOS-013.
+Specialists in this Guild conform to LPOS-013. Affiliated specialists: system-auditor,
+independent-reviewer, technical-writer.

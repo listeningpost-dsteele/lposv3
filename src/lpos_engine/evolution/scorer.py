@@ -1,12 +1,20 @@
-"""Deterministic scorer for the CS-001 human-copy domain.
+"""Deterministic scorer for the CS-001 (human copy) style domain.
 
-The pilot uses this domain because it scores with no model call and no network,
-so the gate's accept/reject behaviour is reproducible and auditable.
+Why this domain for the pilot: it is one the review named as a good first
+candidate, and it scores with no model call and no network, so the gate's
+accept/reject behaviour is fully reproducible and auditable. A "skill" here is
+the set of active lint rules; scoring is micro-averaged F1 of the rules the
+skill actually catches against the real violations present in each task.
+
+A GOOD rule fires only on genuine violations, so by construction a good rule
+never produces a false positive. An OVERBROAD rule (the modelled bad edit) fires
+on clean text too, so activating it lowers the score. This is what lets the pilot
+demonstrate the gate rejecting a plausible-but-harmful edit.
 """
 from __future__ import annotations
 
 import re
-from collections.abc import Callable, Iterable, Mapping
+from typing import Callable, Iterable, Mapping
 
 _BANNED = re.compile(
     r"\b(seamless|effortless|unlock|supercharge|elevate|empower|game-?changing|"
@@ -22,17 +30,20 @@ def _number_parade(text: str) -> bool:
     return len(_INT.findall(text)) >= 3
 
 
+# GOOD rules: each fires only on a genuine CS-001 violation.
 GOOD_RULES: Mapping[str, Callable[[str], bool]] = {
-    "em_dash": lambda text: "\u2014" in text,
-    "exclamation": lambda text: "!" in text,
-    "banned_vocab": lambda text: bool(_BANNED.search(text)),
+    "em_dash": lambda t: "—" in t,
+    "exclamation": lambda t: "!" in t,
+    "banned_vocab": lambda t: bool(_BANNED.search(t)),
     "number_parade": _number_parade,
-    "antithesis": lambda text: bool(_ANTITHESIS.search(text)),
-    "triad": lambda text: bool(_TRIAD.search(text)),
+    "antithesis": lambda t: bool(_ANTITHESIS.search(t)),
+    "triad": lambda t: bool(_TRIAD.search(t)),
 }
 
+# OVERBROAD rule: a plausible-sounding edit ("flag any very long word") that
+# also fires on perfectly clean copy. Never a real violation; always an FP.
 OVERBROAD_RULES: Mapping[str, Callable[[str], bool]] = {
-    "long_word_overbroad": lambda text: any(len(word) > 12 for word in re.findall(r"[A-Za-z]+", text)),
+    "long_word_overbroad": lambda t: any(len(w) > 12 for w in re.findall(r"[A-Za-z]+", t)),
 }
 
 ALL_RULES: dict[str, Callable[[str], bool]] = {**GOOD_RULES, **OVERBROAD_RULES}
@@ -40,19 +51,19 @@ ALL_RULES: dict[str, Callable[[str], bool]] = {**GOOD_RULES, **OVERBROAD_RULES}
 
 def real_violations(text: str) -> set[str]:
     """Ground truth: the GOOD rules that genuinely fire on this text."""
-    return {rule_id for rule_id, fn in GOOD_RULES.items() if fn(text)}
+    return {rid for rid, fn in GOOD_RULES.items() if fn(text)}
 
 
 def score_skill(active_rules: Iterable[str], tasks: Iterable[dict]) -> float:
     """Micro-averaged F1 of caught real violations across tasks."""
     active = list(dict.fromkeys(active_rules))
-    true_positive = false_positive = false_negative = 0
+    tp = fp = fn = 0
     for task in tasks:
         text = task["text"]
         expected = set(task["expected"])
-        fired = {rule for rule in active if rule in ALL_RULES and ALL_RULES[rule](text)}
-        true_positive += len(fired & expected)
-        false_positive += len(fired - expected)
-        false_negative += len(expected - fired)
-    denominator = 2 * true_positive + false_positive + false_negative
-    return (2 * true_positive) / denominator if denominator else 1.0
+        fired = {r for r in active if r in ALL_RULES and ALL_RULES[r](text)}
+        tp += len(fired & expected)
+        fp += len(fired - expected)
+        fn += len(expected - fired)
+    denom = 2 * tp + fp + fn
+    return (2 * tp) / denom if denom else 1.0

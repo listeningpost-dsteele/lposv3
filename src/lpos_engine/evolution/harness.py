@@ -1,4 +1,6 @@
-"""The evolution loop: baseline, propose on train, gate on validation, report on test."""
+"""The evolution loop: baseline, propose on train, gate on validation, report on
+test, stage only if accepted. No live writes anywhere in this module.
+"""
 from __future__ import annotations
 
 import hashlib
@@ -26,20 +28,14 @@ class RunReport:
 
 
 def _run_id(skill: Skill, split: Split) -> str:
-    ids = "".join(sorted(task["id"] for task in split.train + split.val + split.test))
+    ids = "".join(sorted(t["id"] for t in split.train + split.val + split.test))
     seed = f"{skill.name}:{','.join(skill.rules)}:{ids}"
     return "RUN-" + hashlib.sha256(seed.encode()).hexdigest()[:12]
 
 
-def evolve(
-    skill: Skill,
-    split: Split,
-    *,
-    edit_budget: int = 3,
-    min_support: int = 2,
-    min_gain: float = 0.0,
-) -> tuple[Skill, RunReport]:
-    assert_no_leakage(split)
+def evolve(skill: Skill, split: Split, *, edit_budget: int = 3,
+           min_support: int = 2, min_gain: float = 0.0) -> tuple[Skill, RunReport]:
+    assert_no_leakage(split)  # a run on a leaking split is invalid, not just wrong
 
     baseline_val = score_skill(skill.rules, split.val)
     baseline_test = score_skill(skill.rules, split.test)
@@ -48,7 +44,8 @@ def evolve(
     candidate = apply_edits(skill, proposal.edits)
     candidate_val = score_skill(candidate.rules, split.val)
 
-    gate = evaluate_gate(current_score=baseline_val, candidate_score=candidate_val, min_gain=min_gain)
+    gate = evaluate_gate(current_score=baseline_val,
+                         candidate_score=candidate_val, min_gain=min_gain)
 
     accepted_skill = candidate if gate.accepted else skill
     report = RunReport(
@@ -60,7 +57,7 @@ def evolve(
         candidate_test=round(score_skill(accepted_skill.rules, split.test), 4),
         accepted=gate.accepted,
         gate_reason=gate.reason,
-        applied_edits=[asdict_edit(edit) for edit in (proposal.edits if gate.accepted else ())],
+        applied_edits=[asdict_edit(e) for e in (proposal.edits if gate.accepted else ())],
         proposal_evidence=proposal.evidence,
     )
     return accepted_skill, report
@@ -70,9 +67,10 @@ def asdict_edit(edit) -> dict:
     return {"op": edit.op, "rule": edit.rule, "rationale": edit.rationale}
 
 
-def gate_candidate(skill: Skill, candidate: Skill, split: Split, *, min_gain: float = 0.0):
-    """Gate an externally supplied candidate, used to test harmful edits."""
+def gate_candidate(skill: Skill, candidate: Skill, split: Split, *,
+                   min_gain: float = 0.0):
+    """Gate an externally-supplied candidate (used to test harmful edits)."""
     assert_no_leakage(split)
-    base_score = score_skill(skill.rules, split.val)
-    candidate_score = score_skill(candidate.rules, split.val)
-    return evaluate_gate(current_score=base_score, candidate_score=candidate_score, min_gain=min_gain)
+    base = score_skill(skill.rules, split.val)
+    cand = score_skill(candidate.rules, split.val)
+    return evaluate_gate(current_score=base, candidate_score=cand, min_gain=min_gain)
