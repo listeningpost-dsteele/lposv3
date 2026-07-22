@@ -6,6 +6,8 @@ order: 6
 
 # SOC 2 Compliance Guild
 
+> **Security audit update, July 22, 2026:** LPOS v4.2.0's built-in compliance output is a readiness diagnostic, not a SOC 2 attestation. An independent audit found that the v4.2.0 self-audit could falsely report compliance and control effectiveness from insufficient history. See [4.2.0 security audit and SOC 2 readiness remediation](/patch-notes/4-2-0-soc2-readiness-remediation.html).
+
 The SOC 2 Compliance Guild (GUILD-038) makes compliance a property of the operating
 system rather than a project someone remembers to do. It codifies the AICPA Trust
 Services Criteria, the 2017 TSC with the revised 2022 points of focus: the common
@@ -15,9 +17,9 @@ Processing Integrity, and Privacy categories, as a machine-checkable control cat
 
 "Type 2" is the part most compliance tooling gets wrong: a Type 2 report is about
 operating effectiveness **over an observation period**, not a point-in-time snapshot.
-The guild is built around that: every control run appends to an evidence history, and
-each control earns its "effective" verdict only by passing consistently across the
-90-day observation window. One green run proves very little, and the report says so.
+The v4.2.0 implementation did not enforce that boundary correctly. Treat every built-in
+result as a readiness signal until a remediated build passes the adversarial regression
+suite and, separately, an independent CPA issues the applicable report.
 
 ## The autonomous loop
 
@@ -32,12 +34,9 @@ through exact-action Principal approval. Finally it publishes the compliance pag
 
 ## The compliance page
 
-`~/.hermes/compliance/report.html` is a self-contained page with the status hero (overall
-state, window coverage, control counts), **The Problems** (each failing control, its TSC
-criterion, the risk in plain language, and the evidence), **The Fixes** (each staged
-remediation, where it lives in the test environment, its validation result, and its
-adoption status), the **Audit Log** of every check run and remediation staged, and the
-full **Control Matrix** by TSC series with effectiveness meters.
+`~/.hermes/compliance/report.html` is a self-contained readiness page with the status
+hero, control counts, gaps, staged remediation, and the control matrix by TSC series.
+In v4.2.0, do not rely on this page for SOC 2 compliance or Type 2 effectiveness claims.
 
 ## Running it yourself
 
@@ -48,14 +47,15 @@ lpos compliance status   # print status.json
 ```
 
 State lives in `~/.hermes/compliance/`: `status.json` (the stable contract, also read by
-the dashboard), `history.jsonl` (the Type 2 evidence ledger), `report.html`, and
-`staging/`. See `docs/COMPLIANCE.md` in the repository for the full control table.
+the dashboard), `history.jsonl` (local readiness history), `report.html`, and `staging/`.
+In v4.2.0 this local history is not independently tamper-evident evidence. See
+`docs/COMPLIANCE.md` in the repository for the full control table.
 
 ## An honest boundary
 
-This guild demonstrates and enforces controls over the LPOS system itself and produces
-the evidence trail an auditor would ask for. It is not an attestation: a SOC 2 Type 2
-report is issued by an independent CPA firm after examining an observation period.
+This guild maps controls over the LPOS system and can support readiness work. It is not
+an attestation: a SOC 2 Type 2 report is issued by an independent CPA firm after
+examining a defined system and observation period.
 
 ## Related pages
 

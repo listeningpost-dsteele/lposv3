@@ -1,0 +1,452 @@
+{
+  "report_date": "2026-07-22",
+  "target": "LPOS-v4.2.0-Complete.zip",
+  "archive_sha256": "45d6cb6f1110c2c473b3a99f03bb22bd6d1f78dbf212deac434ff14fc23e8e69",
+  "scope": "Point-in-time technical and SOC 2 Type 2 readiness review of the supplied release archive and default local runtime.",
+  "verdict": {
+    "functional_correctness": "PASS_WITH_QUALIFICATIONS",
+    "security_controls": "FAIL",
+    "soc2_type2_readiness": "NOT_READY",
+    "soc2_type2_attestation": "NOT_PRESENT",
+    "built_in_self_audit_reliable_for_assurance": false
+  },
+  "finding_counts": {
+    "Critical": 2,
+    "High": 7,
+    "Medium": 4,
+    "Low": 1
+  },
+  "findings": [
+    {
+      "id": "LPOS-01",
+      "severity": "Critical",
+      "title": "Fresh-install self-audit falsely reports SOC 2 Type 2 compliance and effectiveness",
+      "criteria": "CC4, CC5; SOC 2 system-description and operating-effectiveness requirements",
+      "status": "Open - assurance blocker",
+      "evidence": [
+        "A fresh run produced overall=\"compliant\", 21/21 controls \"effective\", days_of_history=0, and runs_in_window=21.",
+        "Only one distinct audit timestamp existed. The 21 \"runs\" were 21 control rows from one execution, not 21 independent audit runs.",
+        "effectiveness_for() labels a current passing control effective whenever its in-window ratio is >= 0.98, even when the sample is one row (src/lpos_engine/compliance/audit.py:113-153).",
+        "Overall status considers current failures only and ignores insufficient observation coverage or \"not yet demonstrated\" status (audit.py:226-258).",
+        "Reproduction: evidence/reproduction-results.json -> compliance_false_positive."
+      ],
+      "impact": "The product can generate a machine-readable and human-facing assurance statement that materially overstates its status. Publishing or relying on that label could mislead customers, auditors, management, and risk owners.",
+      "remediation": [
+        "Rename the module and output to \"control readiness monitor\" or equivalent; never emit \"SOC 2 compliant\" or \"Type 2 effective\" as a self-determined result.",
+        "Give every audit execution a unique run_id. Count distinct runs, dates, and sampling populations separately from per-control result rows.",
+        "Make a fresh install report \"not assessed / insufficient operating evidence\". Require complete scope, a defined observation period, sufficient samples, and no open material exceptions before any readiness state can become \"demonstrated\".",
+        "Add explicit machine-readable fields such as attestation=false, issued_by_cpa=false, and evidence_period_status=insufficient.",
+        "Have a licensed independent CPA determine the actual Type 2 scope, period, sample sufficiency, and report conclusion."
+      ],
+      "acceptance": [
+        "A zero-day, one-run history cannot produce \"effective\" or \"compliant\".",
+        "Twenty-one controls checked in one execution are reported as one run.",
+        "Unit tests cover zero history, one run, sparse history, gaps, failures, and history tampering.",
+        "External marketing and customer-facing output do not imply an attestation unless a valid report exists."
+      ]
+    },
+    {
+      "id": "LPOS-02",
+      "severity": "High",
+      "title": "Built-in control checks are structural proxies, not tests of Trust Services Criteria outcomes",
+      "criteria": "CC1-CC9, A, C, PI",
+      "status": "Open - assurance blocker",
+      "evidence": [
+        "The test control counts literal \"def test_\" occurrences and never executes the suite (controls.py:221-242).",
+        "The dashboard access control reads only DEFAULT_HOST from source and does not test authentication, request origin, Host handling, CSRF, or the --host option (controls.py:270-292).",
+        "The approval control checks only that approvals.py exists and ApprovalService is mentioned in engine.py (controls.py:295-309).",
+        "Monitoring freshness passes when no monitor runtime exists if a catalog entry is present (controls.py:413-425).",
+        "Availability passes when PRAGMA integrity_check text and a backup document exist; no backup job, restore result, RPO, RTO, or recovery evidence is required (controls.py:562-577).",
+        "Release change management checks presence of a changelog, manifest, checksum list, and verifier, but not review, authorization, provenance, or execution evidence (controls.py:483-505)."
+      ],
+      "impact": "The control matrix can pass even when the underlying control does not operate or does not address the criterion. This prevents the module from serving as reliable evidence for design or operating effectiveness.",
+      "remediation": [
+        "Replace file-presence and string-search checks with outcome-based tests tied to a documented control objective, owner, frequency, population, evidence source, and exception rule.",
+        "Separate automated technical checks from organization-level controls that require human or third-party evidence.",
+        "For every criterion, document why the control is sufficient, how it is tested, and what evidence is retained.",
+        "Require independent review of the mapping and explicitly mark criteria with no implemented check as not evidenced."
+      ],
+      "acceptance": [
+        "Deleting or disabling the actual operating control causes the check to fail even when documentation remains.",
+        "Control results link to immutable evidence of execution, not merely source-code presence.",
+        "A reviewer can trace criterion -> risk -> control -> owner -> frequency -> sample -> exception -> remediation."
+      ]
+    },
+    {
+      "id": "LPOS-03",
+      "severity": "Critical",
+      "title": "Agent-registered monitor service definitions can execute arbitrary shell commands as the scheduler account",
+      "criteria": "CC6, CC7",
+      "status": "Open - do not enable in a live environment",
+      "evidence": [
+        "The inventory documentation says any agent that stands up a service appends a check definition to state/services.json (monitor/inventory.py:10-17).",
+        "Service check dictionaries are accepted and merged without an administrative trust decision (inventory.py:106-126, 173-176).",
+        "The command check invokes subprocess.run(..., shell=True) when command is a string (monitor/checks.py:180-200).",
+        "A local-only reproduction registered a service with a shell string; run_audit() executed it and returned overall=\"ok\" after the command created a marker under the scheduler identity.",
+        "Reproduction: evidence/reproduction-results.json -> monitor.shell_command_execution."
+      ],
+      "impact": "An agent or process able to write service registration state can cross the control-plane boundary and execute commands with the monitor/scheduler account privileges. This can lead to arbitrary file access, credential theft, persistence, and full compromise of the local LPOS account.",
+      "remediation": [
+        "Remove shell-string command checks. Do not treat argv-only execution as sufficient if untrusted agents can still choose arbitrary executables and arguments.",
+        "Make executable health checks admin-defined, signed or approved configuration stored outside agent-writable state. Agent registrations may reference only pre-approved check IDs and non-secret parameters.",
+        "Run the monitor under a dedicated least-privileged account/container with a read-only filesystem view, no LPOS database write access, no general secrets, and constrained network egress.",
+        "Apply executable and argument allowlists, resource limits, process-group termination, output limits, and immutable audit logging for configuration changes.",
+        "Remove or similarly constrain monitor.alert.CommandTransport, which also uses a shell for string commands."
+      ],
+      "acceptance": [
+        "An agent-created services.json entry cannot cause any executable to run.",
+        "Only an authenticated administrator approval can add or change executable checks.",
+        "Negative tests cover shell metacharacters, arbitrary argv, PATH substitution, symlinks, environment inheritance, timeouts, child processes, and output flooding."
+      ]
+    },
+    {
+      "id": "LPOS-04",
+      "severity": "High",
+      "title": "Monitor configuration can read a credential file and send it to an arbitrary URL; generic checks also create SSRF exposure",
+      "criteria": "CC6, CC7, C",
+      "status": "Open - do not use credentialed custom URLs",
+      "evidence": [
+        "github_api accepts token_file and reads any path available to the process (monitor/checks.py:146-158).",
+        "The same check accepts an arbitrary URL and attaches Authorization: Bearer <token> (checks.py:161-168).",
+        "HTTP and MCP checks also accept configurable URLs without scheme, host, resolved-address, redirect, or private-network restrictions.",
+        "A loopback capture server received Bearer AUDIT-CANARY-SECRET from a configured custom URL.",
+        "Reproduction: evidence/reproduction-results.json -> monitor.credential_exfiltration."
+      ],
+      "impact": "A malicious or compromised configuration writer can exfiltrate files readable by the monitor, query internal services, reach metadata endpoints, or pivot through redirects and DNS behavior.",
+      "remediation": [
+        "Bind credentials to a fixed connector identity and allowlisted origin. Never attach a GitHub token when the URL origin differs from the approved GitHub API origin.",
+        "Restrict token references to an admin-owned secrets directory or secret-manager handle; reject arbitrary filesystem paths and symlinks.",
+        "Validate scheme, hostname, port, resolved IP, redirects, and every redirect target. Block loopback, link-local, multicast, metadata, and private ranges unless explicitly approved for a named connector.",
+        "Run checks with minimal network and file privileges and redact errors/headers from state and alerts."
+      ],
+      "acceptance": [
+        "A custom URL cannot receive a connector credential.",
+        "A token_file outside the approved secret root is rejected before any network request.",
+        "Tests cover redirects, DNS rebinding/resolution changes, IPv4/IPv6 private ranges, metadata hosts, URL userinfo, alternate schemes, and symlinked token files."
+      ]
+    },
+    {
+      "id": "LPOS-05",
+      "severity": "High",
+      "title": "Approval identity authenticity is not enforced at the runtime boundary",
+      "criteria": "CC6, PI",
+      "status": "Open - keep consequential adapters record-only",
+      "evidence": [
+        "MessageIdentity is a caller-constructible data class with channel, provider, message_id, thread_id, and sender fields (models.py:613-639).",
+        "IdentityVerifier compares the caller-supplied sender to an allowlisted string, but does not verify a provider signature, authenticated connector, token, or attestation (approvals.py:19-52).",
+        "LPOSRuntime.grant_action_approval accepts a caller-created MessageIdentity directly (engine.py:500-516).",
+        "A fabricated provider/message/thread with an allowlisted sender created a grant and authorized the exact action. The bundled adapter recorded the action; the same grant path would protect a live adapter.",
+        "Reproduction: evidence/reproduction-results.json -> approval_and_database.fabricated_approval_identity."
+      ],
+      "impact": "Exact-action hashing, expiry, replay protection, and single-use consumption are strong only after the approver is authenticated. A caller that can reach this API can impersonate the Principal by supplying the expected sender string.",
+      "remediation": [
+        "Introduce a trusted channel-ingestion boundary that verifies provider signatures or authenticated API sessions and issues a non-forgeable VerifiedMessage/VerifiedPrincipal assertion.",
+        "Do not accept raw MessageIdentity from general callers for grants. Accept only an assertion minted by a registered, authenticated channel adapter and bound to raw provider-event evidence.",
+        "Persist verification method, key/version, provider event digest, receipt time, and adapter identity; validate replay at ingestion and grant time.",
+        "Require an end-to-end channel test before any live consequential adapter can be enabled."
+      ],
+      "acceptance": [
+        "Constructing MessageIdentity with an allowlisted sender is insufficient to grant approval.",
+        "Invalid/missing provider signatures, wrong webhook secret, stale timestamps, altered event bodies, and unregistered adapters are rejected.",
+        "A live adapter enablement gate verifies the full outbound/inbound/correlation/identity round trip described by the documentation."
+      ]
+    },
+    {
+      "id": "LPOS-06",
+      "severity": "High",
+      "title": "Dashboard has unauthenticated state-changing endpoints and no Host/Origin/CSRF boundary",
+      "criteria": "CC6, CC7",
+      "status": "Open - disable or isolate dashboard",
+      "evidence": [
+        "The HTTP handler performs GET and POST operations without authentication or authorization (dashboard/server.py:195-276).",
+        "The body parser does not require application/json and has no maximum body size (server.py:213-225).",
+        "Host and Origin are not checked, CSRF tokens are absent, and the CLI allows an arbitrary --host bind address (server.py:283-314).",
+        "A POST with Host: attacker.example, Origin: https://attacker.example, Content-Type: text/plain, and no credential archived a project with HTTP 200.",
+        "The response lacked common hardening headers and generic exceptions can expose internal details (server.py:227-235).",
+        "Reproduction: evidence/reproduction-results.json -> dashboard.unauthenticated_cross_origin_mutation."
+      ],
+      "impact": "A local-network client, browser-mediated request in environments that permit it, DNS-rebinding path, or remote client when --host is broadened can read metadata and mutate dashboard state. The lack of a protocol-level trust boundary contradicts the control\u2019s \"localhost-only\" assurance.",
+      "remediation": [
+        "Keep loopback binding mandatory by default; reject non-loopback hosts unless an explicit hardened reverse-proxy mode is configured.",
+        "Generate a high-entropy session secret, require authentication on every API route, use SameSite/HttpOnly cookies or bearer tokens, and require CSRF tokens for state changes.",
+        "Validate Host against the actual bound host/port and enforce a strict Origin policy. Require application/json and cap request/body/query sizes.",
+        "Add CSP, frame-ancestors/X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and safe error handling. Use TLS and a real identity provider for remote use."
+      ],
+      "acceptance": [
+        "Unauthenticated GET/POST requests return 401/403 and do not mutate state.",
+        "Attacker Host/Origin, text/plain forms, missing/invalid CSRF tokens, and non-loopback bind attempts are rejected.",
+        "Security tests exercise browser-like simple requests and DNS-rebinding Host values."
+      ]
+    },
+    {
+      "id": "LPOS-07",
+      "severity": "High",
+      "title": "Sensitive runtime and compliance state is created world-readable under the default umask",
+      "criteria": "CC6, C",
+      "status": "Open - confidentiality blocker on multi-user/shared hosts",
+      "evidence": [
+        "Under default umask 022, state/lpos.db was created mode 0644. Monitor inventory/state/status and compliance history/status were also 0644.",
+        "The database can contain prompts, context bundles, artifacts, action parameters, approvals, evidence, decisions, and audit events.",
+        "SQLiteStore creates parent directories and the database without an explicit restrictive mode (store.py:37-52).",
+        "The security documentation states that sensitive content may be stored and that the core provides no encryption at rest.",
+        "Dashboard state was 0600, demonstrating a safer pattern already present elsewhere.",
+        "Reproduction: evidence/reproduction-results.json -> approval_and_database.database_permissions and monitor.file_modes."
+      ],
+      "impact": "Other local users, backup agents, or processes with host-level read access may obtain business content and operational metadata. This is especially material when LPOS is deployed beyond the documented trusted single-user model.",
+      "remediation": [
+        "Create state/config directories as 0700 and files as 0600 using secure creation flags, then verify and repair permissions at startup.",
+        "Reject or prominently warn on insecure ownership/modes. Include Windows ACL equivalents.",
+        "Require encrypted disks or an encrypted database/storage adapter for confidentiality scope, and define key management, backup encryption, retention, and secure disposal controls.",
+        "Redact secrets and sensitive fields from monitor errors, exports, and evidence bundles."
+      ],
+      "acceptance": [
+        "Fresh files are not readable by group/other regardless of process umask.",
+        "Startup detects wrong owner/mode and fails closed or repairs with an auditable event.",
+        "A deployment confidentiality test verifies disk, backup, export, log, and key protections."
+      ]
+    },
+    {
+      "id": "LPOS-08",
+      "severity": "High",
+      "title": "Audit and compliance evidence is not tamper-evident against the account that operates LPOS",
+      "criteria": "CC4, CC7, CC8",
+      "status": "Open - evidence reliability blocker",
+      "evidence": [
+        "SQLite update/delete triggers block ordinary event edits (sql/001_initial.sql:20-30), which is a useful accidental/ordinary-write guard.",
+        "The same database owner can drop the trigger and alter an event. A reproduction changed an event payload after DROP TRIGGER.",
+        "Compliance append_history() reads and rewrites the entire JSONL file; it is not append-only at the storage layer (compliance/audit.py:76-106).",
+        "A compliance history row was removed without any integrity failure because no hash chain, signature, sequence commitment, or external copy existed.",
+        "Reproduction: evidence/reproduction-results.json -> approval_and_database.event_tamper_resistance and compliance_false_positive.history_rewrite_demonstration."
+      ],
+      "impact": "An account compromise, malicious operator, or process with LPOS file privileges can alter the same evidence later presented as proof of control operation. Database triggers alone do not establish non-repudiation or independent evidence integrity.",
+      "remediation": [
+        "Hash-chain events and compliance results with monotonic sequence numbers, and sign periodic checkpoints using a key unavailable to the runtime account.",
+        "Export events in near real time to a remote append-only/WORM destination using a write-only credential and independently monitored retention lock.",
+        "Separate application, database-administration, evidence-custodian, and audit-reader roles in deployments that claim Type 2 assurance.",
+        "Reconcile daily counts/digests and alert on gaps, rewrites, clock anomalies, duplicate sequences, or missing uploads."
+      ],
+      "acceptance": [
+        "Delete, update, insertion, reordering, truncation, and rollback of local history are detected by an independent verifier.",
+        "The app account cannot alter retained evidence or signing keys.",
+        "Evidence-retention and integrity checks themselves produce independently retained evidence over the audit period."
+      ]
+    },
+    {
+      "id": "LPOS-09",
+      "severity": "Medium",
+      "title": "Dashboard scanning escapes the configured root through symlinks and absolute kanban paths",
+      "criteria": "CC6, C",
+      "status": "Open",
+      "evidence": [
+        "scan_projects() accepts directory symlinks because entry.is_dir() follows them (dashboard/scanner.py:238-267).",
+        "search() walks each project path and returns matching absolute filenames (scanner.py:270-318).",
+        "Kanban card path values may be arbitrary absolute paths without root containment (scanner.py:214-225).",
+        "A symlinked project exposed a marker filename outside the configured root. open_path() separately blocks opening outside the root, which is a positive but incomplete boundary.",
+        "Reproduction: evidence/reproduction-results.json -> dashboard.scanner_root_escape."
+      ],
+      "impact": "The dashboard can disclose filenames, paths, project metadata, and potentially traverse large/unexpected trees outside its intended scope. Impact increases if the dashboard is exposed or search results are logged/shared.",
+      "remediation": [
+        "Reject symlink project entries and resolve every configured root/project/card path before use.",
+        "Require every resolved path to be inside an explicitly approved root. Treat extra roots as separately authorized, not as arbitrary path strings.",
+        "Do not return raw absolute paths to unauthenticated clients; use opaque project/file identifiers and authorize every lookup."
+      ],
+      "acceptance": [
+        "Symlinks, junctions, absolute kanban paths, .. traversal, and race-time path swaps cannot expose content outside allowed roots.",
+        "Regression tests run on supported platforms and filesystems."
+      ]
+    },
+    {
+      "id": "LPOS-10",
+      "severity": "Medium",
+      "title": "Subprocess model-host boundary is not a security sandbox and output limits are enforced only after buffering",
+      "criteria": "CC6, CC7, C",
+      "status": "Open before untrusted/third-party model hosts",
+      "evidence": [
+        "The model adapter correctly uses argv with shell=False and a timeout (adapters/subprocess_host.py:81-100).",
+        "The child inherits the LPOS process environment, account privileges, filesystem, working directory, and network access; no environment allowlist, OS sandbox, resource limits, or privilege separation is applied.",
+        "capture_output=True buffers complete stdout/stderr before max_stdout_bytes is checked (subprocess_host.py:83-100), so the configured limit does not bound peak memory.",
+        "Documentation calls this an isolation boundary and states a model host never receives unrestricted credential access, but the runtime does not technically enforce those properties."
+      ],
+      "impact": "A compromised or malicious configured model-host executable can read LPOS state and inherited secrets or exhaust resources. Oversized output can consume memory before the post-completion size check rejects it.",
+      "remediation": [
+        "Run model hosts in a dedicated low-privilege account/container/sandbox with an explicit filesystem view, no database access, constrained network egress, and a minimal environment.",
+        "Stream stdout with a hard byte cap; terminate the process group immediately when the cap or timeout is exceeded. Apply CPU, memory, file, process, and descriptor limits.",
+        "Use explicit cwd, PATH, executable pinning/hash, no inherited secret environment variables, and connector-specific short-lived credentials.",
+        "Treat local/capability declarations as policy inputs that require deployment verification, not self-attested security facts."
+      ],
+      "acceptance": [
+        "A canary secret in the parent environment and the LPOS database are inaccessible to the child unless explicitly granted.",
+        "Peak captured output stays under the configured limit and descendant processes are killed on timeout.",
+        "The executable path and configuration are authenticated and change-controlled."
+      ]
+    },
+    {
+      "id": "LPOS-11",
+      "severity": "Medium",
+      "title": "Release checks establish internal consistency, not publisher authenticity or provenance",
+      "criteria": "CC8, CC9",
+      "status": "Open before production distribution",
+      "evidence": [
+        "verify_release.py and SHA256SUMS successfully detect an unresealed file change.",
+        "tools/reseal.py regenerates the manifest and checksum list using only data inside the tree (tools/reseal.py:1-64).",
+        "After changing README.md and running reseal.py, the modified release passed verify_release.py.",
+        "No signature, public key, Sigstore record, provenance/attestation, or SBOM file was present.",
+        "The wheel RECORD and source-to-wheel hashes passed, which is useful package consistency evidence but not an external trust anchor.",
+        "Reproduction: evidence/reproduction-results.json -> release_authenticity."
+      ],
+      "impact": "Checksums protect against accidental corruption and unsophisticated modification, but an attacker able to alter the release can regenerate all local integrity metadata and present a self-consistent malicious bundle.",
+      "remediation": [
+        "Sign the release manifest/digest with an offline or tightly controlled signing identity and verify it before installation.",
+        "Publish the expected archive digest through an independent authenticated channel and implement key rotation/revocation.",
+        "Generate an SPDX/CycloneDX SBOM and signed build provenance/attestation from a protected CI release workflow.",
+        "Retain code review, build, test, approval, signing, and publication evidence for each release."
+      ],
+      "acceptance": [
+        "A locally modified and self-resealed bundle fails without access to the trusted signing identity.",
+        "Consumers can verify archive digest, signer, provenance, source revision, build workflow, tests, and SBOM."
+      ]
+    },
+    {
+      "id": "LPOS-12",
+      "severity": "Medium",
+      "title": "Clean offline installation silently downgrades schema validation to JSON parsing",
+      "criteria": "CC8, PI",
+      "status": "Open",
+      "evidence": [
+        "Runtime dependencies are empty; jsonschema is only in the optional dev extra (pyproject.toml:5-24).",
+        "_validate_schemas() catches ImportError and returns a success-like status after json.loads only (cli.py:43-58).",
+        "The clean offline installer reported: \"JSON parsed; install the dev extra for full JSON Schema validation\" and continued successfully.",
+        "Full meta-schema validation of all 17 schemas passed in the audit environment when jsonschema was available, so this is an assurance-path weakness rather than a known bad schema."
+      ],
+      "impact": "An invalid schema can pass the production install gate if it is syntactically valid JSON. Documentation saying the installer \"validates\" schemas can be read more strongly than the shipped behavior.",
+      "remediation": [
+        "Bundle the schema validator as a runtime/offline dependency or implement an equivalent complete validation path.",
+        "Fail installation if full validation is unavailable; do not silently convert a required gate into a warning.",
+        "Record schema-validator name/version and validation results in release and installation evidence."
+      ],
+      "acceptance": [
+        "A syntactically valid but meta-schema-invalid schema makes a clean offline install fail.",
+        "Doctor and installer report exactly the same full validation result."
+      ]
+    },
+    {
+      "id": "LPOS-13",
+      "severity": "High",
+      "title": "Required organization-level control design and Type 2 operating evidence were not supplied or generated",
+      "criteria": "CC1-CC9 and any scoped A/C/PI/P criteria; SOC 2 Description Criteria",
+      "status": "Open - Type 2 readiness blocker",
+      "evidence": [
+        "The supplied scope is a software release snapshot. It does not include a management assertion, complete service-organization system description, production boundary/data flows, commitments/system requirements, control owners, populations, or observation-period evidence.",
+        "No evidence was supplied for governance oversight, personnel screening/training, joiner-mover-leaver controls, periodic access reviews, risk register review, vendor/subservice organization oversight, incident exercises, vulnerability/patch operations, change tickets/approvals, backup schedules/restore drills, retention/disposal, or exception management.",
+        "The package includes useful technical documentation and a threat model, but those do not demonstrate that organizational controls operated consistently over a period.",
+        "Privacy is explicitly codified without machine checks and was not evaluated in this review."
+      ],
+      "impact": "Even after technical findings are fixed, a release archive alone cannot support a SOC 2 Type 2 report. The examination concerns the service organization\u2019s described system and the design and operating effectiveness of controls, not only source code.",
+      "remediation": [
+        "Define the service, customers, locations, infrastructure, software, people, procedures, data classes, commitments, system requirements, subservice organizations, and complementary user-entity controls in a Description Criteria-aligned system description.",
+        "Create a control register with criterion, risk, control, owner, frequency, population, evidence, retention, reviewer, and exception workflow.",
+        "Implement and operate governance, IAM/JML/access review, risk management, vendor management, incident response, vulnerability management, secure change management, backup/DR, confidentiality/retention, and security-awareness controls.",
+        "Engage an independent CPA for readiness and scope decisions, then collect evidence across the agreed examination period and remediate exceptions before the Type 2 examination."
+      ],
+      "acceptance": [
+        "A CPA-reviewed system description and management assertion exist for a defined scope.",
+        "Every scoped criterion has a designed control and retained operating evidence from the agreed period.",
+        "Exceptions have documented impact, root cause, remediation, retest, and management disposition.",
+        "A licensed independent CPA issues the SOC 2 Type 2 report."
+      ]
+    },
+    {
+      "id": "LPOS-14",
+      "severity": "Low",
+      "title": "Documentation and release claims have minor drift",
+      "criteria": "CC2, CC8",
+      "status": "Open",
+      "evidence": [
+        "docs/wiki/getting-started/first-hour.md:23 says doctor reports 21 standing operations; the release and doctor report 25.",
+        "docs/wiki/administration/configuration.md:25 refers to SO-001 through SO-021.",
+        "The first-hour guide says 17 \"valid schemas\", while a clean install performs parse-only validation unless the dev extra is installed."
+      ],
+      "impact": "Drift reduces operator confidence and demonstrates that documentation-gate checks do not validate important factual assertions.",
+      "remediation": [
+        "Generate counts and capability claims from release metadata in documentation tests.",
+        "Add semantic assertions for all version/count/schema-validation statements, not only link and build checks."
+      ],
+      "acceptance": [
+        "All generated and hand-authored documentation matches doctor/release output and the exact validation behavior."
+      ]
+    }
+  ],
+  "trust_services_readiness": [
+    {
+      "criterion": "CC1 - Control environment",
+      "status": "Not evidenced",
+      "basis": "Specifications and guild documents exist, but governance oversight, competence, accountability, HR, and control-owner operation were not demonstrated."
+    },
+    {
+      "criterion": "CC2 - Communication and information",
+      "status": "Partial",
+      "basis": "Strong documentation surface; distribution, acknowledgement, escalation, and stakeholder communication evidence was not supplied. Documentation drift exists."
+    },
+    {
+      "criterion": "CC3 - Risk assessment",
+      "status": "Partial",
+      "basis": "Threat/security models exist; no complete risk register, periodic review evidence, business/fraud/change risk process, or risk acceptance workflow was supplied."
+    },
+    {
+      "criterion": "CC4 - Monitoring activities",
+      "status": "Deficient",
+      "basis": "Self-audit false positive, shallow checks, mutable evidence, and no independent control evaluation/deficiency process."
+    },
+    {
+      "criterion": "CC5 - Control activities",
+      "status": "Partial",
+      "basis": "Strong tests/evaluations and deterministic guardrails, but the compliance checks do not prove control outcomes and organization-level procedures/evidence are missing."
+    },
+    {
+      "criterion": "CC6 - Logical and physical access",
+      "status": "Deficient",
+      "basis": "Approval authenticity gap, unauthenticated dashboard, secret exfiltration path, broad process privileges, and insecure default file modes."
+    },
+    {
+      "criterion": "CC7 - System operations",
+      "status": "Deficient",
+      "basis": "Agent-to-shell execution, SSRF/credential exposure, incomplete monitoring trust boundary, and no supplied vulnerability/incident operating evidence."
+    },
+    {
+      "criterion": "CC8 - Change management",
+      "status": "Deficient",
+      "basis": "Checksums/changelog/tests are positive; no trusted release signature/provenance, clean install weakens schema gate, and change authorization/review evidence was not supplied."
+    },
+    {
+      "criterion": "CC9 - Risk mitigation",
+      "status": "Not evidenced",
+      "basis": "Rollback documentation exists, but vendor/subservice organization oversight, risk mitigation decisions, and continuity operating evidence were not supplied."
+    },
+    {
+      "criterion": "A - Availability",
+      "status": "Not demonstrated",
+      "basis": "SQLite integrity check and manual backup guidance exist; no RPO/RTO, automated backup evidence, capacity, failover, recovery exercises, or period evidence."
+    },
+    {
+      "criterion": "C - Confidentiality",
+      "status": "Deficient",
+      "basis": "Record-only default is positive; sensitive state is plaintext and world-readable under default umask, and classification/retention/disposal controls were not demonstrated."
+    },
+    {
+      "criterion": "PI - Processing integrity",
+      "status": "Partial",
+      "basis": "Canonical hashes, exact-action binding, idempotency, state machines, and review controls are strong; identity and monitor boundaries undermine end-to-end assurance."
+    },
+    {
+      "criterion": "P - Privacy",
+      "status": "Not assessed",
+      "basis": "The built-in framework has no machine checks and no privacy scope, personal-information inventory, notices, consent, rights, or retention evidence was supplied."
+    }
+  ],
+  "limitations": [
+    "No production deployment, cloud/IAM configuration, real connector, personnel process, vendor evidence, or historical operating evidence was supplied.",
+    "The review is not a SOC examination, CPA opinion, legal opinion, or certification.",
+    "Adversarial tests were local-only and non-destructive; no internet targets or real credentials were used.",
+    "Python 3.13.5 was tested. The release report references Python 3.11, which was not present in the audit environment."
+  ]
+}
