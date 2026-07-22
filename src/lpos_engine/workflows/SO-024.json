@@ -1,0 +1,24 @@
+{
+  "so_id": "SO-024",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-ENUMERATE",
+      "handler": "enumerate_documented_surfaces",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-DIFF",
+      "handler": "diff_documentation_coverage",
+      "depends_on": ["STEP-ENUMERATE"],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_documentation_drift",
+      "depends_on": ["STEP-DIFF"],
+      "continue_on_error": false
+    }
+  ]
+}

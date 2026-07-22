@@ -1471,100 +1471,181 @@ applies to a different action hash; duplicate or replayed messages execute twice
 advances before persistence; or a question is acknowledged without being transactionally
 closed.
 
-
 ---
 
-## Source: `standing-operations/SO-022-bug-remediation.md`
+## Source: `standing-operations/SO-022-release-publication.md`
 
 ---
 id: SO-022
-title: Bug Remediation
+title: Release Publication
 version: 1.0.0
 status: Accepted
 owner: Listening Post
 machine:
-  type: standing_operation
-  slug: bug-remediation
   owner: Chip
-  specialists: [bug-triage-analyst, debugging-specialist, software-engineer, test-engineer, code-reviewer]
+  specialists: [release-engineer, independent-reviewer]
+  type: standing_operation
+  slug: release-publication
   trigger: event-driven
-  communication_intent: Status
+  communication_intent: Operational Alert
 ---
 
-# Bug Remediation
+# Release Publication
 
 ## Mission
 
-Resolve user-reported defects without human effort where possible, surface only
-the unresolvable with a full diagnostic package, and keep the reporter informed.
+Publish an LPOS release to every destination — GitHub, Google Drive, and the hosted
+User Guide at chip.listeningpost.ai — only after every gate passes, and only through
+exact-action approval.
 
 ## Objective
 
-Every reproducible defect fixed and verified autonomously; every fix leaves a
-permanent regression fixture; reporters informed at receipt and outcome; only the
-genuinely unresolvable reaches a human.
+One verified, documented, approval-bound publication per release, with the Drive share
+link preserved by updating files in place.
 
 ## Required capabilities
 
-- event-driven execution
-- sandboxed reproduction and code change (no network, resource-limited)
-- test execution
-- independent review
-- verified-identity outbound email
-- evidence recording and benchmark-fixture creation
-- approval-gated production change
+- scheduled or event-driven execution
+- read access to the release checkout
+- exact-action approval binding for all external publication actions
 
-## Inputs
+## Gates
 
-A BugReport envelope (schema: bug-report.schema.json).
-
-## Outputs
-
-A resolution (verified fix on an isolated branch and PR, a new permanent
-regression fixture, a reporter email) or an escalation package (repro status,
-root-cause hypothesis, every attempt and why it failed, recommended next action,
-and a reporter email that a person is now handling it).
-
-## The loop
-
-1. Acknowledge. Email the reporter that the report was received, with a tracking
-   id. Verified contact only; no secrets outbound.
-2. Reproduce in a sandbox using more than one strategy. If not reproducible after
-   the reproduction budget, escalate as needs-info and ask the reporter specific
-   questions.
-3. Regression first. Convert the reproduction into a failing fixture before any
-   fix is attempted.
-4. Diagnose. Localize the root cause with more than one hypothesis; record
-   confidence.
-5. Remediate loop. Up to the attempt budget, implement a candidate fix on an
-   isolated branch, then verify: the new fixture passes and the full suite still
-   passes. Record why each rejected attempt failed.
-6. Review. An independent reviewer receives the full review envelope and must
-   pass the fix. Any change beyond the bug's scope is an automatic reject.
-7. Resolve or escalate.
-   - Resolve: add the new fixture to the benchmark corpus permanently, record
-     evidence, open the fix as a branch and PR, and email the reporter what was
-     wrong and that it is fixed, in plain language. Merge or deploy to production
-     is not automatic; it is governed by approval and the release pipeline.
-   - Escalate: deliver the diagnostic package to the maintainer and email the
-     reporter that a person is handling it.
-
-## Escalation floor (the only path to interrupting a human)
-
-Surface when any holds: not reproducible after budget; root cause not localized
-with confidence; all fix attempts fail verification; the fix needs an external or
-irreversible action; the defect is a product, taste, or policy decision;
-security-sensitive; the fix would exceed the bug's scope; duplicate of an open
-escalation.
+1. `verify_release_gates`: the release tree verifies (manifest, checksums, synchronized
+   versions, a CHANGELOG entry for the release version, `verify_release.py` passing).
+2. `enforce_docs_gate`: the documentation gate. A user-facing release must include its
+   `docs/wiki/patch-notes/<version>.md` page; a release may waive the gate only by
+   explicitly declaring no user-facing change. This is how the User Guide stays current
+   by construction: a patch that changes what users see cannot publish without its docs.
+3. `build_documentation_site`: the wiki is rebuilt from `docs/wiki` so the site, the
+   Drive copy, and the GitHub artifact are the same content at the same version.
+4. `record_publication_actions`: record-only. The exact external actions (GitHub commit
+   and push, Drive update in place, site deploy) are emitted as an exact-action plan for
+   Principal approval. Nothing in this operation executes an external side effect.
 
 ## Success criteria
 
-Reproducible defects fixed and verified with no human effort; a permanent
-regression fixture per fix; reporters informed; only the unresolvable escalated,
-each with a complete package.
+Every gate passes, the recorded publication plan matches the approved actions hash, and
+each destination receives the same versioned content.
 
 ## Failure conditions
 
-An unverified fix claimed resolved; unrequested changes shipped; production
-changed without approval; a reporter left uninformed; a report silently dropped;
-an escalation without a diagnostic package.
+A gate is skipped; documentation lags a user-facing change; a publication action executes
+without its exact-action approval; or destinations diverge.
+
+---
+
+## Source: `standing-operations/SO-023-connector-health.md`
+
+---
+id: SO-023
+title: Connector Health
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  owner: Chip
+  specialists: [system-auditor]
+  type: standing_operation
+  slug: connector-health
+  trigger: scheduled
+  communication_intent: Operational Alert
+---
+
+# Connector Health
+
+## Mission
+
+Audit everything the system runs on — email, GitHub, cloud access, MCP connectors, and
+services the system built for itself — once an hour, and tell the owner when anything
+is offline.
+
+## Objective
+
+Every connector in the inventory is checked with a real authenticated probe each hour;
+the owner receives exactly one alert per outage and one all-clear per recovery.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to connector registrations under the Hermes root
+- an email send path with a fallback when the email connector is itself down
+
+## Behavior
+
+1. `discover_connector_inventory`: assemble the inventory from what the system actually
+   uses (registered connectors, platform integrations, the self-built service registry);
+   user edits and mutes are preserved, entries are never silently dropped.
+2. `audit_connectors`: run the lightest real check per connector concurrently, with a
+   timeout and one retry before anything is declared offline; publish
+   `monitor/status.json` as the stable contract the dashboard reads.
+3. `alert_connector_transitions`: email the owner on transition to offline and on
+   recovery; no repeats during an ongoing outage except a daily reminder after 24 hours;
+   if the alert channel itself fails, record a loud undelivered marker.
+
+## Success criteria
+
+Outages are known within the hour, alerts are exactly-once per transition, credential
+expiries are warned about before they lapse, and the dashboard health strip reflects
+`status.json`.
+
+## Failure conditions
+
+A configured connector escapes the inventory; a blip alerts without the retry; a dead
+email connector silences the monitor; or repeated alerts spam the owner during a known
+outage.
+
+---
+
+## Source: `standing-operations/SO-024-documentation-drift-audit.md`
+
+---
+id: SO-024
+title: Documentation Drift Audit
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  owner: Chip
+  specialists: [system-auditor, technical-writer]
+  type: standing_operation
+  slug: documentation-drift-audit
+  trigger: scheduled
+  communication_intent: Operational Alert
+---
+
+# Documentation Drift Audit
+
+## Mission
+
+Keep the packaged User Guide honest: find every user-facing surface the system ships
+that the wiki does not document.
+
+## Objective
+
+A weekly diff of shipped surfaces (Standing Operations, specialists, skills, engine
+modules) against the `docs/wiki` sources, with a drift report filed for anything
+undocumented.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the packaged specification and the documentation sources
+
+## Behavior
+
+1. `enumerate_documented_surfaces`: enumerate surfaces from the packaged catalog,
+   skills, and engine modules — never from a hand-maintained list.
+2. `diff_documentation_coverage`: diff against the wiki sources.
+3. `report_documentation_drift`: persist the drift report where the dashboard and the
+   Principal can see it; drift becomes a task, not a surprise.
+
+## Success criteria
+
+Anything that ships is documented or has an open task to document it; the release-time
+docs gate (SO-022) plus this audit leave no third state.
+
+## Failure conditions
+
+A shipped surface is neither documented nor reported; or the audit reports drift that a
+patch author already covered (stale diff).

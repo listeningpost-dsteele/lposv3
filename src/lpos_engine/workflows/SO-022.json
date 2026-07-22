@@ -3,73 +3,27 @@
   "model_class": "routine",
   "steps": [
     {
-      "step_id": "STEP-ACK",
-      "handler": "acknowledge_reporter",
+      "step_id": "STEP-VERIFY",
+      "handler": "verify_release_gates",
       "depends_on": [],
       "continue_on_error": false
     },
     {
-      "step_id": "STEP-REPRODUCE",
-      "handler": "reproduce_in_sandbox",
-      "depends_on": [
-        "STEP-ACK"
-      ],
+      "step_id": "STEP-DOCS-GATE",
+      "handler": "enforce_docs_gate",
+      "depends_on": ["STEP-VERIFY"],
       "continue_on_error": false
     },
     {
-      "step_id": "STEP-REGRESSION",
-      "handler": "repro_to_failing_fixture",
-      "depends_on": [
-        "STEP-REPRODUCE"
-      ],
+      "step_id": "STEP-BUILD-DOCS",
+      "handler": "build_documentation_site",
+      "depends_on": ["STEP-DOCS-GATE"],
       "continue_on_error": false
     },
     {
-      "step_id": "STEP-DIAGNOSE",
-      "handler": "localize_root_cause",
-      "depends_on": [
-        "STEP-REGRESSION"
-      ],
-      "continue_on_error": false
-    },
-    {
-      "step_id": "STEP-REMEDIATE",
-      "handler": "attempt_fix_loop",
-      "depends_on": [
-        "STEP-DIAGNOSE"
-      ],
-      "continue_on_error": true
-    },
-    {
-      "step_id": "STEP-VERIFY",
-      "handler": "verify_fix_and_suite",
-      "depends_on": [
-        "STEP-REMEDIATE"
-      ],
-      "continue_on_error": true
-    },
-    {
-      "step_id": "STEP-REVIEW",
-      "handler": "independent_review",
-      "depends_on": [
-        "STEP-VERIFY"
-      ],
-      "continue_on_error": true
-    },
-    {
-      "step_id": "STEP-RESOLVE",
-      "handler": "resolve_or_escalate",
-      "depends_on": [
-        "STEP-REVIEW"
-      ],
-      "continue_on_error": false
-    },
-    {
-      "step_id": "STEP-NOTIFY",
-      "handler": "notify_reporter_outcome",
-      "depends_on": [
-        "STEP-RESOLVE"
-      ],
+      "step_id": "STEP-PUBLISH",
+      "handler": "record_publication_actions",
+      "depends_on": ["STEP-BUILD-DOCS"],
       "continue_on_error": false
     }
   ]

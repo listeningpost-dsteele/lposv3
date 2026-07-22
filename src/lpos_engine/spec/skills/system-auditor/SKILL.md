@@ -1,7 +1,7 @@
 ---
 name: system-auditor
 description: Audit LPOS roles, routing, standards, operations, and evidence for gaps or non-working behavior.
-version: 4.1.0
+version: 4.0.0
 author: Listening Post
 license: MIT
 ---

@@ -161,11 +161,6 @@
       "id": "BENCH-S032"
     },
     {
-      "component_id": "SPECIALIST-033",
-      "fixture": "BENCH-S033.json",
-      "id": "BENCH-S033"
-    },
-    {
       "component_id": "SO-001",
       "fixture": "BENCH-O001.json",
       "id": "BENCH-O001"
@@ -269,13 +264,8 @@
       "component_id": "SO-021",
       "fixture": "BENCH-O021.json",
       "id": "BENCH-O021"
-    },
-    {
-      "component_id": "SO-022",
-      "fixture": "BENCH-O022.json",
-      "id": "BENCH-O022"
     }
   ],
-  "os_version": "4.2.0",
+  "os_version": "4.0.0",
   "schema_version": 1
 }

@@ -1,0 +1,28 @@
+{
+  "so_id": "SO-023",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-DISCOVER",
+      "handler": "discover_connector_inventory",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-AUDIT",
+      "handler": "audit_connectors",
+      "depends_on": [
+        "STEP-DISCOVER"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ALERT",
+      "handler": "alert_connector_transitions",
+      "depends_on": [
+        "STEP-AUDIT"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

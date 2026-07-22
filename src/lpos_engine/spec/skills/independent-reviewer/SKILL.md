@@ -1,7 +1,7 @@
 ---
 name: independent-reviewer
 description: Independently review material work against truth, reasoning, craft, outcome, and regression gates.
-version: 4.1.0
+version: 4.0.0
 author: Listening Post
 license: MIT
 ---
