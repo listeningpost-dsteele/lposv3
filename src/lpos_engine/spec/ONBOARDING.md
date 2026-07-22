@@ -27,10 +27,11 @@ SO-021 remains disabled until a real round trip succeeds. Silence never equals c
 
 ## 4. Activate Standing Operations deliberately
 
-The package contains workflow definitions for SO-001 through SO-024. Enable only those
+The package contains workflow definitions for SO-001 through SO-025. Enable only those
 whose required data and handlers exist. SO-023 (Connector Health, hourly) and SO-024
 (Documentation Drift Audit, weekly) ship with packaged handlers
-(`lpos_engine.publication.standard_handlers()`) and are enabled by default; SO-022
+(`lpos_engine.publication.standard_handlers()`) and are enabled by default; SO-025 (SOC 2 Compliance Audit, daily) also ships
+with packaged handlers and is enabled by default; SO-022
 (Release Publication) is event-driven and stays disabled until a release checkout is
 configured. Record each activation or deferral and its revisit
 condition. Default schedules are visible with:

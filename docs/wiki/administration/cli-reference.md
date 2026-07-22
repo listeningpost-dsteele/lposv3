@@ -26,7 +26,7 @@ Prints the 32 capability-routable specialists: id, name, guild, model class, cap
 
 ### `lpos list-workflows`
 
-Prints the packaged Standing Operation catalog — all 21 operations with their workflow files, default schedules, requirements, and enabled-by-default flags.
+Prints the packaged Standing Operation catalog, all 21 operations with their workflow files, default schedules, requirements, and enabled-by-default flags.
 
 ### `lpos list-benchmarks`
 
@@ -56,7 +56,7 @@ Lists immutable audit events, optionally filtered by stream type and stream id.
 
 ### `lpos export --db PATH --output PATH`
 
-Exports the append-only event stream as JSONL — one immutable event per line, in sequence order. This is the portable audit and backup format; it is an export, not the live state.
+Exports the append-only event stream as JSONL, one immutable event per line, in sequence order. This is the portable audit and backup format; it is an export, not the live state.
 
 ## Verification command
 
@@ -68,7 +68,7 @@ Runs the no-side-effect integrated verification flow into a workspace: submits a
 
 ### `lpos dashboard`
 
-Starts the [Hermes Project Dashboard](/includes/dashboard.html) server on port 7373. Normally unnecessary — the dashboard starts with the system.
+Starts the [Hermes Project Dashboard](/includes/dashboard.html) server on port 7373. Normally unnecessary, the dashboard starts with the system.
 
 ### `lpos monitor audit`
 
@@ -79,3 +79,7 @@ Runs the [Connector Health Monitor](/includes/connector-health-monitor.html)'s a
 - [Your first hour](/getting-started/first-hour.html)
 - [Checking system health](/working-with/checking-system-health.html)
 - [Troubleshooting](/administration/troubleshooting.html)
+
+## `lpos compliance`
+
+Run the SOC 2 Compliance Guild by hand: `lpos compliance audit` runs the full control audit against the codified Trust Services Criteria catalog, `lpos compliance report` regenerates the compliance HTML page, and `lpos compliance status` prints the current `compliance/status.json`. Flags: `--root` (Hermes root) and `--repo` (release checkout). Added in 4.2.0; scheduled daily as SO-025. See [SOC 2 Compliance Guild](/includes/soc2-compliance.html).

@@ -286,7 +286,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     if (
         not kernel
         or len(registry.profiles) != 32
-        or len(workflows) != 24
+        or len(workflows) != 25
         or len(benchmark_catalog()) != 53
     ):
         result["status"] = "unhealthy"
@@ -336,7 +336,7 @@ def build_parser() -> argparse.ArgumentParser:
     specialists = sub.add_parser("list-specialists", help="show the 32 capability-routable specialists")
     specialists.set_defaults(func=cmd_list_specialists)
 
-    workflows = sub.add_parser("list-workflows", help="show the 24 packaged Standing Operations")
+    workflows = sub.add_parser("list-workflows", help="show the 25 packaged Standing Operations")
     workflows.set_defaults(func=cmd_list_workflows)
 
     benchmarks = sub.add_parser("list-benchmarks", help="show the 53 fixed benchmark fixtures")
@@ -363,6 +363,12 @@ def build_parser() -> argparse.ArgumentParser:
     monitor.add_argument("--no-alert", action="store_true")
     monitor.add_argument("--timeout", type=float, default=None)
     monitor.set_defaults(func=cmd_monitor)
+
+    compliance = sub.add_parser("compliance", help="run the SOC 2 compliance guild: audit, report, status")
+    compliance.add_argument("action", nargs="?", default="audit", choices=["audit", "report", "status"])
+    compliance.add_argument("--root", type=Path, default=None, help="Hermes root (default ~/.hermes or LPOS_HERMES_ROOT)")
+    compliance.add_argument("--repo", type=Path, default=None, help="release checkout (default . or LPOS_REPO_ROOT)")
+    compliance.set_defaults(func=cmd_compliance)
     return parser
 
 
@@ -388,6 +394,17 @@ def cmd_monitor(args: argparse.Namespace) -> int:
     if args.timeout is not None:
         argv.append(f"--timeout={args.timeout}")
     return int(monitor_main(argv))
+
+
+def cmd_compliance(args: argparse.Namespace) -> int:
+    from .compliance.__main__ import main as compliance_main
+
+    argv = [args.action]
+    if args.root is not None:
+        argv.append(f"--root={args.root}")
+    if args.repo is not None:
+        argv.append(f"--repo={args.repo}")
+    return int(compliance_main(argv))
 
 
 def main(argv: list[str] | None = None) -> int:

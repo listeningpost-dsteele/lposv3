@@ -175,7 +175,7 @@ def record_publication_actions(context: Mapping[str, Any]) -> Mapping[str, Any]:
 
 # --------------------------------------------------------------------------- SO-024
 
-_ENGINE_MODULES = ("dashboard", "monitor", "evolution")
+_ENGINE_MODULES = ("dashboard", "monitor", "evolution", "compliance")
 
 
 def enumerate_documented_surfaces(context: Mapping[str, Any]) -> Mapping[str, Any]:
@@ -260,9 +260,11 @@ HANDLERS = {
 
 def standard_handlers() -> dict[str, Any]:
     """All packaged Standing Operation handlers a host can register in one call."""
+    from .compliance import HANDLERS as compliance_handlers
     from .monitor import HANDLERS as monitor_handlers
 
     merged: dict[str, Any] = {}
     merged.update(monitor_handlers)
+    merged.update(compliance_handlers)
     merged.update(HANDLERS)
     return merged

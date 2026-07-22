@@ -1,0 +1,36 @@
+{
+  "so_id": "SO-025",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-INVENTORY",
+      "handler": "inventory_compliance_controls",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-AUDIT",
+      "handler": "audit_compliance_controls",
+      "depends_on": [
+        "STEP-INVENTORY"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REMEDIATE",
+      "handler": "stage_compliance_remediation",
+      "depends_on": [
+        "STEP-AUDIT"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "publish_compliance_report",
+      "depends_on": [
+        "STEP-REMEDIATE"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

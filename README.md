@@ -1,4 +1,4 @@
-# LPOS v4.1.0
+# LPOS v4.2.0
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -22,7 +22,7 @@ specification the v4 runtime enforces.
   consumption.
 - Transactional SQLite state, append-only events, optimistic concurrency, checksummed
   migrations, idempotency, and operation leases.
-- Machine-readable workflows for SO-001 through SO-024.
+- Machine-readable workflows for SO-001 through SO-025.
 - Fifty-three fixed benchmark fixtures covering every specialist and Standing Operation.
 - A provider-neutral JSON subprocess protocol for model hosts.
 - A record-only consequential-action adapter and sandboxed local-file adapter for safe
@@ -101,7 +101,7 @@ consequential-action adapter records an approved action without performing it.
 src/lpos_engine/
   spec/          Canonical v4 operating specification
   schemas/       Executable JSON Schemas
-  workflows/     SO-001 through SO-024 workflow definitions
+  workflows/     SO-001 through SO-025 workflow definitions
   evals/         53 fixed benchmark fixtures and evaluator
   config/        32-specialist capability registry
   sql/           Checksummed database migrations
@@ -125,5 +125,5 @@ lpos validate-schemas
 lpos doctor
 ```
 
-The authoritative release version is `4.1.0` in `pyproject.toml`, the installed package,
+The authoritative release version is `4.2.0` in `pyproject.toml`, the installed package,
 the specification kernel, workflow catalog, capability registry, and release manifest.

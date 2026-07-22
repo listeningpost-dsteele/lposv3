@@ -11,8 +11,8 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-IGNORED_TOP_LEVEL = {".venv", "state", ".pytest_cache", "dist", "build"}
-IGNORED_NAMES = {"RELEASE-MANIFEST.json", "SHA256SUMS"}
+IGNORED_TOP_LEVEL = {".git", ".venv", "state", ".pytest_cache", "dist", "build"}
+IGNORED_NAMES = {".gitignore", "RELEASE-MANIFEST.json", "SHA256SUMS"}
 
 
 def sha256(path: Path) -> str:
@@ -136,7 +136,7 @@ def main() -> int:
             str(registry_package.get("os_version")),
             str(workflow_catalog.get("os_version")),
         }
-        if versions != {"4.1.0"}:
+        if versions != {"4.2.0"}:
             fail(f"version fields are not synchronized: {sorted(versions)}", failures)
         if release.get("distribution_type") != "integrated":
             fail("RELEASE.json does not declare an integrated distribution", failures)
@@ -151,9 +151,9 @@ def main() -> int:
 
         operations = workflow_catalog.get("operations", [])
         operation_ids = [item.get("so_id") for item in operations if isinstance(item, dict)]
-        expected_operations = [f"SO-{number:03d}" for number in range(1, 25)]
+        expected_operations = [f"SO-{number:03d}" for number in range(1, 26)]
         if operation_ids != expected_operations:
-            fail("workflow catalog does not contain canonical SO-001 through SO-024", failures)
+            fail("workflow catalog does not contain canonical SO-001 through SO-025", failures)
         for item in operations:
             if not isinstance(item, dict):
                 fail("workflow catalog contains a non-object entry", failures)
@@ -223,7 +223,7 @@ def main() -> int:
             fail(f"benchmark identity mismatch: {fixture_name}", failures)
 
     kernel = ROOT / "src" / "lpos_engine" / "spec" / "CHIP-KERNEL.md"
-    if not kernel.is_file() or "# Chip Kernel v4.1.0" not in kernel.read_text(encoding="utf-8"):
+    if not kernel.is_file() or "# Chip Kernel v4.2.0" not in kernel.read_text(encoding="utf-8"):
         fail("the packaged v4 kernel is missing or has the wrong version", failures)
 
     wheel_name = release.get("wheel")
@@ -255,7 +255,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 32 specialists, 24 Standing Operations, 53 benchmarks, 17 schemas."
+        f"{len(expected_files)} immutable files, 32 specialists, 25 Standing Operations, 53 benchmarks, 17 schemas."
     )
     return 0
 

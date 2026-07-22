@@ -1,17 +1,17 @@
 {
-  "archive": "LPOS-v4.1.0-Complete.zip",
+  "archive": "LPOS-v4.2.0-Complete.zip",
   "audit_model": "append-only events",
   "benchmarks": 53,
-  "description": "Complete LPOS v4 operating-system distribution with skill evolution, the Hermes project dashboard, the connector health monitor, and the packaged user guide",
+  "description": "Complete LPOS v4 operating-system distribution with skill evolution, the Hermes project dashboard, the connector health monitor, and the packaged user guide, plus the SOC 2 compliance guild",
   "distribution_type": "integrated",
   "external_action_default": "record-only",
   "name": "LPOS",
   "python_requires": ">=3.11",
   "schemas": 17,
   "specialists": 32,
-  "standing_operations": 24,
+  "standing_operations": 25,
   "state_backend": "SQLite",
-  "tests": 182,
-  "version": "4.1.0",
-  "wheel": "lpos_os-4.1.0-py3-none-any.whl"
+  "tests": 196,
+  "version": "4.2.0",
+  "wheel": "lpos_os-4.2.0-py3-none-any.whl"
 }

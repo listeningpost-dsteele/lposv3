@@ -1649,3 +1649,69 @@ docs gate (SO-022) plus this audit leave no third state.
 
 A shipped surface is neither documented nor reported; or the audit reports drift that a
 patch author already covered (stale diff).
+
+---
+
+## Source: `standing-operations/SO-025-soc2-compliance-audit.md`
+
+---
+id: SO-025
+title: SOC 2 Compliance Audit
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  owner: Chip
+  specialists: [system-auditor, independent-reviewer]
+  type: standing_operation
+  slug: soc2-compliance-audit
+  trigger: scheduled
+  communication_intent: Operational Alert
+---
+
+# SOC 2 Compliance Audit
+
+## Mission
+
+Run the SOC 2 Compliance Guild's autonomous loop: audit everything the system ships
+against the codified Trust Services Criteria control catalog, stage fixes for anything
+non-compliant in the test environment, and publish the compliance page.
+
+## Objective
+
+Every control checked on schedule with evidence citing the exact files inspected; every
+gap gets a staged remediation and a record-only adoption plan; the Type 2 effectiveness
+record accumulates so compliance is demonstrated over the observation window, not
+asserted once.
+
+## Required capabilities
+
+- scheduled or event-driven execution
+- read access to the release checkout and the Hermes root
+- a staging area outside the live tree for remediation candidates
+
+## Behavior
+
+1. `inventory_compliance_controls`: enumerate the codified control catalog and framework.
+2. `audit_compliance_controls`: run every control offline, append to the evidence
+   history, compute per-control Type 2 operating effectiveness over the window, and
+   write the `compliance/status.json` contract.
+3. `stage_compliance_remediation`: for each failing control, build the fix as a copy in
+   `compliance/staging/<run>/` — the test environment — with a remediation note and
+   validation result. Live paths are refused by construction. Adoption is emitted as a
+   record-only exact-action plan requiring Principal approval; that approval is the only
+   path into the main system.
+4. `publish_compliance_report`: write the self-contained HTML page — problems, fixes,
+   audit log of changes, and project status — plus the JSON status the dashboard reads.
+
+## Success criteria
+
+The control matrix is current, failures alert through their staged remediations rather
+than silent drift, adopted fixes carry their before-and-after evidence, and the
+effectiveness record covers the observation window.
+
+## Failure conditions
+
+A control result without evidence; a remediation written anywhere but staging; an
+adoption without its exact-action approval; or a gap that appears on the page without a
+proposed fix.

@@ -1,5 +1,35 @@
 # LPOS Changelog
 
+## 4.2.0 — 2026-07-22
+
+Feature release: the SOC 2 Compliance Guild — compliance codified into the operating
+system, run autonomously, with staged remediation and a Type 2 evidence trail.
+
+- **GUILD-038 SOC 2 Compliance Guild**: charter in the packaged spec; owns the codified
+  control framework and the autonomous compliance loop.
+- **`lpos_engine.compliance`**: the AICPA 2017 Trust Services Criteria (revised 2022
+  points of focus) codified as data, with 21 machine-checkable controls mapped across
+  CC1–CC9 plus Availability, Confidentiality, and Processing Integrity. Every control
+  result carries evidence citing the exact files and values inspected. Type 2 operating
+  effectiveness is computed per control over a 90-day observation window from the
+  append-only evidence history (`compliance/history.jsonl`) — a control is "effective"
+  only when it passes consistently across the window, not once.
+- **SO-025 SOC 2 Compliance Audit** (daily, packaged handlers): inventory → audit →
+  staged remediation → report. Fixes for failing controls are built as copies in the
+  staging test environment (`compliance/staging/<run>/`) with a remediation note and
+  validation result; the stager refuses live and in-repo paths by construction, and
+  adoption into the main system is a record-only exact-action plan requiring Principal
+  approval.
+- **The compliance page** (`compliance/report.html`): self-contained HTML — status hero
+  with window coverage, The Problems, The Fixes, the Audit Log of changes, and the full
+  control matrix with effectiveness meters. `compliance/status.json` is the stable
+  contract for the dashboard.
+- **CLI**: `lpos compliance audit | report | status`.
+- Catalog and counts move to 25 Standing Operations; version synchronized to 4.2.0.
+- Boundary stated everywhere it matters: this demonstrates and enforces controls over
+  the LPOS system itself and builds the evidence trail; an actual SOC 2 Type 2 report is
+  an attestation issued by an independent CPA firm after an observation period.
+
 ## 4.1.0 — 2026-07-22
 
 Feature release: the operating system gains self-improvement, its user-facing surfaces,

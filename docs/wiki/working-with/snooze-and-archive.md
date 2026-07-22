@@ -6,7 +6,7 @@ order: 3
 
 # Snooze and archive
 
-You want a project out of your face — either until later (snooze) or indefinitely (archive) — without losing anything. Both actions live on every project card and in the detail panel of the [dashboard](/includes/dashboard.html), never more than two clicks deep.
+You want a project out of your face, either until later (snooze) or indefinitely (archive), without losing anything. Both actions live on every project card and in the detail panel of the [dashboard](/includes/dashboard.html), never more than two clicks deep.
 
 ## Snooze: "not now, but come back"
 
@@ -32,7 +32,7 @@ Use archive for completed projects, dead ends, and anything you want out of dail
 
 ## Where this state lives (and why it is robust)
 
-Bucket assignments, snooze timers, and archive records are dashboard metadata, stored in a single file at `~/.hermes/dashboard/state.json`. It survives restarts, upgrades, and re-onboarding. If it is ever corrupt or missing, the dashboard degrades to "everything Active" rather than crashing — annoying, but nothing is lost except the sorting, because project files were never inside it.
+Bucket assignments, snooze timers, and archive records are dashboard metadata, stored in a single file at `~/.hermes/dashboard/state.json`. It survives restarts, upgrades, and re-onboarding. If it is ever corrupt or missing, the dashboard degrades to "everything Active" rather than crashing, annoying, but nothing is lost except the sorting, because project files were never inside it.
 
 ## Related pages
 

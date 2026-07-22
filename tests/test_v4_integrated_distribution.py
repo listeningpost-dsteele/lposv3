@@ -42,8 +42,8 @@ class IntegratedV4DistributionTests(unittest.TestCase):
             operation_catalog["os_version"],
             release["version"],
         }
-        self.assertEqual(versions, {"4.1.0"})
-        self.assertIn("# Chip Kernel v4.1.0", kernel)
+        self.assertEqual(versions, {"4.2.0"})
+        self.assertIn("# Chip Kernel v4.2.0", kernel)
         self.assertEqual(release["distribution_type"], "integrated")
 
     def test_packaged_specification_is_the_runtime_default(self) -> None:
@@ -80,10 +80,10 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertTrue(all(profile.capabilities for profile in registry.profiles))
         self.assertTrue(all(profile.craft_standards for profile in registry.profiles))
 
-    def test_all_24_standing_operations_are_executable_definitions(self) -> None:
+    def test_all_25_standing_operations_are_executable_definitions(self) -> None:
         entries = catalog()
         workflows = load_all()
-        expected_ids = tuple(f"SO-{index:03d}" for index in range(1, 25))
+        expected_ids = tuple(f"SO-{index:03d}" for index in range(1, 26))
         self.assertEqual(tuple(item["so_id"] for item in entries), expected_ids)
         self.assertEqual(tuple(item.so_id for item in workflows), expected_ids)
         for workflow in workflows:
@@ -191,10 +191,10 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         report = json.loads(completed.stdout)
         self.assertEqual(report["name"], "LPOS")
-        self.assertEqual(report["version"], "4.1.0")
+        self.assertEqual(report["version"], "4.2.0")
         self.assertEqual(report["status"], "healthy")
         self.assertEqual(report["specialists"], 32)
-        self.assertEqual(report["standing_operations"], 24)
+        self.assertEqual(report["standing_operations"], 25)
         self.assertEqual(report["benchmarks"], 53)
         self.assertEqual(report["database"]["integrity"], "ok")
 
@@ -219,7 +219,7 @@ class IntegratedV4DistributionTests(unittest.TestCase):
             )
         self.assertEqual(completed.returncode, 0, completed.stderr)
         result = json.loads(completed.stdout)
-        self.assertEqual(result["os_version"], "4.1.0")
+        self.assertEqual(result["os_version"], "4.2.0")
         self.assertEqual(result["completion_report"]["status"], "completed")
         self.assertEqual(result["external_action_mode"], "record-only")
 
