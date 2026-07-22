@@ -15,8 +15,8 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-IGNORED_TOP_LEVEL = {".venv", "state", ".pytest_cache", "dist", "build"}
-IGNORED_NAMES = {"RELEASE-MANIFEST.json", "SHA256SUMS"}
+IGNORED_TOP_LEVEL = {".git", ".venv", "state", ".pytest_cache", "dist", "build"}
+IGNORED_NAMES = {".gitignore", "RELEASE-MANIFEST.json", "SHA256SUMS"}
 
 
 def sha256(path: Path) -> str:
