@@ -1,17 +1,19 @@
-"""On-demand CLI for the SOC 2 Type 2 compliance engine.
+"""On-demand CLI for the LPOS control readiness monitor (SO-025).
 
 Usage:
 
     python -m lpos_engine.compliance audit    # run every control, update status.json
     python -m lpos_engine.compliance report   # stage fixes for failures + write report.html
     python -m lpos_engine.compliance status   # print current status.json
+    python -m lpos_engine.compliance verify   # verify the hash-chained evidence ledger
 
 Options: ``--root`` for the Hermes root (default $LPOS_HERMES_ROOT or
 ~/.hermes), ``--repo`` for the release checkout (default $LPOS_REPO_ROOT or
 the current directory).
 
 Exit codes: 0 = command completed (even with gaps -- cron must not flap);
-2 = status requested but no audit has ever run.
+1 = verify found ledger tampering; 2 = status requested but no audit has
+ever run.
 """
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ from . import (
     publish_compliance_report,
     stage_compliance_remediation,
 )
-from .audit import load_status, status_path
+from .audit import load_status, status_path, verify_history
 
 
 def _print(value) -> None:
@@ -56,13 +58,17 @@ def cmd_report(args: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_status(args: argparse.Namespace) -> int:
+def _root(args: argparse.Namespace) -> Path:
     context = _context(args)
-    root = Path(
+    return Path(
         context.get("hermes_root")
         or os.environ.get("LPOS_HERMES_ROOT")
         or (Path.home() / ".hermes")
     ).expanduser()
+
+
+def cmd_status(args: argparse.Namespace) -> int:
+    root = _root(args)
     if not status_path(root).is_file():
         print(f"no compliance status at {status_path(root)}; run audit first", file=sys.stderr)
         return 2
@@ -70,10 +76,16 @@ def cmd_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_verify(args: argparse.Namespace) -> int:
+    result = verify_history(_root(args))
+    _print(result)
+    return 0 if result.get("ok") else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m lpos_engine.compliance",
-        description="LPOS SOC 2 Type 2 compliance engine",
+        description="LPOS control readiness monitor (self-assessment, not an attestation)",
     )
     parser.add_argument("--root", help="Hermes root (default: $LPOS_HERMES_ROOT or ~/.hermes)")
     parser.add_argument("--repo", help="release checkout (default: $LPOS_REPO_ROOT or .)")
@@ -89,6 +101,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     status_cmd = sub.add_parser("status", help="print the current status.json")
     status_cmd.set_defaults(func=cmd_status)
+
+    verify_cmd = sub.add_parser(
+        "verify",
+        help="verify the hash-chained evidence ledger (exit 1 on tampering)",
+    )
+    verify_cmd.set_defaults(func=cmd_verify)
     return parser
 
 

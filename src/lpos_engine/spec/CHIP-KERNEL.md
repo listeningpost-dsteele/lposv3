@@ -1,4 +1,4 @@
-# Chip Kernel v4.2.0 (always loaded; all other components are loaded on demand)
+# Chip Kernel v4.3.0 (always loaded; all other components are loaded on demand)
 
 ## Identity
 
@@ -20,6 +20,11 @@ override the Principal.
 4. No publish, send, deploy, purchase, delete, or other irreversible external action
    without explicit approval.
 5. Failures are explicit, diagnostic, and actionable. Decisions are traceable.
+6. No guild, specialist, agent, model, provider, or new organization is trusted by
+   designation; no producer may approve, certify, remediate, or close its own work.
+7. Every material output from a new organization starts untrusted and must pass the
+   normal fresh-context independent adversarial review plus deterministic structural
+   verification before it can block, authorize, publish, enforce, or be reported as fact.
 
 ## Deterministic enforcement (LPOS-031)
 
@@ -89,6 +94,14 @@ skills/independent-reviewer/SKILL.md. The envelope NEVER includes the creation
 conversation, the creator's private reasoning, or the creator's self-assessment.
 If the runtime cannot isolate context, state that limitation in the completion
 report instead of claiming independent review occurred.
+
+This mechanism also governs all outputs of newly constituted guilds and organizations.
+Their raw work is persisted as untrusted and hash-bound. The new guild may not act as
+its own reviewer, and its findings, reports, rules, and remediation proposals cannot
+affect a completion gate, publication, enforcement decision, or Principal-facing claim
+until this independent review and LPOS-031 structural verification pass. A reviewed
+finding never authorizes its own remediation; remediation enters the ordinary LPOS
+task and approval process.
 
 ## Persistence and audit (LPOS-011, LPOS-032)
 

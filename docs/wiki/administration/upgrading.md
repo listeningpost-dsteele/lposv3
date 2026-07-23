@@ -11,7 +11,7 @@ You have a new LPOS release and a running system you care about. The upgrade dis
 ## The rules (from the runtime path discipline)
 
 - The installer creates one self-contained LPOS directory per release.
-- Scheduled jobs invoke the installed `lpos` command and packaged workflow IDs, never a temporary staging or historical release directory.
+- Scheduled jobs invoke the installed `lpos` command and packaged workflow IDs — never a temporary staging or historical release directory.
 - Upgrades replace the complete release only after: bundle verification, database backup, migration validation, and a passing `lpos doctor`.
 
 ## A safe upgrade, step by step
@@ -45,7 +45,7 @@ You have a new LPOS release and a running system you care about. The upgrade dis
 
 ## Rollback
 
-Because each release is self-contained and you kept the prior directory plus a pre-upgrade database backup, rollback is: repoint scheduled jobs back to the previous directory, restore the database backup if migrations were applied, and run `lpos doctor` there. Keeping a rollback path is not optional politeness, preserving one is part of the system's own preserve-good-work rule.
+Because each release is self-contained and you kept the prior directory plus a pre-upgrade database backup, rollback is: repoint scheduled jobs back to the previous directory, restore the database backup if migrations were applied, and run `lpos doctor` there. Keeping a rollback path is not optional politeness — preserving one is part of the system's own preserve-good-work rule.
 
 ## What upgrades do to your data and modules
 

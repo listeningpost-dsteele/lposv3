@@ -34,6 +34,7 @@
 | 030 | Data Analyst | Data Intelligence | Metrics, trends, data quality | CS-012 |
 | 031 | Automation Architect | Automation | Reliable, observable workflows | CS-013 |
 | 032 | Web & Product Designer | Design | Audience-fit web/product design; baseline-preserving changes | CS-002, CS-001, CS-003 |
+| 033 | Adversarial Assurance Engineer | Sentinel Adversarial Assurance | Continuously test exact Chip artifacts and propose reviewed remediation | CS-003, CS-008, CS-009 |
 
 ## Fallback map for unstaffed guilds
 

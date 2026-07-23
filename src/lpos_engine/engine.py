@@ -13,7 +13,13 @@ from .adapters.deterministic import (
     RecordingActionAdapter,
     SandboxedFileActionAdapter,
 )
-from .approvals import ApprovalService, IdentityVerifier
+from .approvals import (
+    ApprovalService,
+    ChannelRegistry,
+    ChannelVerifier,
+    IdentityVerifier,
+    TrustedLocalChannel,
+)
 from .canonical import digest, new_id, utc_now
 from .context import ContextCompiler, SpecRepository
 from .errors import AdapterError, PolicyViolation
@@ -38,24 +44,59 @@ from .models import (
     ReviewResult,
     TaskEnvelope,
     TaskStatus,
+    VerifiedMessage,
 )
 from .policy import PolicyEngine
 from .review import ReviewService
 from .routing import CapabilityRegistry, CapabilityRouter
+from .sentinel import SentinelPolicy, SentinelService
 from .store import SQLiteStore
 
 
 @dataclass(frozen=True, slots=True)
 class RuntimeConfig:
+    """Runtime configuration.
+
+    ``verified_identities`` maps channel name -> allowlisted Principal sender
+    identities.  ``verified_channels`` maps message *provider* name -> the
+    ``ChannelVerifier`` that authenticates raw provider evidence for that
+    provider.  Both are required for an approval: the sender must be
+    allowlisted AND the message must arrive through a registered, verified
+    channel.  A runtime with no registered channel for a provider rejects
+    every approval message claiming that provider, regardless of sender.
+    """
+
     database_path: Path
     spec_root: Path | None = None
     verified_identities: Mapping[str, tuple[str, ...]] = field(default_factory=dict)
+    verified_channels: Mapping[str, ChannelVerifier] = field(default_factory=dict)
     max_context_chars: int = 160_000
+    sentinel_enabled: bool = True
+    sentinel_require_trusted_review: bool = True
+    sentinel_blocking_severities: tuple[str, ...] = ("critical", "high")
+    sentinel_passive_only: bool = True
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "database_path", Path(self.database_path))
         if self.spec_root is not None:
             object.__setattr__(self, "spec_root", Path(self.spec_root))
+        if not isinstance(self.sentinel_enabled, bool):
+            raise TypeError("sentinel_enabled must be boolean")
+        if not isinstance(self.sentinel_require_trusted_review, bool):
+            raise TypeError("sentinel_require_trusted_review must be boolean")
+        if self.sentinel_enabled and not self.sentinel_require_trusted_review:
+            raise ValueError(
+                "enabled Sentinel may not bypass the constitutional independent-review gate"
+            )
+        if not isinstance(self.sentinel_passive_only, bool):
+            raise TypeError("sentinel_passive_only must be boolean")
+        if isinstance(self.sentinel_blocking_severities, (str, bytes)):
+            raise TypeError("sentinel_blocking_severities must be a sequence")
+        object.__setattr__(
+            self,
+            "sentinel_blocking_severities",
+            tuple(dict.fromkeys(self.sentinel_blocking_severities)),
+        )
 
 
 class LPOSRuntime:
@@ -79,10 +120,23 @@ class LPOSRuntime:
             self.spec_repository, max_chars=config.max_context_chars
         )
         self.identity_verifier = IdentityVerifier(config.verified_identities)
-        self.approvals = ApprovalService(self.store, self.identity_verifier)
+        self.channels = ChannelRegistry(config.verified_channels)
+        self.approvals = ApprovalService(self.store, self.identity_verifier, self.channels)
         self.actions = ActionService(self.store, self.adapters, self.approvals)
         self.reviews = ReviewService(self.store, self.adapters, self.context_compiler)
         self.policy = PolicyEngine(self.store)
+        self.sentinel = SentinelService(
+            self.store,
+            self.adapters,
+            self.context_compiler,
+            policy=SentinelPolicy(
+                enabled=config.sentinel_enabled,
+                require_trusted_review=config.sentinel_require_trusted_review,
+                blocking_severities=config.sentinel_blocking_severities,
+                passive_only=config.sentinel_passive_only,
+            ),
+            approval_service=self.approvals,
+        )
 
     @classmethod
     def local(
@@ -90,8 +144,19 @@ class LPOSRuntime:
         config: RuntimeConfig,
         *,
         file_action_root: str | Path | None = None,
+        trusted_local_providers: Sequence[str] = ("local-demo",),
     ) -> "LPOSRuntime":
-        """Create the safe local LPOS runtime with deterministic model and action adapters."""
+        """Create the safe local LPOS runtime with deterministic model and action adapters.
+
+        This demo/test constructor registers an explicit ``TrustedLocalChannel``
+        for each provider in ``trusted_local_providers`` (default:
+        ``"local-demo"``) and records an audit event for the registration.
+        A trusted-local channel performs no provider authentication and must
+        never be combined with live consequential adapters; hosts with live
+        adapters must instead register a real ``ChannelVerifier`` that
+        validates provider signatures/webhook secrets, and gate enablement on
+        a verified end-to-end channel round trip.
+        """
 
         creator = DeterministicModelAdapter("local-creator", priority=10)
         reviewer = DeterministicModelAdapter(
@@ -102,13 +167,32 @@ class LPOSRuntime:
         action_adapters = [RecordingActionAdapter()]
         if file_action_root is not None:
             action_adapters.append(SandboxedFileActionAdapter(file_action_root))
-        return cls(
+        runtime = cls(
             config,
             adapters=AdapterRegistry(
                 model_adapters=(creator, reviewer),
                 action_adapters=action_adapters,
             ),
         )
+        for provider in trusted_local_providers:
+            channel = TrustedLocalChannel(provider)
+            if not runtime.channels.is_registered(channel.provider):
+                runtime.channels.register(channel)
+                runtime.store.append_system_event(
+                    stream_type="channel",
+                    stream_id=channel.provider,
+                    event_type="channel.trusted_local_registered",
+                    payload={
+                        "provider": channel.provider,
+                        "verifier_id": channel.verifier_id,
+                        "verification_method": "trusted-local-session",
+                        "warning": (
+                            "trusted-local channel performs no provider "
+                            "authentication; demo/test use only"
+                        ),
+                    },
+                )
+        return runtime
 
     def submit_task(
         self,
@@ -309,6 +393,10 @@ class LPOSRuntime:
             created_by_adapter=adapter.name,
         )
         self.store.save_artifact(artifact)
+        if self.config.sentinel_enabled:
+            # Sentinel's raw result is persisted as untrusted, then immediately
+            # passed through LPOS's fresh-context adversarial review gate.
+            self.sentinel.assess_and_review(artifact, trigger="artifact_created")
         return artifact
 
     def review_latest_artifact(
@@ -390,6 +478,26 @@ class LPOSRuntime:
         task: TaskEnvelope = state["envelope"]
         artifact = self.store.get_latest_artifact(task_id)
         artifact_hash = artifact.content_hash if artifact else None
+        try:
+            self.sentinel.assert_can_complete(task_id, artifact_hash)
+        except PolicyViolation:
+            current = self.store.get_task(task_id)
+            if current["status"] is TaskStatus.EXECUTING:
+                self.store.transition_task(
+                    task_id,
+                    TaskStatus.REVIEWING,
+                    expected_version=current["version"],
+                    reason="Sentinel assurance findings require review",
+                )
+                current = self.store.get_task(task_id)
+            if current["status"] is TaskStatus.REVIEWING:
+                self.store.transition_task(
+                    task_id,
+                    TaskStatus.CORRECTION_REQUIRED,
+                    expected_version=current["version"],
+                    reason="independently reviewed Sentinel assurance gate blocked completion",
+                )
+            raise
         self.policy.assert_can_complete(task, artifact_hash)
 
         completion_evidence = EvidenceRecord(
@@ -503,14 +611,32 @@ class LPOSRuntime:
         *,
         message_identity: MessageIdentity,
         verified_identity: str,
+        verified_message: "VerifiedMessage | None" = None,
+        provider_evidence: Mapping[str, Any] | None = None,
         granted_action: str | None = None,
         granted_at: str | None = None,
     ) -> ApprovalGrant:
+        """Grant an exact-action approval through the trusted channel boundary.
+
+        A raw caller-constructed ``MessageIdentity`` is rejected unless its
+        provider has a registered ``ChannelVerifier`` on this runtime's
+        ``ChannelRegistry``.  Callers either pass ``verified_message`` (an
+        assertion the registry minted when the provider event was ingested)
+        or let this method ingest ``message_identity`` now with
+        ``provider_evidence`` forwarded to the registered verifier.  The
+        registry enforces single-use nonces and bounded assertion age; the
+        sender must also be on the ``IdentityVerifier`` allowlist.  The
+        verification method, verifier identity, provider event digest, and
+        verification time are persisted with the grant.
+        """
+
         request = self.store.get_approval_request(question_id)
         return self.approvals.grant(
             request=request,
             message_identity=message_identity,
             verified_identity=verified_identity,
+            verified_message=verified_message,
+            provider_evidence=provider_evidence,
             granted_action=granted_action,
             granted_at=granted_at,
         )

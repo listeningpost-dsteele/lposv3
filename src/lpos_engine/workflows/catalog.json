@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "os_version": "4.2.0",
+  "os_version": "4.3.0",
   "operations": [
     {
       "so_id": "SO-001",
@@ -213,6 +213,14 @@
       "title": "SOC 2 Compliance Audit",
       "workflow": "SO-025.json",
       "default_schedule": "0 6 * * *",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-026",
+      "title": "Continuous Adversarial Assurance",
+      "workflow": "SO-026.json",
+      "default_schedule": "*/5 * * * *",
       "requires": [],
       "enabled_by_default": true
     }

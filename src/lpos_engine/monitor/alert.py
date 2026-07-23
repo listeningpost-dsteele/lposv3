@@ -86,28 +86,47 @@ class SMTPTransport(Transport):
 
 
 class CommandTransport(Transport):
-    """Sendmail-style command: full RFC822-ish message piped to stdin."""
+    """Sendmail-style command: full RFC822-ish message piped to stdin.
 
-    def __init__(self, command: str | list[str]) -> None:
-        self.command = command
+    Argv lists only — shell strings are refused (audit LPOS-03): the command
+    is executed directly with ``shell=False``, so metacharacters in subjects,
+    bodies, or configuration are never interpreted by a shell.
+    """
+
+    def __init__(self, command: list[str]) -> None:
+        if (
+            isinstance(command, str)
+            or not isinstance(command, list)
+            or not command
+            or not all(isinstance(item, str) for item in command)
+        ):
+            raise TypeError(
+                "CommandTransport requires an argv list of strings; "
+                "shell command strings are not supported"
+            )
+        self.command = list(command)
 
     def send(self, subject: str, body: str, recipient: str) -> None:
         payload = f"To: {recipient}\nSubject: {subject}\n\n{body}\n"
-        completed = subprocess.run(  # noqa: S602
+        completed = subprocess.run(  # noqa: S603 - argv list, never a shell
             self.command,
-            shell=isinstance(self.command, str),
+            shell=False,
             input=payload,
             text=True,
             capture_output=True,
             timeout=60,
         )
         if completed.returncode != 0:
-            detail = (completed.stderr or completed.stdout or "").strip()
+            detail = (completed.stderr or completed.stdout or "").strip()[:512]
             raise RuntimeError(f"alert command exited {completed.returncode}: {detail}")
 
 
 def load_transport(root: Path | None = None) -> Transport | None:
-    """Build the configured primary transport, or None if none is configured."""
+    """Build the configured primary transport, or None if none is configured.
+
+    A legacy string ``command`` is treated as unconfigured (shell execution
+    was removed, LPOS-03); reconfigure it as an argv list.
+    """
 
     path = monitor_dir(root) / "smtp.json"
     try:
@@ -117,7 +136,10 @@ def load_transport(root: Path | None = None) -> Transport | None:
     if not isinstance(config, Mapping):
         return None
     if config.get("command"):
-        return CommandTransport(config["command"])
+        try:
+            return CommandTransport(config["command"])
+        except TypeError:
+            return None
     if config.get("host"):
         return SMTPTransport(config)
     return None
@@ -159,8 +181,12 @@ def _load_alert_state(root: Path | None) -> dict[str, Any]:
 def _save_alert_state(state: Mapping[str, Any], root: Path | None) -> None:
     path = alerts_path(root)
     tmp = path.with_suffix(".json.tmp")
+    from ..store import harden_file_mode, secure_create_file
+
+    secure_create_file(tmp)  # LPOS-15
     tmp.write_text(json.dumps(dict(state), indent=2) + "\n", encoding="utf-8")
     os.replace(tmp, path)
+    harden_file_mode(path)
 
 
 def _short_reason(error: str) -> str:
@@ -321,8 +347,12 @@ def run_alert_cycle(
         }
         path = undelivered_path(base)
         tmp = path.with_suffix(".json.tmp")
+        from ..store import harden_file_mode, secure_create_file
+
+        secure_create_file(tmp)  # LPOS-15
         tmp.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         os.replace(tmp, path)
+        harden_file_mode(path)
         result["undelivered_path"] = str(path)
     else:
         # A fully delivered cycle clears any stale undelivered marker.

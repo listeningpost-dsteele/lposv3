@@ -1,5 +1,39 @@
 # LPOS Changelog
 
+## 4.3.0 — 2026-07-23
+
+Feature release: the Sentinel Adversarial Assurance Guild (GUILD-039) as an additive
+assurance layer on the hardened v4.2.1 base. Adds SPECIALIST-033 (Adversarial Assurance
+Engineer) and SO-026 (Continuous Adversarial Assurance). Sentinel passively scans every
+persisted Chip artifact revision; its raw output starts explicitly untrusted and must
+pass LPOS's ordinary fresh-context independent adversarial review plus deterministic
+structural verification before any finding can block completion, authorize anything, or
+be reported to the Principal as fact. Constitution Article VIII codifies that no guild is
+trusted by designation and no producer may approve, remediate, or close its own work.
+Two improvements over the development candidate: (1) Sentinel's own record tables are
+anchored to the 4.2.1 tamper-evident hash-chained event stream and reconciled by
+integrity_check, so editing a stored record or flipping a review's trust decision is
+detected; (2) the active-engagement authorization gate goes through the 4.2.1
+verified-channel assertion path, so a fabricated MessageIdentity with no registered
+channel cannot authorize an engagement. Counts: specialists 32→33, standing operations
+25→26, benchmarks 53→55, schemas 17→20. Sentinel is additive assurance only: the 14
+findings in the July 22 external audit of v4.2.0 were closed by v4.2.1, NOT by Sentinel.
+
+## 4.2.1 — 2026-07-22
+
+Security and assurance-integrity patch: remediation of all 13 code-level findings from
+the July 22 external audit of v4.2.0 (LPOS-01 through LPOS-12, LPOS-14), each closed
+with an adversarial regression test mirroring the audit's reproduction; LPOS-13
+(organizational controls) is scaffolded in docs/SOC2-PROGRAM.md. Highlights: the
+compliance module becomes a truthful control readiness monitor (never self-labels
+"compliant"/"effective"); monitor shell execution removed and executable checks moved to
+admin-approved templates with origin-bound credentials and SSRF egress controls;
+approvals require channel-verified identity assertions; dashboard gains token auth,
+Host/Origin validation and containment; state files 0600/0700; event store and
+evidence ledger hash-chained with verification; subprocess hosts get streaming caps,
+allowlist env and resource limits; Ed25519 release signing + CycloneDX SBOM; an
+always-on structural schema gate; docs drift fixed. Full test suite: 326 tests.
+
 ## 4.2.0 — 2026-07-22
 
 Feature release: the SOC 2 Compliance Guild — compliance codified into the operating

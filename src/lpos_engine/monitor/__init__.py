@@ -20,9 +20,11 @@ from pathlib import Path
 from typing import Any
 
 from . import alert as alert_module
+from . import approved as approved_module
 from . import audit as audit_module
 from . import inventory as inventory_module
 from .alert import CommandTransport, SMTPTransport, Transport, run_alert_cycle
+from .approved import approved_checks_path, load_approved_checks
 from .audit import load_status, run_audit
 from .checks import CHECKS, CheckNotConfigured, CheckResult, resolve_check, run_check, run_checks
 from .inventory import discover, hermes_root, load_inventory, merge, refresh_inventory
@@ -35,6 +37,8 @@ __all__ = [
     "HANDLERS",
     "SMTPTransport",
     "Transport",
+    "approved_checks_path",
+    "load_approved_checks",
     "alert_connector_transitions",
     "audit_connectors",
     "discover",

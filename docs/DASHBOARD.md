@@ -11,6 +11,12 @@ file names across all Hermes roots.
 It is pure standard library (Python >= 3.11): no runtime dependencies, no CDN assets,
 no network calls beyond the local loopback.
 
+Security hardening in this release closes audit findings **LPOS-06** (session-token
+authentication, Host/Origin validation, request limits, loopback-only policy,
+hardening headers, safe error handling) and **LPOS-09** (symlink and
+absolute-path containment in the scanner and the open-folder API). See
+[Security model](#security-model) below.
+
 ## Running it
 
 Through the CLI (once wired by the orchestrator):
@@ -29,6 +35,96 @@ python -m lpos_engine.dashboard --port 8080 --root ~/alt-hermes
 Flags: `--port` (default 7373), `--root` (Hermes root override), `--host`
 (default `127.0.0.1`; keep it loopback), `--verbose` (request logging).
 
+## Security model
+
+### Session token (LPOS-06)
+
+Every start generates a fresh high-entropy session token
+(`secrets.token_urlsafe(32)`). It is written atomically to:
+
+```
+<hermes-root>/dashboard/token        (mode 0600)
+```
+
+**Every `/api` route — GET and POST — requires the token.** Send it as either
+header:
+
+```
+Authorization: Bearer <token>
+X-LPOS-Token: <token>
+```
+
+Requests with a missing or wrong token get `401` with no data and no state
+change. `GET /` (the UI shell) does not require the token — it contains no
+project data — and the server injects the current token into the page's inline
+script at render time, so the UI sends it automatically on every fetch.
+
+curl users read the token file:
+
+```bash
+TOKEN=$(cat ~/.hermes/dashboard/token)
+curl -H "X-LPOS-Token: $TOKEN" http://127.0.0.1:7373/api/projects
+```
+
+The token rotates on every server start; anything automating against the API
+must re-read the file after a restart.
+
+### Host and Origin rules (LPOS-06)
+
+- **Host:** every request (including `GET /`) must carry a Host header matching
+  the bound host and port. When bound to loopback, `localhost:<port>`,
+  `127.0.0.1:<port>`, and `[::1]:<port>` are accepted; anything else is
+  rejected with `400`. This defeats DNS-rebinding attacks.
+- **Origin:** a state-changing (POST) request whose Origin header is present
+  and is not the dashboard's own origin is rejected with `403`. Because
+  authentication is header-based (never a cookie), cross-site form posts can
+  never authenticate anyway — CSRF is covered twice over.
+
+### Request limits (LPOS-06)
+
+- POST bodies must be `Content-Type: application/json` (else `415`).
+- Bodies are capped at 1 MB (`413`); query strings at 2048 characters (`414`).
+
+### Loopback-only policy (LPOS-06)
+
+The server **refuses to start** on a non-loopback `--host` unless the
+environment variable `LPOS_DASHBOARD_ALLOW_NONLOOPBACK=1` is set, and even then
+it prints a prominent warning. Remote use is only supported behind a hardened
+reverse proxy that terminates TLS and performs its own authentication; the
+proxy must forward a loopback Host header (e.g. `127.0.0.1:<port>`).
+
+### Response hardening and errors (LPOS-06)
+
+Every response carries:
+
+```
+Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+Cache-Control: no-store
+```
+
+Unexpected server errors return a generic `{"error": "internal server error"}`
+body; tracebacks and internal paths are never sent to clients (with
+`--verbose` the traceback is logged to stderr only).
+
+### Path containment (LPOS-09)
+
+- Symlinked project directories are **never** scanned as projects.
+- Every configured root (standard and `roots.json` extras) must exist and
+  resolve cleanly; the resolved form is the approved boundary. Extra roots are
+  separately approved roots, not arbitrary path strings.
+- Search never follows directory symlinks and only walks directories that
+  resolve inside an approved root.
+- A kanban card `path` is resolved and must land inside an approved root
+  (the Hermes root or an approved extra root); otherwise the card keeps its
+  metadata but is reported with `path: null` and
+  `note: "path outside approved roots"`.
+- `POST /api/open` resolves the requested path (following symlinks) and
+  requires containment inside an approved root **before** anything is handed
+  to the OS opener; violations get `403`.
+
 ## Configuration
 
 | Setting | How to set it | Default |
@@ -36,10 +132,15 @@ Flags: `--port` (default 7373), `--root` (Hermes root override), `--host`
 | Hermes root | `LPOS_HERMES_ROOT` env var, or `--root` | `~/.hermes` |
 | Port | `--port` | `7373` |
 | Bind address | `--host` | `127.0.0.1` (localhost only) |
+| Non-loopback override | `LPOS_DASHBOARD_ALLOW_NONLOOPBACK=1` env var | off |
 | Extra project roots | `<root>/dashboard/roots.json` | none |
+| Session token file | written by the server | `<root>/dashboard/token` (0600) |
 
 `roots.json` is either a JSON array of directory paths or `{"roots": [...]}`.
-Relative entries resolve against the Hermes root.
+Relative entries resolve against the Hermes root. Each entry is an approved
+root: it must exist and resolve cleanly (symlinks followed) or it is ignored,
+and everything the dashboard reports is contained inside the resolved approved
+roots (LPOS-09).
 
 ## The directory convention the scanner uses
 
@@ -91,11 +192,14 @@ renders as an unmissable "woke from snooze" badge until you act on the item.
 - A purposeful empty state explains the buckets on a fresh install.
 
 "Open folder" uses the platform file manager (`open` on macOS, `explorer` on
-Windows, `xdg-open` elsewhere) and refuses any path outside the Hermes root.
+Windows, `xdg-open` elsewhere) and refuses any path that does not resolve
+inside the approved roots (symlinks are resolved first — LPOS-09).
 
 ## JSON API
 
-All endpoints are JSON over the local port:
+All endpoints are JSON over the local port. **Every `/api` request must carry
+the session token** (see [Security model](#security-model)); requests without
+it get `401`.
 
 - `GET /api/projects` — every project with its computed bucket, `woke` flag,
   snooze wake time, and archive timestamp.
@@ -103,7 +207,8 @@ All endpoints are JSON over the local port:
 - `POST /api/projects/<id>/archive`
 - `POST /api/projects/<id>/restore` — body `{"bucket": "active" | "research"}`.
 - `POST /api/projects/<id>/move` — body `{"bucket": "active" | "research" | "archived"}`.
-- `POST /api/open` — body `{"path": ...}`; rejected (403) outside the Hermes root.
+- `POST /api/open` — body `{"path": ...}`; rejected (403) when the resolved
+  path is outside the approved roots.
 - `GET /api/search?q=...` — matching projects and file names across all roots.
 - `GET /api/health` — contents of `<root>/monitor/status.json`, or `null`.
 

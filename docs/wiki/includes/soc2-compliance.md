@@ -8,31 +8,30 @@ order: 6
 
 The SOC 2 Compliance Guild (GUILD-038) makes compliance a property of the operating
 system rather than a project someone remembers to do. It codifies the AICPA Trust
-Services Criteria, the 2017 TSC with the revised 2022 points of focus: the common
+Services Criteria — the 2017 TSC with the revised 2022 points of focus: the common
 criteria series CC1 through CC9 plus the optional Availability, Confidentiality,
-Processing Integrity, and Privacy categories, as a machine-checkable control catalog in
+Processing Integrity, and Privacy categories — as a machine-checkable control catalog in
 `lpos_engine.compliance`, and runs it autonomously every day as SO-025.
 
 "Type 2" is the part most compliance tooling gets wrong: a Type 2 report is about
 operating effectiveness **over an observation period**, not a point-in-time snapshot.
 The guild is built around that: every control run appends to an evidence history, and
-each control earns its "effective" verdict only by passing consistently across the
-90-day observation window. One green run proves very little, and the report says so.
+a control earns an "operating" verdict only by passing consistently across enough distinct runs and days of the 90-day observation window. A fresh install honestly reports insufficient evidence — never "compliant" or "effective", which only an independent CPA examination can conclude.
 
 ## The autonomous loop
 
 Each scheduled run of [SO-025](/reference/so-025.html) does four things. It enumerates
 the codified control catalog (21 controls mapped to the TSC series). It audits every
-control against the actual system, each result carries evidence naming the exact files
+control against the actual system — each result carries evidence naming the exact files
 and values inspected, which is the proof. For anything failing, it builds the fix in the
-**staging test environment** (`~/.hermes/compliance/staging/`), a copy, with a
+**staging test environment** (`~/.hermes/compliance/staging/`) — a copy, with a
 remediation note and a validation result, so nothing you're working on breaks; the
 stager refuses live paths by construction, and a staged fix enters the main system only
 through exact-action Principal approval. Finally it publishes the compliance page.
 
 ## The compliance page
 
-`~/.hermes/compliance/report.html` is a self-contained page with the status hero (overall
+`~/.hermes/compliance/report.html` — the Control Readiness Report, a self-assessment and never an attestation — is a self-contained page with the status hero (overall
 state, window coverage, control counts), **The Problems** (each failing control, its TSC
 criterion, the risk in plain language, and the evidence), **The Fixes** (each staged
 remediation, where it lives in the test environment, its validation result, and its

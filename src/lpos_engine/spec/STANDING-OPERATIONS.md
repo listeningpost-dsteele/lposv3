@@ -1715,3 +1715,73 @@ effectiveness record covers the observation window.
 A control result without evidence; a remediation written anywhere but staging; an
 adoption without its exact-action approval; or a gap that appears on the page without a
 proposed fix.
+
+---
+
+## Source: `standing-operations/SO-026-continuous-adversarial-assurance.md`
+
+---
+id: SO-026
+title: Continuous Adversarial Assurance
+version: 1.0.0
+status: Accepted
+owner: Principal
+machine:
+  owner: Sentinel Adversarial Assurance Guild
+  specialists: [adversarial-assurance-engineer, independent-reviewer]
+  specialist_ids: [SPECIALIST-033]
+  type: standing_operation
+  slug: continuous-adversarial-assurance
+  trigger: event_and_scheduled
+  communication_intent: Operational Alert
+---
+
+# Continuous Adversarial Assurance
+
+## Mission
+
+Continuously monitor every artifact Chip persists, adversarially assess the exact
+revision, independently review Sentinel's own output, and report accepted problems and
+remediation to the Principal.
+
+## Objective
+
+Every artifact revision receives one current-policy passive assessment and one
+hash-bound fresh-context independent review. Only trusted reviewed findings reach the
+Principal or affect task completion; review failures create an assurance-failure alert
+without presenting raw guild claims as facts.
+
+## Required capabilities
+
+- read-only access to persisted task and artifact revisions
+- access to the packaged Sentinel rules
+- a review-capable adapter with fresh isolated context
+- append-only assessment, review, report, and acknowledgement storage
+
+## Behavior
+
+1. `inventory_unassessed_artifacts`: find exact persisted revisions with no assessment
+   under the current Sentinel policy version.
+2. `assess_and_adversarially_review_artifacts`: run passive rules, persist raw output as
+   untrusted, compile the ordinary independent ReviewEnvelope, run a fresh-context
+   reviewer, and deterministically re-scan the target.
+3. `report_sentinel_assurance_status`: stage accepted findings and remediation in the
+   Principal security inbox; stage review failures only as assurance failures; report
+   clean scans silently.
+
+The event hook runs the same flow immediately after artifact creation. This scheduled
+operation is the idempotent backstop for missed events.
+
+## Success criteria
+
+No artifact completes without a current trusted assessment; no raw or self-approved
+Sentinel claim affects a gate or appears as fact; Critical and High reviewed findings
+block completion; every report includes remediation and verification; and every record
+is immutable and hash-bound.
+
+## Failure conditions
+
+An artifact is missed; a new guild output is trusted by source; Sentinel reviews or
+closes its own work; sensitive evidence is copied into the ledger; an active probe runs
+without separately approved scope; or an unreviewed finding blocks, authorizes,
+publishes, enforces, or reaches the Principal as fact.

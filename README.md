@@ -1,4 +1,4 @@
-# LPOS v4.2.0
+# LPOS v4.3.0
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -125,5 +125,5 @@ lpos validate-schemas
 lpos doctor
 ```
 
-The authoritative release version is `4.2.0` in `pyproject.toml`, the installed package,
+The authoritative release version is `4.3.0` in `pyproject.toml`, the installed package,
 the specification kernel, workflow catalog, capability registry, and release manifest.

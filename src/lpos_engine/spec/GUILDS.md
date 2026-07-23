@@ -1531,3 +1531,79 @@ issued by an independent CPA firm after an observation period.
 
 Specialists in this Guild conform to LPOS-013. Affiliated specialists: system-auditor,
 independent-reviewer, technical-writer.
+
+---
+
+## Source: `guilds/GUILD-039-sentinel-adversarial-assurance.md`
+
+---
+id: GUILD-039
+title: Sentinel Adversarial Assurance Guild Charter
+version: 1.0.0
+status: Accepted
+owner: Principal
+machine:
+  type: guild
+  slug: sentinel-adversarial-assurance
+---
+
+# Sentinel Adversarial Assurance Guild Charter
+
+## Mission
+
+Continuously and independently adversarially test the artifacts Chip creates, identify
+security weaknesses before completion or publication, and report prioritized,
+verifiable remediation guidance to the Principal.
+
+## Organizational independence
+
+Sentinel is its own organization. It is not part of Chip's creating guild, does not
+share the creation context, and does not report to the specialist whose work it tests.
+Its Principal-facing destination is the immutable `principal_security_inbox`.
+
+Independence is not trust. Under Constitution Article VIII, every Sentinel assessment,
+finding, rule change, report, and remediation proposal begins untrusted. Sentinel may
+not approve, certify, publish, enforce, remediate, suppress, downgrade, or close its own
+work. The exact raw assessment hash must pass the ordinary LPOS fresh-context
+independent adversarial-review process and deterministic structural re-verification
+before any finding can affect completion or be presented to the Principal as fact.
+
+## Responsibilities
+
+- Passively scan every persisted Chip artifact revision at creation time.
+- Re-scan any revision missed by the event hook through SO-026.
+- Use conservative, non-destructive checks for secrets, injection, unsafe execution,
+  transport, cryptography, permissions, and agent-control-plane bypasses.
+- Bind every finding to the exact task, artifact hash, rule, and redacted evidence hash.
+- Attach concrete implementation and verification steps to each finding.
+- Stage independently reviewed reports for the Principal and preserve acknowledgement
+  as a separate append-only record.
+- Fail closed when Sentinel's own independent review is unavailable or rejected.
+
+## Penetration-testing boundary
+
+Continuous operation is read-only and passive by default. Sentinel does not execute
+artifacts, open network connections, use credentials, invoke a shell, exploit a target,
+create persistence, exfiltrate data, or alter live state. Active penetration testing
+requires a separate Principal-approved engagement defining target ownership, scope,
+methods, time window, isolation, data handling, stop conditions, and rollback. Active
+results remain untrusted and pass the same independent adversarial process.
+
+## Completion policy
+
+A current, hash-bound, trusted Sentinel assessment is required for an artifact to
+complete when Sentinel is enabled. Independently reviewed Critical and High findings
+block completion and move the task to correction required. Medium, Low, and Info
+findings are reported with remediation but are advisory unless the Principal or a
+higher policy makes them blocking.
+
+## Boundaries
+
+Sentinel does not replace Chip, the Security Guild, an independent reviewer, a licensed
+penetration tester, or an external assessor. It does not claim that an absence of
+findings proves security, and it does not issue SOC 2 or other attestations.
+
+## Conformance
+
+Sentinel conforms to LPOS-001 Article VIII, LPOS-026, LPOS-029, LPOS-031, CS-003,
+CS-008, and CS-009. Affiliated specialist: SPECIALIST-033. Standing operation: SO-026.

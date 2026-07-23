@@ -1,0 +1,309 @@
+{
+  "$id": "https://lpos.local/schemas/principal-security-report.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "overall": {
+            "const": "attention_required"
+          }
+        },
+        "required": [
+          "overall"
+        ]
+      },
+      "then": {
+        "properties": {
+          "findings": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "overall": {
+            "const": "assurance_failure"
+          }
+        },
+        "required": [
+          "overall"
+        ]
+      },
+      "then": {
+        "properties": {
+          "counts": {
+            "properties": {
+              "critical": {
+                "const": 0
+              },
+              "high": {
+                "const": 0
+              },
+              "info": {
+                "const": 0
+              },
+              "low": {
+                "const": 0
+              },
+              "medium": {
+                "const": 0
+              }
+            }
+          },
+          "findings": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "artifact_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifact_id": {
+      "maxLength": 128,
+      "pattern": "^\\S+$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "assessment_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "assessment_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "counts": {
+      "additionalProperties": false,
+      "properties": {
+        "critical": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "high": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "info": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "low": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "medium": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "info"
+      ],
+      "type": "object"
+    },
+    "destination": {
+      "const": "principal_security_inbox"
+    },
+    "findings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "blocking": {
+            "type": "boolean"
+          },
+          "category": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "evidence": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "evidence_hash": {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "kind": {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "location": {
+                  "maxLength": 2048,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "redacted_excerpt": {
+                  "maxLength": 1000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "location",
+                "redacted_excerpt",
+                "evidence_hash"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "finding_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^\\S+$",
+            "type": "string"
+          },
+          "fingerprint": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "remediation_steps": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "remediation_summary": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "rule_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^\\S+$",
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low",
+              "info"
+            ]
+          },
+          "title": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          },
+          "verification_steps": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "finding_id",
+          "rule_id",
+          "severity",
+          "category",
+          "confidence",
+          "blocking",
+          "title",
+          "description",
+          "fingerprint",
+          "evidence",
+          "remediation_summary",
+          "remediation_steps",
+          "verification_steps"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "overall": {
+      "enum": [
+        "attention_required",
+        "assurance_failure"
+      ]
+    },
+    "report_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "review_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "review_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "summary": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "report_id",
+    "assessment_id",
+    "assessment_hash",
+    "review_id",
+    "review_hash",
+    "task_id",
+    "artifact_id",
+    "artifact_hash",
+    "overall",
+    "summary",
+    "counts",
+    "findings",
+    "destination",
+    "generated_at"
+  ],
+  "title": "PrincipalSecurityReport",
+  "type": "object"
+}

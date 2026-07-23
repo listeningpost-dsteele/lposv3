@@ -10,7 +10,7 @@ You want a working LPOS installation on your machine. The whole process is: extr
 
 ## Step 1: Extract the release
 
-Extract the release ZIP into a new, empty directory. Everything LPOS needs lives inside this one self-contained directory, the installer never writes outside it.
+Extract the release ZIP into a new, empty directory. Everything LPOS needs lives inside this one self-contained directory — the installer never writes outside it.
 
 ## Step 2: Run the installer
 
@@ -41,7 +41,7 @@ All three routes run the same Python installer. Two optional flags:
 
 ## What the installer does
 
-The installer is deliberately transparent, it prints each command before running it. In order, it:
+The installer is deliberately transparent — it prints each command before running it. In order, it:
 
 1. **Verifies the release** by running `verify_release.py`, which checks every file against the SHA-256 manifest, confirms version synchronization across the release metadata, registry, and workflow catalog, and validates the 32 specialists, 21 Standing Operations, 53 benchmarks, and 17 schemas.
 2. **Creates a local Python environment** at `.venv` inside the release directory (or reuses an existing one).
@@ -49,7 +49,7 @@ The installer is deliberately transparent, it prints each command before running
 4. **Smoke-tests the CLI**: `lpos version` and `lpos validate-schemas` via the module form.
 5. **Initializes the state database** at `state/lpos.db` with `lpos init`, applying the checksummed migrations.
 6. **Runs `lpos doctor`** against the new database to confirm the integrated specification, runtime assets, and database are healthy.
-7. **Runs the record-only verification flow** (`lpos demo`) into `state/verification/`, a complete end-to-end task with interpretation contract, artifact, exact-action approval, and isolated review, with no real side effects. Skipped if you passed `--skip-demo`.
+7. **Runs the record-only verification flow** (`lpos demo`) into `state/verification/` — a complete end-to-end task with interpretation contract, artifact, exact-action approval, and isolated review, with no real side effects. Skipped if you passed `--skip-demo`.
 
 ## Step 3: Confirm it worked
 
@@ -71,10 +71,10 @@ On Windows:
 
 The installer fails loudly and early rather than leaving a half-installed system:
 
-- **"Python 3.11+ is required; found ..."**, install a newer Python and re-run.
-- **"RELEASE.json is missing or invalid"**, the extraction is incomplete or you are running from the wrong directory; re-extract and run from the bundle root.
-- **"LPOS v4 release verification FAILED"** with a list of files, the bundle is modified or corrupted; re-download and re-extract. (Note for later: adding your own files to the release directory also triggers this, because the manifest lists every immutable file.)
-- **"virtual-environment Python was not created"**, your Python cannot create venvs; check that the `venv` module is available.
+- **"Python 3.11+ is required; found ..."** — install a newer Python and re-run.
+- **"RELEASE.json is missing or invalid"** — the extraction is incomplete or you are running from the wrong directory; re-extract and run from the bundle root.
+- **"LPOS v4 release verification FAILED"** with a list of files — the bundle is modified or corrupted; re-download and re-extract. (Note for later: adding your own files to the release directory also triggers this, because the manifest lists every immutable file.)
+- **"virtual-environment Python was not created"** — your Python cannot create venvs; check that the `venv` module is available.
 
 More in [Troubleshooting](/administration/troubleshooting.html).
 

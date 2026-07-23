@@ -1,10 +1,14 @@
-"""LPOS SOC 2 Type 2 Compliance Engine (SO-025).
+"""LPOS Control Readiness Monitor (SO-025).
 
 Codifies the AICPA 2017 Trust Services Criteria (2022 points of focus) as
-data, runs a catalog of machine-checkable controls against the release
-checkout and the Hermes runtime root, keeps an append-only Type 2 history,
-stages remediations for failures (test environment only -- never the live
-system), and publishes a self-contained HTML report.
+data and runs a register of machine-checkable readiness controls against the
+release checkout and the Hermes runtime root. It is a SELF-ASSESSMENT: it
+never emits "compliant" or "effective" as self-determined states (audit
+finding LPOS-01) — a SOC 2 Type 2 conclusion is only ever issued by an
+independent CPA. Evidence history is a hash-chained, truly append-only ledger
+(finding LPOS-08); structural checks are honestly labeled and capped below
+"operating" (finding LPOS-02). Remediations are staged to a test environment
+only -- never the live system -- and a self-contained HTML report is published.
 
 Public surface:
 
@@ -12,10 +16,13 @@ Public surface:
   (``inventory_compliance_controls``, ``audit_compliance_controls``,
   ``stage_compliance_remediation``, ``publish_compliance_report``), each with
   the repo's ``StepHandler`` signature ``(Mapping[str, Any]) -> Mapping[str, Any]``.
-- ``python -m lpos_engine.compliance audit|report|status`` -- on-demand CLI.
+- ``python -m lpos_engine.compliance audit|report|status|verify`` -- CLI.
+- :func:`verify_history` -- ledger integrity check for doctor wiring.
 
-State lives under ``<hermes root>/compliance/``: ``history.jsonl`` (append-only
-check history, capped), ``status.json`` (stable contract), ``report.html``,
+State lives under ``<hermes root>/compliance/``: ``history.jsonl``
+(hash-chained append-only ledger; explicit ``compact_history`` checkpoints and
+archives, never silent trimming), ``history.head.json`` (truncation-detection
+sidecar), ``status.json`` (stable contract), ``report.html``,
 ``remediations.json``, and ``staging/<run_id>/<control_id>/`` for staged fixes.
 Adoption of a staged fix is record-only and approval-gated, matching the
 distribution's ``external_action_default: record-only``.
@@ -31,8 +38,25 @@ from typing import Any
 from . import audit as audit_module
 from . import remediation as remediation_module
 from . import report as report_module
-from .audit import AuditResult, load_status, run_audit
-from .controls import CONTROLS, CONTROLS_BY_ID, Control, ControlResult, all_controls
+from .audit import (
+    MIN_OBSERVATION_DAYS,
+    MIN_RUNS,
+    MIN_RUNS_PER_CONTROL,
+    OPERATING_THRESHOLD,
+    AuditResult,
+    compact_history,
+    load_status,
+    run_audit,
+    verify_history,
+)
+from .controls import (
+    CONTROLS,
+    CONTROLS_BY_ID,
+    NOT_EVIDENCED,
+    Control,
+    ControlResult,
+    all_controls,
+)
 from .criteria import CRITERIA, FRAMEWORK, OBSERVATION_WINDOW_DAYS
 from .remediation import Remediation, adoption_plan, build_and_stage_remediations, stage_remediation
 from .report import generate_report, render_report
@@ -46,8 +70,15 @@ __all__ = [
     "ControlResult",
     "FRAMEWORK",
     "HANDLERS",
+    "MIN_OBSERVATION_DAYS",
+    "MIN_RUNS",
+    "MIN_RUNS_PER_CONTROL",
+    "NOT_EVIDENCED",
     "OBSERVATION_WINDOW_DAYS",
+    "OPERATING_THRESHOLD",
     "Remediation",
+    "compact_history",
+    "verify_history",
     "adoption_plan",
     "all_controls",
     "audit_compliance_controls",
@@ -111,7 +142,14 @@ def audit_compliance_controls(context: Mapping[str, Any]) -> Mapping[str, Any]:
     summary = result.status.get("summary", {})
     return {
         "generated_at": result.generated_at,
+        "run_id": result.run_id,
         "overall": result.overall,
+        "attestation": False,
+        "issued_by_cpa": False,
+        "self_assessment": True,
+        "evidence_period_status": result.status.get("evidence_period_status"),
+        "distinct_runs": result.status.get("distinct_runs"),
+        "distinct_run_days": result.status.get("distinct_run_days"),
         "summary": dict(summary),
         "failing": sorted(result.failing),
         "status_path": result.status_path,

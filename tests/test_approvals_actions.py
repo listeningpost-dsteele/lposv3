@@ -11,7 +11,12 @@ from lpos_engine.adapters import (
     RecordingActionAdapter,
     SandboxedFileActionAdapter,
 )
-from lpos_engine.approvals import ApprovalService, IdentityVerifier
+from lpos_engine.approvals import (
+    ApprovalService,
+    ChannelRegistry,
+    IdentityVerifier,
+    TrustedLocalChannel,
+)
 from lpos_engine.errors import (
     ActionExecutionError,
     ApprovalExpired,
@@ -42,7 +47,10 @@ class ApprovalActionTests(unittest.TestCase):
             )
         )
         self.identity = IdentityVerifier({"email": ("principal@example.com",)})
-        self.approvals = ApprovalService(self.store, self.identity)
+        # Approvals must arrive through a registered channel verifier; tests
+        # use the explicit trusted-local channel for the "test" provider.
+        self.channels = ChannelRegistry([TrustedLocalChannel("test")])
+        self.approvals = ApprovalService(self.store, self.identity, self.channels)
         self.recording = RecordingActionAdapter()
         self.files = SandboxedFileActionAdapter(self.root / "files")
         self.registry = AdapterRegistry(action_adapters=(self.recording, self.files))

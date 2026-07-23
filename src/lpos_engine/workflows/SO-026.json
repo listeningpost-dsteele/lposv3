@@ -1,0 +1,24 @@
+{
+  "so_id": "SO-026",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-INVENTORY",
+      "handler": "inventory_unassessed_artifacts",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ASSESS-AND-REVIEW",
+      "handler": "assess_and_adversarially_review_artifacts",
+      "depends_on": ["STEP-INVENTORY"],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_sentinel_assurance_status",
+      "depends_on": ["STEP-ASSESS-AND-REVIEW"],
+      "continue_on_error": false
+    }
+  ]
+}

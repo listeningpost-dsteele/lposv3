@@ -12,7 +12,12 @@ from lpos_engine.adapters import (
     RecordingActionAdapter,
     SandboxedFileActionAdapter,
 )
-from lpos_engine.approvals import ApprovalService, IdentityVerifier
+from lpos_engine.approvals import (
+    ApprovalService,
+    ChannelRegistry,
+    IdentityVerifier,
+    TrustedLocalChannel,
+)
 from lpos_engine.canonical import parse_timestamp, text_digest, utc_now
 from lpos_engine.engine import LPOSRuntime, RuntimeConfig
 from lpos_engine.errors import (
@@ -129,6 +134,7 @@ class ActionTransactionHardeningTests(unittest.TestCase):
         self.approvals = ApprovalService(
             self.store,
             IdentityVerifier({"email": ("principal@example.com",)}),
+            ChannelRegistry([TrustedLocalChannel("test")]),
         )
         self.recording = RecordingActionAdapter()
         self.files = SandboxedFileActionAdapter(self.root / "files")
@@ -605,7 +611,10 @@ class StoreMigrationAndBindingTests(unittest.TestCase):
 
     def test_migration_is_recorded_and_database_passes_integrity_check(self):
         migrations = self.store.list_migrations()
-        self.assertEqual([item["migration_name"] for item in migrations], ["001_initial.sql"])
+        self.assertEqual(
+            [item["migration_name"] for item in migrations],
+            ["001_initial.sql", "002_event_chain.sql", "003_sentinel.sql"],
+        )
         self.assertEqual(len(migrations[0]["checksum"]), 64)
         self.assertEqual(self.store.integrity_check(), "ok")
         reopened = SQLiteStore(self.db)

@@ -14,10 +14,20 @@ Sources scanned:
 - ``<root>/platforms/`` — platform integrations (email, VCS, cloud, ...).
 - ``<root>/state/services.json`` or ``<root>/monitor/registered-services.json``
   — the registration hook for self-built services.  Any agent that stands up a
-  service appends ``{id, name, kind, check: {...}, criticality}`` there.
+  service appends ``{id, name, kind, check, criticality}`` there.
 - the repo's ``config/default_registry.json`` — if it declares external
   connectors under a ``connectors`` / ``external_connectors`` key (the stock
   registry declares none, so it usually contributes nothing).
+
+Trust boundary (audit LPOS-03): registration files are agent-writable, so a
+registered ``check`` may ONLY be a reference to an admin-approved template —
+``{"check_id": "<id in monitor/approved-checks.json>", "params": {...scalars}}``.
+A registration carrying its own executable definition (command, argv, url,
+host, an inline ``type``, ...) is sanitised here: its check is dropped and the
+entry is flagged ``unapproved_check`` so the audit reports it ``unknown`` with
+evidence ``unapproved check definition`` instead of ever executing it.  The
+merge only ever fills fields missing from the owner's inventory, so agent
+state can neither override owner edits nor approved templates.
 """
 
 from __future__ import annotations
@@ -45,9 +55,10 @@ def hermes_root() -> Path:
 
 
 def monitor_dir(root: Path | None = None) -> Path:
+    from ..store import secure_mkdir
+
     directory = (Path(root) if root is not None else hermes_root()) / "monitor"
-    directory.mkdir(parents=True, exist_ok=True)
-    return directory
+    return secure_mkdir(directory)
 
 
 def inventory_path(root: Path | None = None) -> Path:
@@ -103,6 +114,28 @@ def _scan_names(directory: Path) -> list[str]:
     return names
 
 
+def _sanitized_check(raw_check: Any) -> tuple[dict[str, Any], bool]:
+    """Reduce an agent-supplied check to an approved-template reference.
+
+    Returns ``(check, unapproved)``.  Only ``{"check_id": str, "params":
+    {scalars}}`` survives; anything else (inline command/argv/url/type/... —
+    any executable definition) is dropped and flagged so the audit reports
+    ``unknown`` / ``unapproved check definition`` rather than executing it.
+    """
+
+    from . import approved as approved_module  # local import: avoid cycle at load
+
+    if raw_check in (None, {}) or not isinstance(raw_check, Mapping):
+        return {}, False
+    if approved_module.is_reference_spec(raw_check):
+        check: dict[str, Any] = {"check_id": str(raw_check["check_id"])}
+        params = raw_check.get("params")
+        if isinstance(params, Mapping) and params:
+            check["params"] = {str(k): v for k, v in params.items()}
+        return check, False
+    return {}, True
+
+
 def _service_entries(value: Any) -> list[dict[str, Any]]:
     if isinstance(value, Mapping):
         value = value.get("services", [])
@@ -113,16 +146,18 @@ def _service_entries(value: Any) -> list[dict[str, Any]]:
         if not isinstance(raw, Mapping) or not raw.get("id"):
             continue
         entry_id = str(raw["id"])
-        entries.append(
-            _entry(
-                entry_id,
-                str(raw.get("name", entry_id)),
-                str(raw.get("kind", "self_built")),
-                check=raw.get("check") if isinstance(raw.get("check"), Mapping) else None,
-                criticality=str(raw.get("criticality", "critical")),
-                description=str(raw.get("description", "")),
-            )
+        check, unapproved = _sanitized_check(raw.get("check"))
+        entry = _entry(
+            entry_id,
+            str(raw.get("name", entry_id)),
+            str(raw.get("kind", "self_built")),
+            check=check,
+            criticality=str(raw.get("criticality", "critical")),
+            description=str(raw.get("description", "")),
         )
+        if unapproved:
+            entry["unapproved_check"] = True
+        entries.append(entry)
     return entries
 
 
@@ -195,8 +230,12 @@ def save_inventory(entries: list[dict[str, Any]], root: Path | None = None) -> P
     path = inventory_path(root)
     payload = {"connectors": entries}
     tmp = path.with_suffix(".json.tmp")
+    from ..store import harden_file_mode, secure_create_file
+
+    secure_create_file(tmp)  # LPOS-15
     tmp.write_text(json.dumps(payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
     os.replace(tmp, path)
+    harden_file_mode(path)
     return path
 
 

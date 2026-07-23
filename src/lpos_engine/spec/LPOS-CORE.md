@@ -116,6 +116,26 @@ Communication is classified by intent before channel.
 
 Constitutional changes require rationale, alternatives, impact, and migration guidance.
 
+## Article VIII. Institutional Skepticism and Independent Adversarial Review
+
+No guild, specialist, agent, model, provider, or newly constituted organization is
+trusted merely because of its name, mission, security designation, or source. New
+organizational output begins in an **untrusted** state.
+
+A new organization may not approve, certify, publish, enforce, remediate, or close its
+own work. Before any material output from a new organization can authorize or block an
+action, affect completion, be published, or be presented to the Principal as fact, the
+exact output hash must pass the ordinary LPOS adversarial process: a fresh-context
+independent review under LPOS-026 and LPOS-029 plus deterministic structural
+verification under LPOS-031. The producing organization, its creation context, and its
+self-assessment are excluded from that trust decision.
+
+A reviewed finding does not authorize its own remediation. Remediation follows normal
+interpretation, specification, approval, execution, and independent-review controls.
+The Principal retains final authority. The deterministic control plane is the trust
+gate and records both successful and failed review attempts, preventing a new guild
+from granting itself authority and avoiding recursive self-review.
+
 
 ---
 
@@ -149,6 +169,9 @@ machine:
 13. Failures are explicit, diagnostic, and actionable.
 14. Significant decisions are traceable.
 15. Every component conforms to higher constitutional layers.
+16. No component or organization may approve, certify, remediate, or close its own material output.
+17. Output from every newly constituted guild or organization is untrusted until its exact hash passes fresh-context independent adversarial review and deterministic structural verification.
+18. Only reviewed output may affect authorization, completion, publication, enforcement, or Principal-facing factual claims; remediation remains a separately controlled task.
 
 
 ---
@@ -203,7 +226,12 @@ owner: Listening Post
 **Chip**: The fiduciary executive office that knows the Principal, routes work,
 preserves context, and synthesizes results.
 
-**Guild**: A domain charter that groups related specialists and capabilities.
+**Guild**: A domain charter that groups related specialists and capabilities. A guild
+is not a trust authority and may not self-approve its material output.
+
+**Sentinel**: The independent GUILD-039 adversarial assurance organization that
+continuously performs read-only security analysis of Chip-created artifacts. Its raw
+output is untrusted until the ordinary LPOS adversarial-review gate passes.
 
 **Specialist**: A narrow expert role that performs delegated reasoning or work.
 

@@ -2,15 +2,32 @@
 
 The API surface:
 
-- ``GET  /``                              the single-page UI
+- ``GET  /``                              the single-page UI (token injected)
 - ``GET  /api/projects``                  all projects with computed buckets
 - ``POST /api/projects/<id>/snooze``      body ``{"until": "<ISO 8601>"}``
 - ``POST /api/projects/<id>/archive``
 - ``POST /api/projects/<id>/restore``     body ``{"bucket": "active"|"research"}``
 - ``POST /api/projects/<id>/move``        body ``{"bucket": ...}``
-- ``POST /api/open``                      body ``{"path": ...}`` (inside hermes root only)
+- ``POST /api/open``                      body ``{"path": ...}`` (inside approved roots only)
 - ``GET  /api/search?q=``                 project-name and file-name search
 - ``GET  /api/health``                    contents of ``<root>/monitor/status.json`` or null
+
+Security model (LPOS-06):
+
+- Every ``/api`` route — GET and POST — requires the per-run session token,
+  sent as ``Authorization: Bearer <token>`` or ``X-LPOS-Token``.  The token is
+  generated at server start and written to ``<root>/dashboard/token`` (0600,
+  atomic).  ``GET /`` serves the UI with the token injected server-side.
+- Every request must carry a Host header matching the bound host:port
+  (loopback aliases accepted when bound to loopback) or it is rejected with
+  400 — this defeats DNS rebinding.
+- State-changing requests with a foreign Origin header are rejected with 403;
+  header-based auth already makes cross-site form posts unauthenticatable.
+- POST bodies must be ``application/json`` and at most 1 MB; query strings are
+  length-capped.
+- Binding to a non-loopback host is refused unless
+  ``LPOS_DASHBOARD_ALLOW_NONLOOPBACK=1`` is set, and then loudly warned about.
+- Hardening headers are attached to every response; 500s carry a generic body.
 
 Application logic lives on :class:`DashboardApp` so tests can drive it without
 sockets; the request handler is a thin shim.
@@ -19,10 +36,16 @@ sockets; the request handler is a thin shim.
 from __future__ import annotations
 
 import argparse
+import hmac
+import ipaddress
 import json
+import os
 import platform
+import secrets
 import subprocess
 import sys
+import tempfile
+import traceback
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -31,10 +54,35 @@ from urllib.parse import parse_qs, unquote, urlsplit
 
 from . import scanner, state as state_mod
 from .state import DashboardState, WORKING_BUCKETS, iso, parse_iso, utcnow
-from .ui import PAGE_HTML
+from .ui import PAGE_HTML, TOKEN_PLACEHOLDER
 
 DEFAULT_PORT = 7373
 DEFAULT_HOST = "127.0.0.1"
+
+#: Maximum accepted POST body, in bytes (LPOS-06).
+MAX_BODY_BYTES = 1_000_000
+
+#: Maximum accepted query-string length, in characters (LPOS-06).
+MAX_QUERY_LENGTH = 2048
+
+#: Environment override that permits a non-loopback bind (LPOS-06).
+NONLOOPBACK_ENV = "LPOS_DASHBOARD_ALLOW_NONLOOPBACK"
+
+#: File under ``<root>/dashboard/`` holding the current session token.
+TOKEN_FILE_NAME = "token"
+
+#: Hardening headers attached to every response (LPOS-06).
+SECURITY_HEADERS: tuple[tuple[str, str], ...] = (
+    (
+        "Content-Security-Policy",
+        "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; "
+        "connect-src 'self'; img-src 'self' data:",
+    ),
+    ("X-Frame-Options", "DENY"),
+    ("X-Content-Type-Options", "nosniff"),
+    ("Referrer-Policy", "no-referrer"),
+    ("Cache-Control", "no-store"),
+)
 
 
 class DashboardError(Exception):
@@ -44,6 +92,46 @@ class DashboardError(Exception):
         super().__init__(message)
         self.status = status
         self.message = message
+
+
+def is_loopback_host(host: str) -> bool:
+    """Whether a bind/host string refers to the loopback interface."""
+    bare = host.strip().strip("[]").lower()
+    if bare == "localhost":
+        return True
+    try:
+        return ipaddress.ip_address(bare).is_loopback
+    except ValueError:
+        return False
+
+
+def render_page(token: str) -> str:
+    """The UI page with the session token injected into the inline script."""
+    return PAGE_HTML.replace(TOKEN_PLACEHOLDER, token)
+
+
+def _write_token_file(path: Path, token: str) -> None:
+    """Atomically write the token file with 0600 permissions."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp_name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=str(path.parent))
+    try:
+        if hasattr(os, "fchmod"):
+            os.fchmod(fd, 0o600)
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(token + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except OSError:
+            pass
+        raise
+    try:
+        os.chmod(path, 0o600)
+    except OSError:
+        pass
 
 
 def open_folder_command(path: str) -> list[str]:
@@ -146,11 +234,13 @@ class DashboardApp:
         candidate = Path(raw_path.strip()).expanduser()
         try:
             resolved = candidate.resolve()
-            root_resolved = self.root.resolve()
-        except OSError as exc:
-            raise DashboardError(400, f"unresolvable path: {exc}") from exc
-        if not resolved.is_relative_to(root_resolved):
-            raise DashboardError(403, "refusing to open a path outside the hermes root")
+        except (OSError, RuntimeError) as exc:
+            raise DashboardError(400, "unresolvable path") from exc
+        # LPOS-09: resolve symlinks first, then require containment inside an
+        # approved root before anything is handed to the OS opener.
+        allowed = scanner.containment_roots(self.root)
+        if not allowed or not scanner.is_contained(resolved, allowed):
+            raise DashboardError(403, "refusing to open a path outside the approved roots")
         if not resolved.exists():
             raise DashboardError(404, "path does not exist")
         target = resolved if resolved.is_dir() else resolved.parent
@@ -158,7 +248,7 @@ class DashboardApp:
         try:
             self.opener(command)
         except OSError as exc:
-            raise DashboardError(500, f"could not launch file manager: {exc}") from exc
+            raise DashboardError(500, "could not launch file manager") from exc
         return {"ok": True, "opened": str(target), "command": command}
 
     def search(self, query: str) -> dict[str, Any]:
@@ -192,12 +282,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
         if getattr(self.server, "verbose", False):
             super().log_message(format, *args)
 
+    # -- responses --------------------------------------------------------
+
+    def _send_security_headers(self) -> None:
+        for name, value in SECURITY_HEADERS:
+            self.send_header(name, value)
+
     def _send_json(self, status: int, payload: Any) -> None:
         body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
+        self._send_security_headers()
         self.end_headers()
         self.wfile.write(body)
 
@@ -206,9 +302,78 @@ class DashboardHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
+        self._send_security_headers()
         self.end_headers()
         self.wfile.write(body)
+
+    def _reject(self, status: int, message: str) -> None:
+        # The request body (if any) is not read on rejection, so the
+        # connection cannot be safely reused.
+        self.close_connection = True
+        self._send_json(status, {"error": message})
+
+    # -- security gates (LPOS-06) -----------------------------------------
+
+    def _host_ok(self) -> bool:
+        host = (self.headers.get("Host") or "").strip().lower()
+        return host in getattr(self.server, "allowed_hosts", set())
+
+    def _token_ok(self) -> bool:
+        expected = getattr(self.server, "token", None)
+        if not expected:
+            return False
+        supplied = self.headers.get("X-LPOS-Token")
+        if supplied is None:
+            authorization = self.headers.get("Authorization") or ""
+            if authorization.startswith("Bearer "):
+                supplied = authorization[len("Bearer ") :].strip()
+        if not supplied:
+            return False
+        return hmac.compare_digest(supplied.encode("utf-8"), expected.encode("utf-8"))
+
+    def _origin_ok(self) -> bool:
+        origin = self.headers.get("Origin")
+        if origin is None:
+            return True
+        return origin.strip().lower() in getattr(self.server, "allowed_origins", set())
+
+    def _common_checks(self, url) -> bool:
+        """Checks applied to every request. False means already rejected."""
+        if len(url.query) > MAX_QUERY_LENGTH:
+            self._reject(414, "query string too long")
+            return False
+        if not self._host_ok():
+            self._reject(400, "invalid Host header")
+            return False
+        return True
+
+    def _api_checks(self) -> bool:
+        """Auth check for every /api route. False means already rejected."""
+        if not self._token_ok():
+            self._reject(401, "missing or invalid dashboard token")
+            return False
+        return True
+
+    def _post_checks(self) -> bool:
+        """Extra gates for state-changing requests. False means rejected."""
+        if not self._origin_ok():
+            self._reject(403, "cross-origin request rejected")
+            return False
+        content_type = (self.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+        if content_type != "application/json":
+            self._reject(415, "Content-Type must be application/json")
+            return False
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            self._reject(400, "invalid Content-Length")
+            return False
+        if length > MAX_BODY_BYTES:
+            self._reject(413, "request body too large")
+            return False
+        return True
+
+    # -- request plumbing --------------------------------------------------
 
     def _read_body(self) -> dict[str, Any]:
         try:
@@ -217,6 +382,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
             length = 0
         if length <= 0:
             return {}
+        if length > MAX_BODY_BYTES:
+            raise DashboardError(413, "request body too large")
         raw = self.rfile.read(length)
         try:
             data = json.loads(raw.decode("utf-8"))
@@ -231,15 +398,25 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self._send_json(exc.status, {"error": exc.message})
         except BrokenPipeError:
             pass
-        except Exception as exc:  # never let a request kill the server
-            self._send_json(500, {"error": f"{type(exc).__name__}: {exc}"})
+        except Exception:  # never let a request kill the server, never leak internals
+            if getattr(self.server, "verbose", False):
+                traceback.print_exc(file=sys.stderr)
+            try:
+                self._send_json(500, {"error": "internal server error"})
+            except (BrokenPipeError, OSError):
+                pass
 
     def do_GET(self) -> None:  # noqa: N802
         url = urlsplit(self.path)
+        if not self._common_checks(url):
+            return
         path = url.path
         if path == "/" or path == "/index.html":
-            self._send_html(PAGE_HTML)
-        elif path == "/api/projects":
+            self._send_html(render_page(getattr(self.server, "token", "")))
+            return
+        if path.startswith("/api/") and not self._api_checks():
+            return
+        if path == "/api/projects":
             self._dispatch(self.app.projects)
         elif path == "/api/search":
             query = parse_qs(url.query).get("q", [""])[0]
@@ -251,11 +428,17 @@ class DashboardHandler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:  # noqa: N802
         url = urlsplit(self.path)
+        if not self._common_checks(url):
+            return
+        if not self._api_checks():
+            return
+        if not self._post_checks():
+            return
         parts = [unquote(part) for part in url.path.strip("/").split("/")]
         try:
             body = self._read_body()
         except DashboardError as exc:
-            self._send_json(exc.status, {"error": exc.message})
+            self._reject(exc.status, exc.message)
             return
         if parts == ["api", "open"]:
             self._dispatch(lambda: self.app.open_path(body.get("path")))
@@ -276,14 +459,48 @@ class DashboardHandler(BaseHTTPRequestHandler):
         self._send_json(404, {"error": "not found"})
 
 
+def _allowed_hosts(bind_host: str, port: int) -> set[str]:
+    """Host header values accepted for this bind (lowercase ``host:port``)."""
+    names = {"localhost", "127.0.0.1", "[::1]"}
+    bare = bind_host.strip().lower()
+    if bare and not is_loopback_host(bare) and bare not in ("0.0.0.0", "::", "[::]"):
+        names.add(f"[{bare.strip('[]')}]" if ":" in bare.strip("[]") else bare)
+    return {f"{name}:{port}" for name in names}
+
+
 class DashboardServer(ThreadingHTTPServer):
     daemon_threads = True
     allow_reuse_address = True
 
     def __init__(self, app: DashboardApp, host: str = DEFAULT_HOST, port: int = DEFAULT_PORT):
+        if not is_loopback_host(host):
+            if os.environ.get(NONLOOPBACK_ENV) != "1":
+                raise RuntimeError(
+                    f"refusing to bind non-loopback host {host!r}: the dashboard is "
+                    "localhost-only. Set LPOS_DASHBOARD_ALLOW_NONLOOPBACK=1 to override, "
+                    "and put a hardened reverse proxy with TLS and authentication in "
+                    "front of it (see docs/DASHBOARD.md)."
+                )
+            print(
+                "=" * 72
+                + f"\nWARNING: dashboard binding non-loopback host {host!r}.\n"
+                "Every client that can reach this port can read project metadata and\n"
+                "mutate dashboard state if it obtains the session token. Remote use\n"
+                "REQUIRES a hardened reverse proxy providing TLS and authentication.\n"
+                + "=" * 72,
+                file=sys.stderr,
+            )
         super().__init__((host, port), DashboardHandler)
         self.app = app
         self.verbose = False
+        # LPOS-06: per-run high-entropy session token, persisted 0600 for
+        # local tooling (curl etc.) to read.
+        self.token = secrets.token_urlsafe(32)
+        self.token_file = self.app.root / "dashboard" / TOKEN_FILE_NAME
+        _write_token_file(self.token_file, self.token)
+        bound_port = self.server_address[1]
+        self.allowed_hosts = _allowed_hosts(host, bound_port)
+        self.allowed_origins = {f"http://{h}" for h in self.allowed_hosts}
 
 
 def serve(
@@ -311,7 +528,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--host", default=DEFAULT_HOST, help="bind address (default 127.0.0.1)")
     parser.add_argument("--verbose", action="store_true", help="log requests to stderr")
     args = parser.parse_args(argv)
-    server = serve(root=args.root, host=args.host, port=args.port)
+    try:
+        server = serve(root=args.root, host=args.host, port=args.port)
+    except RuntimeError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
     server.verbose = args.verbose
     bound_host, bound_port = server.server_address[0], server.server_address[1]
     print(
@@ -320,6 +541,7 @@ def main(argv: list[str] | None = None) -> int:
                 "dashboard": f"http://{bound_host}:{bound_port}/",
                 "hermes_root": str(server.app.root),
                 "state": str(server.app.state_file),
+                "token_file": str(server.token_file),
             },
             indent=2,
         ),

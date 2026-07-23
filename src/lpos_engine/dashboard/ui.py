@@ -1,9 +1,14 @@
 """The dashboard's single-page UI as one self-contained inline HTML string.
 
-No CDNs, no external assets, no build step.  Served verbatim at ``GET /``.
+No CDNs, no external assets, no build step.  Served at ``GET /`` with the
+session token substituted for :data:`TOKEN_PLACEHOLDER` at render time
+(LPOS-06); every fetch sends it back as ``X-LPOS-Token``.
 """
 
 from __future__ import annotations
+
+#: Replaced server-side with the per-run session token before the page is sent.
+TOKEN_PLACEHOLDER = "__LPOS_DASHBOARD_TOKEN__"
 
 PAGE_HTML = r"""<!DOCTYPE html>
 <html lang="en">
@@ -224,6 +229,7 @@ button.mini.primary { background: var(--accent); border-color: var(--accent); co
 <div id="toast"></div>
 <script>
 "use strict";
+const LPOS_TOKEN = "__LPOS_DASHBOARD_TOKEN__";
 const BUCKET_LABEL = { active: "Active", research: "Research", snoozed: "Snoozed", archived: "Archive" };
 let state = { projects: [], bucket: "active", selected: null, query: "", search: null };
 
@@ -248,7 +254,9 @@ function untilText(iso) {
   return "wakes " + new Date(t).toLocaleString();
 }
 async function api(path, opts) {
-  const res = await fetch(path, opts);
+  const o = Object.assign({}, opts || {});
+  o.headers = Object.assign({}, o.headers || {}, { "X-LPOS-Token": LPOS_TOKEN });
+  const res = await fetch(path, o);
   const body = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(body.error || res.statusText);
   return body;

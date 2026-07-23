@@ -1,19 +1,37 @@
-"""The LPOS control set: concrete, machine-checkable SOC 2 controls.
+"""The LPOS control register: machine-checkable readiness controls.
 
 Every control maps to a Trust Services Criteria series (see ``criteria.py``)
 and carries a check callable ``(repo_root, hermes_root) -> ControlResult`` that
 runs fully offline against the release checkout and the Hermes runtime root.
 Checks are defensive by construction: a missing file is a *failing control
 with evidence saying why*, never a crash. Evidence strings cite the exact
-files and values inspected -- the evidence is the proof.
+files and values inspected.
+
+Honest classification (audit finding LPOS-02): every control declares its
+``assurance`` tier —
+
+- ``outcome``: the check exercises or measures the control's actual outcome
+  (recomputing hashes, checking runtime freshness, scanning live state);
+- ``structural``: the check only proves an artifact exists or a string is
+  present (file-presence / string-search). Structural checks keep running,
+  but a passing structural check is capped at the ``structural_evidence_only``
+  verdict — it can never earn ``operating``;
+- ``organizational``: no machine check is possible; these live in
+  :data:`NOT_EVIDENCED` and require human or third-party evidence.
+
+Each control also documents its register row: ``control_objective``,
+``owner`` (default "Principal"), ``frequency`` (default "daily"), and
+``evidence_source``.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
+import random
 import re
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -43,6 +61,16 @@ class Control:
     remediation_paths: tuple[str, ...] = ()
     #: Concrete prose describing the fix, naming exact files/changes.
     remediation_hint: str = ""
+    #: "outcome" | "structural" | "organizational" (see module docstring).
+    assurance: str = "structural"
+    #: What risk this control addresses, in one sentence.
+    control_objective: str = ""
+    #: Accountable owner for the control's operation.
+    owner: str = "Principal"
+    #: How often the check runs (SO-025 default schedule).
+    frequency: str = "daily"
+    #: Where the evidence comes from (files/values inspected).
+    evidence_source: str = ""
 
 
 # --------------------------------------------------------------------------- helpers
@@ -218,7 +246,33 @@ def check_cc4_compliance_so_wired(repo_root: Path, hermes_root: Path) -> Control
 # --------------------------------------------------------------------------- CC5
 
 
+def _sha256_file(path: Path) -> str | None:
+    digest = hashlib.sha256()
+    try:
+        with open(path, "rb") as fh:
+            for block in iter(lambda: fh.read(65536), b""):
+                digest.update(block)
+    except OSError:
+        return None
+    return digest.hexdigest()
+
+
+def _manifest_files(repo_root: Path) -> dict[str, str]:
+    manifest = _read_json(repo_root / "RELEASE-MANIFEST.json")
+    files = manifest.get("files") if isinstance(manifest, dict) else None
+    if not isinstance(files, dict):
+        return {}
+    return {str(rel): str(digest) for rel, digest in files.items()}
+
+
 def check_cc5_test_suite(repo_root: Path, hermes_root: Path) -> ControlResult:
+    """Structural: counts test defs and cross-checks the recorded test report.
+
+    Improved (LPOS-02) but still honestly STRUCTURAL: it parses the pass count
+    recorded in RELEASE-TEST-REPORT.md and verifies that file is covered by
+    the release manifest hash — it does not execute the suite.
+    """
+
     tests_dir = repo_root / "tests"
     if not tests_dir.is_dir():
         return _fail("tests/ directory is missing")
@@ -234,11 +288,47 @@ def check_cc5_test_suite(repo_root: Path, hermes_root: Path) -> ControlResult:
             "the control requires at least 100",
             test_functions=count,
         )
+
+    report_rel = "RELEASE-TEST-REPORT.md"
+    report_text = _read_text(repo_root / report_rel)
+    if report_text is None:
+        return _fail(
+            f"{report_rel} is missing: no recorded test execution ships with the release",
+            test_functions=count,
+        )
+    match = re.search(r"(\d+)\s+passed", report_text)
+    if match is None or int(match.group(1)) < 1:
+        return _fail(
+            f"{report_rel} records no parseable pass count ('<n> passed')",
+            test_functions=count,
+        )
+    recorded_passed = int(match.group(1))
+    manifest = _manifest_files(repo_root)
+    declared = manifest.get(report_rel)
+    if not declared:
+        return _fail(
+            f"{report_rel} is not covered by RELEASE-MANIFEST.json; the recorded "
+            "test result is not integrity-protected",
+            test_functions=count,
+            recorded_passed=recorded_passed,
+        )
+    actual = _sha256_file(repo_root / report_rel)
+    if actual != declared:
+        return _fail(
+            f"{report_rel} sha256 does not match RELEASE-MANIFEST.json "
+            f"(declared {declared[:12]}..., actual {(actual or 'unreadable')[:12]}...): "
+            "the recorded test result has been altered",
+            test_functions=count,
+            recorded_passed=recorded_passed,
+        )
     return _ok(
-        f"tests/ contains {count} test function(s) ('def test_' occurrences) "
-        f"across {files} file(s), meeting the >=100 threshold",
+        f"tests/ contains {count} test function(s) across {files} file(s) (>=100); "
+        f"{report_rel} records {recorded_passed} passed and its sha256 matches "
+        "RELEASE-MANIFEST.json (structural evidence: the suite is not executed here)",
         test_functions=count,
         test_files=files,
+        recorded_passed=recorded_passed,
+        report_hash_verified=True,
     )
 
 
@@ -318,7 +408,6 @@ _SECRET_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
 
 _SCAN_SUFFIXES = {".json", ".jsonl", ".yaml", ".yml", ".toml", ".ini", ".cfg", ".txt", ".env"}
 _SCAN_MAX_BYTES = 1_000_000
-_SCAN_SKIP_PARTS = {".git", ".venv", "venv", "__pycache__", ".pytest_cache", "node_modules", "site-packages"}
 
 
 def _scan_for_secrets(paths: list[Path], skip: Path | None = None) -> list[dict[str, str]]:
@@ -329,8 +418,6 @@ def _scan_for_secrets(paths: list[Path], skip: Path | None = None) -> list[dict[
         candidates = [base] if base.is_file() else sorted(base.rglob("*"))
         for path in candidates:
             if not path.is_file() or path.suffix.lower() not in _SCAN_SUFFIXES:
-                continue
-            if _SCAN_SKIP_PARTS.intersection(path.parts):
                 continue
             if skip is not None and skip in path.parents:
                 continue
@@ -414,14 +501,22 @@ def check_cc7_health_monitoring(repo_root: Path, hermes_root: Path) -> ControlRe
 
 
 def check_cc7_monitor_freshness(repo_root: Path, hermes_root: Path) -> ControlResult:
+    """Outcome-based when a runtime exists: monitor/status.json must be <2h old.
+
+    No runtime and no catalog entry = fail. Catalog wiring without a runtime
+    is only STRUCTURAL evidence (``structural_only`` detail caps the verdict).
+    """
+
     wired = _catalog_entry(repo_root, "SO-023") is not None
     status = hermes_root / "monitor" / "status.json"
     if not (hermes_root / "monitor").is_dir():
         if wired:
             return _ok(
-                f"no runtime yet: {hermes_root / 'monitor'} does not exist, but SO-023 "
-                "catalog wiring is present so monitoring engages on first run",
+                f"no runtime yet: {hermes_root / 'monitor'} does not exist; SO-023 "
+                "catalog wiring is present but that is structural evidence only — "
+                "monitoring has not been observed running",
                 runtime=False,
+                structural_only=True,
             )
         return _fail(
             f"no monitor runtime under {hermes_root} and SO-023 is not cataloged"
@@ -483,7 +578,28 @@ def check_cc7_append_only_audit_trail(repo_root: Path, hermes_root: Path) -> Con
 # --------------------------------------------------------------------------- CC8
 
 
+_SPOT_CHECK_SAMPLE = 5
+
+
+def _parse_sha256sums(repo_root: Path) -> dict[str, str]:
+    text = _read_text(repo_root / "SHA256SUMS") or ""
+    sums: dict[str, str] = {}
+    for line in text.splitlines():
+        parts = line.split(None, 1)
+        if len(parts) == 2 and re.fullmatch(r"[0-9a-f]{64}", parts[0]):
+            sums[parts[1].strip().lstrip("*")] = parts[0]
+    return sums
+
+
 def check_cc8_change_management(repo_root: Path, hermes_root: Path) -> ControlResult:
+    """Outcome-based (LPOS-02): recomputes hashes of sampled manifest files.
+
+    Beyond artifact presence, this deterministically samples
+    :data:`_SPOT_CHECK_SAMPLE` files from RELEASE-MANIFEST.json, recomputes
+    their SHA-256, and cross-checks SHA256SUMS — release integrity is
+    verified, not assumed.
+    """
+
     version = _release_version(repo_root)
     if version is None:
         return _fail("RELEASE.json is missing or has no version; release state unverifiable")
@@ -501,10 +617,41 @@ def check_cc8_change_management(repo_root: Path, hermes_root: Path) -> ControlRe
         problems.append("verify_release.py (release verification tooling) missing")
     if problems:
         return _fail(f"change management gaps for v{version}: " + "; ".join(problems))
+
+    manifest = _manifest_files(repo_root)
+    if not manifest:
+        return _fail(
+            "RELEASE-MANIFEST.json has no 'files' hash map; release integrity unverifiable",
+            version=version,
+        )
+    rng = random.Random(f"lpos-release-integrity-{version}")
+    sample = rng.sample(sorted(manifest), min(_SPOT_CHECK_SAMPLE, len(manifest)))
+    sums = _parse_sha256sums(repo_root)
+    mismatches: list[str] = []
+    for rel in sample:
+        actual = _sha256_file(repo_root / rel)
+        if actual is None:
+            mismatches.append(f"{rel} (unreadable/missing)")
+            continue
+        if actual != manifest[rel]:
+            mismatches.append(f"{rel} (manifest mismatch)")
+        elif rel in sums and sums[rel] != actual:
+            mismatches.append(f"{rel} (SHA256SUMS mismatch)")
+    if mismatches:
+        return _fail(
+            f"release integrity spot-check failed for v{version}: recomputed sha256 "
+            f"diverges for {', '.join(mismatches)}",
+            version=version,
+            sampled=sample,
+            mismatches=mismatches,
+        )
     return _ok(
-        f"CHANGELOG.md has a v{version} entry; RELEASE-MANIFEST.json, SHA256SUMS, "
-        "and verify_release.py are all present at the repo root",
+        f"CHANGELOG.md has a v{version} entry; RELEASE-MANIFEST.json, SHA256SUMS, and "
+        f"verify_release.py present; recomputed sha256 of {len(sample)} sampled "
+        f"manifest file(s) matches RELEASE-MANIFEST.json and SHA256SUMS: "
+        + ", ".join(sample),
         version=version,
+        sampled=sample,
     )
 
 
@@ -951,7 +1098,222 @@ CONTROLS: tuple[Control, ...] = (
     ),
 )
 
+# --------------------------------------------------------------------------- register
+#
+# The control register the audit demanded (LPOS-02): assurance tier, control
+# objective, and evidence source for every control. owner="Principal" and
+# frequency="daily" are the dataclass defaults and apply to all of them.
+
+_REGISTER: dict[str, dict[str, str]] = {
+    "CTRL-CC1-01": {
+        "assurance": "structural",
+        "control_objective": "The operating specification and responsibility structure exist and are substantive.",
+        "evidence_source": "src/lpos_engine/spec/LPOS-CORE.md, src/lpos_engine/spec/GUILDS.md (presence, size)",
+    },
+    "CTRL-CC1-02": {
+        "assurance": "structural",
+        "control_objective": "Derived and incorporated work is credited.",
+        "evidence_source": "NOTICE* files at the repository root (presence)",
+    },
+    "CTRL-CC2-01": {
+        "assurance": "structural",
+        "control_objective": "Operators can learn what shipped and what changed.",
+        "evidence_source": "README.md, docs/wiki, docs/wiki/patch-notes/*.md (presence)",
+    },
+    "CTRL-CC3-01": {
+        "assurance": "structural",
+        "control_objective": "A maintained threat model and security posture document exist.",
+        "evidence_source": "docs/THREAT-MODEL.md, docs/SECURITY.md (presence, size)",
+    },
+    "CTRL-CC4-01": {
+        "assurance": "structural",
+        "control_objective": "Documentation drift is audited on a schedule.",
+        "evidence_source": "src/lpos_engine/workflows/catalog.json SO-024 entry (presence)",
+    },
+    "CTRL-CC4-02": {
+        "assurance": "structural",
+        "control_objective": "The compliance readiness monitor itself ships as a Standing Operation.",
+        "evidence_source": "src/lpos_engine/workflows/SO-025.json, catalog entry (presence)",
+    },
+    "CTRL-CC5-01": {
+        "assurance": "structural",
+        "control_objective": "A substantive automated test suite ships and its recorded release run is integrity-protected.",
+        "evidence_source": "tests/*.py 'def test_' count; RELEASE-TEST-REPORT.md pass count; RELEASE-MANIFEST.json sha256 of the report",
+    },
+    "CTRL-CC5-02": {
+        "assurance": "structural",
+        "control_objective": "The benchmark corpus matches what the release declares.",
+        "evidence_source": "src/lpos_engine/evals/BENCH-*.json count vs RELEASE.json benchmarks",
+    },
+    "CTRL-CC6-01": {
+        "assurance": "structural",
+        "control_objective": "The dashboard defaults to loopback-only exposure.",
+        "evidence_source": "src/lpos_engine/dashboard/server.py DEFAULT_HOST constant (string read; no live bind or auth test)",
+    },
+    "CTRL-CC6-02": {
+        "assurance": "structural",
+        "control_objective": "Privileged actions are gated by exact-action approval.",
+        "evidence_source": "src/lpos_engine/approvals.py presence; ApprovalService reference in engine.py (string search)",
+    },
+    "CTRL-CC6-03": {
+        "assurance": "outcome",
+        "control_objective": "No plaintext credentials at rest in repo config or Hermes state.",
+        "evidence_source": "pattern scan of repo config/ and the live Hermes root",
+    },
+    "CTRL-CC6-04": {
+        "assurance": "outcome",
+        "control_objective": "SMTP credentials are file-referenced, never inline.",
+        "evidence_source": "<hermes>/monitor/smtp.json content (live runtime config)",
+    },
+    "CTRL-CC7-01": {
+        "assurance": "structural",
+        "control_objective": "Connector health monitoring is scheduled hourly.",
+        "evidence_source": "src/lpos_engine/workflows/catalog.json SO-023 schedule (presence)",
+    },
+    "CTRL-CC7-02": {
+        "assurance": "outcome",
+        "control_objective": "Monitoring is actually running and publishing fresh status.",
+        "evidence_source": "<hermes>/monitor/status.json generated_at age (<2h); catalog-only wiring is structural evidence",
+    },
+    "CTRL-CC7-03": {
+        "assurance": "structural",
+        "control_objective": "The event audit trail is append-only by construction.",
+        "evidence_source": "src/lpos_engine/sql/*.sql trigger definitions (schema text; the live database is not probed)",
+    },
+    "CTRL-CC8-01": {
+        "assurance": "outcome",
+        "control_objective": "Release artifacts are complete and their integrity verifies.",
+        "evidence_source": "CHANGELOG.md entry; recomputed sha256 of sampled RELEASE-MANIFEST.json files vs manifest and SHA256SUMS",
+    },
+    "CTRL-CC8-02": {
+        "assurance": "structural",
+        "control_objective": "Releases cannot publish without documentation.",
+        "evidence_source": "src/lpos_engine/workflows/SO-022.json STEP-DOCS-GATE (presence)",
+    },
+    "CTRL-CC9-01": {
+        "assurance": "structural",
+        "control_objective": "A rollback path is documented and the wheel is retained.",
+        "evidence_source": "docs/wiki/administration/upgrading.md; Packages/<wheel> (presence)",
+    },
+    "CTRL-A-01": {
+        "assurance": "structural",
+        "control_objective": "State integrity checking exists and backups are documented.",
+        "evidence_source": "src/lpos_engine/store.py integrity_check (string search); docs/wiki/administration/backups.md (presence)",
+    },
+    "CTRL-C-01": {
+        "assurance": "structural",
+        "control_objective": "External side effects default to record-only.",
+        "evidence_source": "RELEASE.json external_action_default; docs/ADAPTER-PROTOCOL.md (declared configuration, not runtime behavior)",
+    },
+    "CTRL-PI-01": {
+        "assurance": "structural",
+        "control_objective": "Workflow processing is idempotent and digest-verified.",
+        "evidence_source": "src/lpos_engine/operations.py idempotency_key / freeze_mapping / digest (string search)",
+    },
+}
+
+CONTROLS = tuple(
+    replace(control, **_REGISTER.get(control.control_id, {})) for control in CONTROLS
+)
+
 CONTROLS_BY_ID: dict[str, Control] = {control.control_id: control for control in CONTROLS}
+
+#: Organizational criteria with NO machine check (LPOS-02): these require
+#: human or third-party evidence over the observation period and are emitted
+#: verbatim in status.json under "not_evidenced". List taken from the audit's
+#: Trust Services Criteria readiness matrix (LPOS-13 basis notes).
+NOT_EVIDENCED: tuple[dict[str, str], ...] = (
+    {
+        "id": "ORG-CC1-01",
+        "tsc_id": "CC1",
+        "requirement": (
+            "Governance oversight, competence, accountability, and HR controls "
+            "(screening, training, joiner-mover-leaver) operating over the period"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-CC2-01",
+        "tsc_id": "CC2",
+        "requirement": (
+            "Distribution, acknowledgement, and escalation of communications to "
+            "internal and external stakeholders"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-CC3-01",
+        "tsc_id": "CC3",
+        "requirement": (
+            "Risk register with periodic review, business/fraud/change risk "
+            "assessment, and a risk-acceptance workflow"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-CC5-01",
+        "tsc_id": "CC5",
+        "requirement": (
+            "Organization-level control procedures, evidence retention, and "
+            "exception management around the automated control activities"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-CC7-01",
+        "tsc_id": "CC7",
+        "requirement": (
+            "Vulnerability management, patch operations, and incident response "
+            "operating evidence (tickets, exercises, postmortems)"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-CC8-01",
+        "tsc_id": "CC8",
+        "requirement": (
+            "Change authorization, review, and provenance evidence (approvals, "
+            "review records, trusted signatures)"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-CC9-01",
+        "tsc_id": "CC9",
+        "requirement": (
+            "Vendor / subservice organization management and business continuity "
+            "operating evidence"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-A-01",
+        "tsc_id": "A",
+        "requirement": (
+            "Backup execution and restore drills with RPO/RTO targets, capacity "
+            "management, and recovery-exercise records"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-C-01",
+        "tsc_id": "C",
+        "requirement": (
+            "Data classification, retention, secure disposal, and encryption-at-rest "
+            "deployment controls"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+    {
+        "id": "ORG-P-01",
+        "tsc_id": "P",
+        "requirement": (
+            "Privacy program: personal-information inventory, notice, consent, "
+            "rights handling, and retention"
+        ),
+        "basis": "requires organizational evidence — not machine-checkable",
+    },
+)
 
 
 def all_controls() -> tuple[Control, ...]:

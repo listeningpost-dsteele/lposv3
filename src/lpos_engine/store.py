@@ -1,9 +1,41 @@
-"""Transactional SQLite state and append-only event storage."""
+"""Transactional SQLite state and append-only, hash-chained event storage.
+
+File confidentiality (LPOS-07)
+------------------------------
+State directories are created ``0700`` and the database file ``0600``
+independently of the process umask.  On open of an existing database the
+store checks the file mode and repairs group/other access to ``0600`` with an
+audit event, or fails closed when repair is impossible (e.g. foreign
+ownership).  On Windows this is a best-effort no-op.  The module-level
+helpers ``secure_mkdir``, ``secure_create_file``, and ``harden_file_mode``
+are reusable; other LPOS writers of sensitive state (monitor, compliance,
+dashboard) should adopt them.
+
+Evidence tamper evidence (LPOS-08)
+----------------------------------
+Every audit event is linked into a SHA-256 hash chain
+(``this_hash = sha256(prev.this_hash + "\\n" + canonical_json(event_row))``,
+anchored at a GENESIS constant).  ``verify_event_chain`` recomputes the chain
+and reports the first divergent event; ``integrity_check``/``integrity_report``
+combine this with SQLite's PRAGMA check.  Chaining DETECTS after-the-fact
+edits (including dropping the append-only triggers and updating a payload);
+it does not PREVENT them: an operator with database privileges can regenerate
+the whole chain.  Mitigations layered here: optional HMAC checkpoints keyed
+by an admin-held key file (``LPOS_EVIDENCE_CHECKPOINT_KEY``) make full-chain
+regeneration without that key detectable, and ``export_jsonl`` provides the
+hook for near-real-time export of events to an off-host append-only/WORM
+destination, which is required for evidence that must survive a compromised
+runtime account.
+"""
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
+import os
 import sqlite3
+import stat
 from contextlib import contextmanager
 from importlib.resources import files
 from pathlib import Path
@@ -33,14 +65,195 @@ from .models import (
 )
 from .state_machine import ActionStateMachine, TaskStateMachine
 
+#: Fixed anchor for the audit event hash chain.
+EVENT_CHAIN_GENESIS = hashlib.sha256(b"LPOS-EVENT-CHAIN-GENESIS").hexdigest()
+
+#: Environment variable naming an admin-held key file for HMAC checkpoints.
+CHECKPOINT_KEY_ENV = "LPOS_EVIDENCE_CHECKPOINT_KEY"
+
+_POSIX = os.name == "posix"
+
+
+def secure_mkdir(path: str | Path) -> Path:
+    """Create ``path`` (and missing parents) with mode ``0700``.
+
+    Modes are applied with ``chmod`` after creation so the result does not
+    depend on the process umask.  Reusable helper for every LPOS component
+    that writes sensitive state (store, monitor, compliance, dashboard).
+    On non-POSIX platforms directory creation happens without mode changes.
+    """
+
+    target = Path(path)
+    missing: list[Path] = []
+    probe = target
+    while not probe.exists():
+        missing.append(probe)
+        if probe.parent == probe:
+            break
+        probe = probe.parent
+    target.mkdir(parents=True, exist_ok=True)
+    if _POSIX:
+        for created in missing:
+            try:
+                os.chmod(created, 0o700)
+            except FileNotFoundError:  # pragma: no cover - concurrent removal
+                pass
+    return target
+
+
+def secure_create_file(path: str | Path, mode: int = 0o600) -> bool:
+    """Create ``path`` with a restrictive mode, umask-independent.
+
+    Returns True when this call created the file, False when it already
+    existed.  The file is created empty via ``os.open`` with the requested
+    mode and then explicitly ``chmod``-ed (POSIX) so the umask cannot widen
+    it.  Best-effort no-op for the mode on non-POSIX platforms.
+    """
+
+    target = Path(path)
+    try:
+        handle = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, mode)
+    except FileExistsError:
+        return False
+    os.close(handle)
+    if _POSIX:
+        os.chmod(target, mode)
+    return True
+
+
+def audit_state_permissions(hermes_root: str | Path) -> dict[str, Any]:
+    """Report group/other-readable state files under the Hermes root (LPOS-15).
+
+    Walks the runtime state directories (monitor, compliance, dashboard, plus any
+    top-level ``*.db``) and flags any regular file whose mode grants group/other
+    access. Status is ``ok`` when everything is 0600-tight, ``insecure`` when any
+    world/group-readable state file is found, so ``lpos doctor --hermes-root``
+    fails closed instead of merely claiming coverage. Best-effort no-op on
+    non-POSIX platforms.
+    """
+
+    root = Path(hermes_root).expanduser()
+    if not _POSIX:
+        return {"status": "skipped", "reason": "non-POSIX platform", "insecure_files": []}
+    insecure: list[dict[str, str]] = []
+    checked = 0
+    # State LPOS itself writes (not admin-supplied inputs like approved-checks.json
+    # or registered-services.json, whose modes the operator owns).
+    written = [
+        root / "monitor" / "status.json", root / "monitor" / "state.json",
+        root / "monitor" / "inventory.json", root / "monitor" / "alerts.json",
+        root / "compliance" / "status.json", root / "compliance" / "history.jsonl",
+        root / "compliance" / "report.html", root / "dashboard" / "token",
+        root / "dashboard" / "state.json",
+    ]
+    candidates: list[Path] = [p for p in written if p.is_file()]
+    candidates.extend(p for p in (root / "compliance").glob("history-archive-*.jsonl") if p.is_file())
+    candidates.extend(p for p in root.glob("*.db") if p.is_file())
+    for path in candidates:
+        checked += 1
+        try:
+            current = stat.S_IMODE(os.stat(path).st_mode)
+        except OSError:
+            continue
+        if current & 0o077:
+            insecure.append({"path": str(path), "mode": format(current, "04o")})
+    return {
+        "status": "insecure" if insecure else "ok",
+        "checked": checked,
+        "insecure_files": insecure,
+    }
+
+
+def harden_file_mode(path: str | Path, mode: int = 0o600) -> dict[str, str] | None:
+    """Remove group/other access from an existing file.
+
+    Returns a repair description when the mode was corrected, ``None`` when it
+    was already restrictive (or on non-POSIX platforms).  Raises ``OSError``
+    when the repair is impossible (for example, the file is owned by another
+    account) so callers can fail closed.
+    """
+
+    if not _POSIX:
+        return None
+    target = Path(path)
+    info = os.stat(target)
+    current = stat.S_IMODE(info.st_mode)
+    if current & 0o077 == 0:
+        return None
+    os.chmod(target, mode)
+    return {
+        "path": str(target),
+        "previous_mode": format(current, "04o"),
+        "repaired_mode": format(mode, "04o"),
+    }
+
 
 class SQLiteStore:
-    """Authoritative transactional state with an immutable audit stream."""
+    """Authoritative transactional state with an immutable, hash-chained audit stream."""
 
-    def __init__(self, path: str | Path) -> None:
+    #: A checkpoint row is written every N chained events when a key is configured.
+    checkpoint_interval = 100
+
+    def __init__(self, path: str | Path, *, checkpoint_key_path: str | Path | None = None) -> None:
         self.path = Path(path)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
+        secure_mkdir(self.path.parent)
+        created = secure_create_file(self.path)
+        permission_repair: dict[str, str] | None = None
+        if not created:
+            try:
+                permission_repair = harden_file_mode(self.path)
+            except OSError as exc:
+                raise ValidationError(
+                    f"state database {self.path} has insecure permissions or ownership "
+                    f"that could not be repaired: {exc}"
+                ) from exc
+        self._load_checkpoint_key(checkpoint_key_path)
         self._initialize()
+        self._harden_sidecar_files()
+        self._backfill_event_chain()
+        if permission_repair is not None:
+            self.append_system_event(
+                stream_type="store",
+                stream_id="database",
+                event_type="store.permissions_repaired",
+                payload=permission_repair,
+            )
+
+    def _load_checkpoint_key(self, checkpoint_key_path: str | Path | None) -> None:
+        self._checkpoint_key: bytes | None = None
+        self._checkpoint_key_id: str | None = None
+        source = checkpoint_key_path or os.environ.get(CHECKPOINT_KEY_ENV)
+        if not source:
+            return
+        try:
+            raw = Path(source).read_bytes().strip()
+        except OSError as exc:
+            raise ValidationError(
+                f"evidence checkpoint key file is not readable: {source}"
+            ) from exc
+        if not raw:
+            raise ValidationError(f"evidence checkpoint key file is empty: {source}")
+        self._checkpoint_key = raw
+        self._checkpoint_key_id = hashlib.sha256(raw).hexdigest()[:16]
+
+    def _harden_sidecar_files(self) -> None:
+        """Best-effort 0600 on WAL/SHM/journal sidecars (POSIX only).
+
+        SQLite copies the main database's permissions when it creates these,
+        so with a 0600 database they normally inherit 0600; this repairs
+        sidecars created before hardening.
+        """
+
+        if not _POSIX:
+            return
+        for suffix in ("-wal", "-shm", "-journal"):
+            sidecar = Path(str(self.path) + suffix)
+            try:
+                harden_file_mode(sidecar)
+            except FileNotFoundError:
+                continue
+            except OSError:  # pragma: no cover - transient sidecar ownership issues
+                continue
 
     def _connect(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.path, timeout=30, isolation_level=None)
@@ -141,9 +354,48 @@ class SQLiteStore:
         )
 
     def integrity_check(self) -> str:
+        """Combined database and audit-chain integrity summary.
+
+        Returns ``"ok"`` only when BOTH the SQLite PRAGMA integrity check and
+        the recomputed audit event hash chain pass; otherwise returns the
+        failing detail as a human-readable string (the shape ``lpos doctor``
+        and ``lpos init`` already surface).  Use ``integrity_report`` for the
+        structured breakdown.
+        """
+
+        report = self.integrity_report()
+        if report["ok"]:
+            return "ok"
+        if report["pragma"] != "ok":
+            return report["pragma"]
+        chain = report["event_chain"]
+        if not chain["ok"]:
+            detail = chain.get("error") or "event chain verification failed"
+            first_bad = chain.get("first_bad_id")
+            if first_bad:
+                return f"event chain broken at {first_bad}: {detail}"
+            return f"event chain broken: {detail}"
+        sentinel = report["sentinel_records"]
+        detail = sentinel.get("error") or "sentinel record verification failed"
+        first_bad = sentinel.get("first_bad")
+        if first_bad:
+            return f"sentinel records tampered at {first_bad}: {detail}"
+        return f"sentinel records tampered: {detail}"
+
+    def integrity_report(self) -> dict[str, Any]:
+        """Structured integrity details: PRAGMA result plus event-chain verification."""
+
         with self.connection() as conn:
             row = conn.execute("PRAGMA integrity_check").fetchone()
-        return str(row[0]) if row is not None else "unknown"
+        pragma = str(row[0]) if row is not None else "unknown"
+        chain = self.verify_event_chain()
+        sentinel = self.verify_sentinel_records()
+        return {
+            "ok": pragma == "ok" and chain["ok"] and sentinel["ok"],
+            "pragma": pragma,
+            "event_chain": chain,
+            "sentinel_records": sentinel,
+        }
 
     @contextmanager
     def transaction(self) -> Iterator[sqlite3.Connection]:
@@ -159,7 +411,379 @@ class SQLiteStore:
             conn.close()
 
     @staticmethod
+    def _chain_material(
+        *,
+        sequence: int,
+        event_id: str,
+        stream_type: str,
+        stream_id: str,
+        event_type: str,
+        payload_json: str,
+        occurred_at: str,
+    ) -> str:
+        return canonical_json(
+            {
+                "sequence": sequence,
+                "event_id": event_id,
+                "stream_type": stream_type,
+                "stream_id": stream_id,
+                "event_type": event_type,
+                "payload_json": payload_json,
+                "occurred_at": occurred_at,
+            }
+        )
+
+    @staticmethod
+    def _chain_hash(prev_hash: str, material: str) -> str:
+        return hashlib.sha256((prev_hash + "\n" + material).encode("utf-8")).hexdigest()
+
+    @staticmethod
+    def _chain_tip(conn: sqlite3.Connection) -> tuple[int, str]:
+        row = conn.execute(
+            "SELECT sequence, this_hash FROM event_chain ORDER BY sequence DESC LIMIT 1"
+        ).fetchone()
+        if row is None:
+            return 0, EVENT_CHAIN_GENESIS
+        return int(row["sequence"]), str(row["this_hash"])
+
+    def _link_event(
+        self,
+        conn: sqlite3.Connection,
+        *,
+        sequence: int,
+        event_id: str,
+        stream_type: str,
+        stream_id: str,
+        event_type: str,
+        payload_json: str,
+        occurred_at: str,
+    ) -> str:
+        _, prev_hash = self._chain_tip(conn)
+        material = self._chain_material(
+            sequence=sequence,
+            event_id=event_id,
+            stream_type=stream_type,
+            stream_id=stream_id,
+            event_type=event_type,
+            payload_json=payload_json,
+            occurred_at=occurred_at,
+        )
+        this_hash = self._chain_hash(prev_hash, material)
+        conn.execute(
+            "INSERT INTO event_chain(sequence, event_id, prev_hash, this_hash, linked_at) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (sequence, event_id, prev_hash, this_hash, utc_now()),
+        )
+        self._maybe_checkpoint(conn, sequence=sequence, this_hash=this_hash)
+        return this_hash
+
+    def _checkpoint_tag(self, sequence: int, this_hash: str) -> str | None:
+        if self._checkpoint_key is None:
+            return None
+        message = f"{sequence}\n{this_hash}".encode("utf-8")
+        return hmac.new(self._checkpoint_key, message, hashlib.sha256).hexdigest()
+
+    def _maybe_checkpoint(self, conn: sqlite3.Connection, *, sequence: int, this_hash: str) -> None:
+        if self._checkpoint_key is None:
+            return
+        if sequence % self.checkpoint_interval != 0:
+            return
+        self._insert_checkpoint(conn, sequence=sequence, this_hash=this_hash)
+
+    def _insert_checkpoint(self, conn: sqlite3.Connection, *, sequence: int, this_hash: str) -> None:
+        conn.execute(
+            "INSERT INTO event_checkpoints(sequence, this_hash, hmac_tag, key_id, created_at) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (
+                sequence,
+                this_hash,
+                self._checkpoint_tag(sequence, this_hash),
+                self._checkpoint_key_id,
+                utc_now(),
+            ),
+        )
+
+    def write_checkpoint(self) -> dict[str, Any] | None:
+        """Checkpoint the current chain tip; returns the row data or None when empty.
+
+        With an admin key configured (``LPOS_EVIDENCE_CHECKPOINT_KEY`` or the
+        ``checkpoint_key_path`` constructor argument) the row carries an HMAC
+        tag a runtime-only attacker cannot regenerate.  Checkpoints (and
+        ``export_jsonl`` output) only provide independent assurance once
+        copied off-host.
+        """
+
+        with self.transaction() as conn:
+            sequence, this_hash = self._chain_tip(conn)
+            if sequence == 0:
+                return None
+            self._insert_checkpoint(conn, sequence=sequence, this_hash=this_hash)
+        return {
+            "sequence": sequence,
+            "this_hash": this_hash,
+            "hmac_tag": self._checkpoint_tag(sequence, this_hash),
+            "key_id": self._checkpoint_key_id,
+        }
+
+    def _backfill_event_chain(self) -> None:
+        """Link any pre-chain event rows (in insertion order) into the chain."""
+
+        with self.transaction() as conn:
+            rows = conn.execute(
+                "SELECT e.* FROM events e LEFT JOIN event_chain c ON c.sequence = e.sequence "
+                "WHERE c.sequence IS NULL ORDER BY e.sequence"
+            ).fetchall()
+            for row in rows:
+                self._link_event(
+                    conn,
+                    sequence=int(row["sequence"]),
+                    event_id=row["event_id"],
+                    stream_type=row["stream_type"],
+                    stream_id=row["stream_id"],
+                    event_type=row["event_type"],
+                    payload_json=row["payload_json"],
+                    occurred_at=row["occurred_at"],
+                )
+
+    def verify_event_chain(self) -> dict[str, Any]:
+        """Recompute the audit event hash chain from GENESIS.
+
+        Returns ``{"ok", "events", "first_bad_id", "error", "checkpoints"}``.
+        ``first_bad_id`` is the event_id of the first row whose recomputed
+        link diverges from the stored chain -- including a payload edited
+        after ``DROP TRIGGER`` removed the append-only guard.  Chain
+        verification detects tampering; it cannot prevent an operator with
+        database privileges from regenerating the chain.  HMAC checkpoints
+        (admin key) plus off-host export via ``export_jsonl`` cover that case.
+        """
+
+        with self.connection() as conn:
+            events = conn.execute("SELECT * FROM events ORDER BY sequence").fetchall()
+            links = {
+                int(row["sequence"]): row
+                for row in conn.execute("SELECT * FROM event_chain").fetchall()
+            }
+            checkpoints = conn.execute(
+                "SELECT * FROM event_checkpoints ORDER BY checkpoint_id"
+            ).fetchall()
+
+        ok = True
+        first_bad_id: str | None = None
+        error: str | None = None
+        computed: dict[int, str] = {}
+        prev_hash = EVENT_CHAIN_GENESIS
+        for row in events:
+            sequence = int(row["sequence"])
+            link = links.pop(sequence, None)
+            material = self._chain_material(
+                sequence=sequence,
+                event_id=row["event_id"],
+                stream_type=row["stream_type"],
+                stream_id=row["stream_id"],
+                event_type=row["event_type"],
+                payload_json=row["payload_json"],
+                occurred_at=row["occurred_at"],
+            )
+            expected = self._chain_hash(prev_hash, material)
+            computed[sequence] = expected
+            if link is None:
+                ok, first_bad_id = False, row["event_id"]
+                error = f"event {row['event_id']} has no chain link"
+                break
+            if link["prev_hash"] != prev_hash or link["this_hash"] != expected:
+                ok, first_bad_id = False, row["event_id"]
+                error = (
+                    f"stored chain link for event {row['event_id']} does not match "
+                    "the recomputed hash (event edited, reordered, or chain rewritten)"
+                )
+                break
+            prev_hash = expected
+        if ok and links:
+            ok = False
+            error = "event chain contains links for events that no longer exist"
+
+        checkpoint_summary = {"total": len(checkpoints), "verified": 0, "failed": 0}
+        for checkpoint in checkpoints:
+            sequence = int(checkpoint["sequence"])
+            expected_hash = computed.get(sequence)
+            valid = expected_hash is not None and checkpoint["this_hash"] == expected_hash
+            if valid and self._checkpoint_key is not None and checkpoint["hmac_tag"] is not None:
+                expected_tag = self._checkpoint_tag(sequence, str(checkpoint["this_hash"]))
+                valid = hmac.compare_digest(str(checkpoint["hmac_tag"]), expected_tag or "")
+            if valid:
+                checkpoint_summary["verified"] += 1
+            else:
+                checkpoint_summary["failed"] += 1
+                if ok:
+                    ok = False
+                    error = f"checkpoint {checkpoint['checkpoint_id']} does not match the recomputed chain"
+
+        return {
+            "ok": ok,
+            "events": len(events),
+            "first_bad_id": first_bad_id,
+            "error": error,
+            "checkpoints": checkpoint_summary,
+        }
+
+    def verify_sentinel_records(self) -> dict[str, Any]:
+        """Reconcile the Sentinel record tables against the tamper-evident chain.
+
+        Sentinel's own tables (assessments, independent reviews, Principal
+        reports, acknowledgements) carry ordinary ``BEFORE UPDATE``/``BEFORE
+        DELETE`` guards, but a database owner can drop those triggers and edit
+        a row in place.  To detect that, every Sentinel record hash is also
+        recorded in LPOS's SHA-256 hash-chained event stream when the record is
+        written (see ``save_sentinel_assessment`` / ``save_sentinel_review`` /
+        ``save_sentinel_report``).  This method recomputes each stored record's
+        content hash and reconciles it with (a) the record's own hash column and
+        (b) the authoritative hash anchored in the chained event, so an edited
+        ``*_json`` payload is DETECTED even after the append-only triggers are
+        dropped.  Editing the anchoring event instead breaks
+        ``verify_event_chain``.  Returns ``{"ok", "checked", "error",
+        "first_bad"}``.
+        """
+
+        from .sentinel.models import (
+            PrincipalSecurityReport,
+            SecurityAssessment,
+            SecurityAssessmentReview,
+        )
+
+        checked = 0
+        with self.connection() as conn:
+            # Authoritative hashes/decisions from the hash-chained event stream.
+            assessment_events: dict[str, str] = {}
+            report_events: dict[str, str] = {}
+            review_events: dict[str, dict[str, Any]] = {}
+            for row in conn.execute(
+                "SELECT stream_id, event_type, payload_json FROM events "
+                "WHERE stream_type LIKE 'sentinel_%'"
+            ).fetchall():
+                payload = json.loads(row["payload_json"])
+                if row["event_type"] == "sentinel.assessment.recorded_untrusted":
+                    assessment_events[row["stream_id"]] = payload.get("assessment_hash")
+                elif row["event_type"] == "sentinel.report.staged_for_principal":
+                    report_events[row["stream_id"]] = payload.get("report_hash")
+                elif row["event_type"] == "sentinel.assessment.reviewed":
+                    review_events[payload.get("assessment_id")] = payload
+
+            assessment_rows = conn.execute(
+                "SELECT assessment_id, assessment_hash, assessment_json FROM sentinel_assessments"
+            ).fetchall()
+            review_rows = conn.execute(
+                "SELECT review_id, assessment_id, review_hash, trusted, decision, review_json "
+                "FROM sentinel_assessment_reviews"
+            ).fetchall()
+            report_rows = conn.execute(
+                "SELECT report_id, report_hash, report_json FROM sentinel_reports"
+            ).fetchall()
+
+        def fail(detail: str, bad: str) -> dict[str, Any]:
+            return {"ok": False, "checked": checked, "error": detail, "first_bad": bad}
+
+        for row in assessment_rows:
+            checked += 1
+            try:
+                recomputed = SecurityAssessment.from_dict(
+                    json.loads(row["assessment_json"])
+                ).assessment_hash
+            except Exception as exc:  # pragma: no cover - defensive
+                return fail(f"assessment {row['assessment_id']} could not be parsed: {exc}", row["assessment_id"])
+            if recomputed != row["assessment_hash"]:
+                return fail(
+                    f"assessment {row['assessment_id']} content does not match its stored hash",
+                    row["assessment_id"],
+                )
+            anchored = assessment_events.get(row["assessment_id"])
+            if anchored is None:
+                return fail(
+                    f"assessment {row['assessment_id']} has no anchoring chained event",
+                    row["assessment_id"],
+                )
+            if anchored != recomputed:
+                return fail(
+                    f"assessment {row['assessment_id']} content diverges from the hash-chained event",
+                    row["assessment_id"],
+                )
+
+        for row in review_rows:
+            checked += 1
+            try:
+                recomputed = SecurityAssessmentReview.from_dict(
+                    json.loads(row["review_json"])
+                ).review_hash
+            except Exception as exc:  # pragma: no cover - defensive
+                return fail(f"review {row['review_id']} could not be parsed: {exc}", row["review_id"])
+            if recomputed != row["review_hash"]:
+                return fail(
+                    f"review {row['review_id']} content does not match its stored hash",
+                    row["review_id"],
+                )
+            anchored = review_events.get(row["assessment_id"])
+            if anchored is None:
+                return fail(
+                    f"review {row['review_id']} has no anchoring chained event",
+                    row["review_id"],
+                )
+            # The trust decision is the security-critical field: it must match the
+            # tamper-evident chained event, so flipping ``trusted`` 0->1 is detected.
+            if bool(anchored.get("trusted")) != bool(row["trusted"]) or str(
+                anchored.get("decision")
+            ) != str(row["decision"]):
+                return fail(
+                    f"review {row['review_id']} trust decision diverges from the hash-chained event",
+                    row["review_id"],
+                )
+
+        for row in report_rows:
+            checked += 1
+            try:
+                recomputed = PrincipalSecurityReport.from_dict(
+                    json.loads(row["report_json"])
+                ).report_hash
+            except Exception as exc:  # pragma: no cover - defensive
+                return fail(f"report {row['report_id']} could not be parsed: {exc}", row["report_id"])
+            if recomputed != row["report_hash"]:
+                return fail(
+                    f"report {row['report_id']} content does not match its stored hash",
+                    row["report_id"],
+                )
+            anchored = report_events.get(row["report_id"])
+            if anchored is None:
+                return fail(
+                    f"report {row['report_id']} has no anchoring chained event",
+                    row["report_id"],
+                )
+            if anchored != recomputed:
+                return fail(
+                    f"report {row['report_id']} content diverges from the hash-chained event",
+                    row["report_id"],
+                )
+
+        return {"ok": True, "checked": checked, "error": None, "first_bad": None}
+
+    def append_system_event(
+        self,
+        *,
+        stream_type: str,
+        stream_id: str,
+        event_type: str,
+        payload: Mapping[str, Any],
+    ) -> str:
+        """Append a standalone audit event in its own transaction."""
+
+        with self.transaction() as conn:
+            return self._append_event(
+                conn,
+                stream_type=stream_type,
+                stream_id=stream_id,
+                event_type=event_type,
+                payload=payload,
+            )
+
     def _append_event(
+        self,
         conn: sqlite3.Connection,
         *,
         stream_type: str,
@@ -168,10 +792,22 @@ class SQLiteStore:
         payload: Mapping[str, Any],
     ) -> str:
         event_id = new_id("EVT")
-        conn.execute(
+        payload_json = canonical_json(payload)
+        occurred_at = utc_now()
+        cursor = conn.execute(
             "INSERT INTO events(event_id, stream_type, stream_id, event_type, payload_json, occurred_at) "
             "VALUES (?, ?, ?, ?, ?, ?)",
-            (event_id, stream_type, stream_id, event_type, canonical_json(payload), utc_now()),
+            (event_id, stream_type, stream_id, event_type, payload_json, occurred_at),
+        )
+        self._link_event(
+            conn,
+            sequence=int(cursor.lastrowid),
+            event_id=event_id,
+            stream_type=stream_type,
+            stream_id=stream_id,
+            event_type=event_type,
+            payload_json=payload_json,
+            occurred_at=occurred_at,
         )
         return event_id
 
@@ -926,21 +1562,20 @@ class SQLiteStore:
                     payload={"action_id": action_id, "consumed_at": now},
                 )
 
-    @classmethod
     def _save_evidence_tx(
-        cls,
+        self,
         conn: sqlite3.Connection,
         record: EvidenceRecord,
         *,
         task_id: str | None = None,
     ) -> None:
         if task_id:
-            cls._require_task(conn, task_id)
+            self._require_task(conn, task_id)
         conn.execute(
             "INSERT INTO evidence(evidence_id, task_id, record_json, created_at) VALUES (?, ?, ?, ?)",
             (record.id, task_id, canonical_json(record), utc_now()),
         )
-        cls._append_event(
+        self._append_event(
             conn,
             stream_type="evidence",
             stream_id=record.id,
@@ -1192,6 +1827,395 @@ class SQLiteStore:
                 "SELECT report_json FROM completion_reports WHERE task_id = ?", (task_id,)
             ).fetchone()
         return None if row is None else CompletionReport.from_dict(json.loads(row["report_json"]))
+
+    def get_artifact_revision(self, task_id: str, artifact_hash: str) -> Artifact | None:
+        """Return one exact immutable artifact revision by task and content hash."""
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT artifact_json FROM artifacts WHERE task_id = ? AND artifact_hash = ? "
+                "ORDER BY rowid DESC LIMIT 1",
+                (task_id, artifact_hash),
+            ).fetchone()
+        return None if row is None else Artifact.from_dict(json.loads(row["artifact_json"]))
+
+    # ------------------------------------------------------------------ Sentinel
+
+    def save_sentinel_assessment(self, assessment):
+        """Persist raw Sentinel output as an immutable, explicitly untrusted record."""
+        from .sentinel.models import SecurityAssessment
+
+        if not isinstance(assessment, SecurityAssessment):
+            raise ValidationError("assessment must be a SecurityAssessment")
+        with self.transaction() as conn:
+            self._require_task(conn, assessment.task_id)
+            if assessment.artifact_id is not None and assessment.artifact_hash is not None:
+                artifact = conn.execute(
+                    "SELECT 1 FROM artifacts WHERE task_id = ? AND artifact_id = ? AND artifact_hash = ?",
+                    (assessment.task_id, assessment.artifact_id, assessment.artifact_hash),
+                ).fetchone()
+                if artifact is None:
+                    raise ValidationError("Sentinel assessment must bind to a persisted artifact revision")
+            try:
+                conn.execute(
+                    "INSERT INTO sentinel_assessments(assessment_id, task_id, artifact_id, artifact_hash, "
+                    "assessment_hash, policy_version, trigger_name, status, assessment_json, created_at) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (
+                        assessment.assessment_id,
+                        assessment.task_id,
+                        assessment.artifact_id,
+                        assessment.artifact_hash,
+                        assessment.assessment_hash,
+                        assessment.policy_version,
+                        assessment.trigger,
+                        assessment.status,
+                        canonical_json(assessment),
+                        assessment.completed_at,
+                    ),
+                )
+            except sqlite3.IntegrityError as exc:
+                row = conn.execute(
+                    "SELECT assessment_json, assessment_hash FROM sentinel_assessments "
+                    "WHERE task_id = ? AND artifact_hash IS ? AND policy_version = ? AND trigger_name = ?",
+                    (
+                        assessment.task_id,
+                        assessment.artifact_hash,
+                        assessment.policy_version,
+                        assessment.trigger,
+                    ),
+                ).fetchone()
+                if row is not None:
+                    existing = SecurityAssessment.from_dict(json.loads(row["assessment_json"]))
+                    if existing.assessment_hash == assessment.assessment_hash:
+                        return existing
+                raise ConcurrencyError("Sentinel assessment identity or idempotency collision") from exc
+            self._append_event(
+                conn,
+                stream_type="sentinel_assessment",
+                stream_id=assessment.assessment_id,
+                event_type="sentinel.assessment.recorded_untrusted",
+                payload={
+                    "task_id": assessment.task_id,
+                    "artifact_hash": assessment.artifact_hash,
+                    "assessment_hash": assessment.assessment_hash,
+                    "trust_state": "untrusted",
+                    "status": assessment.status,
+                    "finding_count": len(assessment.findings),
+                },
+            )
+        return assessment
+
+    def get_sentinel_assessment(self, assessment_id: str):
+        from .sentinel.models import SecurityAssessment
+
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT assessment_json FROM sentinel_assessments WHERE assessment_id = ?",
+                (assessment_id,),
+            ).fetchone()
+        if row is None:
+            raise NotFoundError(f"Sentinel assessment not found: {assessment_id}")
+        return SecurityAssessment.from_dict(json.loads(row["assessment_json"]))
+
+    def get_latest_sentinel_assessment(self, task_id: str, artifact_hash: str):
+        from .sentinel.models import SecurityAssessment
+
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT assessment_json FROM sentinel_assessments "
+                "WHERE task_id = ? AND artifact_hash = ? ORDER BY rowid DESC LIMIT 1",
+                (task_id, artifact_hash),
+            ).fetchone()
+        return None if row is None else SecurityAssessment.from_dict(json.loads(row["assessment_json"]))
+
+    def list_artifacts_without_sentinel_assessment(self, *, policy_version: str):
+        with self.connection() as conn:
+            rows = conn.execute(
+                "SELECT a.artifact_json FROM artifacts a "
+                "LEFT JOIN sentinel_assessments s ON s.task_id = a.task_id "
+                "AND s.artifact_hash = a.artifact_hash AND s.policy_version = ? "
+                "WHERE s.assessment_id IS NULL ORDER BY a.rowid",
+                (policy_version,),
+            ).fetchall()
+        return tuple(Artifact.from_dict(json.loads(row["artifact_json"])) for row in rows)
+
+    def save_sentinel_review(self, review):
+        from .sentinel.models import SecurityAssessmentReview
+
+        if not isinstance(review, SecurityAssessmentReview):
+            raise ValidationError("review must be a SecurityAssessmentReview")
+        with self.transaction() as conn:
+            assessment = conn.execute(
+                "SELECT task_id, artifact_hash, assessment_hash, assessment_json "
+                "FROM sentinel_assessments WHERE assessment_id = ?",
+                (review.assessment_id,),
+            ).fetchone()
+            if assessment is None:
+                raise ValidationError("Sentinel review requires a persisted assessment")
+            if (
+                assessment["task_id"] != review.task_id
+                or assessment["artifact_hash"] != review.artifact_hash
+                or assessment["assessment_hash"] != review.assessment_hash
+            ):
+                raise ValidationError("Sentinel review does not bind the persisted assessment")
+            serialized_assessment = canonical_json(json.loads(assessment["assessment_json"]))
+            if (
+                str(review.envelope.artifact.get("content", "")) != serialized_assessment
+                or text_digest(serialized_assessment) != review.assessment_hash
+            ):
+                raise ValidationError("Sentinel review envelope does not contain the exact persisted assessment")
+            context = conn.execute(
+                "SELECT task_id, purpose, bundle_json FROM context_bundles WHERE bundle_id = ?",
+                (review.review_context_id,),
+            ).fetchone()
+            if context is None or context["task_id"] != review.task_id or context["purpose"] != "review":
+                raise ValidationError("Sentinel review context is not a fresh persisted review context")
+            context_bundle = ContextBundle.from_dict(json.loads(context["bundle_json"]))
+            if canonical_json(review.envelope) not in context_bundle.content:
+                raise ValidationError("Sentinel review context does not contain the exact ReviewEnvelope")
+            if review.context_isolated and f"fresh_context:{context_bundle.bundle_id}" not in review.result.isolation:
+                raise ValidationError("Sentinel review result does not attest to its exact persisted context")
+            try:
+                conn.execute(
+                    "INSERT INTO sentinel_assessment_reviews(review_id, assessment_id, assessment_hash, task_id, "
+                    "artifact_hash, envelope_hash, review_hash, decision, trusted, reviewer_adapter, "
+                    "review_context_id, review_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (
+                        review.review_id,
+                        review.assessment_id,
+                        review.assessment_hash,
+                        review.task_id,
+                        review.artifact_hash,
+                        review.envelope.envelope_hash,
+                        review.review_hash,
+                        review.result.decision.value,
+                        1 if review.trusted else 0,
+                        review.reviewer_adapter,
+                        review.review_context_id,
+                        canonical_json(review),
+                        review.reviewed_at,
+                    ),
+                )
+            except sqlite3.IntegrityError as exc:
+                existing = conn.execute(
+                    "SELECT review_json FROM sentinel_assessment_reviews WHERE assessment_id = ?",
+                    (review.assessment_id,),
+                ).fetchone()
+                if existing is not None:
+                    stored = SecurityAssessmentReview.from_dict(json.loads(existing["review_json"]))
+                    if stored.review_hash == review.review_hash:
+                        return stored
+                raise ConcurrencyError("Sentinel assessment already has a different review") from exc
+            self._append_event(
+                conn,
+                stream_type="sentinel_review",
+                stream_id=review.review_id,
+                event_type="sentinel.assessment.reviewed",
+                payload={
+                    "assessment_id": review.assessment_id,
+                    "assessment_hash": review.assessment_hash,
+                    "artifact_hash": review.artifact_hash,
+                    "decision": review.result.decision.value,
+                    "trusted": review.trusted,
+                    "structural_failures": list(review.structural_failures),
+                    "reviewer_adapter": review.reviewer_adapter,
+                    "review_context_id": review.review_context_id,
+                },
+            )
+        return review
+
+    def get_latest_sentinel_review(self, task_id: str, artifact_hash: str):
+        from .sentinel.models import SecurityAssessmentReview
+
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT review_json FROM sentinel_assessment_reviews "
+                "WHERE task_id = ? AND artifact_hash = ? ORDER BY rowid DESC LIMIT 1",
+                (task_id, artifact_hash),
+            ).fetchone()
+        return None if row is None else SecurityAssessmentReview.from_dict(json.loads(row["review_json"]))
+
+    def get_sentinel_review_for_assessment(self, assessment_id: str):
+        from .sentinel.models import SecurityAssessmentReview
+
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT review_json FROM sentinel_assessment_reviews WHERE assessment_id = ?",
+                (assessment_id,),
+            ).fetchone()
+        return None if row is None else SecurityAssessmentReview.from_dict(json.loads(row["review_json"]))
+
+    def save_sentinel_report(self, report):
+        from .sentinel.models import PrincipalSecurityReport
+
+        if not isinstance(report, PrincipalSecurityReport):
+            raise ValidationError("report must be a PrincipalSecurityReport")
+        with self.transaction() as conn:
+            review = conn.execute(
+                "SELECT assessment_id, assessment_hash, review_hash, task_id, artifact_hash, trusted "
+                "FROM sentinel_assessment_reviews WHERE review_id = ?",
+                (report.review_id,),
+            ).fetchone()
+            if review is None:
+                raise ValidationError("Sentinel report requires a persisted independent review")
+            if (
+                review["assessment_id"] != report.assessment_id
+                or review["assessment_hash"] != report.assessment_hash
+                or review["review_hash"] != report.review_hash
+                or review["task_id"] != report.task_id
+                or review["artifact_hash"] != report.artifact_hash
+            ):
+                raise ValidationError("Sentinel report does not bind its assessment and review")
+            if report.overall == "attention_required" and not bool(review["trusted"]):
+                raise ValidationError("untrusted new-guild findings may not enter the Principal inbox")
+            try:
+                conn.execute(
+                    "INSERT INTO sentinel_reports(report_id, assessment_id, review_id, task_id, artifact_hash, "
+                    "overall, report_hash, report_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (
+                        report.report_id,
+                        report.assessment_id,
+                        report.review_id,
+                        report.task_id,
+                        report.artifact_hash,
+                        report.overall,
+                        report.report_hash,
+                        canonical_json(report),
+                        report.generated_at,
+                    ),
+                )
+            except sqlite3.IntegrityError as exc:
+                existing = conn.execute(
+                    "SELECT report_json FROM sentinel_reports WHERE review_id = ?",
+                    (report.review_id,),
+                ).fetchone()
+                if existing is not None:
+                    stored = PrincipalSecurityReport.from_dict(json.loads(existing["report_json"]))
+                    if stored.report_hash == report.report_hash:
+                        return stored
+                raise ConcurrencyError("Sentinel review already has a different report") from exc
+            self._append_event(
+                conn,
+                stream_type="sentinel_report",
+                stream_id=report.report_id,
+                event_type="sentinel.report.staged_for_principal",
+                payload={
+                    "task_id": report.task_id,
+                    "artifact_hash": report.artifact_hash,
+                    "overall": report.overall,
+                    "report_hash": report.report_hash,
+                    "finding_count": len(report.findings),
+                    "destination": report.destination,
+                },
+            )
+        return report
+
+    def get_sentinel_report_for_review(self, review_id: str):
+        from .sentinel.models import PrincipalSecurityReport
+
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT report_json FROM sentinel_reports WHERE review_id = ?",
+                (review_id,),
+            ).fetchone()
+        return None if row is None else PrincipalSecurityReport.from_dict(json.loads(row["report_json"]))
+
+    def get_sentinel_report(self, report_id: str):
+        from .sentinel.models import PrincipalSecurityReport, ReportAcknowledgement
+
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT r.report_json, a.acknowledgement_json FROM sentinel_reports r "
+                "LEFT JOIN sentinel_report_acknowledgements a ON a.report_id = r.report_id "
+                "WHERE r.report_id = ?",
+                (report_id,),
+            ).fetchone()
+        if row is None:
+            raise NotFoundError(f"Sentinel report not found: {report_id}")
+        return {
+            "report": PrincipalSecurityReport.from_dict(json.loads(row["report_json"])),
+            "acknowledgement": (
+                ReportAcknowledgement.from_dict(json.loads(row["acknowledgement_json"]))
+                if row["acknowledgement_json"] else None
+            ),
+        }
+
+    def list_sentinel_reports(self, *, task_id: str | None = None, unacknowledged_only: bool = False):
+        from .sentinel.models import PrincipalSecurityReport, ReportAcknowledgement
+
+        clauses = []
+        params: list[Any] = []
+        if task_id is not None:
+            clauses.append("r.task_id = ?")
+            params.append(task_id)
+        if unacknowledged_only:
+            clauses.append("a.report_id IS NULL")
+        query = (
+            "SELECT r.report_json, a.acknowledgement_json FROM sentinel_reports r "
+            "LEFT JOIN sentinel_report_acknowledgements a ON a.report_id = r.report_id"
+        )
+        if clauses:
+            query += " WHERE " + " AND ".join(clauses)
+        query += " ORDER BY r.rowid DESC"
+        with self.connection() as conn:
+            rows = conn.execute(query, params).fetchall()
+        return tuple(
+            {
+                "report": PrincipalSecurityReport.from_dict(json.loads(row["report_json"])),
+                "acknowledgement": (
+                    ReportAcknowledgement.from_dict(json.loads(row["acknowledgement_json"]))
+                    if row["acknowledgement_json"] else None
+                ),
+            }
+            for row in rows
+        )
+
+    def acknowledge_sentinel_report(self, acknowledgement):
+        from .sentinel.models import ReportAcknowledgement
+
+        if not isinstance(acknowledgement, ReportAcknowledgement):
+            raise ValidationError("acknowledgement must be a ReportAcknowledgement")
+        with self.transaction() as conn:
+            if conn.execute(
+                "SELECT 1 FROM sentinel_reports WHERE report_id = ?",
+                (acknowledgement.report_id,),
+            ).fetchone() is None:
+                raise NotFoundError(f"Sentinel report not found: {acknowledgement.report_id}")
+            try:
+                conn.execute(
+                    "INSERT INTO sentinel_report_acknowledgements(acknowledgement_id, report_id, "
+                    "acknowledgement_json, created_at) VALUES (?, ?, ?, ?)",
+                    (
+                        acknowledgement.acknowledgement_id,
+                        acknowledgement.report_id,
+                        canonical_json(acknowledgement),
+                        acknowledgement.acknowledged_at,
+                    ),
+                )
+            except sqlite3.IntegrityError as exc:
+                raise ConcurrencyError("Sentinel report is already acknowledged") from exc
+            self._append_event(
+                conn,
+                stream_type="sentinel_report",
+                stream_id=acknowledgement.report_id,
+                event_type="sentinel.report.acknowledged",
+                payload={"acknowledgement": acknowledgement.to_dict()},
+            )
+        return acknowledgement
+
+    def sentinel_status(self) -> dict[str, Any]:
+        with self.connection() as conn:
+            row = conn.execute(
+                "SELECT "
+                "(SELECT COUNT(*) FROM sentinel_assessments) AS assessments, "
+                "(SELECT COUNT(*) FROM sentinel_assessment_reviews) AS reviews, "
+                "(SELECT COUNT(*) FROM sentinel_assessment_reviews WHERE trusted = 1) AS trusted_reviews, "
+                "(SELECT COUNT(*) FROM sentinel_reports) AS reports, "
+                "(SELECT COUNT(*) FROM sentinel_reports r LEFT JOIN sentinel_report_acknowledgements a "
+                " ON a.report_id = r.report_id WHERE a.report_id IS NULL) AS unacknowledged"
+            ).fetchone()
+        return {key: int(row[key]) for key in row.keys()}
+
 
     def list_events(
         self,

@@ -32,6 +32,8 @@ class DeterministicModelAdapter:
         model_classes: frozenset[str] = frozenset({"executive", "routine", "review", "local"}),
         capabilities: frozenset[str] = frozenset(
             {
+                "adversarial_testing",
+                "artifact_security_scanning",
                 "attack_surface_analysis",
                 "automation",
                 "baseline_preservation",
@@ -105,6 +107,7 @@ class DeterministicModelAdapter:
                 "policy_audit",
                 "policy_interpretation",
                 "portfolio_tracking",
+                "penetration_test_planning",
                 "pricing",
                 "prioritization",
                 "privacy_engineering",
@@ -116,6 +119,7 @@ class DeterministicModelAdapter:
                 "recency_analysis",
                 "recommendations",
                 "regression_detection",
+                "remediation_planning",
                 "relationship_analysis",
                 "reliability_engineering",
                 "requirements",

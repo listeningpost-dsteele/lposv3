@@ -1,0 +1,65 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "metadata": {
+    "component": {
+      "type": "application",
+      "name": "lpos-os",
+      "version": "4.3.0",
+      "supplier": {
+        "name": "Listening Post / LPOS"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "6cd23275b05fec6d9f53a2ef090792c03b924b4847a56695de9693031ef2a738"
+        }
+      ],
+      "purl": "pkg:pypi/lpos-os@4.3.0"
+    },
+    "properties": [
+      {
+        "name": "lpos:runtime_dependencies",
+        "value": "none"
+      },
+      {
+        "name": "lpos:python_requires",
+        "value": ">=3.11"
+      },
+      {
+        "name": "lpos:derived_work_notice",
+        "value": "NOTICE-SKILLOPT.md (Microsoft SkillOpt, MIT, reimplemented \u2014 not vendored)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "name": "jsonschema",
+      "version": ">=4.20",
+      "scope": "optional",
+      "description": "dev extra only; structural schema validation is built in and always on"
+    },
+    {
+      "type": "library",
+      "name": "pytest",
+      "version": ">=8",
+      "scope": "optional",
+      "description": "dev extra only"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:pypi/lpos-os@4.3.0",
+      "dependsOn": []
+    }
+  ]
+}

@@ -18,23 +18,23 @@ Shows the installed LPOS name and version.
 
 ### `lpos doctor [--db PATH] [--schema-dir PATH]`
 
-Verifies the integrated specification, runtime assets, and (with `--db`) the database. Reports kernel load, specialist/operation/benchmark counts, schema validation, Python version, database integrity, and migrations. Exits nonzero and reports `unhealthy` if the kernel is missing or the counts are not 32 / 21 / 53. See [Checking system health](/working-with/checking-system-health.html).
+Verifies the integrated specification, runtime assets, and (with `--db`) the database. Reports kernel load, specialist/operation/benchmark counts, schema validation, Python version, database integrity, and migrations. Exits nonzero and reports `unhealthy` if the kernel is missing or the counts are not 33 / 26 / 55. See [Checking system health](/working-with/checking-system-health.html).
 
 ### `lpos list-specialists`
 
-Prints the 32 capability-routable specialists: id, name, guild, model class, capabilities, and craft standards.
+Prints the 33 capability-routable specialists: id, name, guild, model class, capabilities, and craft standards.
 
 ### `lpos list-workflows`
 
-Prints the packaged Standing Operation catalog, all 21 operations with their workflow files, default schedules, requirements, and enabled-by-default flags.
+Prints the packaged Standing Operation catalog — all 26 operations with their workflow files, default schedules, requirements, and enabled-by-default flags.
 
 ### `lpos list-benchmarks`
 
-Prints the 53 fixed benchmark fixtures.
+Prints the 55 fixed benchmark fixtures.
 
 ### `lpos evals`
 
-Runs the deterministic core evaluations against all 53 fixtures. Exits nonzero if any fail.
+Runs the deterministic core evaluations against all 55 fixtures. Exits nonzero if any fail.
 
 ### `lpos validate-schemas [--schema-dir PATH]`
 
@@ -56,7 +56,31 @@ Lists immutable audit events, optionally filtered by stream type and stream id.
 
 ### `lpos export --db PATH --output PATH`
 
-Exports the append-only event stream as JSONL, one immutable event per line, in sequence order. This is the portable audit and backup format; it is an export, not the live state.
+Exports the append-only event stream as JSONL — one immutable event per line, in sequence order. This is the portable audit and backup format; it is an export, not the live state.
+
+## Sentinel adversarial-assurance commands
+
+### `lpos sentinel status --db PATH`
+
+Shows the persisted assessment, review, trusted-review, report, and unacknowledged-report counts. Sentinel output is never trusted by guild designation: only hash-bound assessments that have passed the ordinary fresh-context independent review and deterministic exact-revision checks may be treated as findings.
+
+### `lpos sentinel scan --db PATH --task-id ID [--spec-root PATH]`
+
+Runs a passive, static, non-destructive assessment of the latest persisted artifact for the selected task. The raw assessment is stored as untrusted and then submitted through LPOS's normal adversarial-review process. This command does not execute the artifact, open network connections, launch shells, or perform live exploitation.
+
+### `lpos sentinel reports --db PATH [--task-id ID] [--unacknowledged]`
+
+Lists Principal-facing Sentinel reports. `--unacknowledged` limits the result to reports without a Principal acknowledgement. An assurance failure is clearly distinguished from a verified finding and never republishes unreviewed raw claims as fact.
+
+### `lpos sentinel show --db PATH --report-id ID`
+
+Shows one reviewed report, including redacted evidence, remediation suggestions, and verification guidance. Its assessment and review identifiers and hashes bind the report to the immutable assurance records.
+
+### `lpos sentinel ack --db PATH --report-id ID [--acknowledged-by NAME] [--note TEXT]`
+
+Appends a Principal acknowledgement without mutating, suppressing, downgrading, closing, or deleting the report. Sentinel identities cannot acknowledge their own reports.
+
+Live or destructive penetration testing is not provided by these commands. A future active runner must remain separately disabled by default and satisfy an exact, time-bounded, isolated-environment action approval; the candidate includes only the fail-closed authorization gate.
 
 ## Verification command
 
@@ -68,7 +92,7 @@ Runs the no-side-effect integrated verification flow into a workspace: submits a
 
 ### `lpos dashboard`
 
-Starts the [Hermes Project Dashboard](/includes/dashboard.html) server on port 7373. Normally unnecessary, the dashboard starts with the system.
+Starts the [Hermes Project Dashboard](/includes/dashboard.html) server on port 7373. Normally unnecessary — the dashboard starts with the system.
 
 ### `lpos monitor audit`
 

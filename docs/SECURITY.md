@@ -53,3 +53,15 @@ validate and execute them.
 
 Use the security-reporting process of the repository or organization distributing this
 release. Do not place sensitive exploit details in a public issue.
+
+## Sentinel adversarial assurance
+
+GUILD-039 passively scans every persisted artifact. Its raw output is explicitly
+untrusted and cannot affect completion or appear as a factual Principal finding until
+the exact assessment hash passes a fresh-context independent review and deterministic
+re-scan. Sentinel cannot approve, suppress, remediate, or close its own findings. See
+`docs/SENTINEL.md`. Critical and High reviewed findings block completion.
+
+Continuous Sentinel operation never executes the artifact, opens network connections,
+uses credentials, invokes a shell, or changes live state. Active penetration testing
+requires a separately approved and isolated scope.

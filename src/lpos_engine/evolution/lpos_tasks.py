@@ -1,6 +1,6 @@
 """Load LPOS benchmark fixtures as skill-evolution task records (Phase 3).
 
-Turns the operating system's own 53 fixed fixtures (one per specialist, one per
+Turns the operating system's own 55 fixed fixtures (one per specialist, one per
 Standing Operation) into task records the evolution loop can score. The
 deterministic dimensions (schema validity, required sections, route correctness)
 are scorable offline; the full behavioural score requires a live agent rollout

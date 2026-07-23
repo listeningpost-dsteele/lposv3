@@ -299,23 +299,24 @@ def http_server(hermes_root: Path):
     thread.start()
     base = f"http://127.0.0.1:{server.server_address[1]}"
     try:
-        yield base, launched
+        yield base, launched, server.token
     finally:
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
 
 
-def _get(url: str):
-    with urllib.request.urlopen(url, timeout=10) as response:
+def _get(url: str, token: str):
+    request = urllib.request.Request(url, headers={"X-LPOS-Token": token})
+    with urllib.request.urlopen(request, timeout=10) as response:
         return response.status, json.loads(response.read().decode("utf-8"))
 
 
-def _post(url: str, payload: dict):
+def _post(url: str, payload: dict, token: str):
     request = urllib.request.Request(
         url,
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers={"Content-Type": "application/json", "X-LPOS-Token": token},
         method="POST",
     )
     try:
@@ -326,49 +327,56 @@ def _post(url: str, payload: dict):
 
 
 def test_http_projects_and_ui(http_server) -> None:
-    base, _ = http_server
-    status, data = _get(base + "/api/projects")
+    base, _, token = http_server
+    status, data = _get(base + "/api/projects", token)
     assert status == 200
     assert {p["name"] for p in data["projects"]} >= {"Alpha Report", "Deep Dive"}
     with urllib.request.urlopen(base + "/", timeout=10) as response:
         html = response.read().decode("utf-8")
     assert response.headers.get_content_type() == "text/html"
     assert "Hermes" in html and "prefers-color-scheme" in html
+    # The session token is injected server-side for the page's own fetches.
+    assert token in html
 
 
 def test_http_snooze_and_wake_flow(http_server) -> None:
-    base, _ = http_server
-    _, listing = _get(base + "/api/projects")
+    base, _, token = http_server
+    _, listing = _get(base + "/api/projects", token)
     alpha = project_by_name(listing["projects"], "Alpha Report")
 
     status, result = _post(
         f"{base}/api/projects/{alpha['id']}/snooze",
         {"until": iso(utcnow() - timedelta(minutes=5))},
+        token,
     )
     assert status == 200 and result["bucket"] == "active" and result["woke"] is True
 
-    _, listing = _get(base + "/api/projects")
+    _, listing = _get(base + "/api/projects", token)
     alpha = project_by_name(listing["projects"], "Alpha Report")
     assert alpha["bucket"] == "active" and alpha["woke"] is True
 
-    status, result = _post(f"{base}/api/projects/{alpha['id']}/archive", {})
+    status, result = _post(f"{base}/api/projects/{alpha['id']}/archive", {}, token)
     assert status == 200 and result["bucket"] == "archived"
-    status, result = _post(f"{base}/api/projects/{alpha['id']}/restore", {"bucket": "active"})
+    status, result = _post(
+        f"{base}/api/projects/{alpha['id']}/restore", {"bucket": "active"}, token
+    )
     assert status == 200 and result["bucket"] == "active" and result["woke"] is False
 
 
 def test_http_open_and_errors(http_server, hermes_root: Path) -> None:
-    base, launched = http_server
-    status, result = _post(base + "/api/open", {"path": "/etc"})
+    base, launched, token = http_server
+    status, result = _post(base + "/api/open", {"path": "/etc"}, token)
     assert status == 403 and launched == []
-    status, result = _post(base + "/api/open", {"path": str(hermes_root / "sessions" / "alpha")})
+    status, result = _post(
+        base + "/api/open", {"path": str(hermes_root / "sessions" / "alpha")}, token
+    )
     assert status == 200 and result["ok"] is True and launched
 
-    status, result = _post(base + "/api/projects/nope/move", {"bucket": "active"})
+    status, result = _post(base + "/api/projects/nope/move", {"bucket": "active"}, token)
     assert status == 404
-    status, _ = _get(base + "/api/health")
+    status, _ = _get(base + "/api/health", token)
     assert status == 200
 
-    status, data = _get(base + "/api/search?q=digest")
+    status, data = _get(base + "/api/search?q=digest", token)
     assert status == 200
     assert any(f["name"] == "digest-final.md" for f in data["files"])

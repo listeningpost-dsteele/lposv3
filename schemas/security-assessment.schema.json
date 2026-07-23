@@ -1,0 +1,339 @@
+{
+  "$id": "https://lpos.local/schemas/security-assessment.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "clean"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "findings": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "findings"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "findings": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "artifact_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifact_id": {
+      "maxLength": 128,
+      "pattern": "^\\S+$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "assessment_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "checked_rules": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "completed_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "findings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact_hash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "artifact_id": {
+            "maxLength": 128,
+            "pattern": "^\\S+$",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "assessment_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^\\S+$",
+            "type": "string"
+          },
+          "blocking": {
+            "type": "boolean"
+          },
+          "category": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "evidence": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "evidence_hash": {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                "kind": {
+                  "maxLength": 128,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "location": {
+                  "maxLength": 2048,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "redacted_excerpt": {
+                  "maxLength": 1000,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "location",
+                "redacted_excerpt",
+                "evidence_hash"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "finding_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^\\S+$",
+            "type": "string"
+          },
+          "fingerprint": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "remediation": {
+            "additionalProperties": false,
+            "properties": {
+              "steps": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array",
+                "uniqueItems": true
+              },
+              "summary": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "verification": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array",
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "summary",
+              "steps",
+              "verification"
+            ],
+            "type": "object"
+          },
+          "rule_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^\\S+$",
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low",
+              "info"
+            ]
+          },
+          "task_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^\\S+$",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "finding_id",
+          "assessment_id",
+          "task_id",
+          "artifact_id",
+          "artifact_hash",
+          "rule_id",
+          "severity",
+          "category",
+          "title",
+          "description",
+          "evidence",
+          "remediation",
+          "confidence",
+          "blocking",
+          "fingerprint",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "isolated": {
+      "type": "boolean"
+    },
+    "limitations": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "mode": {
+      "enum": [
+        "passive",
+        "isolated"
+      ]
+    },
+    "organization_id": {
+      "const": "GUILD-039"
+    },
+    "policy_version": {
+      "maxLength": 128,
+      "minLength": 1,
+      "type": "string"
+    },
+    "producer_id": {
+      "const": "sentinel-static-analyzer"
+    },
+    "scope": {
+      "enum": [
+        "artifact",
+        "task_completion",
+        "control_plane"
+      ]
+    },
+    "specialist_id": {
+      "const": "SPECIALIST-033"
+    },
+    "started_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "clean",
+        "findings",
+        "error"
+      ]
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "trigger": {
+      "maxLength": 256,
+      "minLength": 1,
+      "type": "string"
+    },
+    "trust_state": {
+      "const": "untrusted"
+    }
+  },
+  "required": [
+    "assessment_id",
+    "task_id",
+    "artifact_id",
+    "artifact_hash",
+    "scope",
+    "mode",
+    "trigger",
+    "policy_version",
+    "status",
+    "checked_rules",
+    "findings",
+    "limitations",
+    "isolated",
+    "producer_id",
+    "organization_id",
+    "specialist_id",
+    "trust_state",
+    "started_at",
+    "completed_at"
+  ],
+  "title": "SecurityAssessment",
+  "type": "object"
+}

@@ -47,6 +47,23 @@ def _fake_hermes(tmp_path):
     (root / "mcp-tokens" / "filesystem.json").write_text("{}", encoding="utf-8")
     (root / "gateway" / "slack-bridge").mkdir(parents=True)
     (root / "platforms" / "gmail").mkdir(parents=True)
+    # Admin-owned template file: agent registrations can only reference these
+    # by check_id (LPOS-03); the localhost exemption lives here, never in
+    # agent-writable state (LPOS-04).
+    _write_json(
+        root / "monitor" / "approved-checks.json",
+        {
+            "checks": {
+                "local-http-health": {
+                    "type": "http_health",
+                    "url": "http://127.0.0.1:{port}/health",
+                    "parameters": ["port"],
+                    "private_network_approved": True,
+                    "description": "health endpoint of an approved self-built local service",
+                }
+            }
+        },
+    )
     _write_json(
         root / "state" / "services.json",
         {
@@ -55,7 +72,7 @@ def _fake_hermes(tmp_path):
                     "id": "svc:report-api",
                     "name": "Report API",
                     "kind": "self_built",
-                    "check": {"type": "http_health", "url": "http://localhost:9999/health"},
+                    "check": {"check_id": "local-http-health", "params": {"port": 9999}},
                     "criticality": "informational",
                 }
             ]
@@ -95,6 +112,12 @@ def test_discovery_from_fake_hermes_root(tmp_path):
     assert by_id["gateway:slack-bridge"]["kind"] == "mcp"
     assert by_id["svc:report-api"]["kind"] == "self_built"
     assert by_id["svc:report-api"]["criticality"] == "informational"
+    # Agent registrations survive only as approved-template references.
+    assert by_id["svc:report-api"]["check"] == {
+        "check_id": "local-http-health",
+        "params": {"port": 9999},
+    }
+    assert not by_id["svc:report-api"].get("unapproved_check")
     assert all(e["muted"] is False for e in entries)
 
 

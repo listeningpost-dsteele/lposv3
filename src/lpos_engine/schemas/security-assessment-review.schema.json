@@ -1,0 +1,198 @@
+{
+  "$id": "https://lpos.local/schemas/security-assessment-review.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "trusted": {
+            "const": true
+          }
+        },
+        "required": [
+          "trusted"
+        ]
+      },
+      "then": {
+        "properties": {
+          "context_isolated": {
+            "const": true
+          },
+          "result": {
+            "properties": {
+              "decision": {
+                "const": "PASS"
+              }
+            }
+          },
+          "structural_failures": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "artifact_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "assessment_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "assessment_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "context_isolated": {
+      "type": "boolean"
+    },
+    "envelope": {
+      "type": "object"
+    },
+    "producer_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "result": {
+      "properties": {
+        "decision": {
+          "enum": [
+            "PASS",
+            "REJECT"
+          ]
+        },
+        "isolation": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "recomputed": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "decision",
+        "isolation",
+        "recomputed"
+      ],
+      "type": "object"
+    },
+    "review_context_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "review_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "reviewed_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "reviewer_adapter": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "structural_checks": {
+      "additionalProperties": false,
+      "properties": {
+        "all_rules_accounted_for": {
+          "type": "boolean"
+        },
+        "envelope_hash_binding": {
+          "type": "boolean"
+        },
+        "evidence_redacted": {
+          "type": "boolean"
+        },
+        "findings_reproducible": {
+          "type": "boolean"
+        },
+        "fresh_context_attested": {
+          "type": "boolean"
+        },
+        "policy_current": {
+          "type": "boolean"
+        },
+        "producer_reviewer_separated": {
+          "type": "boolean"
+        },
+        "raw_output_untrusted": {
+          "type": "boolean"
+        },
+        "target_revision_present": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "raw_output_untrusted",
+        "policy_current",
+        "all_rules_accounted_for",
+        "producer_reviewer_separated",
+        "fresh_context_attested",
+        "envelope_hash_binding",
+        "target_revision_present",
+        "evidence_redacted",
+        "findings_reproducible"
+      ],
+      "type": "object"
+    },
+    "structural_failures": {
+      "items": {
+        "enum": [
+          "raw_output_untrusted",
+          "policy_current",
+          "all_rules_accounted_for",
+          "producer_reviewer_separated",
+          "fresh_context_attested",
+          "envelope_hash_binding",
+          "target_revision_present",
+          "evidence_redacted",
+          "findings_reproducible"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "task_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "pattern": "^\\S+$",
+      "type": "string"
+    },
+    "trusted": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "review_id",
+    "assessment_id",
+    "assessment_hash",
+    "task_id",
+    "artifact_hash",
+    "envelope",
+    "result",
+    "structural_checks",
+    "structural_failures",
+    "context_isolated",
+    "producer_id",
+    "reviewer_adapter",
+    "review_context_id",
+    "trusted",
+    "reviewed_at"
+  ],
+  "title": "SecurityAssessmentReview",
+  "type": "object"
+}

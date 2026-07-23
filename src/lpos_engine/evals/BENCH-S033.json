@@ -1,0 +1,56 @@
+{
+  "component_id": "SPECIALIST-033",
+  "component_type": "specialist",
+  "evaluation": {
+    "assertions": [
+      "lead_specialist",
+      "model_class",
+      "no_missing_capabilities",
+      "craft_standards_present"
+    ],
+    "method": "deterministic_router_assertions"
+  },
+  "evidence": [
+    "RouteDecision JSON",
+    "selected specialist and craft-standard IDs",
+    "missing-capability set"
+  ],
+  "expected": {
+    "craft_standards": ["CS-003", "CS-008", "CS-009"],
+    "lead_guild": "Sentinel Adversarial Assurance",
+    "lead_specialist": "SPECIALIST-033",
+    "missing_capabilities": [],
+    "model_class": "executive"
+  },
+  "failure_criteria": [
+    "A different lead specialist is selected.",
+    "Any adversarial-assurance capability is silently omitted.",
+    "The route names a provider instead of a model class.",
+    "The fixture is modified during evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-S033",
+  "inputs": {
+    "facts": {
+      "approved_scope": "Passive analysis of one exact artifact hash",
+      "external_action_authorized": false,
+      "fixture_id": "BENCH-S033",
+      "known_constraint": "Raw new-guild output remains untrusted pending independent review."
+    },
+    "preferred_model_class": "executive",
+    "principal_instruction": "Passively adversarially assess the supplied artifact, propose remediation, and submit the exact assessment through independent review without changing live state.",
+    "required_capabilities": [
+      "adversarial_testing",
+      "artifact_security_scanning",
+      "remediation_planning"
+    ]
+  },
+  "objective": "Verify that bounded Sentinel work routes to SPECIALIST-033 with complete capability coverage.",
+  "scenario": "The Principal requests passive adversarial assurance for one exact artifact; active exploitation and external actions are not authorized.",
+  "success_criteria": [
+    "Lead specialist is SPECIALIST-033.",
+    "All requested capabilities are covered.",
+    "CS-003, CS-008, and CS-009 are mapped.",
+    "No external action is executed and output is not self-approved."
+  ]
+}

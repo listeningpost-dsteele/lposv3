@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from lpos_engine.adapters import AdapterRegistry, DeterministicModelAdapter, RecordingActionAdapter
+from lpos_engine.approvals import TrustedLocalChannel
 from lpos_engine.engine import LPOSRuntime, RuntimeConfig
 from lpos_engine.errors import AdapterError, PolicyViolation
 from lpos_engine.models import MaterialitySignals, MessageIdentity, ReviewDecision, TaskStatus
@@ -118,6 +119,9 @@ class EngineReviewTests(RuntimeTestCase):
             idempotency_key="task-send",
         )
         self.assertEqual(self.runtime.store.get_task(task.task_id)["status"], TaskStatus.AWAITING_APPROVAL)
+        # Approval messages are only accepted through a registered channel
+        # verifier; register the explicit trusted-local channel for "test".
+        self.runtime.channels.register(TrustedLocalChannel("test"))
         self.runtime.grant_action_approval(
             request.question_id,
             message_identity=MessageIdentity(

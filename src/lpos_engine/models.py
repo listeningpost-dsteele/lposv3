@@ -640,6 +640,49 @@ class MessageIdentity(Serializable):
 
 
 @dataclass(frozen=True, slots=True)
+class VerifiedMessage(Serializable):
+    """A non-forgeable channel-ingestion assertion for one inbound message.
+
+    A ``VerifiedMessage`` is minted exclusively by a ``ChannelRegistry``
+    (see ``lpos_engine.approvals``) after a registered ``ChannelVerifier``
+    validated provider evidence for the message.  Constructing this dataclass
+    directly does NOT confer trust: the registry tracks every nonce it issued
+    and rejects assertions it did not mint, assertions that were already
+    consumed, and assertions older than the configured freshness window.
+
+    Fields:
+      - ``message_identity``: the provider-neutral identity that was verified.
+      - ``verification_method``: how the channel authenticated the provider
+        event (e.g. ``"webhook-hmac-sha256"``, ``"trusted-local-session"``).
+      - ``verifier_id``: the registered channel verifier that performed it.
+      - ``provider_event_digest``: SHA-256 digest binding the assertion to the
+        raw provider event evidence that was verified.
+      - ``verified_at``: UTC timestamp of verification (freshness bound).
+      - ``nonce``: single-use registry-issued token (replay protection).
+    """
+
+    message_identity: MessageIdentity
+    verification_method: str
+    verifier_id: str
+    provider_event_digest: str
+    verified_at: str
+    nonce: str
+
+    def __post_init__(self) -> None:
+        require_text("verification_method", self.verification_method, max_length=128)
+        require_text("verifier_id", self.verifier_id, max_length=256)
+        require_text("provider_event_digest", self.provider_event_digest, max_length=128)
+        require_text("nonce", self.nonce, max_length=128)
+        parse_timestamp(self.verified_at)
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "VerifiedMessage":
+        data = dict(value)
+        data["message_identity"] = MessageIdentity.from_dict(data["message_identity"])
+        return cls(**data)
+
+
+@dataclass(frozen=True, slots=True)
 class ActionPlan(Serializable):
     action_id: str
     task_id: str
@@ -813,6 +856,14 @@ class ApprovalGrant(Serializable):
     verified_identity: str
     granted_at: str = field(default_factory=utc_now)
     expires_at: str | None = None
+    # Channel-ingestion verification metadata (LPOS-05).  These record how the
+    # approving message was authenticated at the trusted channel boundary and
+    # are persisted with the grant.  They are optional only for grants stored
+    # before the channel boundary existed.
+    verification_method: str | None = None
+    verifier_id: str | None = None
+    provider_event_digest: str | None = None
+    verified_at: str | None = None
 
     def __post_init__(self) -> None:
         require_id("grant_id", self.grant_id)
@@ -822,6 +873,14 @@ class ApprovalGrant(Serializable):
         object.__setattr__(self, "channel", normalize_token(self.channel))
         require_text("granted_action", self.granted_action, max_length=1_000_000)
         require_text("verified_identity", self.verified_identity, max_length=2048)
+        if self.verification_method is not None:
+            require_text("verification_method", self.verification_method, max_length=128)
+        if self.verifier_id is not None:
+            require_text("verifier_id", self.verifier_id, max_length=256)
+        if self.provider_event_digest is not None:
+            require_text("provider_event_digest", self.provider_event_digest, max_length=128)
+        if self.verified_at is not None:
+            parse_timestamp(self.verified_at)
         if self.channel != self.message_identity.channel:
             raise ValidationError("grant channel does not match message identity")
         try:

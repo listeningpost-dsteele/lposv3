@@ -52,9 +52,13 @@ def status_path(root: Path | None = None) -> Path:
 
 
 def _atomic_write_json(path: Path, payload: Any) -> None:
+    from ..store import harden_file_mode, secure_create_file
+
     tmp = path.with_suffix(path.suffix + ".tmp")
+    secure_create_file(tmp)  # 0600 before any content is written (LPOS-15)
     tmp.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     os.replace(tmp, path)
+    harden_file_mode(path)
 
 
 def _load_state(root: Path | None) -> dict[str, Any]:
@@ -105,7 +109,12 @@ def run_audit(
     state = _load_state(base)
     active = [entry for entry in inventory if not entry.get("muted")]
     results: dict[str, CheckResult | None] = checks_module.run_checks(
-        active, timeout=timeout, retry_delay=retry_delay, registry=registry, sleep=sleep
+        active,
+        timeout=timeout,
+        retry_delay=retry_delay,
+        registry=registry,
+        sleep=sleep,
+        root=base,
     )
 
     connectors: list[dict[str, Any]] = []
@@ -123,6 +132,10 @@ def run_audit(
             result = results.get(entry_id)
             if result is None:
                 status, latency_ms, error = "unknown", None, "no check configured for this connector"
+            elif getattr(result, "unknown", False):
+                # Refused before any execution (e.g. unapproved check
+                # definition, LPOS-03): unknown, never ok, never offline.
+                status, latency_ms, error = "unknown", None, result.error
             elif result.ok:
                 status, latency_ms, error = "ok", result.latency_ms, ""
             else:
@@ -162,6 +175,8 @@ def run_audit(
             connector["muted"] = True
         if warning:
             connector["auth_warning"] = warning
+        if entry.get("unapproved_check"):
+            connector["unapproved_check"] = True
         connectors.append(connector)
 
         history = previous.get("history")

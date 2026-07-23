@@ -1,11 +1,11 @@
-# LPOS v4.2.0 Release Test Report
+# LPOS v4.3.0 Release Test Report
 
 Date: 2026-07-22
 Python: 3.11
 
 ## Results
 
-- Full suite: `PYTHONPATH=src python3 -m pytest tests/` — **196 passed, 338 subtests passed** (0 failures)
+- Full suite: `PYTHONPATH=src python3 -m pytest tests/` — **347 passed, 419 subtests passed** (0 failures) — the full 4.2.1 remediation suite plus 19 Sentinel tests, including hash-chain tamper detection for Sentinel records and the fabricated-identity active-engagement refusal — includes adversarial security regression suites (test_monitor_security, test_dashboard_security, test_identity_boundary, test_compliance_evidence, test_subprocess_sandbox, test_schema_check) mirroring every reproduction in the July 22 external audit
   - 128 baseline engine/distribution tests (updated for the 24-operation catalog and v4.1.0)
   - 15 dashboard tests (`tests/test_dashboard.py`): scanner, state, snooze/wake, archive/restore, corrupt-state degradation, search, open-folder path containment, live HTTP round trip
   - 21 monitor tests (`tests/test_monitor.py`, fully offline): discovery/merge, transition alerting exactly-once, retry-before-offline, timeout handling, undelivered-alert fallback, status.json contract

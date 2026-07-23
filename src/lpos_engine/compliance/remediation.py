@@ -144,6 +144,11 @@ def stage_remediation(
         problem=evidence,
         proposed_fix=proposed_fix,
         staged_paths=tuple(staged),
+        # Keep the public path in the same spelling the caller supplied. On
+        # macOS, TemporaryDirectory paths under /var resolve through /private/var;
+        # returning the resolved spelling makes caller-side containment checks
+        # against the original hermes_root fail even though the guard above used
+        # the resolved path for safety.
         staged_dir=str(dest),
         validation=validation,
     )
@@ -240,6 +245,7 @@ def build_and_stage_remediations(
         [
             {
                 "ts": now_iso,
+                "run_id": run_id,
                 "event": "remediation_staged",
                 "control_id": remediation.control_id,
                 "evidence": f"remediation staged (test environment): {remediation.staged_dir}",

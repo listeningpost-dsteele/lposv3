@@ -1,6 +1,6 @@
 {
   "schema_version": 4,
-  "os_version": "4.2.0",
+  "os_version": "4.3.0",
   "specialists": [
     {
       "specialist_id": "SPECIALIST-001",
@@ -592,6 +592,27 @@
       ],
       "model_class": "executive",
       "priority": 18
+    },
+    {
+      "specialist_id": "SPECIALIST-033",
+      "name": "Adversarial Assurance Engineer",
+      "guild": "Sentinel Adversarial Assurance",
+      "capabilities": [
+        "adversarial_testing",
+        "artifact_security_scanning",
+        "penetration_test_planning",
+        "security_review",
+        "threat_modeling",
+        "remediation_planning",
+        "regression_detection"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-008",
+        "CS-009"
+      ],
+      "model_class": "executive",
+      "priority": 4
     }
   ]
 }

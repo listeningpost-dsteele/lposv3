@@ -8,7 +8,12 @@ from pathlib import Path
 from lpos_engine.actions import ActionService
 from lpos_engine.adapters import AdapterRegistry, DeterministicModelAdapter, RecordingActionAdapter
 from lpos_engine.adapters.subprocess_host import SubprocessModelAdapter
-from lpos_engine.approvals import ApprovalService, IdentityVerifier
+from lpos_engine.approvals import (
+    ApprovalService,
+    ChannelRegistry,
+    IdentityVerifier,
+    TrustedLocalChannel,
+)
 from lpos_engine.context import ContextCompiler, SpecRepository
 from lpos_engine.engine import LPOSRuntime, RuntimeConfig
 from lpos_engine.errors import AdapterError, ContextIsolationError, ValidationError
@@ -49,6 +54,7 @@ class MissingActionAdapterTests(unittest.TestCase):
         self.approvals = ApprovalService(
             self.store,
             IdentityVerifier({"email": ("principal@example.com",)}),
+            ChannelRegistry([TrustedLocalChannel("test")]),
         )
         self.actions = ActionService(self.store, AdapterRegistry(), self.approvals)
 

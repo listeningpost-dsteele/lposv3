@@ -7,7 +7,7 @@ owner on offline/recovery transitions. It is stdlib-only, fully local, and a
 short-lived job: it wakes, checks, records, alerts if needed, and exits.
 
 - Package: `src/lpos_engine/monitor/` (`inventory.py`, `checks.py`,
-  `audit.py`, `alert.py`)
+  `audit.py`, `alert.py`, `approved.py`)
 - Workflow: `SO-023` (`src/lpos_engine/workflows/SO-023.json`), steps
   STEP-DISCOVER → STEP-AUDIT → STEP-ALERT
 - State: `<hermes root>/monitor/` where the root is `$LPOS_HERMES_ROOT`
@@ -26,6 +26,130 @@ Exit codes: `0` on a completed audit (even when connectors are down — the
 scheduler must not flap on outages), `2` when alerts were pending but could
 not be delivered (see [Alerting](#alerting)).
 
+## Trust boundary and the admin approval model
+
+> Fixes audit findings **LPOS-03** (agent-registered services could execute
+> arbitrary shell commands) and **LPOS-04** (credential exfiltration to
+> arbitrary URLs + SSRF).
+
+The registration files the monitor reads (`state/services.json`,
+`monitor/registered-services.json`) are **agent-writable**: any process that
+stands up a service can append to them. Therefore agent state is treated as
+untrusted and can never, by itself:
+
+- define an executable check (a `command`/`argv` to run), or
+- receive a credential (a GitHub token), or
+- grant itself egress to a private/loopback/metadata address.
+
+Anything that can *execute* or *receive a secret* must be declared by an
+administrator in `monitor/approved-checks.json`. That file is **admin-owned**:
+discovery never writes it and merging never sources from it, so agent state
+cannot override or inject an approved template.
+
+### `monitor/approved-checks.json` (admin-owned)
+
+```json
+{
+  "checks": {
+    "report-api-health": {
+      "type": "http_health",
+      "url": "http://127.0.0.1:{port}/health",
+      "parameters": ["port"],
+      "private_network_approved": true,
+      "description": "Health endpoint of the self-built report API"
+    },
+    "disk-free": {
+      "type": "command",
+      "argv": ["/usr/bin/df", "-P", "{mount}"],
+      "parameters": ["mount"],
+      "description": "df must exit 0 for the given mount"
+    }
+  }
+}
+```
+
+Each template declares a `type`, its executable/endpoint definition
+(`argv` / `url` / `host` ...), the placeholder `parameters` a registration may
+fill, and optionally `private_network_approved` for named local services.
+Placeholders are written `{name}` and are only ever filled with **non-secret
+scalar** parameters.
+
+### How an agent references a template
+
+A registration's `check` may only be a reference:
+
+```json
+{
+  "services": [
+    {
+      "id": "svc:report-api",
+      "name": "Report API",
+      "kind": "self_built",
+      "check": {"check_id": "report-api-health", "params": {"port": 9001}},
+      "criticality": "critical"
+    }
+  ]
+}
+```
+
+- `params` values must be scalars (str/int/float/bool) and may only fill
+  placeholders the template declared. Undeclared params or non-scalars are
+  rejected.
+- A registration whose `check` carries its own executable definition (an
+  inline `command`, `argv`, `url`, `host`, a raw `type: command`, ...) is
+  **not executed**. It is sanitised at discovery, flagged
+  `unapproved_check: true` in the inventory, and reported in `status.json`
+  with `status: "unknown"` and `error: "unapproved check definition"`.
+- An unknown `check_id` is likewise reported `unknown` and never run.
+
+### Egress restrictions (all URL/host checks)
+
+Every `http_health` / `github_api` / `mcp_ping` / `tcp` / `smtp` / `imap`
+check enforces:
+
+- scheme must be `http`/`https` (other schemes, and URL userinfo, are refused);
+- the hostname is **resolved** and the request is refused if any resolved
+  address is loopback, link-local (`169.254.0.0/16`, `fe80::/10`), multicast,
+  unspecified, a private range (`10/8`, `172.16/12`, `192.168/16`, `fc00::/7`),
+  or the cloud metadata host `169.254.169.254`;
+- HTTP **redirects are disabled entirely** — a 3xx is a failure
+  (`error: "redirect refused"`), so DNS-rebinding / redirect pivots are closed.
+
+The private/loopback block is lifted **only** when the *approved template* sets
+`private_network_approved: true`. Self-built services legitimately live on
+localhost, so an admin can approve them by name; an agent-supplied URL can
+never self-grant this (the flag is stripped from any inline spec).
+
+### Credential binding (github_api)
+
+- The `Authorization: Bearer <token>` header is attached **only** when the
+  request origin is exactly `https://api.github.com` (scheme + host + default
+  port). Any other URL with a token configured fails closed with
+  `error: "refused: token bound to api.github.com"` — the token is never sent.
+- `token_file` must resolve (via `realpath`, symlinks followed) inside
+  `<hermes>/monitor/secrets/`. Anything outside — including a symlink pointing
+  out — is rejected **before any network request**. `token_env` remains
+  available for environment-provided tokens.
+- Secrets are redacted (`[REDACTED]`) from all error strings, state history,
+  `status.json`, and alert emails; header/token values are never echoed.
+
+### Command-check hardening (defense in depth)
+
+Even from an approved template, `command` checks:
+
+- are **argv lists only** — no shell anywhere (`shell=True` was removed from
+  both `checks.py` and `alert.CommandTransport`); a shell string is refused;
+- require an **absolute** executable path that exists and resolves inside
+  `/usr`, `/bin`, `/sbin`, `/opt`, or `<hermes>/monitor/approved/` (symlinks
+  out of those roots are refused);
+- run with a **minimal environment** (`PATH`, `LANG` only), in a **new session**
+  (`start_new_session=True`), and on timeout the whole process **group** is
+  killed;
+- have stdout/stderr **capped at 64 KiB** to prevent output flooding.
+
+`CommandTransport` (the sendmail-style alert path) is likewise argv-only and
+constructing it with a string raises `TypeError`.
+
 ## How discovery works
 
 Every audit refreshes the inventory at `<root>/monitor/inventory.json` from
@@ -37,7 +161,7 @@ and malformed files are skipped, never fatal.
 | `<root>/mcp-tokens/<name>` (file or dir) | `mcp:<name>` | `mcp` (or guessed from the name) |
 | `<root>/gateway/<name>` | `gateway:<name>` | `mcp` (or guessed) |
 | `<root>/platforms/<name>` | `platform:<name>` | guessed: `email` / `vcs` / `cloud` / `other` |
-| `<root>/state/services.json` or `<root>/monitor/registered-services.json` | entries as declared | `self_built` by default |
+| `<root>/state/services.json` or `<root>/monitor/registered-services.json` | entries as declared, but `check` is reduced to an approved-template reference (see [Trust boundary](#trust-boundary-and-the-admin-approval-model)) | `self_built` by default |
 | repo `config/default_registry.json` `connectors` / `external_connectors` keys | entries as declared | as declared |
 
 Name guessing: `github`/`gitlab` → `vcs`; `smtp`/`imap`/`mail`/`gmail` →
@@ -72,7 +196,9 @@ before it lapses, not after.
 
 Any agent that stands up a service must register it as part of deployment by
 appending to `<root>/monitor/registered-services.json` (or
-`<root>/state/services.json`):
+`<root>/state/services.json`). Because these files are agent-writable, the
+`check` may **only reference an admin-approved template** by `check_id` (see
+[Trust boundary](#trust-boundary-and-the-admin-approval-model)):
 
 ```json
 {
@@ -81,16 +207,22 @@ appending to `<root>/monitor/registered-services.json` (or
       "id": "svc:my-new-api",
       "name": "My New API",
       "kind": "self_built",
-      "check": {"type": "http_health", "url": "http://localhost:9001/health"},
+      "check": {"check_id": "local-http-health", "params": {"port": 9001}},
       "criticality": "critical"
     }
   ]
 }
 ```
 
-If the service has no health endpoint, add a trivial `/health` returning 200
-as part of bringing it under monitoring. The next audit picks the entry up
-automatically.
+For this to run, an administrator must have declared `local-http-health` in
+`monitor/approved-checks.json` (with a `port` placeholder, and
+`private_network_approved` if the service lives on localhost). If the service
+has no health endpoint, add a trivial `/health` returning 200 as part of
+bringing it under monitoring. The next audit picks the entry up automatically.
+
+An inline `check` that defines its own command/argv/url is **not run**: it is
+reported `unknown` with evidence `unapproved check definition`. Ask the admin
+to add a template rather than embedding the definition in agent state.
 
 ## The audit
 
@@ -108,9 +240,9 @@ Built-in checks (`monitor/checks.py`, registry `CHECKS`):
 | `tcp` | TCP connect succeeds | `host`, `port` |
 | `smtp` | connect + NOOP | `host`, `port` (587), `starttls` |
 | `imap` | connect + NOOP | `host`, `port` (993), `ssl` |
-| `github_api` | authenticated GET (default `/rate_limit`) | optional `url`, `token_env`, `token_file` |
+| `github_api` | authenticated GET (default `/rate_limit`) | optional `url` (token attached only to `https://api.github.com`), `token_env`, `token_file` (must live in `monitor/secrets/`) |
 | `mcp_ping` | HTTP or TCP reachability | `url`, or `host` + `port` |
-| `command` | configured command exits 0 | `command` (string or argv list) |
+| `command` | approved-template argv exits 0 (never a shell; admin-only) | template `argv` + declared `parameters` |
 
 When an entry has no explicit `check.type`, a default is chosen by kind:
 `email → smtp`, `vcs → github_api`, `cloud → http_health`, `mcp → mcp_ping`,
@@ -210,5 +342,25 @@ pre-flight checks. Keep it stable.
 - `status` ∈ `ok | offline | unknown`; `latency_ms` is null when not checked.
 - `error` is the exact failure detail; `down_since` is set while offline.
 - Additive optional fields: `muted: true` on muted entries, `auth_warning`
-  when a credential expires within 7 days. Consumers must tolerate additive
-  fields; the fields above never change meaning.
+  when a credential expires within 7 days, and `unapproved_check: true` on an
+  entry whose registration carried an executable definition that was refused
+  (reported `unknown` / `unapproved check definition`). Consumers must tolerate
+  additive fields; the fields above never change meaning.
+
+## Security findings addressed
+
+This subsystem implements the required remediations for two external-audit
+findings (`LPOS_Compliance_Audit_Report_2026-07-22.md`):
+
+- **LPOS-03 (Critical)** — agent-registered monitor services could execute
+  arbitrary shell commands. Fixed by removing all `shell=True` execution,
+  making executable checks admin-approved templates
+  (`monitor/approved-checks.json`), refusing inline agent definitions, and
+  hardening the command runner (absolute vetted executable, minimal env, new
+  session with process-group kill, 64 KiB output cap).
+- **LPOS-04 (High)** — credential exfiltration to arbitrary URLs + SSRF. Fixed
+  by binding the GitHub token to the `https://api.github.com` origin,
+  constraining `token_file` to `monitor/secrets/`, validating scheme and
+  resolved addresses (blocking loopback/link-local/multicast/private/metadata
+  unless an admin template approves), disabling redirects, and redacting
+  secrets from all errors, state, status, and alerts.

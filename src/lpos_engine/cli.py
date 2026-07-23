@@ -41,21 +41,13 @@ def _schema_files(schema_dir: Path | None = None):
 
 
 def _validate_schemas(schema_dir: Path | None = None) -> dict:
-    root, paths = _schema_files(schema_dir)
-    try:
-        from jsonschema.validators import validator_for
-    except ImportError:
-        for path in paths:
-            json.loads(path.read_text(encoding="utf-8"))
-        return {
-            "root": str(root),
-            "schemas": len(paths),
-            "status": "JSON parsed; install the dev extra for full JSON Schema validation",
-        }
-    for path in paths:
-        value = json.loads(path.read_text(encoding="utf-8"))
-        validator_for(value).check_schema(value)
-    return {"root": str(root), "schemas": len(paths), "status": "valid"}
+    """Always-on schema gate (LPOS-12): structural meta-validation runs in every
+    environment; jsonschema meta-validation runs additionally when available.
+    Raises on any failure so validate-schemas, doctor, and the installer fail
+    instead of silently downgrading to JSON parsing."""
+    from . import schema_check
+
+    return schema_check.validate_for_cli(schema_dir)
 
 
 def cmd_version(args: argparse.Namespace) -> int:
@@ -195,10 +187,98 @@ def cmd_inspect(args: argparse.Namespace) -> int:
                 for item in store.list_actions(args.task_id)
             ],
             "completion_report": report.to_dict() if report else None,
+            "sentinel": {
+                "assessment": (
+                    store.get_latest_sentinel_assessment(args.task_id, artifact.content_hash).to_dict()
+                    if artifact and store.get_latest_sentinel_assessment(args.task_id, artifact.content_hash)
+                    else None
+                ),
+                "review": (
+                    store.get_latest_sentinel_review(args.task_id, artifact.content_hash).to_dict()
+                    if artifact and store.get_latest_sentinel_review(args.task_id, artifact.content_hash)
+                    else None
+                ),
+                "reports": [
+                    {
+                        "report": item["report"].to_dict(),
+                        "acknowledgement": (
+                            item["acknowledgement"].to_dict() if item["acknowledgement"] else None
+                        ),
+                    }
+                    for item in store.list_sentinel_reports(task_id=args.task_id)
+                ],
+            },
             "events": store.list_events(stream_id=args.task_id),
         }
     )
     return 0
+
+
+def cmd_sentinel(args: argparse.Namespace) -> int:
+    store = SQLiteStore(args.db)
+    if args.action == "status":
+        _print({"os_version": __version__, "sentinel": store.sentinel_status()})
+        return 0
+    if args.action == "reports":
+        _print(
+            {
+                "reports": [
+                    {
+                        "report": item["report"].to_dict(),
+                        "acknowledgement": (
+                            item["acknowledgement"].to_dict() if item["acknowledgement"] else None
+                        ),
+                    }
+                    for item in store.list_sentinel_reports(
+                        task_id=args.task_id,
+                        unacknowledged_only=args.unacknowledged,
+                    )
+                ]
+            }
+        )
+        return 0
+    if args.action == "show":
+        if not args.report_id:
+            raise ValueError("sentinel show requires --report-id")
+        item = store.get_sentinel_report(args.report_id)
+        _print(
+            {
+                "report": item["report"].to_dict(),
+                "acknowledgement": (
+                    item["acknowledgement"].to_dict() if item["acknowledgement"] else None
+                ),
+            }
+        )
+        return 0
+    if args.action == "ack":
+        if not args.report_id:
+            raise ValueError("sentinel ack requires --report-id")
+        runtime = LPOSRuntime.local(
+            RuntimeConfig(database_path=args.db, spec_root=args.spec_root)
+        )
+        acknowledgement = runtime.sentinel.acknowledge_report(
+            args.report_id,
+            acknowledged_by=args.acknowledged_by,
+            note=args.note,
+        )
+        _print(acknowledgement.to_dict())
+        return 0
+    if args.action == "scan":
+        if not args.task_id:
+            raise ValueError("sentinel scan requires --task-id")
+        runtime = LPOSRuntime.local(
+            RuntimeConfig(database_path=args.db, spec_root=args.spec_root)
+        )
+        assessment, review, report = runtime.sentinel.scan_latest(args.task_id)
+        _print(
+            {
+                "assessment": assessment.to_dict(),
+                "review": review.to_dict(),
+                "report": report.to_dict() if report else None,
+            }
+        )
+        return 0
+    raise ValueError(f"unknown sentinel action: {args.action}")
 
 
 def cmd_events(args: argparse.Namespace) -> int:
@@ -283,11 +363,18 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             "integrity": store.integrity_check(),
             "migrations": list(store.list_migrations()),
         }
+    if args.hermes_root is not None:
+        from .store import audit_state_permissions
+
+        result["state_permissions"] = audit_state_permissions(args.hermes_root)
+    perms_ok = result.get("state_permissions", {"status": "ok"}).get("status") != "insecure"
     if (
         not kernel
-        or len(registry.profiles) != 32
-        or len(workflows) != 25
-        or len(benchmark_catalog()) != 53
+        or len(registry.profiles) != 33
+        or len(workflows) != 26
+        or len(benchmark_catalog()) != 55
+        or schema_result["schemas"] != 20
+        or not perms_ok
     ):
         result["status"] = "unhealthy"
         _print(result)
@@ -333,13 +420,13 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--schema-dir", type=Path, default=None)
     validate.set_defaults(func=cmd_validate_schemas)
 
-    specialists = sub.add_parser("list-specialists", help="show the 32 capability-routable specialists")
+    specialists = sub.add_parser("list-specialists", help="show the 33 capability-routable specialists")
     specialists.set_defaults(func=cmd_list_specialists)
 
-    workflows = sub.add_parser("list-workflows", help="show the 25 packaged Standing Operations")
+    workflows = sub.add_parser("list-workflows", help="show the 26 packaged Standing Operations")
     workflows.set_defaults(func=cmd_list_workflows)
 
-    benchmarks = sub.add_parser("list-benchmarks", help="show the 53 fixed benchmark fixtures")
+    benchmarks = sub.add_parser("list-benchmarks", help="show the 55 fixed benchmark fixtures")
     benchmarks.set_defaults(func=cmd_list_benchmarks)
 
     evals = sub.add_parser("evals", help="run deterministic core evaluations against all fixtures")
@@ -348,7 +435,28 @@ def build_parser() -> argparse.ArgumentParser:
     doctor = sub.add_parser("doctor", help="verify the integrated specification, runtime assets, and database")
     doctor.add_argument("--db", type=Path)
     doctor.add_argument("--schema-dir", type=Path, default=None)
+    doctor.add_argument("--hermes-root", type=Path, default=None,
+                        help="also audit state-file permissions under this Hermes root")
     doctor.set_defaults(func=cmd_doctor)
+
+    sentinel = sub.add_parser(
+        "sentinel",
+        help="run or inspect the independently reviewed Sentinel assurance organization",
+    )
+    sentinel.add_argument(
+        "action",
+        nargs="?",
+        default="status",
+        choices=["status", "scan", "reports", "show", "ack"],
+    )
+    sentinel.add_argument("--db", type=Path, required=True)
+    sentinel.add_argument("--spec-root", type=Path, default=None)
+    sentinel.add_argument("--task-id")
+    sentinel.add_argument("--report-id")
+    sentinel.add_argument("--unacknowledged", action="store_true")
+    sentinel.add_argument("--acknowledged-by", default="Principal")
+    sentinel.add_argument("--note", default="Reviewed by the Principal; remediation remains separately controlled.")
+    sentinel.set_defaults(func=cmd_sentinel)
 
     dashboard = sub.add_parser("dashboard", help="serve the Hermes project dashboard on a local port")
     dashboard.add_argument("--port", type=int, default=7373)

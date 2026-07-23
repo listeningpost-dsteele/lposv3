@@ -1,17 +1,17 @@
 {
-  "archive": "LPOS-v4.2.0-Complete.zip",
+  "archive": "LPOS-v4.3.0-Complete.zip",
   "audit_model": "append-only events",
-  "benchmarks": 53,
-  "description": "Complete LPOS v4 operating-system distribution with skill evolution, the Hermes project dashboard, the connector health monitor, and the packaged user guide, plus the SOC 2 compliance guild",
+  "benchmarks": 55,
+  "description": "Complete LPOS v4 operating-system distribution on the hardened v4.2.1 base, adding the independently reviewed Sentinel adversarial-assurance guild as an additive assurance layer; the 14 v4.2.0 audit findings were closed by v4.2.1, not by Sentinel",
   "distribution_type": "integrated",
   "external_action_default": "record-only",
   "name": "LPOS",
   "python_requires": ">=3.11",
-  "schemas": 17,
-  "specialists": 32,
-  "standing_operations": 25,
+  "schemas": 20,
+  "specialists": 33,
+  "standing_operations": 26,
   "state_backend": "SQLite",
-  "tests": 196,
-  "version": "4.2.0",
-  "wheel": "lpos_os-4.2.0-py3-none-any.whl"
+  "tests": 347,
+  "version": "4.3.0",
+  "wheel": "lpos_os-4.3.0-py3-none-any.whl"
 }

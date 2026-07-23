@@ -1,13 +1,13 @@
 # LPOS v4 Fixed Benchmark Corpus
 
-This corpus is the readable form of the 53 immutable benchmark fixtures packaged under
+This corpus is the readable form of the 55 immutable benchmark fixtures packaged under
 `lpos_engine.evals`. Each fixture has explicit inputs, expected behavior, success and
 failure criteria, an evaluation method, and required evidence. The deterministic core
 evaluator runs every fixture with `lpos evals`; deployment model adapters may consume the
 same fixtures for model-quality scoring without changing the cases.
 
-Coverage: 32 specialist fixtures (`BENCH-S001` through `BENCH-S032`) and 21 Standing
-Operation fixtures (`BENCH-O001` through `BENCH-O021`).
+Coverage: 33 specialist fixtures (`BENCH-S001` through `BENCH-S033`) and 22 Standing
+Operation fixtures (`BENCH-O001` through `BENCH-O021`, plus `BENCH-O026`).
 
 ## BENCH-S001 — SPECIALIST-001
 
@@ -4114,5 +4114,21 @@ Run Principal Feedback Loop for the immutable scheduled fixture without live cha
 - WorkflowDefinition JSON
 - step and dependency set
 - catalog mapping
+
+---
+
+## BENCH-S033 — SPECIALIST-033
+
+Verifies deterministic routing of passive adversarial testing, artifact security
+scanning, and remediation planning to the Adversarial Assurance Engineer with
+CS-003, CS-008, and CS-009 and no missing capabilities.
+
+---
+
+## BENCH-O026 — SO-026
+
+Verifies the Continuous Adversarial Assurance workflow identity, routine model class,
+unique dependency-resolved steps, and inventory → untrusted assessment plus independent
+review → Principal reporting contract without live side effects.
 
 ---

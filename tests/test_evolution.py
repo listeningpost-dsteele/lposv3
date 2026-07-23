@@ -30,7 +30,7 @@ class EvolutionShipTests(unittest.TestCase):
         if not evals or not Path(evals).exists():
             self.skipTest("LPOS_EVALS_DIR not set to a fixtures directory")
         tasks = load_lpos_tasks(evals)
-        self.assertEqual(len(tasks), 53)
+        self.assertEqual(len(tasks), 55)
         self.assertEqual({t["component_type"] for t in tasks},
                          {"specialist", "standing_operation"})
         self.assertTrue(all(t["evaluation"] for t in tasks))

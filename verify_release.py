@@ -11,8 +11,8 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-IGNORED_TOP_LEVEL = {".git", ".venv", "state", ".pytest_cache", "dist", "build"}
-IGNORED_NAMES = {".gitignore", "RELEASE-MANIFEST.json", "SHA256SUMS"}
+IGNORED_TOP_LEVEL = {".venv", "state", ".pytest_cache", "dist", "build"}
+IGNORED_NAMES = {"RELEASE-MANIFEST.json", "SHA256SUMS", "RELEASE-SIGNATURE.bin"}
 
 
 def sha256(path: Path) -> str:
@@ -136,7 +136,7 @@ def main() -> int:
             str(registry_package.get("os_version")),
             str(workflow_catalog.get("os_version")),
         }
-        if versions != {"4.2.0"}:
+        if versions != {"4.3.0"}:
             fail(f"version fields are not synchronized: {sorted(versions)}", failures)
         if release.get("distribution_type") != "integrated":
             fail("RELEASE.json does not declare an integrated distribution", failures)
@@ -145,15 +145,15 @@ def main() -> int:
 
         specialists = registry_package.get("specialists", [])
         specialist_ids = [item.get("specialist_id") for item in specialists if isinstance(item, dict)]
-        expected_specialists = [f"SPECIALIST-{number:03d}" for number in range(1, 33)]
+        expected_specialists = [f"SPECIALIST-{number:03d}" for number in range(1, 34)]
         if specialist_ids != expected_specialists:
-            fail("capability registry does not contain canonical SPECIALIST-001 through SPECIALIST-032", failures)
+            fail("capability registry does not contain canonical SPECIALIST-001 through SPECIALIST-033", failures)
 
         operations = workflow_catalog.get("operations", [])
         operation_ids = [item.get("so_id") for item in operations if isinstance(item, dict)]
-        expected_operations = [f"SO-{number:03d}" for number in range(1, 26)]
+        expected_operations = [f"SO-{number:03d}" for number in range(1, 27)]
         if operation_ids != expected_operations:
-            fail("workflow catalog does not contain canonical SO-001 through SO-025", failures)
+            fail("workflow catalog does not contain canonical SO-001 through SO-026", failures)
         for item in operations:
             if not isinstance(item, dict):
                 fail("workflow catalog contains a non-object entry", failures)
@@ -174,8 +174,8 @@ def main() -> int:
     package_schema_dir = ROOT / "src" / "lpos_engine" / "schemas"
     root_schema_names = sorted(path.name for path in root_schema_dir.glob("*.schema.json"))
     package_schema_names = sorted(path.name for path in package_schema_dir.glob("*.schema.json"))
-    if root_schema_names != package_schema_names or len(root_schema_names) != 17:
-        fail("root and packaged schema sets are not the same 17 schemas", failures)
+    if root_schema_names != package_schema_names or len(root_schema_names) != 20:
+        fail("root and packaged schema sets are not the same 20 schemas", failures)
     else:
         for name in root_schema_names:
             root_path = root_schema_dir / name
@@ -195,12 +195,13 @@ def main() -> int:
         fail(f"benchmark catalog is missing or invalid: {exc}", failures)
         benchmark_entries = []
     expected_benchmark_ids = [
-        *(f"BENCH-S{number:03d}" for number in range(1, 33)),
+        *(f"BENCH-S{number:03d}" for number in range(1, 34)),
         *(f"BENCH-O{number:03d}" for number in range(1, 22)),
+        "BENCH-O026",
     ]
     actual_benchmark_ids = [item.get("id") for item in benchmark_entries if isinstance(item, dict)]
     if actual_benchmark_ids != expected_benchmark_ids:
-        fail("benchmark catalog does not contain 32 specialist and 21 Standing Operation fixtures", failures)
+        fail("benchmark catalog does not contain 33 specialist and 22 Standing Operation fixtures", failures)
     for item in benchmark_entries:
         if not isinstance(item, dict):
             fail("benchmark catalog contains a non-object entry", failures)
@@ -223,7 +224,7 @@ def main() -> int:
             fail(f"benchmark identity mismatch: {fixture_name}", failures)
 
     kernel = ROOT / "src" / "lpos_engine" / "spec" / "CHIP-KERNEL.md"
-    if not kernel.is_file() or "# Chip Kernel v4.2.0" not in kernel.read_text(encoding="utf-8"):
+    if not kernel.is_file() or "# Chip Kernel v4.3.0" not in kernel.read_text(encoding="utf-8"):
         fail("the packaged v4 kernel is missing or has the wrong version", failures)
 
     wheel_name = release.get("wheel")
@@ -247,6 +248,28 @@ def main() -> int:
             if marker.casefold() in text:
                 fail(f"retired split-release framing appears in {target.relative_to(ROOT)}", failures)
 
+    signature = ROOT / "RELEASE-SIGNATURE.bin"
+    pubkey = ROOT / "RELEASE-PUBKEY.pem"
+    if signature.is_file() and pubkey.is_file():
+        import subprocess, shutil as _shutil, tempfile
+        openssl = _shutil.which("openssl")
+        if openssl is None:
+            fail("release is signed but openssl is unavailable to verify the signature", failures)
+        else:
+            with tempfile.NamedTemporaryFile(delete=False) as handle:
+                handle.write(hashlib.sha256(manifest_path.read_bytes()).digest())
+                digest_path = handle.name
+            completed = subprocess.run(
+                [openssl, "pkeyutl", "-verify", "-pubin", "-inkey", str(pubkey), "-rawin",
+                 "-in", digest_path, "-sigfile", str(signature)],
+                capture_output=True, text=True,
+            )
+            Path(digest_path).unlink(missing_ok=True)
+            if completed.returncode != 0:
+                fail("release signature is INVALID for RELEASE-MANIFEST.json", failures)
+    elif signature.is_file() or pubkey.is_file():
+        fail("release signing files are incomplete (need both RELEASE-SIGNATURE.bin and RELEASE-PUBKEY.pem)", failures)
+
     if failures:
         print("LPOS v4 release verification FAILED:", file=sys.stderr)
         for item in failures:
@@ -255,7 +278,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 32 specialists, 25 Standing Operations, 53 benchmarks, 17 schemas."
+        f"{len(expected_files)} immutable files, 33 specialists, 26 Standing Operations, 55 benchmarks, 20 schemas."
     )
     return 0
 
