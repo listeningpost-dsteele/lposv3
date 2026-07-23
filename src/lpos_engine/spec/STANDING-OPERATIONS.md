@@ -1494,8 +1494,8 @@ machine:
 
 ## Mission
 
-Publish an LPOS release to every destination — GitHub, Google Drive, and the hosted
-User Guide at chip.listeningpost.ai — only after every gate passes, and only through
+Publish an LPOS release to every destination, GitHub, Google Drive, and the hosted
+User Guide at chip.listeningpost.ai, only after every gate passes, and only through
 exact-action approval.
 
 ## Objective
@@ -1556,8 +1556,8 @@ machine:
 
 ## Mission
 
-Audit everything the system runs on — email, GitHub, cloud access, MCP connectors, and
-services the system built for itself — once an hour, and tell the owner when anything
+Audit everything the system runs on: email, GitHub, cloud access, MCP connectors, and
+services the system built for itself, once an hour, and tell the owner when anything
 is offline.
 
 ## Objective
@@ -1635,7 +1635,7 @@ undocumented.
 ## Behavior
 
 1. `enumerate_documented_surfaces`: enumerate surfaces from the packaged catalog,
-   skills, and engine modules — never from a hand-maintained list.
+   skills, and engine modules, never from a hand-maintained list.
 2. `diff_documentation_coverage`: diff against the wiki sources.
 3. `report_documentation_drift`: persist the drift report where the dashboard and the
    Principal can see it; drift becomes a task, not a surprise.
@@ -1697,12 +1697,12 @@ asserted once.
    history, compute per-control Type 2 operating effectiveness over the window, and
    write the `compliance/status.json` contract.
 3. `stage_compliance_remediation`: for each failing control, build the fix as a copy in
-   `compliance/staging/<run>/` — the test environment — with a remediation note and
+   `compliance/staging/<run>/` (the test environment) with a remediation note and
    validation result. Live paths are refused by construction. Adoption is emitted as a
    record-only exact-action plan requiring Principal approval; that approval is the only
    path into the main system.
-4. `publish_compliance_report`: write the self-contained HTML page — problems, fixes,
-   audit log of changes, and project status — plus the JSON status the dashboard reads.
+4. `publish_compliance_report`: write the self-contained HTML page with problems, fixes,
+   audit log of changes, and project status, plus the JSON status the dashboard reads.
 
 ## Success criteria
 
@@ -1715,3 +1715,94 @@ effectiveness record covers the observation window.
 A control result without evidence; a remediation written anywhere but staging; an
 adoption without its exact-action approval; or a gap that appears on the page without a
 proposed fix.
+
+
+---
+
+## Source: `standing-operations/SO-026-web-intelligence-capture.md`
+
+---
+id: SO-026
+title: Web Intelligence Capture
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  owner: Chip
+  specialists: [technology-scout, source-validator, automation-architect, evidence-analyst]
+  type: standing_operation
+  slug: web-intelligence-capture
+  trigger: scheduled_or_event
+  communication_intent: Evidence
+---
+
+# Web Intelligence Capture
+
+## Mission
+
+Normalize public web and document sources into auditable artifacts for Chip, Technology
+Signals, and Evidence Engine without letting scraping become an ungoverned data path.
+
+## Objective
+
+Every approved public source capture produces a structured record with normalized
+content, source metadata, extraction method, timestamp, content hash, confidence, and a
+clear rejection reason when capture is blocked.
+
+## Required capabilities
+
+- public web extraction
+- local document conversion
+- GitHub repository metadata lookup
+- evidence recording
+- source validation
+- restricted-source refusal
+
+## Inputs
+
+- public URLs
+- GitHub repositories
+- PDFs and Office files
+- HTML pages
+- approved seed directories
+- user-shared posts, articles, or source lists
+
+## Outputs
+
+- normalized Markdown
+- JSON capture records
+- source metadata
+- license and risk notes
+- workflow placement decisions
+- blocked-source records
+- Evidence Ledger entries
+
+## Required behavior
+
+- Prefer installed Hermes managed web tools when they are sufficient.
+- Use Crawl4AI for local public web extraction canaries.
+- Use MarkItDown for document conversion canaries.
+- Use Crawlee only after queue-based crawling is explicitly approved.
+- Never bypass login gates, paywalls, explicit site-owner restrictions, or private data boundaries.
+- Attach source evidence to Chip generated previews and prospect scores.
+- Fail closed on empty, restricted, unsupported, or unverifiable extraction.
+- Record the adapter, source, SHA-256 hash, byte count, timestamp, and confidence for every successful capture.
+
+## Behavior
+
+1. `normalize_web_intelligence_sources`: collect the approved sources, reject restricted paths, and normalize public pages or files into Markdown.
+2. `assess_web_intelligence_sources`: score each source for usefulness, license risk, safety risk, workflow fit, and extraction confidence.
+3. `record_web_intelligence_evidence`: append capture metadata and decisions to the Evidence Ledger or the configured local evidence store.
+4. `report_web_intelligence_capture`: report accepted sources, rejected sources, next canaries, and any Principal approval needed before external crawling or publication.
+
+## Success criteria
+
+The operation converts approved public sources into auditable artifacts, improves Chip or
+LPOS decisions, preserves source metadata, and refuses restricted sources without manual
+cleanup.
+
+## Failure conditions
+
+Unsupported conclusions, missing source hashes, unrecorded extraction methods, broad
+crawling without approval, restricted-source capture, or generated Chip claims without
+source support.

@@ -286,7 +286,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     if (
         not kernel
         or len(registry.profiles) != 32
-        or len(workflows) != 25
+        or len(workflows) != 26
         or len(benchmark_catalog()) != 53
     ):
         result["status"] = "unhealthy"
@@ -336,7 +336,7 @@ def build_parser() -> argparse.ArgumentParser:
     specialists = sub.add_parser("list-specialists", help="show the 32 capability-routable specialists")
     specialists.set_defaults(func=cmd_list_specialists)
 
-    workflows = sub.add_parser("list-workflows", help="show the 25 packaged Standing Operations")
+    workflows = sub.add_parser("list-workflows", help="show the 26 packaged Standing Operations")
     workflows.set_defaults(func=cmd_list_workflows)
 
     benchmarks = sub.add_parser("list-benchmarks", help="show the 53 fixed benchmark fixtures")

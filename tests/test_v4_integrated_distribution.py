@@ -80,10 +80,10 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertTrue(all(profile.capabilities for profile in registry.profiles))
         self.assertTrue(all(profile.craft_standards for profile in registry.profiles))
 
-    def test_all_25_standing_operations_are_executable_definitions(self) -> None:
+    def test_all_26_standing_operations_are_executable_definitions(self) -> None:
         entries = catalog()
         workflows = load_all()
-        expected_ids = tuple(f"SO-{index:03d}" for index in range(1, 26))
+        expected_ids = tuple(f"SO-{index:03d}" for index in range(1, 27))
         self.assertEqual(tuple(item["so_id"] for item in entries), expected_ids)
         self.assertEqual(tuple(item.so_id for item in workflows), expected_ids)
         for workflow in workflows:
@@ -194,7 +194,7 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertEqual(report["version"], "4.2.0")
         self.assertEqual(report["status"], "healthy")
         self.assertEqual(report["specialists"], 32)
-        self.assertEqual(report["standing_operations"], 25)
+        self.assertEqual(report["standing_operations"], 26)
         self.assertEqual(report["benchmarks"], 53)
         self.assertEqual(report["database"]["integrity"], "ok")
 

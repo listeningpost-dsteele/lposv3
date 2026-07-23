@@ -1,0 +1,36 @@
+{
+  "so_id": "SO-026",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-NORMALIZE",
+      "handler": "normalize_web_intelligence_sources",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-ASSESS",
+      "handler": "assess_web_intelligence_sources",
+      "depends_on": [
+        "STEP-NORMALIZE"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-RECORD",
+      "handler": "record_web_intelligence_evidence",
+      "depends_on": [
+        "STEP-ASSESS"
+      ],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-REPORT",
+      "handler": "report_web_intelligence_capture",
+      "depends_on": [
+        "STEP-RECORD"
+      ],
+      "continue_on_error": false
+    }
+  ]
+}

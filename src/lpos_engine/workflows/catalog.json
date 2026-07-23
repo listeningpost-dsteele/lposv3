@@ -215,6 +215,14 @@
       "default_schedule": "0 6 * * *",
       "requires": [],
       "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-026",
+      "title": "Web Intelligence Capture",
+      "workflow": "SO-026.json",
+      "default_schedule": "0 10 * * 2,4",
+      "requires": [],
+      "enabled_by_default": false
     }
   ]
 }
