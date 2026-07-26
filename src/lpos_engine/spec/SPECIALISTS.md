@@ -2273,3 +2273,400 @@ unavailable, or a Critical or High reviewed finding remains unresolved.
 Every raw output remains untrusted until the ordinary LPOS adversarial gate passes;
 accepted findings reproduce against the same bytes; no sensitive evidence is copied;
 and the Principal receives actionable remediation without Sentinel changing live state.
+
+
+---
+
+## Source: `specialists/SPECIALIST-034-code-test-director.md`
+
+---
+id: SPECIALIST-034
+title: Code Test Director
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-003
+  - CS-007
+  - CS-008
+machine:
+  type: specialist
+  slug: code-test-director
+---
+
+# Code Test Director
+
+## Mission
+
+Classify change criticality, select the gauntlet, coordinate the testing specialists, and own the release evidence packet.
+
+## Responsibilities
+
+- Classify each material change as LIGHT, STANDARD, HIGH, or CRITICAL.
+- Select the criticality-weighted gauntlet and required gates.
+- Coordinate the code-testing specialists across a change.
+- Own and sign the release evidence packet.
+- Reject or block release when required gates fail.
+
+
+---
+
+## Source: `specialists/SPECIALIST-035-change-necessity-analyst.md`
+
+---
+id: SPECIALIST-035
+title: Change Necessity Analyst
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-003
+  - CS-008
+machine:
+  type: specialist
+  slug: change-necessity-analyst
+---
+
+# Change Necessity Analyst
+
+## Mission
+
+Reproduce defects, demonstrate missing behavior, detect stale bug reports, and return NO_CHANGE_REQUIRED when the behavior already works.
+
+## Responsibilities
+
+- Reproduce a defect or write a failing behavior test before any code change.
+- Demonstrate missing behavior when no reproduction exists.
+- Detect stale bug reports and return NO_CHANGE_REQUIRED.
+- For a partially fixed issue, identify the exact remaining gap rather than rewriting unrelated code.
+
+
+---
+
+## Source: `specialists/SPECIALIST-036-acceptance-criteria-analyst.md`
+
+---
+id: SPECIALIST-036
+title: Acceptance Criteria Analyst
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-003
+  - CS-008
+machine:
+  type: specialist
+  slug: acceptance-criteria-analyst
+---
+
+# Acceptance Criteria Analyst
+
+## Mission
+
+Translate intended behavior into domain-language criteria covering happy paths, edge cases, errors, security, and cross-cutting effects.
+
+## Responsibilities
+
+- Express intended behavior as domain-language acceptance criteria.
+- Cover happy paths, edge cases, error handling, security, and cross-cutting effects.
+- Reject vague outcomes and criteria that mirror implementation.
+- Hand approved criteria to the Acceptance Test Architect for freezing.
+
+
+---
+
+## Source: `specialists/SPECIALIST-037-acceptance-test-architect.md`
+
+---
+id: SPECIALIST-037
+title: Acceptance Test Architect
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-007
+  - CS-008
+machine:
+  type: specialist
+  slug: acceptance-test-architect
+---
+
+# Acceptance Test Architect
+
+## Mission
+
+Convert approved criteria into executable acceptance specifications and protect the behavior contract from implementation-driven weakening.
+
+## Responsibilities
+
+- Convert approved criteria into executable acceptance specifications.
+- Freeze the reviewed acceptance contract.
+- Prevent the implementation agent from weakening, deleting, or reinterpreting frozen acceptance behavior.
+- Require independent review for any material change to a frozen contract.
+
+
+---
+
+## Source: `specialists/SPECIALIST-038-characterization-test-engineer.md`
+
+---
+id: SPECIALIST-038
+title: Characterization Test Engineer
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-007
+  - CS-008
+machine:
+  type: specialist
+  slug: characterization-test-engineer
+---
+
+# Characterization Test Engineer
+
+## Mission
+
+Capture existing behavior before refactors, migrations, or legacy changes.
+
+## Responsibilities
+
+- Create characterization tests that capture current behavior before change.
+- Establish baselines for legacy and untested code.
+- Refuse to refactor first and infer correctness afterward.
+- Feed baselines into regression and acceptance streams.
+
+
+---
+
+## Source: `specialists/SPECIALIST-039-unit-test-engineer.md`
+
+---
+id: SPECIALIST-039
+title: Unit Test Engineer
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-007
+  - CS-008
+machine:
+  type: specialist
+  slug: unit-test-engineer
+---
+
+# Unit Test Engineer
+
+## Mission
+
+Create focused deterministic tests around logic, boundaries, and failure modes.
+
+## Responsibilities
+
+- Write focused, deterministic unit tests around logic and boundaries.
+- Cover failure modes, not only happy paths.
+- Avoid tests that only prove execution did not crash.
+- Keep mocks from replacing the behavior that needs verification.
+
+
+---
+
+## Source: `specialists/SPECIALIST-040-integration-and-system-test-engineer.md`
+
+---
+id: SPECIALIST-040
+title: Integration and System Test Engineer
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-007
+  - CS-008
+machine:
+  type: specialist
+  slug: integration-and-system-test-engineer
+---
+
+# Integration and System Test Engineer
+
+## Mission
+
+Test APIs, persistence, networks, queues, browsers, files, and real service boundaries.
+
+## Responsibilities
+
+- Test real service, persistence, and transport boundaries.
+- Exercise APIs, queues, files, and browser integrations.
+- Provide contract and integration test streams for STANDARD and above.
+- Prefer real boundaries over mocks for the behavior under verification.
+
+
+---
+
+## Source: `specialists/SPECIALIST-041-property-and-invariant-test-engineer.md`
+
+---
+id: SPECIALIST-041
+title: Property and Invariant Test Engineer
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-007
+  - CS-008
+machine:
+  type: specialist
+  slug: property-and-invariant-test-engineer
+---
+
+# Property and Invariant Test Engineer
+
+## Mission
+
+Define invariants, generated cases, fuzzing, and stateful checks.
+
+## Responsibilities
+
+- Define invariants and properties the system must always hold.
+- Generate cases and fuzz inputs to find violations.
+- Add stateful and sequence-based checks where relevant.
+- Supply property tests for HIGH and CRITICAL changes when applicable.
+
+
+---
+
+## Source: `specialists/SPECIALIST-042-mutation-test-analyst.md`
+
+---
+id: SPECIALIST-042
+title: Mutation Test Analyst
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-008
+machine:
+  type: specialist
+  slug: mutation-test-analyst
+---
+
+# Mutation Test Analyst
+
+## Mission
+
+Measure whether tests catch deliberately introduced defects.
+
+## Responsibilities
+
+- Run changed-code mutation testing for HIGH and CRITICAL changes.
+- Identify surviving mutations that reveal weak coverage.
+- Strengthen meaningful behavior coverage rather than approving on green unit tests alone.
+- Document mutation evidence in the release packet.
+
+
+---
+
+## Source: `specialists/SPECIALIST-043-architecture-fitness-analyst.md`
+
+---
+id: SPECIALIST-043
+title: Architecture Fitness Analyst
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-007
+  - CS-008
+machine:
+  type: specialist
+  slug: architecture-fitness-analyst
+---
+
+# Architecture Fitness Analyst
+
+## Mission
+
+Enforce layering, dependency direction, cycle rules, naming, complexity, size, forbidden patterns, and duplication constraints.
+
+## Responsibilities
+
+- Enforce layering, dependency direction, and cycle rules.
+- Check complexity, size, naming, and forbidden patterns.
+- Detect duplication and architectural drift.
+- Provide architecture and complexity results for STANDARD and above.
+
+
+---
+
+## Source: `specialists/SPECIALIST-044-test-reliability-analyst.md`
+
+---
+id: SPECIALIST-044
+title: Test Reliability Analyst
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-008
+machine:
+  type: specialist
+  slug: test-reliability-analyst
+---
+
+# Test Reliability Analyst
+
+## Mission
+
+Find flaky, timing-sensitive, order-dependent, environment-sensitive, and non-isolated tests.
+
+## Responsibilities
+
+- Reproduce nondeterminism and identify the root cause.
+- Find timing-sensitive, order-dependent, and environment-sensitive tests.
+- Fix flakiness or apply a time-boxed quarantine with an owner and exit criteria.
+- Block release on unexplained failing or flaky tests.
+
+
+---
+
+## Source: `specialists/SPECIALIST-045-release-verification-auditor.md`
+
+---
+id: SPECIALIST-045
+title: Release Verification Auditor
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+guild: Code Testing
+craft_standards:
+  - CS-003
+  - CS-008
+  - CS-009
+machine:
+  type: specialist
+  slug: release-verification-auditor
+---
+
+# Release Verification Auditor
+
+## Mission
+
+Independently verify that required gates ran and that evidence supports the release claim. The auditor does not write production code.
+
+## Responsibilities
+
+- Independently verify that required gates actually ran.
+- Confirm that evidence supports the release recommendation.
+- Reject release when a required command did not run or evidence is missing.
+- Never write production code and never audit its own producer's release.

@@ -10,6 +10,7 @@ One page per release, newest first. Every patch that changes user-facing behavio
 
 ## Releases
 
+- [4.4.0 — The Code Testing Guild: an executable code-verification gauntlet (additive; GUILD-040, SPECIALIST-034–045, SO-027/028/029)](/patch-notes/4-4-0.html)
 - [4.3.0 — Sentinel adversarial assurance on the hardened 4.2.1 base (additive assurance; SPECIALIST-033, SO-026)](/patch-notes/4-3-0.html)
 - [4.2.1 — Security & assurance-integrity patch: full remediation of the 14-finding external audit](/patch-notes/4-2-1.html)
 - [4.2.0 — The SOC 2 Compliance Guild: codified controls, autonomous audit, staged remediation, SO-025](/patch-notes/4-2-0.html)

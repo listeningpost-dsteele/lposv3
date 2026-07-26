@@ -1,0 +1,12 @@
+{
+  "so_id": "SO-029",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-VERIFY",
+      "handler": "verify_critical_path_hardening",
+      "depends_on": [],
+      "continue_on_error": false
+    }
+  ]
+}

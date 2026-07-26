@@ -175,7 +175,7 @@ def record_publication_actions(context: Mapping[str, Any]) -> Mapping[str, Any]:
 
 # --------------------------------------------------------------------------- SO-024
 
-_ENGINE_MODULES = ("dashboard", "monitor", "evolution", "compliance", "sentinel")
+_ENGINE_MODULES = ("dashboard", "monitor", "evolution", "compliance", "sentinel", "code_testing")
 
 
 def enumerate_documented_surfaces(context: Mapping[str, Any]) -> Mapping[str, Any]:
@@ -260,6 +260,7 @@ HANDLERS = {
 
 def standard_handlers() -> dict[str, Any]:
     """All packaged Standing Operation handlers a host can register in one call."""
+    from .code_testing import HANDLERS as code_testing_handlers
     from .compliance import HANDLERS as compliance_handlers
     from .monitor import HANDLERS as monitor_handlers
     from .sentinel.operations import HANDLERS as sentinel_handlers
@@ -268,5 +269,6 @@ def standard_handlers() -> dict[str, Any]:
     merged.update(monitor_handlers)
     merged.update(compliance_handlers)
     merged.update(sentinel_handlers)
+    merged.update(code_testing_handlers)
     merged.update(HANDLERS)
     return merged

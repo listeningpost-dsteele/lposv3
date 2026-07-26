@@ -1,13 +1,14 @@
 # LPOS v4 Fixed Benchmark Corpus
 
-This corpus is the readable form of the 55 immutable benchmark fixtures packaged under
+This corpus is the readable form of the 70 immutable benchmark fixtures packaged under
 `lpos_engine.evals`. Each fixture has explicit inputs, expected behavior, success and
 failure criteria, an evaluation method, and required evidence. The deterministic core
 evaluator runs every fixture with `lpos evals`; deployment model adapters may consume the
 same fixtures for model-quality scoring without changing the cases.
 
-Coverage: 33 specialist fixtures (`BENCH-S001` through `BENCH-S033`) and 22 Standing
-Operation fixtures (`BENCH-O001` through `BENCH-O021`, plus `BENCH-O026`).
+Coverage: 45 specialist fixtures (`BENCH-S001` through `BENCH-S045`) and 25 Standing
+Operation fixtures (`BENCH-O001` through `BENCH-O021`, plus `BENCH-O026` through
+`BENCH-O029`).
 
 ## BENCH-S001 — SPECIALIST-001
 

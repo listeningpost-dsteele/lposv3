@@ -1,0 +1,57 @@
+{
+  "component_id": "SPECIALIST-042",
+  "component_type": "specialist",
+  "evaluation": {
+    "assertions": [
+      "lead_specialist",
+      "model_class",
+      "no_missing_capabilities",
+      "craft_standards_present"
+    ],
+    "method": "deterministic_router_assertions"
+  },
+  "evidence": [
+    "RouteDecision JSON",
+    "selected specialist and craft-standard IDs",
+    "missing-capability set"
+  ],
+  "expected": {
+    "craft_standards": [
+      "CS-008"
+    ],
+    "lead_guild": "Code Testing",
+    "lead_specialist": "SPECIALIST-042",
+    "missing_capabilities": [],
+    "model_class": "review"
+  },
+  "failure_criteria": [
+    "A different lead specialist is selected.",
+    "A requested code-testing capability is silently omitted.",
+    "The route names a provider instead of a model class.",
+    "The fixture is modified during evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-S042",
+  "inputs": {
+    "facts": {
+      "approved_scope": "Code verification work for the Mutation Test Analyst role",
+      "external_action_authorized": false,
+      "fixture_id": "BENCH-S042",
+      "known_constraint": "Commands come only from the repository testing manifest; none are invented."
+    },
+    "preferred_model_class": "review",
+    "principal_instruction": "Route bounded code-testing work to the Mutation Test Analyst and cover the requested capabilities without executing external actions.",
+    "required_capabilities": [
+      "mutation_testing",
+      "test_strength_analysis"
+    ]
+  },
+  "objective": "Verify that bounded Mutation Test Analyst work routes to SPECIALIST-042 with complete capability coverage.",
+  "scenario": "The Principal requests Mutation Test Analyst work on a code change; verification is deterministic and record-only.",
+  "success_criteria": [
+    "Lead specialist is SPECIALIST-042.",
+    "All requested capabilities are covered.",
+    "CS-008 are mapped.",
+    "No external action is executed."
+  ]
+}

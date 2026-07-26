@@ -12,9 +12,9 @@ This section is the inventory: every module and capability in your installation,
 
 - **The packaged operating specification** — the constitutional documents, the always-loaded Chip kernel, guild charters, specialist charters, craft standards, Standing Operation definitions, and benchmarks, shipped as package data and loaded on demand. Described throughout [Welcome & Concepts](/welcome/index.html).
 - **The deterministic control plane** — state machines, materiality, routing, context compilation, approval and identity guards, review isolation, and the Standing Operation runner.
-- **33 specialists across the guilds** — see the auto-generated [Specialists](/reference/specialists.html) page, built from the packaged specialist index. `lpos list-specialists` prints the same registry with full capability lists.
-- **26 Standing Operations (SO-001 through SO-026)** — each has its own reference page, generated from the packaged workflow catalog and operation definitions, with its default schedule, requirements, specialists, and workflow steps. Start from [SO-001: Executive Brief](/reference/so-001.html) or browse the Reference section in the sidebar. `lpos list-workflows` prints the catalog.
-- **55 benchmark fixtures** — 33 specialist cases and 22 Standing Operation cases; `lpos evals` runs the deterministic core evaluations against all of them.
+- **45 specialists across the guilds** — see the auto-generated [Specialists](/reference/specialists.html) page, built from the packaged specialist index. `lpos list-specialists` prints the same registry with full capability lists.
+- **29 Standing Operations (SO-001 through SO-029)** — each has its own reference page, generated from the packaged workflow catalog and operation definitions, with its default schedule, requirements, specialists, and workflow steps. Start from [SO-001: Executive Brief](/reference/so-001.html) or browse the Reference section in the sidebar. `lpos list-workflows` prints the catalog.
+- **70 benchmark fixtures** — 45 specialist cases and 25 Standing Operation cases; `lpos evals` runs the deterministic core evaluations against all of them.
 - **20 executable JSON Schemas** — the machine contracts for every runtime entity, validated by `lpos validate-schemas`.
 - **Packaged skills** — procedure documents the runtime loads on demand, including the load-bearing `independent-reviewer` and `quality-router`. See the auto-generated [Packaged skills](/reference/skills.html) page.
 - **Transactional SQLite state with append-only events** — the audit backbone; see [Backups](/administration/backups.html) and [Reading agent output](/working-with/reading-agent-output.html).
@@ -45,3 +45,10 @@ The per-operation pages, the specialist index, and the skills page in the Refere
 - **SOC 2 Compliance Guild (GUILD-038)** — the codified Trust Services Criteria control catalog, the daily autonomous audit (SO-025), staged remediation in a test environment, and the compliance page. See [SOC 2 Compliance Guild](/includes/soc2-compliance.html).
 
 - [Sentinel adversarial assurance](/includes/sentinel-adversarial-assurance.html) — independently reviewed passive security monitoring of Chip artifacts.
+
+## The code-verification layer (4.4.0)
+
+- **Code Testing Guild (GUILD-040)** — the executable criticality classifier, the
+  criticality-weighted test gauntlet, the Need-to-Change Gate, release evidence packets
+  with independent-reviewer enforcement, 12 specialists, and SO-027/028/029. See
+  [Code testing](/includes/code-testing.html).

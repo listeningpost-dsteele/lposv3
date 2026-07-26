@@ -27,7 +27,7 @@ class ReleaseGateTests(unittest.TestCase):
         result = verify_release_gates({"repo_root": str(REPO_ROOT), "skip_verifier": True,
                                        "verifier_passed": True})
         self.assertTrue(all(result["gates"].values()))
-        self.assertEqual(result["version"], "4.3.0")
+        self.assertEqual(result["version"], "4.4.0")
 
     def test_release_gates_fail_loudly_on_an_empty_tree(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -88,6 +88,12 @@ class DocumentationDriftTests(unittest.TestCase):
             "audit_compliance_controls",
             "stage_compliance_remediation",
             "publish_compliance_report",
+            "classify_change_criticality",
+            "run_need_to_change_gate",
+            "evaluate_release_gauntlet",
+            "record_gauntlet_evidence",
+            "review_test_suite_health",
+            "verify_critical_path_hardening",
             *HANDLERS,
         ):
             self.assertIn(name, merged)

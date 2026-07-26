@@ -18,23 +18,23 @@ Shows the installed LPOS name and version.
 
 ### `lpos doctor [--db PATH] [--schema-dir PATH]`
 
-Verifies the integrated specification, runtime assets, and (with `--db`) the database. Reports kernel load, specialist/operation/benchmark counts, schema validation, Python version, database integrity, and migrations. Exits nonzero and reports `unhealthy` if the kernel is missing or the counts are not 33 / 26 / 55. See [Checking system health](/working-with/checking-system-health.html).
+Verifies the integrated specification, runtime assets, and (with `--db`) the database. Reports kernel load, specialist/operation/benchmark counts, schema validation, Python version, database integrity, and migrations. Exits nonzero and reports `unhealthy` if the kernel is missing or the counts are not 45 / 29 / 70. See [Checking system health](/working-with/checking-system-health.html).
 
 ### `lpos list-specialists`
 
-Prints the 33 capability-routable specialists: id, name, guild, model class, capabilities, and craft standards.
+Prints the 45 capability-routable specialists: id, name, guild, model class, capabilities, and craft standards.
 
 ### `lpos list-workflows`
 
-Prints the packaged Standing Operation catalog — all 26 operations with their workflow files, default schedules, requirements, and enabled-by-default flags.
+Prints the packaged Standing Operation catalog — all 29 operations with their workflow files, default schedules, requirements, and enabled-by-default flags.
 
 ### `lpos list-benchmarks`
 
-Prints the 55 fixed benchmark fixtures.
+Prints the 70 fixed benchmark fixtures.
 
 ### `lpos evals`
 
-Runs the deterministic core evaluations against all 55 fixtures. Exits nonzero if any fail.
+Runs the deterministic core evaluations against all 70 fixtures. Exits nonzero if any fail.
 
 ### `lpos validate-schemas [--schema-dir PATH]`
 

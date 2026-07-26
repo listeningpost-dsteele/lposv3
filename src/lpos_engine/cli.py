@@ -370,9 +370,9 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     perms_ok = result.get("state_permissions", {"status": "ok"}).get("status") != "insecure"
     if (
         not kernel
-        or len(registry.profiles) != 33
-        or len(workflows) != 26
-        or len(benchmark_catalog()) != 55
+        or len(registry.profiles) != 45
+        or len(workflows) != 29
+        or len(benchmark_catalog()) != 70
         or schema_result["schemas"] != 20
         or not perms_ok
     ):
@@ -420,13 +420,13 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--schema-dir", type=Path, default=None)
     validate.set_defaults(func=cmd_validate_schemas)
 
-    specialists = sub.add_parser("list-specialists", help="show the 33 capability-routable specialists")
+    specialists = sub.add_parser("list-specialists", help="show the 45 capability-routable specialists")
     specialists.set_defaults(func=cmd_list_specialists)
 
-    workflows = sub.add_parser("list-workflows", help="show the 26 packaged Standing Operations")
+    workflows = sub.add_parser("list-workflows", help="show the 29 packaged Standing Operations")
     workflows.set_defaults(func=cmd_list_workflows)
 
-    benchmarks = sub.add_parser("list-benchmarks", help="show the 55 fixed benchmark fixtures")
+    benchmarks = sub.add_parser("list-benchmarks", help="show the 70 fixed benchmark fixtures")
     benchmarks.set_defaults(func=cmd_list_benchmarks)
 
     evals = sub.add_parser("evals", help="run deterministic core evaluations against all fixtures")

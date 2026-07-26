@@ -35,6 +35,18 @@
 | 031 | Automation Architect | Automation | Reliable, observable workflows | CS-013 |
 | 032 | Web & Product Designer | Design | Audience-fit web/product design; baseline-preserving changes | CS-002, CS-001, CS-003 |
 | 033 | Adversarial Assurance Engineer | Sentinel Adversarial Assurance | Continuously test exact Chip artifacts and propose reviewed remediation | CS-003, CS-008, CS-009 |
+| 034 | Code Test Director | Code Testing | Classify criticality, select the gauntlet, own release evidence | CS-003, CS-007, CS-008 |
+| 035 | Change Necessity Analyst | Code Testing | Reproduce defects; may return NO_CHANGE_REQUIRED | CS-003, CS-008 |
+| 036 | Acceptance Criteria Analyst | Code Testing | Intended behavior into domain-language acceptance criteria | CS-003, CS-008 |
+| 037 | Acceptance Test Architect | Code Testing | Executable acceptance specs; protect the frozen contract | CS-007, CS-008 |
+| 038 | Characterization Test Engineer | Code Testing | Baseline legacy behavior before refactors and migrations | CS-007, CS-008 |
+| 039 | Unit Test Engineer | Code Testing | Focused deterministic tests of logic, boundaries, failures | CS-007, CS-008 |
+| 040 | Integration and System Test Engineer | Code Testing | Test APIs, persistence, and real service boundaries | CS-007, CS-008 |
+| 041 | Property and Invariant Test Engineer | Code Testing | Invariants, generated cases, fuzzing, stateful checks | CS-007, CS-008 |
+| 042 | Mutation Test Analyst | Code Testing | Measure whether tests catch introduced defects | CS-008 |
+| 043 | Architecture Fitness Analyst | Code Testing | Enforce layering, complexity, duplication, dependency rules | CS-007, CS-008 |
+| 044 | Test Reliability Analyst | Code Testing | Find and fix flaky, order- and environment-dependent tests | CS-008 |
+| 045 | Release Verification Auditor | Code Testing | Independently verify gates ran and evidence supports release | CS-003, CS-008, CS-009 |
 
 ## Fallback map for unstaffed guilds
 

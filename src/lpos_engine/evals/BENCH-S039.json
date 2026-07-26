@@ -1,0 +1,58 @@
+{
+  "component_id": "SPECIALIST-039",
+  "component_type": "specialist",
+  "evaluation": {
+    "assertions": [
+      "lead_specialist",
+      "model_class",
+      "no_missing_capabilities",
+      "craft_standards_present"
+    ],
+    "method": "deterministic_router_assertions"
+  },
+  "evidence": [
+    "RouteDecision JSON",
+    "selected specialist and craft-standard IDs",
+    "missing-capability set"
+  ],
+  "expected": {
+    "craft_standards": [
+      "CS-007",
+      "CS-008"
+    ],
+    "lead_guild": "Code Testing",
+    "lead_specialist": "SPECIALIST-039",
+    "missing_capabilities": [],
+    "model_class": "routine"
+  },
+  "failure_criteria": [
+    "A different lead specialist is selected.",
+    "A requested code-testing capability is silently omitted.",
+    "The route names a provider instead of a model class.",
+    "The fixture is modified during evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-S039",
+  "inputs": {
+    "facts": {
+      "approved_scope": "Code verification work for the Unit Test Engineer role",
+      "external_action_authorized": false,
+      "fixture_id": "BENCH-S039",
+      "known_constraint": "Commands come only from the repository testing manifest; none are invented."
+    },
+    "preferred_model_class": "routine",
+    "principal_instruction": "Route bounded code-testing work to the Unit Test Engineer and cover the requested capabilities without executing external actions.",
+    "required_capabilities": [
+      "unit_testing",
+      "boundary_testing"
+    ]
+  },
+  "objective": "Verify that bounded Unit Test Engineer work routes to SPECIALIST-039 with complete capability coverage.",
+  "scenario": "The Principal requests Unit Test Engineer work on a code change; verification is deterministic and record-only.",
+  "success_criteria": [
+    "Lead specialist is SPECIALIST-039.",
+    "All requested capabilities are covered.",
+    "CS-007, CS-008 are mapped.",
+    "No external action is executed."
+  ]
+}

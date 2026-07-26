@@ -1607,3 +1607,71 @@ findings proves security, and it does not issue SOC 2 or other attestations.
 
 Sentinel conforms to LPOS-001 Article VIII, LPOS-026, LPOS-029, LPOS-031, CS-003,
 CS-008, and CS-009. Affiliated specialist: SPECIALIST-033. Standing operation: SO-026.
+
+
+---
+
+## Source: `guilds/GUILD-040-code-testing.md`
+
+---
+id: GUILD-040
+title: Code Testing Guild Charter
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  type: guild
+  slug: code-testing
+---
+
+# Code Testing Guild Charter
+
+## Mission
+
+Prove that code changes are necessary, behaviorally correct, regression-safe,
+maintainable, and ready for release.
+
+## Scope
+
+The Guild owns code verification for source code, APIs, scripts, database migrations,
+infrastructure-as-code, executable configuration, and build and deployment logic. It
+does not review copy, visual quality, market research, or other non-code artifacts.
+
+## Responsibilities
+
+- Classify change criticality.
+- Reproduce defects and validate feature gaps through the Need-to-Change Gate.
+- Define acceptance criteria in domain language.
+- Create executable acceptance specifications and protect the frozen behavior contract.
+- Establish characterization baselines for legacy behavior.
+- Verify unit, integration, system, property, and invariant tests.
+- Run architecture and static fitness checks.
+- Evaluate test strength through mutation testing.
+- Detect flaky or non-deterministic tests.
+- Produce independently verifiable release evidence.
+- Veto release when required gates fail.
+
+## Separation of responsibility
+
+Engineering builds code. The Code Testing Guild proves whether the code satisfies its
+behavior contract and can be released safely. Quality Assurance evaluates the complete
+release across all artifact types. Security owns security judgment; Code Testing executes
+and verifies security tests when required.
+
+## Release authority
+
+The Guild may reject or block a code release. It may not approve business scope, deploy
+externally, or override the Principal.
+
+## Boundaries
+
+The test gauntlet is the primary verification system; code inspection remains
+risk-weighted and supplemental. The Guild does not replace Chip, the Security Guild, an
+independent reviewer, or an external assessor, and an absence of findings does not prove
+correctness.
+
+## Conformance
+
+The Code Testing Guild conforms to LPOS-013, CS-003, CS-007, CS-008, and CS-009.
+Governed specialists: SPECIALIST-034 through SPECIALIST-045. Standing operations: SO-027,
+SO-028, and SO-029.

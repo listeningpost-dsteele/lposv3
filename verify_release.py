@@ -136,7 +136,7 @@ def main() -> int:
             str(registry_package.get("os_version")),
             str(workflow_catalog.get("os_version")),
         }
-        if versions != {"4.3.0"}:
+        if versions != {"4.4.0"}:
             fail(f"version fields are not synchronized: {sorted(versions)}", failures)
         if release.get("distribution_type") != "integrated":
             fail("RELEASE.json does not declare an integrated distribution", failures)
@@ -145,15 +145,15 @@ def main() -> int:
 
         specialists = registry_package.get("specialists", [])
         specialist_ids = [item.get("specialist_id") for item in specialists if isinstance(item, dict)]
-        expected_specialists = [f"SPECIALIST-{number:03d}" for number in range(1, 34)]
+        expected_specialists = [f"SPECIALIST-{number:03d}" for number in range(1, 46)]
         if specialist_ids != expected_specialists:
-            fail("capability registry does not contain canonical SPECIALIST-001 through SPECIALIST-033", failures)
+            fail("capability registry does not contain canonical SPECIALIST-001 through SPECIALIST-045", failures)
 
         operations = workflow_catalog.get("operations", [])
         operation_ids = [item.get("so_id") for item in operations if isinstance(item, dict)]
-        expected_operations = [f"SO-{number:03d}" for number in range(1, 27)]
+        expected_operations = [f"SO-{number:03d}" for number in range(1, 30)]
         if operation_ids != expected_operations:
-            fail("workflow catalog does not contain canonical SO-001 through SO-026", failures)
+            fail("workflow catalog does not contain canonical SO-001 through SO-029", failures)
         for item in operations:
             if not isinstance(item, dict):
                 fail("workflow catalog contains a non-object entry", failures)
@@ -195,13 +195,16 @@ def main() -> int:
         fail(f"benchmark catalog is missing or invalid: {exc}", failures)
         benchmark_entries = []
     expected_benchmark_ids = [
-        *(f"BENCH-S{number:03d}" for number in range(1, 34)),
+        *(f"BENCH-S{number:03d}" for number in range(1, 46)),
         *(f"BENCH-O{number:03d}" for number in range(1, 22)),
         "BENCH-O026",
+        "BENCH-O027",
+        "BENCH-O028",
+        "BENCH-O029",
     ]
     actual_benchmark_ids = [item.get("id") for item in benchmark_entries if isinstance(item, dict)]
     if actual_benchmark_ids != expected_benchmark_ids:
-        fail("benchmark catalog does not contain 33 specialist and 22 Standing Operation fixtures", failures)
+        fail("benchmark catalog does not contain 45 specialist and 25 Standing Operation fixtures", failures)
     for item in benchmark_entries:
         if not isinstance(item, dict):
             fail("benchmark catalog contains a non-object entry", failures)
@@ -224,7 +227,7 @@ def main() -> int:
             fail(f"benchmark identity mismatch: {fixture_name}", failures)
 
     kernel = ROOT / "src" / "lpos_engine" / "spec" / "CHIP-KERNEL.md"
-    if not kernel.is_file() or "# Chip Kernel v4.3.0" not in kernel.read_text(encoding="utf-8"):
+    if not kernel.is_file() or "# Chip Kernel v4.4.0" not in kernel.read_text(encoding="utf-8"):
         fail("the packaged v4 kernel is missing or has the wrong version", failures)
 
     wheel_name = release.get("wheel")
@@ -278,7 +281,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 33 specialists, 26 Standing Operations, 55 benchmarks, 20 schemas."
+        f"{len(expected_files)} immutable files, 45 specialists, 29 Standing Operations, 70 benchmarks, 20 schemas."
     )
     return 0
 

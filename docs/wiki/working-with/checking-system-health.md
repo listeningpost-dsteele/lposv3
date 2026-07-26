@@ -17,7 +17,7 @@ lpos doctor --db state/lpos.db
 Doctor verifies the integrated specification, runtime assets, and database in one pass and prints one JSON object:
 
 - the specification kernel reference and whether it loaded
-- specialist count (must be 32), Standing Operation count (must be 21), benchmark count (must be 53)
+- specialist count (must be 45), Standing Operation count (must be 29), benchmark count (must be 70)
 - schema validation results (20 schemas)
 - your Python version
 - with `--db`: the database path, its integrity check, and the applied migrations
@@ -53,7 +53,7 @@ Both record evidence for every run, so "how healthy has this system been?" is an
 1. `lpos doctor --db state/lpos.db` says healthy.
 2. Dashboard health strip is green (or `~/.hermes/monitor/status.json` shows everything ok).
 3. No unread `LPOS ALERT` emails.
-4. `lpos evals` passes 55/55 (worth running after any upgrade).
+4. `lpos evals` passes 70/70 (worth running after any upgrade).
 
 ## Related pages
 

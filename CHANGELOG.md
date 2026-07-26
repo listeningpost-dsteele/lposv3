@@ -1,5 +1,30 @@
 # LPOS Changelog
 
+## 4.4.0 — 2026-07-24
+
+Feature release: the Code Testing Guild (GUILD-040) as an additive, executable
+code-verification layer. Existing testing behavior is preserved — the full existing test
+suite and every prior Standing Operation continue to run unchanged; the gauntlet sits
+alongside them, not in place of them. Adds the `code_testing` engine module, which
+codifies the Code Testing Gauntlet Standard as executable data and gates rather than
+prompt instruction: a deterministic, total criticality classifier (LIGHT/STANDARD/HIGH/
+CRITICAL; destructive, secrets, financial movement, irreversible migration, and
+production infrastructure force CRITICAL); the cumulative tier→required-gate table and a
+release-decision evaluator that REJECTS when a required command did not run, when a gate
+failed or is flaky, or when a green unit suite alone is offered for STANDARD or above; the
+Need-to-Change Gate (reproduction, demonstrated missing behavior, or objective-constraint
+proof, else NO_CHANGE_REQUIRED); release evidence packets with a test-independence rule
+(a producer cannot audit its own release); and a dependency-free testing-manifest loader
+that never invents build, test, lint, or type-check commands. Adds 12 specialists
+(SPECIALIST-034 through SPECIALIST-045), three Standing Operations (SO-027 Code Test
+Gauntlet, SO-028 Test Suite Health Review, SO-029 Critical Path Hardening), four Hermes
+skills (code-test-gauntlet, code-criticality-classifier, acceptance-spec-reviewer,
+test-evidence-auditor), the Code Testing Gauntlet Standard, and code-testing governance.
+Counts: specialists 33→45, standing operations 26→29, benchmarks 55→70, schemas
+unchanged at 20.
+
+- **Test Coverage Map**: `tools/build_test_report.py` generates a self-contained `dist/test-coverage.html` showing every module's test state, line coverage, and gauntlet tier — the visual answer to whether all code is tested.
+- **anti-slop-editor 1.0.1** migrated from the approved Hermes skill (named-pattern de-AI editing, voice-preserving, deterministic, refuses to guess AI authorship); quality-router 2.2.0, lpos-core 3.1.0 writing rules, and voice overlays preserved unchanged.
 ## 4.3.0 — 2026-07-23
 
 Feature release: the Sentinel Adversarial Assurance Guild (GUILD-039) as an additive

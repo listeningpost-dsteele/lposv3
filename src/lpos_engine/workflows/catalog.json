@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "os_version": "4.3.0",
+  "os_version": "4.4.0",
   "operations": [
     {
       "so_id": "SO-001",
@@ -223,6 +223,34 @@
       "default_schedule": "*/5 * * * *",
       "requires": [],
       "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-027",
+      "title": "Code Test Gauntlet",
+      "workflow": "SO-027.json",
+      "default_schedule": "0 0 * * *",
+      "requires": [
+        "code_change"
+      ],
+      "enabled_by_default": false
+    },
+    {
+      "so_id": "SO-028",
+      "title": "Test Suite Health Review",
+      "workflow": "SO-028.json",
+      "default_schedule": "0 9 * * 1",
+      "requires": [],
+      "enabled_by_default": true
+    },
+    {
+      "so_id": "SO-029",
+      "title": "Critical Path Hardening",
+      "workflow": "SO-029.json",
+      "default_schedule": "0 0 * * *",
+      "requires": [
+        "high_risk_release"
+      ],
+      "enabled_by_default": false
     }
   ]
 }

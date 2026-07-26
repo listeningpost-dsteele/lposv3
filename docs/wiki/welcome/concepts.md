@@ -27,13 +27,13 @@ new-guild output starts untrusted, cannot be self-approved or self-remediated, a
 pass the ordinary fresh-context adversarial-review process before it can affect a gate
 or be presented as fact. Sentinel (GUILD-039) applies this rule to its own security work.
 
-A **specialist** is a narrow expert role that performs delegated reasoning or work. LPOS v4 ships 33 canonical specialists (see the [specialist index](/reference/specialists.html)). Specialists are compiled roles the model assumes at routing time, not resident agents. When a guild has no dedicated specialist, a documented fallback map assigns the nearest specialist by domain — this is by design, never a stall.
+A **specialist** is a narrow expert role that performs delegated reasoning or work. LPOS v4 ships 45 canonical specialists (see the [specialist index](/reference/specialists.html)). Specialists are compiled roles the model assumes at routing time, not resident agents. When a guild has no dedicated specialist, a documented fallback map assigns the nearest specialist by domain — this is by design, never a stall.
 
 Routing is **capability-first**: a task names the capabilities it requires (say, `software_implementation` and `testing`), and the router selects the smallest specialist set that covers them. Components request capabilities, never vendors; no provider or model name appears anywhere in the architecture.
 
 ## Standing Operations
 
-A **Standing Operation** is a recurring responsibility defined by intent rather than by a runtime schedule — for example, SO-001 Executive Brief prepares one decision-focused briefing each scheduled morning. LPOS v4 packages 26 of them (SO-001 through SO-026) as machine-readable workflow definitions with default schedules. Every run uses an idempotency key, writes exactly one run record and one evidence record, and produces an explicit `ok`, `silent`, or `error` result. An operation with nothing worth sending returns `[SILENT]` rather than emailing you noise — and four consecutive silent or near-empty runs trigger a health review rather than continued noise.
+A **Standing Operation** is a recurring responsibility defined by intent rather than by a runtime schedule — for example, SO-001 Executive Brief prepares one decision-focused briefing each scheduled morning. LPOS v4 packages 29 of them (SO-001 through SO-029) as machine-readable workflow definitions with default schedules. Every run uses an idempotency key, writes exactly one run record and one evidence record, and produces an explicit `ok`, `silent`, or `error` result. An operation with nothing worth sending returns `[SILENT]` rather than emailing you noise — and four consecutive silent or near-empty runs trigger a health review rather than continued noise.
 
 ## Materiality
 

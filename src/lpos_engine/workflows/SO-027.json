@@ -1,0 +1,30 @@
+{
+  "so_id": "SO-027",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-CLASSIFY",
+      "handler": "classify_change_criticality",
+      "depends_on": [],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-NEED-TO-CHANGE",
+      "handler": "run_need_to_change_gate",
+      "depends_on": ["STEP-CLASSIFY"],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-EVALUATE",
+      "handler": "evaluate_release_gauntlet",
+      "depends_on": ["STEP-CLASSIFY", "STEP-NEED-TO-CHANGE"],
+      "continue_on_error": false
+    },
+    {
+      "step_id": "STEP-RECORD",
+      "handler": "record_gauntlet_evidence",
+      "depends_on": ["STEP-CLASSIFY", "STEP-EVALUATE"],
+      "continue_on_error": false
+    }
+  ]
+}

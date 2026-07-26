@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: lpos-os
-Version: 4.3.0
+Version: 4.4.0
 Summary: LPOS v4: integrated agent operating system specification, deterministic control plane, schemas, and workflows
 Author: Listening Post / LPOS
 Classifier: Programming Language :: Python :: 3
@@ -15,7 +15,7 @@ Requires-Dist: jsonschema>=4.20; extra == "dev"
 Requires-Dist: pytest>=8; extra == "dev"
 Dynamic: license-file
 
-# LPOS v4.3.0
+# LPOS v4.4.0
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -142,5 +142,5 @@ lpos validate-schemas
 lpos doctor
 ```
 
-The authoritative release version is `4.3.0` in `pyproject.toml`, the installed package,
+The authoritative release version is `4.4.0` in `pyproject.toml`, the installed package,
 the specification kernel, workflow catalog, capability registry, and release manifest.

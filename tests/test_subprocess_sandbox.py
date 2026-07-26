@@ -92,12 +92,7 @@ print(json.dumps({"env": dict(os.environ), "cwd": os.getcwd()}))
             # coercion, shell bookkeeping); they carry no parent secrets.
             "LC_CTYPE",
             "PWD",
-            # macOS can synthesize this per-user encoding marker even when
-            # subprocess.Popen receives an explicit env mapping; it carries
-            # no credential material and is not inherited through the
-            # adapter allowlist.
-            "__CF_USER_TEXT_ENCODING",
-            }
+        }
         # Assert nothing outside the allowlist that exists in the parent
         # leaked through.
         for key in child_env:

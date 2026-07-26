@@ -166,6 +166,66 @@
       "id": "BENCH-S033"
     },
     {
+      "component_id": "SPECIALIST-034",
+      "fixture": "BENCH-S034.json",
+      "id": "BENCH-S034"
+    },
+    {
+      "component_id": "SPECIALIST-035",
+      "fixture": "BENCH-S035.json",
+      "id": "BENCH-S035"
+    },
+    {
+      "component_id": "SPECIALIST-036",
+      "fixture": "BENCH-S036.json",
+      "id": "BENCH-S036"
+    },
+    {
+      "component_id": "SPECIALIST-037",
+      "fixture": "BENCH-S037.json",
+      "id": "BENCH-S037"
+    },
+    {
+      "component_id": "SPECIALIST-038",
+      "fixture": "BENCH-S038.json",
+      "id": "BENCH-S038"
+    },
+    {
+      "component_id": "SPECIALIST-039",
+      "fixture": "BENCH-S039.json",
+      "id": "BENCH-S039"
+    },
+    {
+      "component_id": "SPECIALIST-040",
+      "fixture": "BENCH-S040.json",
+      "id": "BENCH-S040"
+    },
+    {
+      "component_id": "SPECIALIST-041",
+      "fixture": "BENCH-S041.json",
+      "id": "BENCH-S041"
+    },
+    {
+      "component_id": "SPECIALIST-042",
+      "fixture": "BENCH-S042.json",
+      "id": "BENCH-S042"
+    },
+    {
+      "component_id": "SPECIALIST-043",
+      "fixture": "BENCH-S043.json",
+      "id": "BENCH-S043"
+    },
+    {
+      "component_id": "SPECIALIST-044",
+      "fixture": "BENCH-S044.json",
+      "id": "BENCH-S044"
+    },
+    {
+      "component_id": "SPECIALIST-045",
+      "fixture": "BENCH-S045.json",
+      "id": "BENCH-S045"
+    },
+    {
       "component_id": "SO-001",
       "fixture": "BENCH-O001.json",
       "id": "BENCH-O001"
@@ -274,8 +334,23 @@
       "component_id": "SO-026",
       "fixture": "BENCH-O026.json",
       "id": "BENCH-O026"
+    },
+    {
+      "component_id": "SO-027",
+      "fixture": "BENCH-O027.json",
+      "id": "BENCH-O027"
+    },
+    {
+      "component_id": "SO-028",
+      "fixture": "BENCH-O028.json",
+      "id": "BENCH-O028"
+    },
+    {
+      "component_id": "SO-029",
+      "fixture": "BENCH-O029.json",
+      "id": "BENCH-O029"
     }
   ],
-  "os_version": "4.0.0",
+  "os_version": "4.4.0",
   "schema_version": 1
 }

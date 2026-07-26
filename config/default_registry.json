@@ -1,6 +1,6 @@
 {
   "schema_version": 4,
-  "os_version": "4.3.0",
+  "os_version": "4.4.0",
   "specialists": [
     {
       "specialist_id": "SPECIALIST-001",
@@ -613,6 +613,198 @@
       ],
       "model_class": "executive",
       "priority": 4
+    },
+    {
+      "specialist_id": "SPECIALIST-034",
+      "name": "Code Test Director",
+      "guild": "Code Testing",
+      "capabilities": [
+        "criticality_classification",
+        "gauntlet_selection",
+        "test_coordination",
+        "release_evidence_ownership"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "executive",
+      "priority": 4
+    },
+    {
+      "specialist_id": "SPECIALIST-035",
+      "name": "Change Necessity Analyst",
+      "guild": "Code Testing",
+      "capabilities": [
+        "defect_reproduction",
+        "need_to_change_analysis",
+        "stale_bug_detection"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-008"
+      ],
+      "model_class": "review",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-036",
+      "name": "Acceptance Criteria Analyst",
+      "guild": "Code Testing",
+      "capabilities": [
+        "acceptance_criteria_design",
+        "behavior_specification",
+        "edge_case_analysis"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-008"
+      ],
+      "model_class": "review",
+      "priority": 20
+    },
+    {
+      "specialist_id": "SPECIALIST-037",
+      "name": "Acceptance Test Architect",
+      "guild": "Code Testing",
+      "capabilities": [
+        "acceptance_test_authoring",
+        "behavior_contract_protection",
+        "executable_specification"
+      ],
+      "craft_standards": [
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "routine",
+      "priority": 22
+    },
+    {
+      "specialist_id": "SPECIALIST-038",
+      "name": "Characterization Test Engineer",
+      "guild": "Code Testing",
+      "capabilities": [
+        "characterization_testing",
+        "legacy_behavior_baselining"
+      ],
+      "craft_standards": [
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "routine",
+      "priority": 24
+    },
+    {
+      "specialist_id": "SPECIALIST-039",
+      "name": "Unit Test Engineer",
+      "guild": "Code Testing",
+      "capabilities": [
+        "unit_testing",
+        "boundary_testing",
+        "failure_mode_testing"
+      ],
+      "craft_standards": [
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "routine",
+      "priority": 24
+    },
+    {
+      "specialist_id": "SPECIALIST-040",
+      "name": "Integration and System Test Engineer",
+      "guild": "Code Testing",
+      "capabilities": [
+        "integration_testing",
+        "system_testing",
+        "contract_testing"
+      ],
+      "craft_standards": [
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "routine",
+      "priority": 24
+    },
+    {
+      "specialist_id": "SPECIALIST-041",
+      "name": "Property and Invariant Test Engineer",
+      "guild": "Code Testing",
+      "capabilities": [
+        "property_testing",
+        "invariant_testing",
+        "fuzz_testing"
+      ],
+      "craft_standards": [
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "routine",
+      "priority": 26
+    },
+    {
+      "specialist_id": "SPECIALIST-042",
+      "name": "Mutation Test Analyst",
+      "guild": "Code Testing",
+      "capabilities": [
+        "mutation_testing",
+        "test_strength_analysis"
+      ],
+      "craft_standards": [
+        "CS-008"
+      ],
+      "model_class": "review",
+      "priority": 26
+    },
+    {
+      "specialist_id": "SPECIALIST-043",
+      "name": "Architecture Fitness Analyst",
+      "guild": "Code Testing",
+      "capabilities": [
+        "architecture_fitness",
+        "complexity_analysis",
+        "dependency_analysis",
+        "duplication_detection"
+      ],
+      "craft_standards": [
+        "CS-007",
+        "CS-008"
+      ],
+      "model_class": "review",
+      "priority": 22
+    },
+    {
+      "specialist_id": "SPECIALIST-044",
+      "name": "Test Reliability Analyst",
+      "guild": "Code Testing",
+      "capabilities": [
+        "flaky_test_detection",
+        "nondeterminism_analysis",
+        "test_isolation_analysis"
+      ],
+      "craft_standards": [
+        "CS-008"
+      ],
+      "model_class": "review",
+      "priority": 26
+    },
+    {
+      "specialist_id": "SPECIALIST-045",
+      "name": "Release Verification Auditor",
+      "guild": "Code Testing",
+      "capabilities": [
+        "release_verification",
+        "evidence_audit",
+        "gate_verification"
+      ],
+      "craft_standards": [
+        "CS-003",
+        "CS-008",
+        "CS-009"
+      ],
+      "model_class": "executive",
+      "priority": 6
     }
   ]
 }

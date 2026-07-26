@@ -1785,3 +1785,130 @@ An artifact is missed; a new guild output is trusted by source; Sentinel reviews
 closes its own work; sensitive evidence is copied into the ledger; an active probe runs
 without separately approved scope; or an unreviewed finding blocks, authorizes,
 publishes, enforces, or reaches the Principal as fact.
+
+
+---
+
+## Source: `standing-operations/SO-027-code-test-gauntlet.md`
+
+---
+id: SO-027
+title: Code Test Gauntlet
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  owner: Code Testing Guild
+  specialists: [code-test-director, change-necessity-analyst, release-verification-auditor]
+  specialist_ids: [SPECIALIST-034, SPECIALIST-035, SPECIALIST-045]
+  type: standing_operation
+  slug: code-test-gauntlet
+  trigger: event_and_scheduled
+  communication_intent: Operational Alert
+---
+
+# Code Test Gauntlet
+
+## Mission
+
+Run the criticality-weighted code testing gauntlet on every material code change before release.
+
+## Objective
+
+Classify criticality, gate the need to change, run the required gates, and produce an independently verifiable release evidence packet with a PASS, REJECT, or NO_CHANGE_REQUIRED decision.
+
+## Behavior
+
+1. `classify_change_criticality`: classify the change as LIGHT, STANDARD, HIGH, or CRITICAL and derive the required gates.
+2. `run_need_to_change_gate`: require a reproduction, a demonstrated missing behavior, or an objective-constraint proof; otherwise return NO_CHANGE_REQUIRED.
+3. `evaluate_release_gauntlet`: REJECT when a required command did not run, when a gate failed or is flaky, or when a green unit suite alone is offered for STANDARD or above.
+4. `record_gauntlet_evidence`: assemble the release evidence packet and enforce that the independent reviewer is not the implementer.
+
+## Failure conditions
+
+- A required gate does not run yet the release is reported PASS.
+- The implementation weakens frozen acceptance behavior.
+- A producer audits its own release.
+- A command is invented instead of read from the repository testing manifest.
+
+
+---
+
+## Source: `standing-operations/SO-028-test-suite-health-review.md`
+
+---
+id: SO-028
+title: Test Suite Health Review
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  owner: Code Testing Guild
+  specialists: [test-reliability-analyst, mutation-test-analyst, architecture-fitness-analyst]
+  specialist_ids: [SPECIALIST-044, SPECIALIST-042, SPECIALIST-043]
+  type: standing_operation
+  slug: test-suite-health-review
+  trigger: scheduled
+  communication_intent: Operational Alert
+---
+
+# Test Suite Health Review
+
+## Mission
+
+Review overall test-suite health weekly or after major test-system changes.
+
+## Objective
+
+Report flaky, slow, duplicate, permanently skipped, and low-value tests, coverage gaps, mutation survivors, broken fixtures, stale snapshots, and unreliable external dependencies over a supplied manifest and results set.
+
+## Behavior
+
+1. `review_test_suite_health`: read the repository testing manifest and provided results and report categorized findings, or report cleanly that no results were supplied.
+
+## Failure conditions
+
+- Findings are fabricated when no results were supplied.
+- A command is invented instead of read from the manifest.
+- A live side effect occurs during the review.
+
+
+---
+
+## Source: `standing-operations/SO-029-critical-path-hardening.md`
+
+---
+id: SO-029
+title: Critical Path Hardening
+version: 1.0.0
+status: Accepted
+owner: Listening Post
+machine:
+  owner: Code Testing Guild
+  specialists: [release-verification-auditor, mutation-test-analyst, property-and-invariant-test-engineer]
+  specialist_ids: [SPECIALIST-045, SPECIALIST-042, SPECIALIST-041]
+  type: standing_operation
+  slug: critical-path-hardening
+  trigger: event_and_scheduled
+  communication_intent: Operational Alert
+---
+
+# Critical Path Hardening
+
+## Mission
+
+Verify the extra hardening gates before a HIGH or CRITICAL release.
+
+## Objective
+
+Confirm that the additional HIGH and CRITICAL gates - mutation testing, property or invariant testing, security and permission behavior, performance and concurrency, migration rollback, restore verification, and staging or canary evidence - are present and passing.
+
+## Behavior
+
+1. `verify_critical_path_hardening`: verify that the extra HIGH/CRITICAL gates ran and passed; block the release when any is missing or failing.
+
+## Failure conditions
+
+- A hardening gate is skipped without an explicit documented exception.
+- A high-risk release proceeds without staging or rollback evidence.
+- A live side effect occurs during verification.

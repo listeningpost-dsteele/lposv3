@@ -64,3 +64,20 @@ future release, not code that ships in this one.
 To promote a candidate, open it as its own change: build in isolation, audit
 adversarially, document, and take it through the release gates. Until then it stays
 here — visible, tracked, and uninstalled.
+
+## 2026-07 Hermes handoff — migrated and scoped
+
+**Migrated into this release (v4.4.0):** `anti-slop-editor` 1.0.1, verified and approved
+in Hermes (bundle SHA-256 `7bd9ded7acc9112bfdfd5c38e021dbaa9aff49ae733812473ce70f4a04b29da9`),
+shipped as a packaged skill. Preserved unchanged and authoritative: `quality-router` 2.2.0
+prose routing, `lpos-core` 3.1.0 writing rules, and the lpos-state voice/editor overlays.
+Per the handoff, these were migrated explicitly rather than by editing a signed release.
+
+**Scoped OUT of the LPOS OS (Chip/site product changes):** the Hermes handoff also listed
+substantial Chip site/product work — waitlist mode and magic-link auth, lead capture and
+reply, the 20-template library (manifest 5.1.0), authoritative user domain, the public
+`/security/` monitor page, the Chipcoin prelaunch section, launch-ops materials, live
+Hermes activity/usage streaming, Stripe checkout lifecycle, and access codes. These live
+in the Chip site repository, not the LPOS operating system, and are intentionally not part
+of this OS release. They are recorded here so the boundary is explicit; promoting any of
+them into the OS would be its own change through the release gates.

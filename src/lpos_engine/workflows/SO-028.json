@@ -1,0 +1,12 @@
+{
+  "so_id": "SO-028",
+  "model_class": "routine",
+  "steps": [
+    {
+      "step_id": "STEP-REVIEW",
+      "handler": "review_test_suite_health",
+      "depends_on": [],
+      "continue_on_error": false
+    }
+  ]
+}

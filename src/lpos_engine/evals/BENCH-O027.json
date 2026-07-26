@@ -1,0 +1,54 @@
+{
+  "component_id": "SO-027",
+  "component_type": "standing_operation",
+  "evaluation": {
+    "assertions": [
+      "workflow_identity",
+      "model_class",
+      "minimum_steps",
+      "unique_step_ids"
+    ],
+    "method": "workflow_definition_assertions"
+  },
+  "evidence": [
+    "WorkflowDefinition JSON",
+    "step and dependency set",
+    "catalog mapping"
+  ],
+  "expected": {
+    "evidence_record_required": true,
+    "minimum_steps": 4,
+    "model_class": "routine",
+    "result_values": [
+      "ok",
+      "silent",
+      "error"
+    ],
+    "so_id": "SO-027"
+  },
+  "failure_criteria": [
+    "Workflow identity or model class differs from the fixture.",
+    "A dependency references a missing step.",
+    "A required gauntlet gate is skipped without an explicit review.",
+    "A live side effect occurs during the core evaluation."
+  ],
+  "fixture_version": "1.0.0",
+  "id": "BENCH-O027",
+  "inputs": {
+    "fixture": {
+      "live_side_effects": false,
+      "records": 1,
+      "source": "packaged deterministic benchmark"
+    },
+    "idempotency_key": "SO-027:2030-01-07T12:00:00Z:fixture-1",
+    "scheduled_for": "2030-01-07T12:00:00Z"
+  },
+  "objective": "Verify the Code Test Gauntlet workflow identity, DAG shape, and record-only contract.",
+  "scenario": "Run SO-027 against a deterministic fixture without network, shell, credential, or destructive adapters.",
+  "success_criteria": [
+    "Workflow resolves as SO-027.",
+    "Step identifiers are unique and dependencies resolve.",
+    "The workflow is able to classify criticality, run the Need-to-Change Gate, evaluate the criticality-weighted gauntlet, and record the evidence packet.",
+    "The run contract requires one evidence record."
+  ]
+}
