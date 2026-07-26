@@ -1,6 +1,6 @@
 # LPOS Changelog
 
-## 4.5.0 — 2026-07-26
+## 4.5.0 (2026-07-26)
 
 Quality-system release: adds the packaged `design-anti-slop-reviewer` skill and makes
 visual anti-slop review a required LPOS path for customer-facing websites, product
@@ -10,7 +10,11 @@ broken mobile task order, unimplemented interactions, conflicting visual systems
 motion that ignores reduced-motion preferences. The Quality Router now loads both the
 writing and design anti-slop skills, requires desktop and mobile evidence for visual
 work, and audits paid-product quality claims from catalog through delivery or publish.
-All v4.4 Code Testing Guild behavior remains unchanged.
+SO-022 now executes that quality gate before it can record publication actions. The gate
+rejects missing skills, fabricated proof, unsupported claims, nonzero blockers, incomplete
+responsive, accessibility, or interaction evidence, and reviews that are stale, nonisolated,
+or bound to another artifact. Release resealing now excludes Git metadata, and clean Git
+exports are verified by regression test. All v4.4 Code Testing Guild behavior remains unchanged.
 
 ## 4.4.0 — 2026-07-24
 

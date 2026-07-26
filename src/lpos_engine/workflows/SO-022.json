@@ -21,9 +21,15 @@
       "continue_on_error": false
     },
     {
+      "step_id": "STEP-QUALITY",
+      "handler": "enforce_customer_facing_quality",
+      "depends_on": ["STEP-BUILD-DOCS"],
+      "continue_on_error": false
+    },
+    {
       "step_id": "STEP-PUBLISH",
       "handler": "record_publication_actions",
-      "depends_on": ["STEP-BUILD-DOCS"],
+      "depends_on": ["STEP-QUALITY"],
       "continue_on_error": false
     }
   ]

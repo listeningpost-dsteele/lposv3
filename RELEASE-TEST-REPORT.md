@@ -5,8 +5,8 @@ Python: 3.11
 
 ## Results
 
-- Full suite: `/tmp/lpos45-venv/bin/python -m pytest -q` — **379 passed, 1 skipped, 0 failures** after release reseal.
-- Test inventory: **380 collected tests**, including 4 new quality-skill contract tests.
+- Full suite after committing the exact candidate: `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src /tmp/lpos45-venv/bin/python -m pytest -p no:cacheprovider -q`, **383 passed, 1 optional skip, 0 failures**.
+- Test inventory: **384 collected tests**, including executable customer-facing quality-gate failures, publication blocking, wheel presence, and clean-export portability.
 - Quality skill contract:
   - `anti-slop-editor` and `design-anti-slop-reviewer` are packaged.
   - Quality Router loads both writing and design gates.

@@ -15,6 +15,7 @@ src/lpos_engine/models.py
 src/lpos_engine/operations.py
 src/lpos_engine/policy.py
 src/lpos_engine/publication.py
+src/lpos_engine/quality.py
 src/lpos_engine/review.py
 src/lpos_engine/routing.py
 src/lpos_engine/schema_check.py
@@ -247,6 +248,7 @@ tests/test_monitor_security.py
 tests/test_operations.py
 tests/test_publication.py
 tests/test_quality_skills.py
+tests/test_release_portability.py
 tests/test_routing_context.py
 tests/test_schema_check.py
 tests/test_schemas_cli_adapters.py

@@ -6,12 +6,11 @@ order: 1
 
 # Patch notes
 
-- [4.5.0: writing and design quality gates](/patch-notes/4-5-0.html)
-
 One page per release, newest first. Every patch that changes user-facing behavior updates the affected guide pages and adds an entry here — that is enforced by the docs gate, not hoped for (see [How this wiki works](/documentation/how-the-wiki-works.html)). The version badge in the sidebar tells you which release this build of the guide reflects.
 
 ## Releases
 
+- [4.5.0: writing and design quality gates](/patch-notes/4-5-0.html)
 - [4.4.0 — The Code Testing Guild: an executable code-verification gauntlet (additive; GUILD-040, SPECIALIST-034–045, SO-027/028/029)](/patch-notes/4-4-0.html)
 - [4.3.0 — Sentinel adversarial assurance on the hardened 4.2.1 base (additive assurance; SPECIALIST-033, SO-026)](/patch-notes/4-3-0.html)
 - [4.2.1 — Security & assurance-integrity patch: full remediation of the 14-finding external audit](/patch-notes/4-2-1.html)

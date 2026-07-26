@@ -37,8 +37,7 @@ class QualitySkillContractTests(unittest.TestCase):
     def test_built_wheel_contains_design_skill_and_reference(self) -> None:
         release = json.loads((ROOT / "RELEASE.json").read_text(encoding="utf-8"))
         wheel = ROOT / "Packages" / release["wheel"]
-        if not wheel.is_file():
-            self.skipTest("versioned wheel is built during release assembly")
+        self.assertTrue(wheel.is_file(), "versioned release wheel is missing")
         with zipfile.ZipFile(wheel) as archive:
             names = set(archive.namelist())
         self.assertIn("lpos_engine/spec/skills/design-anti-slop-reviewer/SKILL.md", names)

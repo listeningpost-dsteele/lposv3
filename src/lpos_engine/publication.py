@@ -32,6 +32,7 @@ from typing import Any
 from importlib.resources import files
 
 from .errors import ValidationError
+from .quality import enforce_customer_facing_quality
 
 
 def _repo_root(context: Mapping[str, Any]) -> Path:
@@ -130,6 +131,9 @@ def build_documentation_site(context: Mapping[str, Any]) -> Mapping[str, Any]:
 
 def record_publication_actions(context: Mapping[str, Any]) -> Mapping[str, Any]:
     """Record-only: emit the exact external actions for approval-bound execution."""
+    quality = context.get("STEP-QUALITY")
+    if not isinstance(quality, Mapping) or quality.get("status") != "passed":
+        raise ValidationError("publication blocked: STEP-QUALITY did not pass")
     root = _repo_root(context)
     version = _release_version(root)
     actions = [
@@ -251,6 +255,7 @@ HANDLERS = {
     "verify_release_gates": verify_release_gates,
     "enforce_docs_gate": enforce_docs_gate,
     "build_documentation_site": build_documentation_site,
+    "enforce_customer_facing_quality": enforce_customer_facing_quality,
     "record_publication_actions": record_publication_actions,
     "enumerate_documented_surfaces": enumerate_documented_surfaces,
     "diff_documentation_coverage": diff_documentation_coverage,

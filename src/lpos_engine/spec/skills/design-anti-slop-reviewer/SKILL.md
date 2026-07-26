@@ -8,7 +8,7 @@ version: 1.1.0
 
 ## Purpose
 
-Apply the same rigor used by the LPOS Editor anti-slop pass to visual design. The goal is not to guess whether AI made an artifact. The goal is to find specific, observable design failures, remove generic model defaults, and preserve a coherent human-directed visual system.
+Apply the same rigor used by the LPOS Editor anti-slop pass to visual design. Do not guess who made the artifact. Identify observable design failures, explain their user impact, and correct them without erasing approved brand decisions.
 
 This skill does not replace accessibility testing, product requirements, brand standards, browser testing, factual review, or independent release review.
 

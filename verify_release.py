@@ -11,7 +11,7 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-IGNORED_TOP_LEVEL = {".venv", "state", ".pytest_cache", "dist", "build"}
+IGNORED_TOP_LEVEL = {".git", ".venv", "state", ".pytest_cache", "dist", "build"}
 IGNORED_NAMES = {"RELEASE-MANIFEST.json", "SHA256SUMS", "RELEASE-SIGNATURE.bin"}
 
 

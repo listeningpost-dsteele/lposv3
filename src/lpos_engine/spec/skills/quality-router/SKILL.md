@@ -43,7 +43,7 @@ For any task producing customer-facing or Principal-facing prose, the routed tea
 
 ## Customer-facing visual design
 
-For any website, product interface, image, deck, dashboard, or other customer-facing visual artifact, load `skills/design-anti-slop-reviewer/SKILL.md` before drafting or editing. Route the work through brand, accessibility, responsive behavior, interaction truth, and independent design review. A source file, attractive screenshot, or design-system declaration is not sufficient proof.
+For any website, product interface, image, deck, dashboard, or other customer-facing visual artifact, load `skills/design-anti-slop-reviewer/SKILL.md` before drafting or editing. Verify the approved brand tokens, keyboard and screen-reader behavior, desktop and mobile task order, and every claimed interaction. Then send the exact artifact and evidence to an independent reviewer. A source file, attractive screenshot, or design-system declaration is not sufficient proof.
 
 Require zero deterministic blockers, named-pattern inspection, and matching desktop and mobile evidence. Treat fabricated ratings, reviews, metrics, badges, guarantees, testimonials, and realistic fallback identities as truth failures, not merely design issues. Owner approval and publish readiness are separate states: an owner may approve a direction while publish remains blocked on visual evidence and independent review.
 

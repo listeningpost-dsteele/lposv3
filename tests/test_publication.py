@@ -11,6 +11,7 @@ from lpos_engine.errors import ValidationError
 from lpos_engine.publication import (
     HANDLERS,
     diff_documentation_coverage,
+    enforce_customer_facing_quality,
     enforce_docs_gate,
     enumerate_documented_surfaces,
     record_publication_actions,
@@ -23,6 +24,32 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class ReleaseGateTests(unittest.TestCase):
+    @staticmethod
+    def quality_evidence(**overrides: object) -> dict[str, object]:
+        artifact_hash = "a" * 64
+        evidence: dict[str, object] = {
+            "artifact_id": "LPOS-v4.5.0",
+            "artifact_sha256": artifact_hash,
+            "artifact_kind": "customer-facing-release",
+            "required_skills_loaded": ["anti-slop-editor", "design-anti-slop-reviewer"],
+            "deterministic_blockers": [],
+            "writing_lint_passed": True,
+            "fabricated_proof": False,
+            "unsupported_claims": [],
+            "verified_viewports": ["desktop", "mobile"],
+            "accessibility_passed": True,
+            "interactions_verified": True,
+            "named_pattern_review_passed": True,
+            "independent_review": {
+                "verdict": "PASS",
+                "artifact_sha256": artifact_hash,
+                "isolated": True,
+                "fresh_context": True,
+            },
+        }
+        evidence.update(overrides)
+        return evidence
+
     def test_release_gates_pass_on_this_checkout_without_rerunning_verifier(self) -> None:
         result = verify_release_gates({"repo_root": str(REPO_ROOT), "skip_verifier": True,
                                        "verifier_passed": True})
@@ -46,11 +73,43 @@ class ReleaseGateTests(unittest.TestCase):
             self.assertEqual(waived["docs_gate"], "waived")
 
     def test_publication_actions_are_record_only_and_approval_bound(self) -> None:
-        result = record_publication_actions({"repo_root": str(REPO_ROOT)})
+        quality = enforce_customer_facing_quality({"quality_evidence": self.quality_evidence()})
+        result = record_publication_actions({"repo_root": str(REPO_ROOT), "STEP-QUALITY": quality})
         self.assertEqual(result["mode"], "record-only")
         self.assertTrue(result["approval_required"])
         kinds = {action["kind"] for action in result["actions"]}
         self.assertEqual(kinds, {"vcs_push", "drive_update", "site_deploy"})
+
+    def test_publication_is_blocked_without_quality_evidence(self) -> None:
+        with self.assertRaises(ValidationError):
+            record_publication_actions({"repo_root": str(REPO_ROOT)})
+
+    def test_quality_gate_rejects_missing_proof_and_blockers(self) -> None:
+        evidence = self.quality_evidence(
+            deterministic_blockers=["fake-testimonial"],
+            verified_viewports=["desktop"],
+            fabricated_proof=True,
+        )
+        with self.assertRaises(ValidationError) as caught:
+            enforce_customer_facing_quality({"quality_evidence": evidence})
+        message = str(caught.exception)
+        self.assertIn("deterministic blockers remain", message)
+        self.assertIn("desktop and mobile evidence are required", message)
+        self.assertIn("fabricated_proof must be false", message)
+
+    def test_quality_gate_rejects_stale_or_nonisolated_review(self) -> None:
+        evidence = self.quality_evidence(
+            independent_review={
+                "verdict": "PASS",
+                "artifact_sha256": "b" * 64,
+                "isolated": False,
+                "fresh_context": False,
+            }
+        )
+        with self.assertRaises(ValidationError) as caught:
+            enforce_customer_facing_quality({"quality_evidence": evidence})
+        self.assertIn("bound to a different artifact", str(caught.exception))
+        self.assertIn("not fresh and isolated", str(caught.exception))
 
 
 class DocumentationDriftTests(unittest.TestCase):

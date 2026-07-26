@@ -15,15 +15,15 @@ specification the v4 runtime enforces.
 - Typed TaskEnvelope, InterpretationContract, ArtifactSpecification, ReviewEnvelope,
   ActionPlan, ApprovalGrant, EvidenceRecord, DecisionRecord, and CompletionReport objects.
 - Deterministic task and action state machines.
-- Capability-first routing across all 32 LPOS specialists by their canonical IDs.
+- Capability-first routing across all 45 LPOS specialists by their canonical IDs.
 - Five-gate material-artifact review with a fresh isolated review context.
 - Exact-action approval bound to the canonical SHA-256 action payload.
 - Verified Principal identities, expiry, replay protection, and one-time approval
   consumption.
 - Transactional SQLite state, append-only events, optimistic concurrency, checksummed
   migrations, idempotency, and operation leases.
-- Machine-readable workflows for SO-001 through SO-025.
-- Fifty-three fixed benchmark fixtures covering every specialist and Standing Operation.
+- Machine-readable workflows for SO-001 through SO-029.
+- Seventy fixed benchmark fixtures covering every specialist and Standing Operation.
 - A provider-neutral JSON subprocess protocol for model hosts.
 - A record-only consequential-action adapter and sandboxed local-file adapter for safe
   installation tests.
@@ -101,9 +101,9 @@ consequential-action adapter records an approved action without performing it.
 src/lpos_engine/
   spec/          Canonical v4 operating specification
   schemas/       Executable JSON Schemas
-  workflows/     SO-001 through SO-025 workflow definitions
-  evals/         53 fixed benchmark fixtures and evaluator
-  config/        32-specialist capability registry
+  workflows/     SO-001 through SO-029 workflow definitions
+  evals/         70 fixed benchmark fixtures and evaluator
+  config/        45-specialist capability registry
   sql/           Checksummed database migrations
   adapters/      Model and action adapter boundaries
   *.py           Deterministic control-plane implementation
