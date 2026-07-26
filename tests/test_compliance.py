@@ -382,7 +382,9 @@ class RemediationTests(unittest.TestCase):
             remediation = plan["remediations"][0]
             staged_dir = Path(remediation["staged_dir"])
             self.assertTrue(
-                staged_dir.is_relative_to(hermes / "compliance" / "staging" / "RUN-TEST")
+                staged_dir.is_relative_to(
+                    (hermes / "compliance" / "staging" / "RUN-TEST").resolve()
+                )
             )
             self.assertTrue((staged_dir / "REMEDIATION.md").is_file())
             self.assertTrue((staged_dir / "validation.json").is_file())

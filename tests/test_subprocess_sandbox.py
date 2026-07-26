@@ -92,6 +92,9 @@ print(json.dumps({"env": dict(os.environ), "cwd": os.getcwd()}))
             # coercion, shell bookkeeping); they carry no parent secrets.
             "LC_CTYPE",
             "PWD",
+            # CoreFoundation injects this into child processes on macOS even
+            # when it is absent from the explicit subprocess environment.
+            "__CF_USER_TEXT_ENCODING",
         }
         # Assert nothing outside the allowlist that exists in the parent
         # leaked through.

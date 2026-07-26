@@ -1,5 +1,17 @@
 # LPOS Changelog
 
+## 4.5.0 — 2026-07-26
+
+Quality-system release: adds the packaged `design-anti-slop-reviewer` skill and makes
+visual anti-slop review a required LPOS path for customer-facing websites, product
+interfaces, images, decks, and dashboards. CS-002 now blocks horizontal overflow,
+clipping, inaccessible controls, placeholder or fabricated proof, unsupported metrics,
+broken mobile task order, unimplemented interactions, conflicting visual systems, and
+motion that ignores reduced-motion preferences. The Quality Router now loads both the
+writing and design anti-slop skills, requires desktop and mobile evidence for visual
+work, and audits paid-product quality claims from catalog through delivery or publish.
+All v4.4 Code Testing Guild behavior remains unchanged.
+
 ## 4.4.0 — 2026-07-24
 
 Feature release: the Code Testing Guild (GUILD-040) as an additive, executable

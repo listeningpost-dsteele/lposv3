@@ -83,17 +83,30 @@ owner: Listening Post
 
 # Web and Product Design Standard
 
-
-Design for the audience, task, trust requirement, and desired action.
+Design for the audience, task, trust requirement, and desired action. Load
+`skills/design-anti-slop-reviewer/SKILL.md` for every customer-facing visual artifact.
 
 Before changing an existing design, capture desktop and mobile baselines and preserve
-approved strengths.
+approved strengths. Define the primary user, decision, action, and responsive task order
+for each screen before styling it.
 
 Reject unrequested chat layouts, dashboards, command centers, neon AI styling, excessive
-cards, fake activity feeds, generic SaaS heroes, internal workflow language, and visual
-regressions.
+cards, fake activity feeds, generic SaaS heroes, arbitrary bento layouts, pill
+infestation, gradient fog, decorative proof, internal workflow language, and visual
+regressions. Do not infer that AI made an artifact. Name observable patterns and correct
+the smallest coherent set of failures.
+
+The following are release blockers: horizontal overflow; clipped, overlapping, hidden,
+or unreachable required content; insufficient contrast; missing accessible names or
+keyboard focus; missing meaningful alternative text; placeholder or fabricated proof;
+unsupported metrics, badges, ratings, reviews, testimonials, or guarantees; claimed
+interactions that do not work; conflicting palettes or type systems; broken mobile task
+order; and motion that ignores reduced-motion preferences.
 
 Review the rendered product and primary user journey. Source inspection is not enough.
+Require desktop and mobile viewport evidence, accessibility and interaction checks,
+zero deterministic blockers, named-pattern inspection, and independent review tied to
+the exact artifact before publish.
 
 
 ## Required review

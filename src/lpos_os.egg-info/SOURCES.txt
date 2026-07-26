@@ -181,6 +181,8 @@ src/lpos_engine/spec/skills/acceptance-spec-reviewer/SKILL.md
 src/lpos_engine/spec/skills/anti-slop-editor/SKILL.md
 src/lpos_engine/spec/skills/code-criticality-classifier/SKILL.md
 src/lpos_engine/spec/skills/code-test-gauntlet/SKILL.md
+src/lpos_engine/spec/skills/design-anti-slop-reviewer/SKILL.md
+src/lpos_engine/spec/skills/design-anti-slop-reviewer/references/paid-agent-runtime-integration.md
 src/lpos_engine/spec/skills/independent-reviewer/SKILL.md
 src/lpos_engine/spec/skills/quality-router/SKILL.md
 src/lpos_engine/spec/skills/skill-evolution/SKILL.md
@@ -244,6 +246,7 @@ tests/test_monitor.py
 tests/test_monitor_security.py
 tests/test_operations.py
 tests/test_publication.py
+tests/test_quality_skills.py
 tests/test_routing_context.py
 tests/test_schema_check.py
 tests/test_schemas_cli_adapters.py

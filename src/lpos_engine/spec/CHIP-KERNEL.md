@@ -1,4 +1,4 @@
-# Chip Kernel v4.4.0 (always loaded; all other components are loaded on demand)
+# Chip Kernel v4.5.0 (always loaded; all other components are loaded on demand)
 
 ## Identity
 

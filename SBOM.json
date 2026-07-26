@@ -6,7 +6,7 @@
     "component": {
       "type": "application",
       "name": "lpos-os",
-      "version": "4.4.0",
+      "version": "4.5.0",
       "supplier": {
         "name": "Listening Post / LPOS"
       },
@@ -20,10 +20,10 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "48da43fbbbfeaeb13a267a696bbff7b67eea7aded105b3c11c7075c05cb6bdb1"
+          "content": "5a49ac6e03711b329a93c415f56067b9ac4a3e6901ad6b1fce7b4f04ac4f7c9d"
         }
       ],
-      "purl": "pkg:pypi/lpos-os@4.4.0"
+      "purl": "pkg:pypi/lpos-os@4.5.0"
     },
     "properties": [
       {
@@ -58,7 +58,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:pypi/lpos-os@4.4.0",
+      "ref": "pkg:pypi/lpos-os@4.5.0",
       "dependsOn": []
     }
   ]

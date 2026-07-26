@@ -6,6 +6,8 @@ order: 1
 
 # Patch notes
 
+- [4.5.0: writing and design quality gates](/patch-notes/4-5-0.html)
+
 One page per release, newest first. Every patch that changes user-facing behavior updates the affected guide pages and adds an entry here — that is enforced by the docs gate, not hoped for (see [How this wiki works](/documentation/how-the-wiki-works.html)). The version badge in the sidebar tells you which release this build of the guide reflects.
 
 ## Releases

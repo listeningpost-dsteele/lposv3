@@ -1,7 +1,7 @@
 ---
 name: quality-router
 description: Route every material task through the correct craft standards and reviewer.
-version: 4.0.0
+version: 4.1.0
 author: Listening Post
 license: MIT
 ---
@@ -39,4 +39,12 @@ For every material task:
 Do not allow a specialist charter to substitute for a craft standard.
 ## Customer-facing and Principal-facing prose
 
-For any task producing customer-facing or Principal-facing prose, the routed team always includes Editor (SPECIALIST-021) for the mandatory CS-001 de-AI pass. The interpretation contract must name the voice spec in use, usually the `voice:<brand>` ArtifactSpecification. If no voice spec exists, seed one before drafting. The run record must state that the Editor pass was completed.
+For any task producing customer-facing or Principal-facing prose, the routed team always includes Editor (SPECIALIST-021) for the mandatory CS-001 de-AI pass. Load `skills/anti-slop-editor/SKILL.md`. The interpretation contract must name the voice spec in use, usually the `voice:<brand>` ArtifactSpecification. If no voice spec exists, seed one before drafting. Run deterministic lint when the draft is available as text or a file, manually check patterns the linter cannot prove, preserve the writer's recognizable voice, and record the Editor pass plus lint result in the run evidence. Zero em dashes and independent review remain mandatory LPOS overrides.
+
+## Customer-facing visual design
+
+For any website, product interface, image, deck, dashboard, or other customer-facing visual artifact, load `skills/design-anti-slop-reviewer/SKILL.md` before drafting or editing. Route the work through brand, accessibility, responsive behavior, interaction truth, and independent design review. A source file, attractive screenshot, or design-system declaration is not sufficient proof.
+
+Require zero deterministic blockers, named-pattern inspection, and matching desktop and mobile evidence. Treat fabricated ratings, reviews, metrics, badges, guarantees, testimonials, and realistic fallback identities as truth failures, not merely design issues. Owner approval and publish readiness are separate states: an owner may approve a direction while publish remains blocked on visual evidence and independent review.
+
+When a paid product claims to inherit LPOS quality skills, audit the execution path from catalog declaration through immutable job version, signed envelope, worker package, validator, reviewer record, and delivery gate. Documentation or a public skills page does not prove runtime inheritance. Missing required skills must fail validation.
