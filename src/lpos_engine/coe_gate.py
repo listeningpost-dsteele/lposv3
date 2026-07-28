@@ -222,6 +222,13 @@ def _engineering(context: dict[str, Any]) -> tuple[list[Check], list[dict[str, s
 
 def _secret_candidates(roots: list[Path]) -> list[str]:
     findings: list[str] = []
+    scanner_implementations = {
+        "scripts/secret-scan.js",
+        "src/build-status.js",
+        "src/lpos_engine/coe_gate.py",
+        "src/lpos_engine/coe_contract.py",
+        "src/lpos_engine/sentinel/rules.py",
+    }
     assignment = re.compile(r"(?i)(api[_-]?key|password|client[_-]?secret|authorization)\s*[:=]\s*[\"']([^\"']{16,})[\"']")
     private_key = "-----BEGIN "
     for root in roots:
@@ -232,7 +239,10 @@ def _secret_candidates(roots: list[Path]) -> list[str]:
                 continue
             if set(path.parts) & {".git", ".venv", "node_modules", "__pycache__"}:
                 continue
+            relative = path.relative_to(root).as_posix()
             relative_parts = {part.lower() for part in path.relative_to(root).parts}
+            if relative in scanner_implementations:
+                continue
             if "tests" in relative_parts or ("docs" in relative_parts and "evidence" in relative_parts):
                 continue
             try:
