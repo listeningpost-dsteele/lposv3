@@ -22,6 +22,7 @@ from lpos_engine.coe_contract import (
     validate_gate_evidence,
     verify_evidence_chain,
 )
+from lpos_engine.coe_gate import _secret_candidates
 from lpos_engine.coe_runtime import GateRunner, ReleaseController, central_date, daily_idempotency_key, perform_backup_restore, wake_decision
 from lpos_engine.coe_store import COEStore
 
@@ -207,3 +208,11 @@ def test_wake_policy_defaults_to_no_model_call() -> None:
 def test_release_scope_rejects_invalid_artifact() -> None:
     with pytest.raises(ValueError, match="artifact"):
         release_scope({"product": "x", "release_version": "4.5.0", "release_channel": "stable", "git_commit": "a" * 40}, build_id="x", artifact_sha256="bad")
+
+
+def test_secret_scan_rejects_credentials_without_flagging_environment_lookups(tmp_path: Path) -> None:
+    candidate = tmp_path / "candidate.js"
+    candidate.write_text('const password = "RealCredentialValue12345";\n', encoding="utf-8")
+    assert _secret_candidates([tmp_path]) == [str(candidate)]
+    candidate.write_text('const password = process.env.PASSWORD;\n', encoding="utf-8")
+    assert _secret_candidates([tmp_path]) == []

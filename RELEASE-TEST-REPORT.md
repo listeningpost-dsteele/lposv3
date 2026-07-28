@@ -5,8 +5,8 @@ Python: 3.11
 
 ## Results
 
-- Full suite on the committed COE candidate: `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -p no:cacheprovider -q`, **422 passed, 2 optional skips, 0 failures**.
-- Test inventory: **424 collected tests**, including fail-closed gate evidence, append-only database triggers, complete release-manifest tampering cases, authentication, dashboard binding, scheduler idempotency, restore verification, and prior LPOS behavior.
+- Full suite on the committed COE candidate: `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -p no:cacheprovider -q`, **423 passed, 2 optional skips, 0 failures**.
+- Test inventory: **425 collected tests**, including fail-closed gate evidence, append-only database triggers, complete release-manifest tampering cases, authentication, dashboard binding, scheduler idempotency, restore verification, and prior LPOS behavior.
 - Nine command gates emit schema-valid records and a deterministic hash chain.
 - Release-controller tests block missing, stale, failed, malformed, mismatched, and incomplete evidence.
 - Immutable release tests cover changed assets, missing and extra files, mutable paths, traversal, duplicates, case hazards, symlinks, mode drift, corrupt JSON, identity drift, commit drift, and source-tree misuse.

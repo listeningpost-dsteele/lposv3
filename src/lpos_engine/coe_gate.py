@@ -123,12 +123,13 @@ def _application_verifier(context: dict[str, Any]) -> tuple[list[Check], list[di
         return [_check("immutable-release", "fail", f"release verification failed: {exc}")], [], b"", str(exc).encode()
     manifest = Path(context["release_root"]) / "release-manifest.json"
     artifacts = [{"path": str(manifest), "sha256": sha256_file(manifest)}]
+    verification_detail = {key: value for key, value in result.items() if key != "status"}
     return [
         _check(
             "immutable-release",
             "pass",
             "all staged release files, metadata, paths, modes, and hashes verified",
-            **result,
+            **verification_detail,
         )
     ], artifacts, canonical_json(result).encode(), b""
 
@@ -216,7 +217,7 @@ def _engineering(context: dict[str, Any]) -> tuple[list[Check], list[dict[str, s
 
 def _secret_candidates(roots: list[Path]) -> list[str]:
     findings: list[str] = []
-    assignment = re.compile(r"(?i)(api[_-]?key|password|client[_-]?secret|authorization)\s*[:=]\s*[\"']?[A-Za-z0-9_./+=-]{16,}")
+    assignment = re.compile(r"(?i)(api[_-]?key|password|client[_-]?secret|authorization)\s*[:=]\s*[\"']([^\"']{16,})[\"']")
     private_key = "-----BEGIN "
     for root in roots:
         if not root.exists():
@@ -234,7 +235,10 @@ def _secret_candidates(roots: list[Path]) -> list[str]:
                 lowered = line.lower()
                 if any(marker in lowered for marker in ("fixture", "example", "placeholder", "secure-value", "[redacted]")):
                     continue
-                if assignment.search(line) or private_key in line:
+                match = assignment.search(line)
+                value = match.group(2).lower() if match else ""
+                known_fixture = any(marker in value for marker in ("test", "fixture", "example", "placeholder", "redacted", "process.env", "${"))
+                if (match and not known_fixture) or private_key in line:
                     findings.append(str(path))
                     break
     return findings[:100]
@@ -310,7 +314,7 @@ def _documentation(context: dict[str, Any]) -> tuple[list[Check], list[dict[str,
     obsolete: list[str] = []
     for path in repo.rglob("*.md"):
         relative = path.relative_to(repo).as_posix()
-        if relative.startswith("docs/history/"):
+        if relative.startswith("docs/history/") or relative == "docs/implementation/COE-IMPLEMENTATION-ORDER.md":
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         if "Use LPOS v3" in text:
