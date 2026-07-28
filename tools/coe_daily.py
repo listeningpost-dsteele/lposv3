@@ -5,13 +5,14 @@ from __future__ import annotations
 
 import json
 import os
+import sqlite3
 import subprocess
 import sys
 import urllib.request
 from pathlib import Path
 from typing import Any
 
-from lpos_engine.coe_runtime import AuditOrchestrator, render_daily_report
+from lpos_engine.coe_runtime import AuditOrchestrator, central_date, dashboard_summary, render_daily_report
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -59,27 +60,40 @@ def main() -> int:
     }
     configuration["COE_SCHEDULE_REGISTERED"] = _truth("COE_SCHEDULE_REGISTERED")
     configuration["COE_DASHBOARD_AUTHENTICATED"] = True
-    result = AuditOrchestrator(app_repo, state_root).run(
-        release_root=release_root,
-        trigger="scheduled-daily",
-        build_id=os.environ.get("COE_BUILD_ID", f"scheduled-{app_head[:12]}"),
-        baseline_commit=app_baseline,
-        deterministic_commands=[
-            {"name": "lpos-test-suite", "command": [python, "-m", "pytest", "-p", "no:cacheprovider", "-q", str(lpos_repo / "tests")], "cwd": str(lpos_repo), "env": {"PYTHONDONTWRITEBYTECODE": "1"}},
-            {"name": "chip-state-migration", "command": ["npm", "run", "migrate"], "cwd": str(app_repo), "env": test_environment},
-            {"name": "chip-test-suite", "command": ["npm", "run", "test"], "cwd": str(app_repo), "env": test_environment},
-        ],
-        source_repositories=[
-            {"path": str(app_repo), "baseline_commit": app_baseline, "target_commit": app_head},
-            {"path": str(lpos_repo), "baseline_commit": lpos_baseline, "target_commit": lpos_head},
-        ],
-        documentation_repo=lpos_repo,
-        production=True,
-        configuration=configuration,
-        security_command=["node", "tests/coe-routes.test.js"],
-        dependency_audit_command=["npm", "audit", "--omit=dev", "--audit-level=high", "--json"],
-    )
-    statuses = {item["gate_id"]: item["status"] for item in result["gates"]}
+    orchestrator = AuditOrchestrator(app_repo, state_root)
+    try:
+        result = orchestrator.run(
+            release_root=release_root,
+            trigger="scheduled-daily",
+            build_id=os.environ.get("COE_BUILD_ID", f"scheduled-{app_head[:12]}"),
+            baseline_commit=app_baseline,
+            deterministic_commands=[
+                {"name": "lpos-test-suite", "command": [python, "-m", "pytest", "-p", "no:cacheprovider", "-q", str(lpos_repo / "tests")], "cwd": str(lpos_repo), "env": {"PYTHONDONTWRITEBYTECODE": "1"}},
+                {"name": "chip-state-migration", "command": ["npm", "run", "migrate"], "cwd": str(app_repo), "env": test_environment},
+                {"name": "chip-test-suite", "command": ["npm", "run", "test"], "cwd": str(app_repo), "env": test_environment},
+            ],
+            source_repositories=[
+                {"path": str(app_repo), "baseline_commit": app_baseline, "target_commit": app_head},
+                {"path": str(lpos_repo), "baseline_commit": lpos_baseline, "target_commit": lpos_head},
+            ],
+            documentation_repo=lpos_repo,
+            production=True,
+            configuration=configuration,
+            security_command=["node", "tests/coe-routes.test.js"],
+            dependency_audit_command=["npm", "audit", "--omit=dev", "--audit-level=high", "--json"],
+        )
+    except sqlite3.IntegrityError:
+        existing = orchestrator.store.latest_audit()
+        if not existing or existing["trigger_name"] != "scheduled-daily" or existing["local_date"] != central_date():
+            raise
+        audit_id = existing["audit_id"]
+        result = {
+            "audit": existing,
+            "decision": orchestrator.store.decision(audit_id),
+            "evidence": orchestrator.store.evidence(audit_id),
+            "summary": dashboard_summary(orchestrator.store, audit_id, public_base_url=configuration["PUBLIC_BASE_URL"]),
+        }
+    statuses = {item["gate_id"]: item["status"] for item in result["evidence"]}
     if statuses.get("engineering-audit") == "pass":
         baseline_file.parent.mkdir(parents=True, exist_ok=True)
         temporary = baseline_file.with_suffix(".tmp")
@@ -96,7 +110,8 @@ def main() -> int:
             token,
             {"report": report},
         )
-        delivery_status = str(delivery.get("status", "unknown"))
+        delivery_payload = delivery.get("delivery")
+        delivery_status = str(delivery_payload.get("status", "unknown") if isinstance(delivery_payload, dict) else delivery.get("status", "unknown"))
     output = {
         "audit_id": result["audit"]["audit_id"],
         "status": result["audit"]["status"],
