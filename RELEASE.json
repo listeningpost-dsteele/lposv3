@@ -11,7 +11,7 @@
   "specialists": 45,
   "standing_operations": 29,
   "state_backend": "SQLite",
-  "tests": 425,
+  "tests": 426,
   "version": "4.5.0",
   "wheel": "lpos_os-4.5.0-py3-none-any.whl"
 }

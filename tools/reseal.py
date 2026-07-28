@@ -12,11 +12,13 @@ from __future__ import annotations
 import datetime
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 IGNORED_TOP_LEVEL = {".git", ".venv", "state", ".pytest_cache", "dist", "build"}
 IGNORED_NAMES = {"RELEASE-MANIFEST.json", "SHA256SUMS", "RELEASE-SIGNATURE.bin"}
+ALLOWED_DIRTY = {"RELEASE.json", "RELEASE-TEST-REPORT.md", "RELEASE-MANIFEST.json", "SHA256SUMS"}
 
 
 def sha256(path: Path) -> str:
@@ -28,6 +30,23 @@ def sha256(path: Path) -> str:
 
 
 def main() -> int:
+    status = subprocess.check_output(
+        ["git", "status", "--porcelain=v1", "--untracked-files=no"],
+        cwd=ROOT,
+        text=True,
+    ).splitlines()
+    unapproved = []
+    for line in status:
+        candidate = line[3:]
+        if " -> " in candidate:
+            candidate = candidate.split(" -> ", 1)[1]
+        if candidate not in ALLOWED_DIRTY:
+            unapproved.append(candidate)
+    if unapproved:
+        raise SystemExit(
+            "refusing to reseal with uncommitted release inputs: "
+            + ", ".join(sorted(unapproved))
+        )
     release = json.loads((ROOT / "RELEASE.json").read_text(encoding="utf-8"))
     files: dict[str, str] = {}
     for path in sorted(ROOT.rglob("*")):
