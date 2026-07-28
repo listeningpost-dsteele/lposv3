@@ -174,8 +174,8 @@ def main() -> int:
     package_schema_dir = ROOT / "src" / "lpos_engine" / "schemas"
     root_schema_names = sorted(path.name for path in root_schema_dir.glob("*.schema.json"))
     package_schema_names = sorted(path.name for path in package_schema_dir.glob("*.schema.json"))
-    if root_schema_names != package_schema_names or len(root_schema_names) != 20:
-        fail("root and packaged schema sets are not the same 20 schemas", failures)
+    if root_schema_names != package_schema_names or len(root_schema_names) != 22:
+        fail("root and packaged schema sets are not the same 22 schemas", failures)
     else:
         for name in root_schema_names:
             root_path = root_schema_dir / name
@@ -281,7 +281,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 45 specialists, 29 Standing Operations, 70 benchmarks, 20 schemas."
+        f"{len(expected_files)} immutable files, 45 specialists, 29 Standing Operations, 70 benchmarks, 22 schemas."
     )
     return 0
 

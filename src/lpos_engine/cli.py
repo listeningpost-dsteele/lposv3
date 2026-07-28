@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
 import sys
 from importlib.resources import files as resource_files
 from pathlib import Path
@@ -48,6 +50,31 @@ def _validate_schemas(schema_dir: Path | None = None) -> dict:
     from . import schema_check
 
     return schema_check.validate_for_cli(schema_dir)
+
+
+def _release_integrity(release_root: Path | None = None) -> dict:
+    """Run the release verifier when doctor is executing inside a release tree."""
+    candidates = [release_root] if release_root is not None else [Path(sys.prefix).resolve().parent, Path.cwd()]
+    root = next((Path(item).resolve() for item in candidates if item and (Path(item).resolve() / "verify_release.py").is_file()), None)
+    if root is None:
+        if release_root is not None:
+            return {"status": "failed", "root": str(Path(release_root).resolve()), "detail": "verify_release.py is missing"}
+        return {"status": "not_applicable", "detail": "no release tree detected"}
+    completed = subprocess.run(
+        [sys.executable, str(root / "verify_release.py")],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+    )
+    detail = "\n".join(part.strip() for part in (completed.stdout, completed.stderr) if part.strip())
+    return {
+        "status": "passed" if completed.returncode == 0 else "failed",
+        "root": str(root),
+        "returncode": completed.returncode,
+        "detail": detail[-8000:],
+    }
 
 
 def cmd_version(args: argparse.Namespace) -> int:
@@ -342,6 +369,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     registry = CapabilityRegistry.default()
     workflows = load_all_workflows()
     schema_result = _validate_schemas(args.schema_dir)
+    release_integrity = _release_integrity(args.release_root)
     result = {
         "name": "LPOS",
         "version": __version__,
@@ -354,6 +382,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         "standing_operations": len(workflows),
         "benchmarks": len(benchmark_catalog()),
         "schemas": schema_result,
+        "release_integrity": release_integrity,
         "python": sys.version.split()[0],
     }
     if args.db is not None:
@@ -373,7 +402,8 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         or len(registry.profiles) != 45
         or len(workflows) != 29
         or len(benchmark_catalog()) != 70
-        or schema_result["schemas"] != 20
+        or schema_result["schemas"] != 22
+        or release_integrity["status"] == "failed"
         or not perms_ok
     ):
         result["status"] = "unhealthy"
@@ -435,6 +465,8 @@ def build_parser() -> argparse.ArgumentParser:
     doctor = sub.add_parser("doctor", help="verify the integrated specification, runtime assets, and database")
     doctor.add_argument("--db", type=Path)
     doctor.add_argument("--schema-dir", type=Path, default=None)
+    doctor.add_argument("--release-root", type=Path, default=None,
+                        help="verify this immutable release tree; auto-detected from the active environment or cwd")
     doctor.add_argument("--hermes-root", type=Path, default=None,
                         help="also audit state-file permissions under this Hermes root")
     doctor.set_defaults(func=cmd_doctor)
@@ -477,6 +509,19 @@ def build_parser() -> argparse.ArgumentParser:
     compliance.add_argument("--root", type=Path, default=None, help="Hermes root (default ~/.hermes or LPOS_HERMES_ROOT)")
     compliance.add_argument("--repo", type=Path, default=None, help="release checkout (default . or LPOS_REPO_ROOT)")
     compliance.set_defaults(func=cmd_compliance)
+
+    coe = sub.add_parser("coe", help="run evidence-backed Continuous Operational Excellence controls")
+    coe.add_argument("action", nargs="?", default="audit", choices=["audit", "status", "report", "serve", "release-gate", "stage", "verify"])
+    coe.add_argument("--repo", type=Path, default=Path.cwd(), help="LPOS release checkout")
+    coe.add_argument("--release-root", type=Path, default=None, help="complete staged release root")
+    coe.add_argument("--state-root", type=Path, default=Path.home() / ".hermes" / "state" / "chip-service")
+    coe.add_argument("--trigger", choices=["scheduled-daily", "manual", "pre-release", "post-deploy", "backfill"], default="manual")
+    coe.add_argument("--build-id", default=None)
+    coe.add_argument("--production", action="store_true")
+    coe.add_argument("--operator-token", default=None, help="private dashboard bearer token; prefer COE_OPERATOR_TOKEN")
+    coe.add_argument("--host", default="127.0.0.1")
+    coe.add_argument("--port", type=int, default=8765)
+    coe.set_defaults(func=cmd_coe)
     return parser
 
 
@@ -513,6 +558,62 @@ def cmd_compliance(args: argparse.Namespace) -> int:
     if args.repo is not None:
         argv.append(f"--repo={args.repo}")
     return int(compliance_main(argv))
+
+
+def cmd_coe(args: argparse.Namespace) -> int:
+    from .coe import load_latest, render_report, run_audit, serve
+    from .coe_contract import sortable_id
+    from .coe_manifest import stage_release, verify_release
+    from .coe_runtime import dashboard_summary
+    from .coe_store import COEStore
+
+    if args.action in {"audit", "release-gate"}:
+        configuration = {
+            name: os.environ.get(name)
+            for name in (
+                "COE_ENABLED", "COE_SCHEDULE_ENABLED", "COE_DASHBOARD_ENABLED", "COE_EMAIL_ENABLED",
+                "COE_TIMEZONE", "COE_CRON", "COE_STATE_DIR", "COE_REPORT_RECIPIENT",
+                "COE_EMAIL_TRANSPORT", "PUBLIC_BASE_URL", "COE_DASHBOARD_PATH",
+            )
+        }
+        result = run_audit(
+            args.repo,
+            release_root=args.release_root,
+            state_root=args.state_root,
+            trigger="pre-release" if args.action == "release-gate" else args.trigger,
+            build_id=args.build_id,
+            production=args.production,
+            configuration=configuration,
+        )
+        _print(result)
+        decision = result.get("decision", result)
+        return 0 if decision.get("status") == "pass" else 1
+    if args.action == "stage":
+        if args.release_root is None:
+            raise ValueError("--release-root is required for staging")
+        manifest = stage_release(args.repo, args.release_root, build_id=args.build_id or sortable_id("build"))
+        _print(manifest)
+        return 0
+    if args.action == "verify":
+        if args.release_root is None:
+            raise ValueError("--release-root is required for verification")
+        _print(verify_release(args.release_root))
+        return 0
+    if args.action == "status":
+        result = load_latest(args.state_root)
+        if not result:
+            raise FileNotFoundError("COE audit has not run")
+        _print(result)
+        return 0
+    if args.action == "report":
+        store = COEStore(args.state_root)
+        latest = store.latest_audit()
+        if not latest:
+            raise FileNotFoundError("COE audit has not run")
+        print(render_report(dashboard_summary(store, latest["audit_id"]), state_root=args.state_root), end="")
+        return 0
+    serve(args.state_root, host=args.host, port=args.port, operator_token=args.operator_token)
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:

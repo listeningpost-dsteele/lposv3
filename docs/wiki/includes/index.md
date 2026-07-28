@@ -20,6 +20,10 @@ This section is the inventory: every module and capability in your installation,
 - **Transactional SQLite state with append-only events** — the audit backbone; see [Backups](/administration/backups.html) and [Reading agent output](/working-with/reading-agent-output.html).
 - **Adapter boundaries** — the provider-neutral subprocess protocol for model hosts, plus the record-only consequential-action adapter and sandboxed local-file adapter for safe verification. See [Connector setup](/administration/connector-setup.html).
 - **The CLI** — core administration commands plus the Sentinel security inbox and scan commands; see the [CLI reference](/administration/cli-reference.html).
+- **Continuous Operational Excellence** — deterministic daily bloat, integrity, efficiency,
+  scheduler, prompt, storage, documentation, and technical-debt controls, plus the
+  fail-closed release gate and localhost dashboard. See
+  [Continuous Operational Excellence](/administration/continuous-operational-excellence.html).
 
 ## The user-facing modules (4.1.0)
 

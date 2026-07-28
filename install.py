@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -31,6 +32,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Delete and recreate the local .venv before installation.",
     )
+    parser.add_argument(
+        "--state-root",
+        type=Path,
+        help="Mutable LPOS state directory. Defaults to LPOS_STATE_ROOT, XDG_STATE_HOME/lpos, or ~/.local/state/lpos.",
+    )
     return parser.parse_args()
 
 
@@ -38,6 +44,25 @@ def venv_python(venv_root: Path) -> Path:
     if sys.platform == "win32":
         return venv_root / "Scripts" / "python.exe"
     return venv_root / "bin" / "python"
+
+
+def default_state_root() -> Path:
+    configured = os.environ.get("LPOS_STATE_ROOT")
+    if configured:
+        return Path(configured).expanduser()
+    if sys.platform == "win32":
+        local = os.environ.get("LOCALAPPDATA")
+        return (Path(local) if local else Path.home() / "AppData" / "Local") / "LPOS" / "state"
+    xdg = os.environ.get("XDG_STATE_HOME")
+    return (Path(xdg).expanduser() if xdg else Path.home() / ".local" / "state") / "lpos"
+
+
+def resolve_state_root(configured: Path | None, release_root: Path) -> Path:
+    state_root = (configured or default_state_root()).expanduser().resolve()
+    immutable_root = release_root.resolve()
+    if state_root == immutable_root or immutable_root in state_root.parents:
+        raise ValueError("mutable state must be outside the immutable release tree")
+    return state_root
 
 
 def main() -> int:
@@ -61,7 +86,11 @@ def main() -> int:
         return 2
     wheel = root / "Packages" / wheel_name
     venv_root = root / ".venv"
-    state_root = root / "state"
+    try:
+        state_root = resolve_state_root(args.state_root, root)
+    except ValueError as exc:
+        print(f"ERROR: {exc}.", file=sys.stderr)
+        return 2
 
     run([sys.executable, str(root / "verify_release.py")], cwd=root)
 
@@ -125,7 +154,7 @@ def main() -> int:
         "distribution_type": release["distribution_type"],
         "installed_at": datetime.now(timezone.utc).isoformat(),
         "python": sys.version.split()[0],
-        "database": str(database.relative_to(root)),
+        "database": str(database),
         "verification": verification_status,
         "external_action_default": release["external_action_default"],
     }
@@ -140,9 +169,9 @@ def main() -> int:
     print(f"  Verification flow: {verification_status}")
     print(f"  External actions: {release['external_action_default']} by default")
     if sys.platform == "win32":
-        command = r".venv\Scripts\lpos.exe doctor --db state\lpos.db"
+        command = f'.venv\\Scripts\\lpos.exe doctor --db "{database}"'
     else:
-        command = ".venv/bin/lpos doctor --db state/lpos.db"
+        command = f'.venv/bin/lpos doctor --db "{database}"'
     print(f"\nRun this health check at any time:\n  {command}")
     return 0
 

@@ -28,6 +28,9 @@ specification the v4 runtime enforces.
 - A record-only consequential-action adapter and sandboxed local-file adapter for safe
   installation tests.
 - Cross-platform offline installation and a no-side-effect end-to-end verification flow.
+- Nine command-backed Continuous Operational Excellence gates, a complete immutable
+  application verifier, tamper-evident SQLite evidence, daily audits, private APIs,
+  verified report delivery, and an authenticated operational-health dashboard.
 
 ## Install
 
@@ -54,8 +57,9 @@ python install.py
 ```
 
 The installer verifies the release manifest, creates `.venv`, installs the bundled wheel
-offline, initializes `state/lpos.db`, validates the packaged schemas, runs `lpos doctor`,
-and executes the record-only local verification flow.
+offline, initializes `~/.local/state/lpos/lpos.db` by default, validates the packaged
+schemas, runs `lpos doctor`, and executes the record-only local verification flow. Use
+`--state-root` or `LPOS_STATE_ROOT` to select another approved mutable state directory.
 
 ## Use the installed CLI
 
@@ -63,11 +67,14 @@ macOS or Linux:
 
 ```bash
 .venv/bin/lpos version
-.venv/bin/lpos doctor --db state/lpos.db
+.venv/bin/lpos doctor --db ~/.local/state/lpos/lpos.db
 .venv/bin/lpos list-specialists
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks
 .venv/bin/lpos evals
+.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.5.0-stage
+.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.5.0-stage --state-root ~/.hermes/state/chip-service
+COE_OPERATOR_TOKEN=<secure-value> .venv/bin/lpos coe serve --state-root ~/.hermes/state/chip-service
 ```
 
 Windows:
@@ -106,6 +113,7 @@ src/lpos_engine/
   config/        45-specialist capability registry
   sql/           Checksummed database migrations
   adapters/      Model and action adapter boundaries
+  coe*.py        COE contracts, verifier, evidence store, gates, controller, APIs, and reports
   *.py           Deterministic control-plane implementation
 schemas/         Human-visible synchronized schema set
 config/          Human-visible synchronized capability registry
@@ -125,5 +133,6 @@ lpos validate-schemas
 lpos doctor
 ```
 
-The authoritative release version is `4.5.0` in `pyproject.toml`, the installed package,
-the specification kernel, workflow catalog, capability registry, and release manifest.
+The authoritative product release identity is `release/release.json`. `RELEASE.json`,
+`pyproject.toml`, the installed package, the specification kernel, workflow catalog,
+capability registry, and release manifests are verified mirrors.

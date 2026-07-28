@@ -14,7 +14,7 @@ All commands below assume you are in the release directory, using `.venv/bin/lpo
 
 ```bash
 lpos version
-lpos doctor --db state/lpos.db
+lpos doctor --db ~/.local/state/lpos/lpos.db
 lpos list-specialists
 lpos list-workflows
 lpos list-benchmarks
@@ -40,14 +40,14 @@ Everything LPOS creates lives inside the release directory. After the demo:
 
 | Path | What it is |
 |---|---|
-| `state/lpos.db` | The authoritative transactional database: tasks, contracts, specs, artifacts, reviews, actions, approvals, evidence, decisions, operation runs, completion reports, events |
-| `state/verification/` | The demo workspace |
-| `state/verification/lpos-state.db` | The demo's own database |
-| `state/verification/files/` | The sandboxed root for the demo's file actions |
-| `state/verification/events.jsonl` | The demo's exported audit stream, one immutable event per line |
+| `~/.local/state/lpos/lpos.db` | The authoritative transactional database: tasks, contracts, specs, artifacts, reviews, actions, approvals, evidence, decisions, operation runs, completion reports, events |
+| `~/.local/state/lpos/verification/` | The demo workspace |
+| `~/.local/state/lpos/verification/lpos-state.db` | The demo's own database |
+| `~/.local/state/lpos/verification/files/` | The sandboxed root for the demo's file actions |
+| `~/.local/state/lpos/verification/events.jsonl` | The demo's exported audit stream, one immutable event per line |
 | `.venv/` | The local Python environment holding the installed `lpos` command |
 
-The rule behind the layout: the installer creates one self-contained LPOS directory. Nothing is scattered into hidden system locations, and scheduled jobs always invoke the installed `lpos` command in this directory. From 4.1.0, the dashboard and monitor keep their own runtime metadata under `~/.hermes/dashboard/` and `~/.hermes/monitor/` — metadata only, never your project files. And when you want to find any file an agent produced, the [dashboard](/includes/dashboard.html) shows every project and deliverable with its disk path, one click to copy, one click to open.
+The rule behind the layout: the release code and local environment stay together, while all mutable state lives in the configured external state root. Scheduled jobs invoke the installed `lpos` command through the stable release pointer. From 4.1.0, the dashboard and monitor keep their runtime metadata under `~/.hermes/dashboard/` and `~/.hermes/monitor/`. When you want to find any file an agent produced, the [dashboard](/includes/dashboard.html) shows every project and deliverable with its disk path, one click to copy, one click to open.
 
 ## Minute 40-55: read the audit trail
 

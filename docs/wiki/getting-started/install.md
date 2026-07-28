@@ -47,15 +47,15 @@ The installer is deliberately transparent — it prints each command before runn
 2. **Creates a local Python environment** at `.venv` inside the release directory (or reuses an existing one).
 3. **Installs the bundled wheel offline** with `pip install --no-index`, then runs `pip check`.
 4. **Smoke-tests the CLI**: `lpos version` and `lpos validate-schemas` via the module form.
-5. **Initializes the state database** at `state/lpos.db` with `lpos init`, applying the checksummed migrations.
+5. **Initializes the state database** at `~/.local/state/lpos/lpos.db` by default with `lpos init`, applying the checksummed migrations. `--state-root` or `LPOS_STATE_ROOT` selects another approved external state directory.
 6. **Runs `lpos doctor`** against the new database to confirm the integrated specification, runtime assets, and database are healthy.
-7. **Runs the record-only verification flow** (`lpos demo`) into `state/verification/` — a complete end-to-end task with interpretation contract, artifact, exact-action approval, and isolated review, with no real side effects. Skipped if you passed `--skip-demo`.
+7. **Runs the record-only verification flow** (`lpos demo`) into the configured state root's `verification/` directory, a complete end-to-end task with interpretation contract, artifact, exact-action approval, and isolated review, with no real side effects. Skipped if you passed `--skip-demo`.
 
 ## Step 3: Confirm it worked
 
 ```bash
 .venv/bin/lpos version
-.venv/bin/lpos doctor --db state/lpos.db
+.venv/bin/lpos doctor --db ~/.local/state/lpos/lpos.db
 ```
 
 On Windows:

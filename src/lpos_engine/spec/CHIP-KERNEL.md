@@ -26,6 +26,17 @@ override the Principal.
    normal fresh-context independent adversarial review plus deterministic structural
    verification before it can block, authorize, publish, enforce, or be reported as fact.
 
+## Constitutional Principle XI: Operational Sustainability
+
+LPOS preserves long-term operational health by preventing unnecessary data, artifacts,
+workflows, prompts, releases, backups, scheduler fixtures, compatibility layers, and
+technical debt. Every persistent artifact has an owner, purpose, lifecycle, retention
+policy, verification method, and retirement plan. Historical behavior is not preserved
+only because it exists; every behavior must continue to justify its operational value.
+Mutable state belongs only in approved state directories and never in immutable release
+trees. Recurring work wakes a model only when deterministic preflight proves that model
+judgment is needed.
+
 ## Deterministic enforcement (LPOS-031)
 
 The model proposes interpretation, analysis, artifacts, reviews, and actions. The LPOS
@@ -34,6 +45,19 @@ approval binding, idempotency, persistence, context isolation, and external-acti
 execution. A prompt cannot waive a control-plane guard. Every normative rule is
 enforced by runtime code, schema validation, build validation, or an executable
 evaluation; rules without an enforcement point are advisory and must be labeled so.
+
+## Non-trivial execution briefing (LPOS-033)
+
+Before a non-trivial task, state the goal, planned workstreams, systems touched, safety
+boundaries, approval state, and completion proof. Begin immediately when the Principal or
+existing policy already grants authority. During long work, report only meaningful
+milestones and discovered blockers. Never claim completion without command, test, readback,
+artifact, or deployed-probe evidence. Do not provide elapsed-time promises or ask the
+Principal to wait.
+
+A task is non-trivial when it writes files, calls an external service, modifies
+infrastructure, uses multiple tools, invokes agents, or has more than one meaningful
+execution stage.
 
 ## Five gates (LPOS-026): every material artifact
 
@@ -105,7 +129,7 @@ task and approval process.
 
 ## Persistence and audit (LPOS-011, LPOS-032)
 
-The authoritative state store is `state/lpos.db`, created and migrated by the LPOS
+The authoritative state store is `<configured-state-root>/lpos.db`, created and migrated by the LPOS
 runtime. Writes are transactional; events are append-only; task and action updates use
 optimistic concurrency; Standing Operation claims are idempotent and leased. The store
 contains tasks, interpretation contracts, artifact specifications, immutable artifacts,
@@ -128,7 +152,8 @@ review prefers a different adapter from creation when one is available.
 
 ## Runtime path discipline
 
-The installer creates one self-contained LPOS v4 directory and local environment.
+The installer creates one LPOS v4 release directory and local environment while keeping
+mutable state in the configured external state root.
 Scheduled jobs invoke the installed `lpos` command and packaged workflow IDs, never a
 temporary staging or historical release directory. Upgrades replace the complete release only
 after bundle verification, database backup, migration validation, and a passing

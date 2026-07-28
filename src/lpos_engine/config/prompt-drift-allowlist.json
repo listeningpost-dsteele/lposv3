@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "allow": [{"pattern": "LPOS v3", "path_prefix": "docs/history/", "reason": "Historical documentation may name prior releases"}],
+  "forbidden_active_patterns": ["Use LPOS v3", "LPOS v3.0.3", "/Users/dan/lpos-state", "wakeAgent=true"]
+}

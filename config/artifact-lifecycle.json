@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "required_fields": [
+    "artifact_id",
+    "owner",
+    "purpose",
+    "lifecycle_class",
+    "created_at",
+    "source_audit_or_release",
+    "storage_location",
+    "byte_size",
+    "file_count",
+    "sha256_or_manifest_hash",
+    "immutability_classification",
+    "verification_method",
+    "last_verified_at",
+    "retention_policy",
+    "expires_at",
+    "retirement_plan",
+    "sensitive_data_classification"
+  ],
+  "classes": {
+    "current-release": {"maximum_count": 1, "retention": "until superseded"},
+    "full-rollback": {"maximum_count": 1, "retention": "until next verified release"},
+    "compact-history": {"maximum_count": 1, "retention": "indefinite with annual review"},
+    "temporary-build": {"maximum_age_days": 2},
+    "audit-evidence": {"maximum_age_days": 365},
+    "report": {"maximum_age_days": 365}
+  }
+}

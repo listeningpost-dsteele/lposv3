@@ -34,7 +34,7 @@ Every outbound message declares one intent, and the intent determines how it rea
 For anything beyond the summary, the database has the whole story:
 
 ```bash
-lpos inspect --db state/lpos.db --task-id TASK-...
+lpos inspect --db ~/.local/state/lpos/lpos.db --task-id TASK-...
 ```
 
 The output contains, in order:
@@ -52,8 +52,8 @@ Evidence records are how the system proves (or disproves) that work created valu
 To pull the raw streams:
 
 ```bash
-lpos events --db state/lpos.db --stream-type <type> --stream-id <id>
-lpos export --db state/lpos.db --output events.jsonl
+lpos events --db ~/.local/state/lpos/lpos.db --stream-type <type> --stream-id <id>
+lpos export --db ~/.local/state/lpos/lpos.db --output events.jsonl
 ```
 
 `export` writes every immutable event, one JSON object per line, in sequence order — suitable for review, backup, and evidence bundles.

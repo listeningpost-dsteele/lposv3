@@ -2,6 +2,15 @@
 
 ## 4.5.0 (2026-07-26)
 
+COE closeout: replaces summary-style self-assurance with nine independent command gates,
+complete staged-artifact enumeration, one authoritative release identity, schema-validated
+hash-chained evidence, append-only SQLite decisions, an explicit release controller, Central
+daily idempotency, overlap leases, actual isolated restore tests, storage and wake metrics,
+technical-debt and opportunity lifecycle records, private APIs, an authenticated dashboard,
+and provider-backed delivery evidence. Missing, stale, malformed, skipped, mismatched,
+unknown, or failed evidence blocks release. Mutable COE state defaults outside releases at
+`~/.hermes/state/chip-service`.
+
 Quality-system release: adds the packaged `design-anti-slop-reviewer` skill and makes
 visual anti-slop review a required LPOS path for customer-facing websites, product
 interfaces, images, decks, and dashboards. CS-002 now blocks horizontal overflow,
@@ -16,10 +25,10 @@ responsive, accessibility, or interaction evidence, and reviews that are stale, 
 or bound to another artifact. Release resealing now excludes Git metadata, and clean Git
 exports are verified by regression test. All v4.4 Code Testing Guild behavior remains unchanged.
 
-## 4.4.0 — 2026-07-24
+## 4.4.0: 2026-07-24
 
 Feature release: the Code Testing Guild (GUILD-040) as an additive, executable
-code-verification layer. Existing testing behavior is preserved — the full existing test
+code-verification layer. Existing testing behavior is preserved; the full existing test
 suite and every prior Standing Operation continue to run unchanged; the gauntlet sits
 alongside them, not in place of them. Adds the `code_testing` engine module, which
 codifies the Code Testing Gauntlet Standard as executable data and gates rather than
@@ -39,9 +48,9 @@ test-evidence-auditor), the Code Testing Gauntlet Standard, and code-testing gov
 Counts: specialists 33→45, standing operations 26→29, benchmarks 55→70, schemas
 unchanged at 20.
 
-- **Test Coverage Map**: `tools/build_test_report.py` generates a self-contained `dist/test-coverage.html` showing every module's test state, line coverage, and gauntlet tier — the visual answer to whether all code is tested.
+- **Test Coverage Map**: `tools/build_test_report.py` generates a self-contained `dist/test-coverage.html` showing every module's test state, line coverage, and gauntlet tier, the visual answer to whether all code is tested.
 - **anti-slop-editor 1.0.1** migrated from the approved Hermes skill (named-pattern de-AI editing, voice-preserving, deterministic, refuses to guess AI authorship); quality-router 2.2.0, lpos-core 3.1.0 writing rules, and voice overlays preserved unchanged.
-## 4.3.0 — 2026-07-23
+## 4.3.0: 2026-07-23
 
 Feature release: the Sentinel Adversarial Assurance Guild (GUILD-039) as an additive
 assurance layer on the hardened v4.2.1 base. Adds SPECIALIST-033 (Adversarial Assurance
@@ -60,7 +69,7 @@ channel cannot authorize an engagement. Counts: specialists 32→33, standing op
 25→26, benchmarks 53→55, schemas 17→20. Sentinel is additive assurance only: the 14
 findings in the July 22 external audit of v4.2.0 were closed by v4.2.1, NOT by Sentinel.
 
-## 4.2.1 — 2026-07-22
+## 4.2.1: 2026-07-22
 
 Security and assurance-integrity patch: remediation of all 13 code-level findings from
 the July 22 external audit of v4.2.0 (LPOS-01 through LPOS-12, LPOS-14), each closed
@@ -75,9 +84,9 @@ evidence ledger hash-chained with verification; subprocess hosts get streaming c
 allowlist env and resource limits; Ed25519 release signing + CycloneDX SBOM; an
 always-on structural schema gate; docs drift fixed. Full test suite: 326 tests.
 
-## 4.2.0 — 2026-07-22
+## 4.2.0: 2026-07-22
 
-Feature release: the SOC 2 Compliance Guild — compliance codified into the operating
+Feature release: the SOC 2 Compliance Guild, with compliance codified into the operating
 system, run autonomously, with staged remediation and a Type 2 evidence trail.
 
 - **GUILD-038 SOC 2 Compliance Guild**: charter in the packaged spec; owns the codified
@@ -87,7 +96,7 @@ system, run autonomously, with staged remediation and a Type 2 evidence trail.
   CC1–CC9 plus Availability, Confidentiality, and Processing Integrity. Every control
   result carries evidence citing the exact files and values inspected. Type 2 operating
   effectiveness is computed per control over a 90-day observation window from the
-  append-only evidence history (`compliance/history.jsonl`) — a control is "effective"
+  append-only evidence history (`compliance/history.jsonl`). A control is "effective"
   only when it passes consistently across the window, not once.
 - **SO-025 SOC 2 Compliance Audit** (daily, packaged handlers): inventory → audit →
   staged remediation → report. Fixes for failing controls are built as copies in the
@@ -95,7 +104,7 @@ system, run autonomously, with staged remediation and a Type 2 evidence trail.
   validation result; the stager refuses live and in-repo paths by construction, and
   adoption into the main system is a record-only exact-action plan requiring Principal
   approval.
-- **The compliance page** (`compliance/report.html`): self-contained HTML — status hero
+- **The compliance page** (`compliance/report.html`): self-contained HTML with a status hero
   with window coverage, The Problems, The Fixes, the Audit Log of changes, and the full
   control matrix with effectiveness meters. `compliance/status.json` is the stable
   contract for the dashboard.
@@ -105,20 +114,20 @@ system, run autonomously, with staged remediation and a Type 2 evidence trail.
   the LPOS system itself and builds the evidence trail; an actual SOC 2 Type 2 report is
   an attestation issued by an independent CPA firm after an observation period.
 
-## 4.1.0 — 2026-07-22
+## 4.1.0: 2026-07-22
 
 Feature release: the operating system gains self-improvement, its user-facing surfaces,
 and a documentation pipeline that keeps itself current.
 
 - **Skill Evolution** (`lpos_engine.evolution`, skill `skill-evolution`): validation-gated,
   staging-only skill improvement derived from Microsoft SkillOpt (MIT; see
-  `NOTICE-SKILLOPT.md`). Offline by construction — no model calls, no network, no live
+  `NOTICE-SKILLOPT.md`). Offline by construction, with no model calls, network calls, or live
   skill writes; proposals are staged for independent review and Principal approval
   (LPOS-030). The gate demonstrably accepts a helpful edit and rejects a
   plausible-but-harmful one, and the loader reads all 53 packaged benchmark fixtures as
   evolution tasks.
 - **Hermes Project Dashboard** (`lpos_engine.dashboard`, `lpos dashboard`, port 7373):
-  the single pane of glass for agent work — Active / Research / Snoozed / Archive buckets,
+  the single pane of glass for agent work: Active / Research / Snoozed / Archive buckets,
   snooze with user-chosen durations, archive with one-action restore, and file
   discoverability as the headline feature (friendly paths, copy path, open folder, global
   project-and-file search). Localhost-only, stdlib-only, state in `~/.hermes/dashboard/`.
@@ -129,8 +138,8 @@ and a documentation pipeline that keeps itself current.
   email connector is itself down. Publishes `~/.hermes/monitor/status.json`, which the
   dashboard renders as a system-health strip.
 - **User Guide wiki** (`docs/wiki`, `tools/build_wiki.py`): a complete user guide written
-  from the real system — getting started, everything LPOS includes, day-to-day usage,
-  administration, patch notes — built as a static site for chip.listeningpost.ai plus a
+  from the real system: getting started, everything LPOS includes, day-to-day usage,
+  administration, and patch notes, built as a static site for chip.listeningpost.ai plus a
   single-file combined guide for GitHub Releases and Google Drive.
 - **New Standing Operations**: SO-022 Release Publication (gates: release verification,
   the codified docs gate, wiki rebuild, record-only exact-action publication plan for
