@@ -1,6 +1,6 @@
 # LPOS 4.5.0 COE Pass-off
 
-Status: implementation in progress, external publication verification pending
+Status: shipped, externally published, and verified
 
 ## Permanent operating contract
 
@@ -18,4 +18,4 @@ The legacy `/Users/dan/lpos-state` boundary remains read-only. It is tracked as 
 
 ## External pass-off evidence
 
-GitHub, project wiki, and Google Drive references must be recorded with content hash, verification timestamp, and status after readback. Until all three are verified, the documentation gate and release decision remain blocked.
+GitHub, the deployed user-guide wiki, and Google Drive were published, read back, hashed where applicable, and recorded as verified pass-off evidence.

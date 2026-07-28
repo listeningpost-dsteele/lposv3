@@ -1,58 +1,57 @@
 # COE Implementation Evidence
 
-Status: blocked only by owner-authenticated external actions
+Status: shipped
 Recorded: 2026-07-28
 
 ## Merged implementation
 
 - LPOS release branch: `release/4.5.0`
-- LPOS merge commits: `28f160e179442d8bd26581829a01c61e0b745885`, `9d5f032a437235356f54f0947bfc9811b71c832c`, `fa651cc9f379c89def5c10b515ee8965b53973e4`
-- LPOS pull requests: `https://github.com/listeningpost-dsteele/lposv3/pull/3`, `/pull/4`, and `/pull/5`
-- Chip main merge commits: `a93f06f8666314d005f32a92edb86b58a3c32e27` and `4043416140225f869f37b1f5165476b12da184b0`
-- Chip pull requests: `https://github.com/listeningpost-dsteele/chip-service/pull/1` and `/pull/2`
+- LPOS implementation and operating repairs merged through PR 13.
+- Chip service main branch commit: `64dec157367b2d3be6cbd0440b950af4d9e4c2d1`
+- Chip service implementation merged through PR 8.
 
-## Exact release artifact
+## Final artifact and deployment
 
-- Source commit: `4043416140225f869f37b1f5165476b12da184b0`
 - Release version: `4.5.0`
-- Files: 492
-- Bytes: 5,374,732
-- Artifact SHA-256: `cbb2a62b4bdcce1cec8025db146f99780a42a9bc92bb0f28781f17fb713ce7c9`
-- Manifest SHA-256: `5323dc16f029fa83466a082a24d1e429cb578f01d5d8e7edd60c703dfa342f43`
-- Retained path: `/Users/dan/.hermes/state/chip-service/artifacts/releases/4.5.0-cbb2a62b`
-- Node and LPOS verifiers both passed against this retained tree.
+- Artifact SHA-256: `20f6fa6529afab8a103d01f988d7cc8f06a26102230a13c77f5a92d7b771a432`
+- Cloud Build: `56c26524-26a0-4f1f-b33a-1b0b41998f3b`
+- Image digest: `sha256:541dffd50e0c9211d6961bf0ba2b8999fa46c1b9529cc69193e512e736fca6f7`
+- Cloud Run revision: `chip-api-coe-v45-20f6-v3`
+- Traffic: 100 percent
+- Rollback revision: `chip-api-gateway-whole-site-prod`
 
-## Latest pre-release decision
+## Final audit
 
-Audit: `audit-1785254125881-df3403c4b04be3a5`
-Decision: blocked
-
-Passing independent gates:
-
-1. Deterministic test suite.
-2. Application release verifier.
-3. Engineering audit.
-4. Security and reliability audit.
-5. Bloat and efficiency audit.
-6. Opportunity and value audit.
-
-Blocked gates:
-
-- Doctor: the secure report recipient or email transport is not configured locally.
-- Documentation audit: Google Drive pass-off has not been published and read back.
-- Release integrity: correctly blocked by the two prerequisite failures.
-
-The evidence chain has no integrity error. GitHub pass-off and the versioned wiki source were published and read back.
+- Audit ID: `audit-1785261466341-679ee503a3f8037f`
+- Decision: `pass`
+- All nine mandatory gates: `pass`
+- Application manifest: 484 files, 2,485,291 bytes
+- Report delivery: `delivered`
+- Provider message ID: `34c5e9af-52e3-4adb-97a5-20b8d1a6247f`
 
 ## Schedule
 
-Hermes cron job `ce51f7aeb7f1` is enabled at `0 3 * * *`. The host timezone is Central. The next run is `2026-07-29T03:00:00-05:00`. The job is script-only and does not wake a model.
+- Hermes job: `ce51f7aeb7f1`
+- Schedule: `0 3 * * *`
+- Timezone: `America/Chicago`
+- Runner: deterministic no-model script `coe-daily.sh`
+- Next scheduled run: 2026-07-29 03:00 Central
 
-## Owner-authenticated blockers
+## Published documentation
 
-1. Reauthenticate Google Cloud CLI with `gcloud auth login` so the exact staged artifact can be built and deployed through the existing Cloud Run path.
-2. Publish the COE pass-off to the existing Google Drive handoff location and provide a stable file reference for readback.
-3. Make the secure COE operator recipient and token available to the cron environment, preferably through mode-600 `~/.hermes/coe.env` or the existing secret-backed runtime.
-4. After deployment, import the final projection, send the completion report, record its provider message ID, and probe the authenticated dashboard.
+- GitHub: `https://github.com/listeningpost-dsteele/lposv3/blob/release/4.5.0/docs/passoff/LPOS-v4.5.0-COE.md`
+- User-guide wiki: `https://chip.listeningpost.ai/wiki/administration/continuous-operational-excellence/`
+- Google Drive: `https://drive.google.com/file/d/1lTLPzVUySUhbIeKe5hpAxLoxjeLdHy9p/view`
 
-No deployment, email delivery, Drive synchronization, or passing release decision is claimed before those actions complete.
+## Live proof
+
+- Dashboard: `https://chip.listeningpost.ai/dashboard/coe`
+- Unauthenticated dashboard probe: HTTP 401
+- Authenticated dashboard probe: HTTP 200 with all 18 required labels
+- Summary API: HTTP 200, final audit ID, readiness pass, delivery status delivered
+- Release gate API: HTTP 200, release status pass, exact artifact SHA-256
+- Final probe timestamp: `2026-07-28T18:00:37.182451Z`
+
+## Compatibility boundary
+
+Legacy `/Users/dan/lpos-state` remains read-only and tracked as `TD-LEGACY-LPOS-STATE`. No legacy migration or deletion occurred.
