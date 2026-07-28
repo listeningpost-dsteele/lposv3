@@ -10,7 +10,7 @@
   "NOTICE-SKILLOPT.md": "3bc8eff1de51844350ffddff31fee66d0caea3a9639658309f425d6a89e6a933",
   "Packages/lpos_os-4.5.0-py3-none-any.whl": "aa24cc551eec8f9a0c3f7a268fccd14e6055dc55314fdf99a80cb61086e8ccb7",
   "README.md": "a0e1b2c2686f5efc12868a9dfadd3f1cf8d8785273ecb58ee6556724b581083b",
-  "RELEASE-TEST-REPORT.md": "a523ef45b47ebb695662c8f19ff28dace556111c9f2ac350eb68ba1f619c32bb",
+  "RELEASE-TEST-REPORT.md": "43335637462bc2f9c175a67023671ad81d61d433aef79e6e13539ddf4a0aa0be",
   "RELEASE.json": "d6d002c66c156ce106256dd601420361dfd391b26611d8a7070eeb30ea54430e",
   "SBOM.json": "6d193ab75e839c27073899e81f53c7ff8fcc22b02225e46def35df82f50e11cd",
   "acceptance/ACCEPTANCE_CHECKLIST.md": "7ba804d44db84cdcb339c58f08920fa543ee7342e4ba66f699c629d384fb74e4",
@@ -401,7 +401,7 @@
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
   "verify_release.py": "24547d3c86f26e51cc0a902c8d9eaa74d28028505630948fed450ca90932798a"
  },
- "generated_at": "2026-07-28T16:08:02Z",
+ "generated_at": "2026-07-28T16:13:11Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.5.0"

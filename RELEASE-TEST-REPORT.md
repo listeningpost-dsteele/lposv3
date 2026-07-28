@@ -5,7 +5,7 @@ Python: 3.11
 
 ## Results
 
-- Full suite on the committed COE candidate: `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -p no:cacheprovider -q`, **424 passed, 2 optional skips, 0 failures**.
+- Full suite on the committed COE candidate: `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -p no:cacheprovider -q`, **425 passed, 1 optional skip, 0 failures**.
 - Test inventory: **426 collected tests**, including fail-closed gate evidence, append-only database triggers, complete release-manifest tampering cases, authentication, dashboard binding, scheduler idempotency, restore verification, and prior LPOS behavior.
 - Nine command gates emit schema-valid records and a deterministic hash chain.
 - Release-controller tests block missing, stale, failed, malformed, mismatched, and incomplete evidence.
@@ -17,7 +17,7 @@ Python: 3.11
 
 ## Notes
 
-- Two optional tests are skipped when their optional external dependency or environment fixture is absent.
+- One optional evolution test is skipped when `LPOS_EVALS_DIR` is not set to a fixtures directory.
 - The release preserves 45 specialists, 29 Standing Operations, 70 benchmarks, and 22 schemas.
 - External actions remain record-only by default.
 - Production release readiness remains blocked unless all nine current command records, documentation pass-off, exact artifact identity, and deployment provenance validate.
