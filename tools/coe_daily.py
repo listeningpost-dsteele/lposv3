@@ -89,7 +89,7 @@ def main() -> int:
                 (daily_idempotency_key(),),
             ).fetchone()
         existing = orchestrator.store.audit(str(row["audit_id"])) if row else None
-        if not existing or existing["trigger_name"] != "scheduled-daily" or existing["local_date"] != central_date():
+        if not existing or existing["trigger"] != "scheduled-daily" or existing["local_date"] != central_date():
             raise
         audit_id = existing["audit_id"]
         result = {
