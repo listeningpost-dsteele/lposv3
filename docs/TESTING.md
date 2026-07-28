@@ -7,7 +7,8 @@ python -m pytest
 lpos validate-schemas
 lpos doctor
 lpos evals
-lpos coe release-gate --repo . --hermes-root ~/.hermes --state-root /tmp/lpos-coe-state
+lpos coe stage --repo . --release-root /tmp/lpos-coe-stage
+lpos coe release-gate --repo . --release-root /tmp/lpos-coe-stage --state-root /tmp/lpos-coe-state
 python -m compileall -q src
 ```
 
@@ -28,8 +29,10 @@ credentials, permission scope, sandbox execution, provider failure, rate limits,
 partitions, duplicate requests, timeout after partial success, reconciliation, retention,
 redaction, backup, and recovery.
 
-The COE test suite uses isolated fixture repositories and Hermes roots. It proves that a
-failed immutable release verifier blocks readiness, scheduler fixtures and stale prompts
-produce evidence-bound findings, frequent ungated jobs reduce the wake-agent score, valid
-technical-debt records pass, and every report and dashboard artifact is written to mutable
-state rather than the release tree.
+The COE test suite proves release identity convergence, canonical evidence hashing, complete
+hash-chain validation, append-only SQLite triggers, child-process and evidence consistency,
+Central-date idempotency, deterministic no-wake behavior, and real isolated SQLite restore.
+Verifier tests cover clean, changed, missing, extra, mutable, malformed, traversal,
+duplicate, mode-mismatched, version-mismatched, commit-mismatched, symlinked, and source-tree
+inputs. API tests prove unauthenticated rejection, private no-store caching, all 18 dashboard
+labels, blocked rendering for missing decisions, and canonical route redirection.

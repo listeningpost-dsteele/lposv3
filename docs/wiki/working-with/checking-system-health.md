@@ -6,9 +6,9 @@ order: 4
 
 # Checking system health
 
-You want to know, quickly and with confidence, that LPOS is healthy — or exactly what is wrong if it is not. There are three layers of health in the system, from a one-command check to the operations that watch themselves.
+You want to know, quickly and with confidence, that LPOS is healthy, or exactly what is wrong if it is not. There are three layers of health in the system, from a one-command check to the operations that watch themselves.
 
-## Layer 1: `lpos doctor` — the one-command check
+## Layer 1: `lpos doctor`, the one-command check
 
 ```bash
 lpos doctor --db ~/.local/state/lpos/lpos.db
@@ -18,20 +18,20 @@ Doctor verifies the integrated specification, runtime assets, and database in on
 
 - the specification kernel reference and whether it loaded
 - specialist count (must be 45), Standing Operation count (must be 29), benchmark count (must be 70)
-- schema validation results (20 schemas)
+- schema validation results (22 schemas)
 - your Python version
 - with `--db`: the database path, its integrity check, and the applied migrations
 
-If any of the counts is wrong or the kernel fails to load, `doctor` reports `"status": "unhealthy"` and exits nonzero — an unambiguous signal for both you and any script. See [Troubleshooting](/administration/troubleshooting.html) for what to do next.
+If any of the counts is wrong or the kernel fails to load, `doctor` reports `"status": "unhealthy"` and exits nonzero. This is an unambiguous signal for both you and any script. See [Troubleshooting](/administration/troubleshooting.html) for what to do next.
 
-## Layer 2: the Connector Health Monitor — the outside world
+## Layer 2: the Connector Health Monitor and the outside world
 
 `doctor` checks the system itself; the [Connector Health Monitor](/includes/connector-health-monitor.html) checks everything the system *runs on*. It audits every connector hourly with real authenticated checks, and its current status is always visible in two places:
 
 - the **system-health strip** in the dashboard, and
 - the status file `~/.hermes/monitor/status.json`.
 
-To re-check right now — say, after fixing a credential — run the audit on demand:
+To re-check after fixing a credential, run the audit on demand:
 
 ```bash
 lpos monitor audit

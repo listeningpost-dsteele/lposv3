@@ -1208,3 +1208,36 @@ The authoritative runtime state is transactional. Events are append-only. Concur
 explicit versions or leases. Exact actions and approvals bind to canonical SHA-256 payloads.
 Completion evidence commits atomically with completion. Checksummed migrations detect drift.
 JSONL is a portable export, not the concurrent source of truth.
+
+---
+
+## Source: `lpos/LPOS-033-continuous-operational-excellence.md`
+
+---
+id: LPOS-033
+title: Continuous Operational Excellence and Execution Discipline
+version: 1.0.0
+status: Accepted
+classification: Constitutional and Runtime Standard
+owner: Listening Post
+---
+
+# Continuous Operational Excellence and Execution Discipline
+
+Operational health and release readiness are evidence claims. Required checks run as
+independent commands, produce schema-valid append-only evidence, and bind to one audit,
+source commit, release identity, and immutable artifact. Missing, stale, malformed, skipped,
+mismatched, unknown, or failed evidence blocks release. A controller aggregates evidence but
+cannot run checks, invent outcomes, or replace missing records.
+
+Daily COE runs at 03:00 America/Chicago with a Central-date idempotency key and an overlap
+lease. It audits changed code, process and skill efficiency, scheduler and model-wake
+governance, prompt drift, backup restore evidence, storage trends, documentation,
+technical-debt lifecycle, opportunities, and its own operating cost. Unknown metrics remain
+unknown.
+
+Before a non-trivial task, state the goal, workstreams, systems touched, safety boundaries,
+approval state, and completion proof. Begin immediately when authority already exists.
+Report meaningful milestones and blockers during long work. Do not provide elapsed-time
+promises or ask the Principal to wait. Completion requires command, test, readback, artifact,
+or deployed-probe evidence.

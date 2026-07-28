@@ -1,77 +1,71 @@
 # LPOS COE Bloat Repair Closeout Addendum
 
-Status: Approved
-Target: LPOS v4.5.0 and later
+Status: Approved and implemented as the LPOS 4.5.0 COE trust contract
 
 ## Mission
 
-Continuous Operational Excellence prevents recurrence of operational bloat. Every defect class discovered becomes a durable engineering rule, deterministic validation, or recurring audit.
+COE prevents assurance bloat and drift. Release claims must be provable. Every recurring
+defect class becomes a command-backed check, schema, test, lifecycle record, or measured
+audit domain.
 
 ## Constitutional Principle XI: Operational Sustainability
 
-LPOS preserves long-term operational health by preventing unnecessary data, artifacts, workflows, prompts, releases, backups, scheduler fixtures, compatibility layers, and technical debt.
+Every persistent artifact has an owner, purpose, lifecycle class, retention policy,
+verification method, and retirement plan. Mutable state does not enter immutable releases.
+Recurring work invokes a model only after a deterministic wake decision.
 
-Every persistent artifact must have:
+## Release assurance
 
-- Owner
-- Purpose
-- Lifecycle
-- Retention policy
-- Verification
-- Retirement plan
+`release/release.json` is the authoritative identity. A complete staged artifact is generated
+outside the source tree and every regular file is enumerated in `release-manifest.json`.
+The verifier rejects missing, unlisted, changed, mutable, unsafe, case-colliding, and
+symlinked content, plus identity and provenance drift.
 
-## Daily audit domains
+Nine independent commands produce schema-valid, hash-chained gate evidence:
 
-The executable `lpos coe audit` command evaluates:
+1. Deterministic tests.
+2. Application release verifier.
+3. Doctor.
+4. Engineering audit.
+5. Security and reliability audit.
+6. Documentation audit.
+7. Bloat and efficiency audit.
+8. Opportunity and value audit.
+9. Release integrity and provenance.
 
-1. Release integrity: immutable manifest, checksums, verifier result, and shipping tree.
-2. Backup governance: total size, file count, nested backups, retention limits, and secret-bearing files.
-3. Scheduler governance: duplicate, paused, orphaned, legacy, fixture, and low-value scheduled work.
-4. Wake-agent efficiency: frequent recurring work must be deterministic or use a `wakeAgent=false` preflight.
-5. Prompt drift: obsolete version references and deprecated operating guidance.
-6. Mutable versus immutable boundaries: mutable state cannot live in an immutable release tree.
-7. Storage efficiency: repository, release, cache, backup, and retention growth.
-8. Technical debt lifecycle: every compatibility layer needs an owner, rationale, retirement date, migration plan, and status.
-9. Documentation audit: required operator, architecture, testing, backup, and CLI documents.
-10. Engineering, security, bloat, opportunity, and release-readiness synthesis.
+The release controller reads the persisted chain. It cannot run checks, create defaults, or
+turn unknown information green.
 
-## Release gate
+## Daily operation
 
-Before release, run:
+Daily COE runs at 03:00 America/Chicago. The Central calendar date supplies deterministic
+idempotency. A SQLite lease prevents overlap. Audit scope includes changed code, process and
+skill efficiency, scheduler and wake behavior, prompt drift, real backup restore evidence,
+storage trends, artifact lifecycle, technical debt, opportunities, documentation, and COE's
+own cost and duplicate work.
 
-```bash
-lpos coe release-gate \
-  --repo /path/to/release \
-  --hermes-root ~/.hermes \
-  --state-root ~/.local/state/lpos
-```
+State defaults to `${HERMES_STATE_DIR:-$HOME/.hermes/state}/chip-service`. The legacy
+`/Users/dan/lpos-state` boundary remains read-only and is tracked as
+`TD-LEGACY-LPOS-STATE`.
 
-The release gate executes immutable release verification, all COE audit domains, and the packaged deterministic evaluation suite. Critical failures block release.
+## Private operations surface
 
-## Dashboard and report contract
+The canonical dashboard is `https://chip.listeningpost.ai/dashboard/coe`. `/ops/coe`
+redirects to it. Dashboard and API responses require operator authentication, use private
+no-store caching, and render persisted evidence only. All 18 named health and release fields
+show blocked, failed, stale, or unknown explicitly.
 
-Each audit writes only to the configured mutable state root:
+Daily reports include the audit ID, release identity, dashboard link, all gate states, risks,
+engineering findings, skill efficiency, scheduler and wake metrics, restore status, storage,
+technical debt, opportunities, and pending decisions. Delivery is recorded only after a
+provider message ID or equivalent transport acceptance is returned.
 
-- `coe/latest.json`
-- `coe/history.jsonl`
-- `coe/report.md`
-- `coe/daily-email.md`
-- `coe/dashboard.html`
+## Documentation map
 
-The local dashboard is served at `http://127.0.0.1:7374/dashboard/coe` by default. `daily-email.md` contains the required subject, executive summary, findings, risks, dashboard URL, timestamp, release version, audit ID, and full appendix. Delivery remains an explicit deployment integration because LPOS does not embed credentials or bypass Principal communication controls.
-
-## Engineering rule
-
-Historical behavior is not preserved only because it exists. Every behavior must continue to justify its operational value.
-
-## Pass-off map
-
-This approved addendum is integrated into:
-
-- Constitution and kernel: `src/lpos_engine/spec/CHIP-KERNEL.md`
-- Operating system: `src/lpos_engine/coe.py` and `lpos coe`
-- Wiki and operations manual: `docs/wiki/administration/continuous-operational-excellence.md`
-- Developer guide: `docs/ARCHITECTURE.md` and `docs/TESTING.md`
-- Release notes: `CHANGELOG.md` and `docs/wiki/patch-notes/4-5-0.md`
-- Next full build: release manifest and checksums include every COE implementation and document
-- GitHub and Google Drive: the ordinary approved publication workflow distributes the frozen release after the Principal ships it
+- Architecture and operations: `docs/architecture/coe/`.
+- API contract: `openapi-coe.yaml`.
+- Release and evidence schemas: `schemas/release-manifest.schema.json` and
+  `schemas/coe-gate-evidence.schema.json`.
+- Pass-off: `docs/passoff/LPOS-v4.5.0-COE.md`.
+- Acceptance evidence: `acceptance/ACCEPTANCE_CHECKLIST.md` and
+  `docs/implementation-evidence/`.

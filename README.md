@@ -28,8 +28,9 @@ specification the v4 runtime enforces.
 - A record-only consequential-action adapter and sandboxed local-file adapter for safe
   installation tests.
 - Cross-platform offline installation and a no-side-effect end-to-end verification flow.
-- Deterministic Continuous Operational Excellence audits, a fail-closed release gate,
-  email-ready daily reports, and a localhost operational-health dashboard.
+- Nine command-backed Continuous Operational Excellence gates, a complete immutable
+  application verifier, tamper-evident SQLite evidence, daily audits, private APIs,
+  verified report delivery, and an authenticated operational-health dashboard.
 
 ## Install
 
@@ -71,8 +72,9 @@ macOS or Linux:
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks
 .venv/bin/lpos evals
-.venv/bin/lpos coe audit --repo . --hermes-root ~/.hermes --state-root ~/.local/state/lpos
-.venv/bin/lpos coe serve --state-root ~/.local/state/lpos
+.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.5.0-stage
+.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.5.0-stage --state-root ~/.hermes/state/chip-service
+COE_OPERATOR_TOKEN=<secure-value> .venv/bin/lpos coe serve --state-root ~/.hermes/state/chip-service
 ```
 
 Windows:
@@ -111,7 +113,7 @@ src/lpos_engine/
   config/        45-specialist capability registry
   sql/           Checksummed database migrations
   adapters/      Model and action adapter boundaries
-  coe.py         Continuous Operational Excellence audits and dashboard
+  coe*.py        COE contracts, verifier, evidence store, gates, controller, APIs, and reports
   *.py           Deterministic control-plane implementation
 schemas/         Human-visible synchronized schema set
 config/          Human-visible synchronized capability registry
@@ -131,5 +133,6 @@ lpos validate-schemas
 lpos doctor
 ```
 
-The authoritative release version is `4.5.0` in `pyproject.toml`, the installed package,
-the specification kernel, workflow catalog, capability registry, and release manifest.
+The authoritative product release identity is `release/release.json`. `RELEASE.json`,
+`pyproject.toml`, the installed package, the specification kernel, workflow catalog,
+capability registry, and release manifests are verified mirrors.

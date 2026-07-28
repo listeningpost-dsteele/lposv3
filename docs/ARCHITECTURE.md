@@ -129,11 +129,15 @@ outside the core until registered and tested through the same adapter contracts.
 
 ## Continuous Operational Excellence
 
-`lpos_engine.coe` is a deterministic operating-health control plane. It inspects the exact
-release checkout and configured Hermes root without invoking a model. Its audits cover
-release integrity, backup and scheduler governance, wake-agent efficiency, prompt drift,
-mutable versus immutable boundaries, storage efficiency, technical-debt lifecycle, and
-required documentation. It writes current status, append-only history, a human report, an
-email-ready report, and a self-contained dashboard only under the configured mutable state
-root. `lpos coe release-gate` combines these controls with the packaged deterministic
-evaluation corpus and returns nonzero when a critical control fails.
+COE is a deterministic assurance subsystem with separated responsibilities. A gate command
+performs checks. The runner records child-process facts and rejects evidence disagreement.
+The release controller reads one complete hash chain and cannot execute or invent checks.
+Private APIs and the dashboard render persisted decisions without mutation.
+
+`release/release.json` is the authoritative identity. `coe_manifest.py` stages only tracked
+release inputs into an external directory, enumerates every regular file, and rejects
+missing, extra, changed, mutable, unsafe, case-colliding, or symlinked content. `004_coe.sql`
+persists audits, nine gate records, decisions, findings, metrics, scheduler and wake facts,
+restore tests, technical debt, opportunities, pass-off references, and report delivery.
+Evidence and decisions are append-only. Daily work uses a Central-date idempotency key and a
+database lease. See `docs/architecture/coe/` for the complete contract.

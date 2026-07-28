@@ -46,6 +46,19 @@ execution. A prompt cannot waive a control-plane guard. Every normative rule is
 enforced by runtime code, schema validation, build validation, or an executable
 evaluation; rules without an enforcement point are advisory and must be labeled so.
 
+## Non-trivial execution briefing (LPOS-033)
+
+Before a non-trivial task, state the goal, planned workstreams, systems touched, safety
+boundaries, approval state, and completion proof. Begin immediately when the Principal or
+existing policy already grants authority. During long work, report only meaningful
+milestones and discovered blockers. Never claim completion without command, test, readback,
+artifact, or deployed-probe evidence. Do not provide elapsed-time promises or ask the
+Principal to wait.
+
+A task is non-trivial when it writes files, calls an external service, modifies
+infrastructure, uses multiple tools, invokes agents, or has more than one meaningful
+execution stage.
+
 ## Five gates (LPOS-026): every material artifact
 
 Intent → Truth → Reasoning → Craft → Outcome.
