@@ -1,25 +1,23 @@
 # LPOS v4.5.0 Release Test Report
 
-Date: 2026-07-26
+Date: 2026-07-28
 Python: 3.11
 
 ## Results
 
-- Full suite after committing the exact candidate: `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src /tmp/lpos45-venv/bin/python -m pytest -p no:cacheprovider -q`, **383 passed, 1 optional skip, 0 failures**.
-- Test inventory: **384 collected tests**, including executable customer-facing quality-gate failures, publication blocking, wheel presence, and clean-export portability.
-- Quality skill contract:
-  - `anti-slop-editor` and `design-anti-slop-reviewer` are packaged.
-  - Quality Router loads both writing and design gates.
-  - CS-002 contains deterministic design blockers and truth-safe proof requirements.
-  - The v4.5.0 wheel contains the design skill and paid-agent runtime integration reference.
-- Existing v4.4 Code Testing Guild, Sentinel, compliance, security, publication, dashboard, monitor, evolution, schema, workflow, and engine tests remain in the full suite.
-- Documentation gate: the wiki source includes v4.5.0 patch notes and documents the new design skill.
-- Offline wheel: `Packages/lpos_os-4.5.0-py3-none-any.whl` built successfully with no runtime dependencies.
-- Release integrity: `python3.11 verify_release.py` passes over the resealed tree.
+- Full suite on the committed COE candidate: `PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python -m pytest -p no:cacheprovider -q`, **422 passed, 2 optional skips, 0 failures**.
+- Test inventory: **424 collected tests**, including fail-closed gate evidence, append-only database triggers, complete release-manifest tampering cases, authentication, dashboard binding, scheduler idempotency, restore verification, and prior LPOS behavior.
+- Nine command gates emit schema-valid records and a deterministic hash chain.
+- Release-controller tests block missing, stale, failed, malformed, mismatched, and incomplete evidence.
+- Immutable release tests cover changed assets, missing and extra files, mutable paths, traversal, duplicates, case hazards, symlinks, mode drift, corrupt JSON, identity drift, commit drift, and source-tree misuse.
+- COE API and dashboard tests prove unauthorized denial, authenticated rendering, all 18 labels, explicit unknown handling, blocked release rendering, and `/ops/coe` redirect behavior.
+- Backup tests create a real SQLite backup, restore it into an isolated directory, compare hashes, and run `PRAGMA integrity_check`.
+- Existing Code Testing Guild, Sentinel, compliance, security, publication, dashboard, monitor, evolution, schema, workflow, and engine tests remain in the suite.
+- Release integrity: `python3.11 verify_release.py` passes over the resealed committed tree.
 
 ## Notes
 
-- One pre-existing optional test is skipped when its optional external dependency is absent.
-- The release preserves 45 specialists, 29 Standing Operations, 70 benchmarks, and 20 schemas.
+- Two optional tests are skipped when their optional external dependency or environment fixture is absent.
+- The release preserves 45 specialists, 29 Standing Operations, 70 benchmarks, and 22 schemas.
 - External actions remain record-only by default.
-- Published visual work now requires deterministic checks, desktop and mobile evidence, accessibility and interaction proof, and independent review tied to the exact artifact.
+- Production release readiness remains blocked unless all nine current command records, documentation pass-off, exact artifact identity, and deployment provenance validate.
