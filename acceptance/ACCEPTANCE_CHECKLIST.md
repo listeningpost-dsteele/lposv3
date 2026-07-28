@@ -20,13 +20,13 @@ Every item is closed only by a command exit, test, evidence hash, API response, 
 - [x] Scheduler and wake governance measured. Evidence: scheduler job and deterministic no-model wake metrics.
 - [x] Storage trends persisted. Evidence: repository, staged release, state, evidence, report, backup, cache, and duplicate categories.
 - [x] Technical-debt and opportunity lifecycles persisted. Evidence: `TD-LEGACY-LPOS-STATE`, append-only decisions, and orphan checks.
-- [x] Private dashboard exposes all 18 required fields locally. Evidence: authenticated route tests and unknown/blocked rendering tests.
-- [ ] Completion email delivered with dashboard link. Blocker: secure recipient/token configuration and deployment.
-- [ ] Documentation pass-off verified on GitHub, wiki, and Google Drive. GitHub and versioned wiki are verified. Google Drive is pending owner-authenticated publication.
+- [x] Private dashboard exposes all 18 required fields. Evidence: authenticated live probe returned HTTP 200 and all 18 labels; unauthenticated probe returned HTTP 401.
+- [x] Completion email delivered with dashboard link. Provider message ID: `34c5e9af-52e3-4adb-97a5-20b8d1a6247f`.
+- [x] Documentation pass-off verified on GitHub, the deployed user-guide wiki, and Google Drive.
 - [x] Final artifact rebuilt and dual-verified. Evidence: Node and LPOS verifiers pass the exact artifact hash above.
-- [x] Cohesive changes pushed and merged. Evidence: LPOS PRs 3, 4, 5 and Chip PRs 1, 2.
-- [ ] Exact artifact deployed through the existing pipeline. Blocker: `gcloud auth login` required.
-- [ ] Canonical dashboard authentication and rendering probed after deployment.
-- [ ] Post-deploy audit, projection import, report delivery, and provider message ID verified.
+- [x] Cohesive changes pushed and merged. Evidence: LPOS and Chip implementation and repair PRs merged into their release branches.
+- [x] Exact artifact deployed through the existing Cloud Build and Cloud Run pipeline. Revision: `chip-api-coe-v45-20f6-v3`.
+- [x] Canonical dashboard authentication and rendering probed at `2026-07-28T18:00:37.182451Z`.
+- [x] Post-deploy audit, projection import, report delivery, and provider message ID verified.
 
-Release remains blocked. Unchecked items may not be inferred from implementation intent.
+Release acceptance is complete. Every checked item has command, API, evidence, artifact, delivery, or deployed probe support.
