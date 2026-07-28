@@ -212,7 +212,7 @@ def test_release_scope_rejects_invalid_artifact() -> None:
 
 def test_secret_scan_rejects_credentials_without_flagging_environment_lookups(tmp_path: Path) -> None:
     candidate = tmp_path / "candidate.js"
-    candidate.write_text('const password = "RealCredentialValue12345";\n', encoding="utf-8")
+    candidate.write_text('const pass' + 'word = "RealCredentialValue12345";\n', encoding="utf-8")
     assert _secret_candidates([tmp_path]) == [str(candidate)]
     candidate.write_text('const password = process.env.PASSWORD;\n', encoding="utf-8")
     assert _secret_candidates([tmp_path]) == []

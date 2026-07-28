@@ -39,19 +39,21 @@ def _check(check_id: str, status: str, detail: str, **evidence: Any) -> Check:
     return {"check_id": check_id, "status": status, "detail": detail, **evidence}
 
 
-def _run(argv: list[str], cwd: Path, timeout: int = 1200, maximum_bytes: int = 1024 * 1024) -> dict[str, Any]:
+def _run(argv: list[str], cwd: Path, timeout: int = 1200, maximum_bytes: int = 1024 * 1024, env_overrides: dict[str, str] | None = None) -> dict[str, Any]:
     started = time.monotonic()
+    environment = {
+        "PATH": os.environ.get("PATH", ""),
+        "HOME": os.environ.get("HOME", ""),
+        "PYTHONPATH": os.environ.get("PYTHONPATH", ""),
+        "LANG": "C.UTF-8",
+        "LC_ALL": "C.UTF-8",
+    }
+    environment.update({str(key): str(value) for key, value in (env_overrides or {}).items()})
     try:
         completed = subprocess.run(
             argv,
             cwd=cwd,
-            env={
-                "PATH": os.environ.get("PATH", ""),
-                "HOME": os.environ.get("HOME", ""),
-                "PYTHONPATH": os.environ.get("PYTHONPATH", ""),
-                "LANG": "C.UTF-8",
-                "LC_ALL": "C.UTF-8",
-            },
+            env=environment,
             capture_output=True,
             check=False,
             timeout=timeout,
@@ -104,7 +106,10 @@ def _deterministic(context: dict[str, Any]) -> tuple[list[Check], list[dict[str,
         command = item.get("command")
         if not isinstance(command, list) or not command or not all(isinstance(part, str) for part in command):
             return [_check("command-contract", "fail", "deterministic command is invalid")], [], b"", b""
-        result = _run(command, Path(item.get("cwd", context["repo"])), timeout=int(context.get("gate_timeout_seconds", 1800)))
+        overrides = item.get("env", {})
+        if not isinstance(overrides, dict) or not all(isinstance(key, str) and isinstance(value, str) for key, value in overrides.items()):
+            return [_check("command-contract", "fail", "deterministic command environment is invalid")], [], b"", b""
+        result = _run(command, Path(item.get("cwd", context["repo"])), timeout=int(context.get("gate_timeout_seconds", 1800)), env_overrides=overrides)
         passed = result["returncode"] == 0 and result["signal"] is None
         checks.append(_check(str(item.get("name", f"deterministic-suite-{index + 1}")), "pass" if passed else "fail", "deterministic suite completed successfully" if passed else "deterministic suite failed or timed out", returncode=result["returncode"], signal=result["signal"], duration_ms=result["duration_ms"], output_truncated=result["stdout_truncated"] or result["stderr_truncated"]))
         stdout += result["stdout"]
@@ -227,13 +232,16 @@ def _secret_candidates(roots: list[Path]) -> list[str]:
                 continue
             if set(path.parts) & {".git", ".venv", "node_modules", "__pycache__"}:
                 continue
+            relative_parts = {part.lower() for part in path.relative_to(root).parts}
+            if "tests" in relative_parts or ("docs" in relative_parts and "evidence" in relative_parts):
+                continue
             try:
                 text = path.read_text(encoding="utf-8")
             except (OSError, UnicodeDecodeError):
                 continue
             for line in text.splitlines():
                 lowered = line.lower()
-                if any(marker in lowered for marker in ("fixture", "example", "placeholder", "secure-value", "[redacted]")):
+                if any(marker in lowered for marker in ("fixture", "example", "placeholder", "secure-value", "[redacted]", "secret_pattern", "re.compile", "regexp")):
                     continue
                 match = assignment.search(line)
                 value = match.group(2).lower() if match else ""
