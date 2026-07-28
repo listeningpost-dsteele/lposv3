@@ -41,7 +41,7 @@ Recorded: 2026-07-28
 
 - GitHub: `https://github.com/listeningpost-dsteele/lposv3/blob/release/4.5.0/docs/passoff/LPOS-v4.5.0-COE.md`
 - User-guide wiki: `https://chip.listeningpost.ai/wiki/administration/continuous-operational-excellence/`
-- Google Drive: `https://drive.google.com/file/d/1lTLPzVUySUhbIeKe5hpAxLoxjeLdHy9p/view`
+- Google Drive: `https://drive.google.com/file/d/1f_zPQhDu9pw6uKBWCN8K9z0anY1JSCDl/view`
 
 ## Live proof
 
