@@ -45,6 +45,11 @@ def test_audit_writes_dashboard_report_email_and_history(tmp_path: Path) -> None
     assert "Operational health and release readiness" in (state / "coe" / "dashboard.html").read_text()
     assert "Subject: LPOS Continuous Operational Excellence Report" in (state / "coe" / "daily-email.md").read_text()
     assert len((state / "coe" / "history.jsonl").read_text().splitlines()) == 1
+    assert result["audit_history"][-1]["audit_id"] == result["audit_id"]
+    second = run_audit(repo, hermes, state, "http://127.0.0.1:7374/dashboard/coe")
+    assert len((state / "coe" / "history.jsonl").read_text().splitlines()) == 2
+    assert [item["audit_id"] for item in second["audit_history"]][-2:] == [result["audit_id"], second["audit_id"]]
+    assert result["audit_id"] in (state / "coe" / "dashboard.html").read_text()
 
 
 def test_mutable_database_inside_release_blocks_readiness(tmp_path: Path) -> None:

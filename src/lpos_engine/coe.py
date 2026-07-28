@@ -62,6 +62,34 @@ def _json(path: Path, default: Any) -> Any:
         return default
 
 
+def _audit_history(state_root: Path, limit: int = 9) -> list[dict[str, Any]]:
+    path = state_root / "coe" / "history.jsonl"
+    if not path.is_file():
+        return []
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()[-limit:]
+    except OSError:
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in lines:
+        try:
+            item = json.loads(line)
+        except (TypeError, ValueError):
+            continue
+        if not isinstance(item, dict):
+            continue
+        scores = item.get("scores", {})
+        rows.append(
+            {
+                "audit_id": item.get("audit_id", "unknown"),
+                "generated_at": item.get("generated_at", "unknown"),
+                "release_ready": bool(item.get("release_ready")),
+                "overall_score": scores.get("overall") if isinstance(scores, dict) else None,
+            }
+        )
+    return rows
+
+
 def _tree_stats(root: Path, *, max_files: int = 250_000) -> dict[str, int]:
     files = 0
     bytes_total = 0
@@ -517,12 +545,17 @@ def _render_dashboard(audit: dict[str, Any]) -> str:
     ) or "<li>None</li>"
     approvals = "".join(f"<li>{html.escape(str(item))}</li>" for item in audit["pending_approvals"]) or "<li>None</li>"
     improvements = "".join(f"<li>{html.escape(str(item))}</li>" for item in audit["recent_improvements"]) or "<li>None recorded</li>"
+    history = "".join(
+        f"<li><code>{html.escape(str(item['audit_id']))}</code>, {html.escape(str(item['generated_at']))}, "
+        f"{'ready' if item['release_ready'] else 'blocked'}, score {html.escape(str(item['overall_score']))}</li>"
+        for item in audit["audit_history"]
+    ) or "<li>No prior audits</li>"
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LPOS Operational Excellence</title>
 <style>
 :root{{--ink:#eaf2ff;--muted:#91a4bd;--panel:#111d2b;--line:#283a50;--accent:#5bd5c5;--danger:#ff6b7a;--warn:#f7c65c}}*{{box-sizing:border-box}}body{{margin:0;background:#08111d;color:var(--ink);font:15px/1.5 ui-sans-serif,system-ui;padding:32px}}main{{max-width:1200px;margin:auto}}header{{display:flex;justify-content:space-between;gap:24px;align-items:end;border-bottom:1px solid var(--line);padding-bottom:24px}}h1{{font-size:34px;margin:0}}h2{{font-size:18px}}p{{color:var(--muted)}}.ready{{font-size:28px;color:{'var(--accent)' if audit['release_ready'] else 'var(--danger)'}}}.scores,.details{{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:24px 0}}.score,.detail{{background:var(--panel);border:1px solid var(--line);padding:16px}}.score span{{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}}.score strong{{font-size:28px}}table{{width:100%;border-collapse:collapse;background:var(--panel)}}th,td{{padding:12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}}th{{color:var(--muted);font-size:12px;text-transform:uppercase}}.badge{{font-weight:700}}.pass{{color:var(--accent)}}.warn{{color:var(--warn)}}.fail{{color:var(--danger)}}code{{color:var(--accent)}}
-</style></head><body><main><header><div><p>LPOS Continuous Operational Excellence</p><h1>Operational health and release readiness</h1><p>Release {html.escape(audit['release_version'])} · Audit <code>{html.escape(audit['audit_id'])}</code> · {html.escape(audit['generated_at'])}</p></div><strong class="ready">{readiness}</strong></header><div class="scores">{''.join(cards)}</div><table><thead><tr><th>Domain</th><th>Status</th><th>Severity</th><th>Finding</th></tr></thead><tbody>{''.join(rows)}</tbody></table><div class="details"><section class="detail"><h2>Top risks</h2><ul>{risks}</ul></section><section class="detail"><h2>Opportunity backlog</h2><ul>{opportunities}</ul></section><section class="detail"><h2>Pending approvals</h2><ul>{approvals}</ul></section><section class="detail"><h2>Recent improvements</h2><ul>{improvements}</ul></section><section class="detail"><h2>Audit history</h2><p>Append-only history is stored in <code>coe/history.jsonl</code>. Latest audit: <code>{html.escape(audit['audit_id'])}</code>.</p></section><section class="detail"><h2>Current release status</h2><p>{html.escape(audit['current_release_status'].upper())}</p></section></div></main></body></html>"""
+</style></head><body><main><header><div><p>LPOS Continuous Operational Excellence</p><h1>Operational health and release readiness</h1><p>Release {html.escape(audit['release_version'])} · Audit <code>{html.escape(audit['audit_id'])}</code> · {html.escape(audit['generated_at'])}</p></div><strong class="ready">{readiness}</strong></header><div class="scores">{''.join(cards)}</div><table><thead><tr><th>Domain</th><th>Status</th><th>Severity</th><th>Finding</th></tr></thead><tbody>{''.join(rows)}</tbody></table><div class="details"><section class="detail"><h2>Top risks</h2><ul>{risks}</ul></section><section class="detail"><h2>Opportunity backlog</h2><ul>{opportunities}</ul></section><section class="detail"><h2>Pending approvals</h2><ul>{approvals}</ul></section><section class="detail"><h2>Recent improvements</h2><ul>{improvements}</ul></section><section class="detail"><h2>Audit history</h2><ul>{history}</ul><p>Append-only source: <code>coe/history.jsonl</code>.</p></section><section class="detail"><h2>Current release status</h2><p>{html.escape(audit['current_release_status'].upper())}</p></section></div></main></body></html>"""
 
 
 def run_audit(
@@ -593,11 +626,23 @@ def run_audit(
         "top_risks": [item["summary"] for item in findings if item["status"] in {"warn", "fail"}][:10],
         "pending_approvals": [],
         "recent_improvements": [],
+        "audit_history": _audit_history(state_root),
         "opportunity_backlog": next(item["evidence"]["opportunities"] for item in findings if item["domain"] == "opportunity_audit"),
         "current_release_status": "ready" if not critical else "blocked",
     }
     signature = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     payload["audit_id"] = "COE-" + hashlib.sha256(signature).hexdigest()[:16].upper()
+    payload["audit_history"] = (
+        payload["audit_history"]
+        + [
+            {
+                "audit_id": payload["audit_id"],
+                "generated_at": payload["generated_at"],
+                "release_ready": payload["release_ready"],
+                "overall_score": payload["scores"]["overall"],
+            }
+        ]
+    )[-10:]
     coe_root = state_root / "coe"
     _atomic_write(coe_root / "latest.json", json.dumps(payload, indent=2, sort_keys=True) + "\n")
     history = coe_root / "history.jsonl"
