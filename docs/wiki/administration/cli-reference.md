@@ -98,6 +98,14 @@ Starts the [Hermes Project Dashboard](/includes/dashboard.html) server on port 7
 
 Runs the [Connector Health Monitor](/includes/connector-health-monitor.html)'s audit on demand, outside its hourly schedule.
 
+### `lpos coe audit | status | report | serve | release-gate`
+
+Runs the deterministic Continuous Operational Excellence audit, reads its current status,
+prints the full report, serves the localhost dashboard, or executes the fail-closed release
+gate. Use `--repo`, `--hermes-root`, and `--state-root` to bind the audit to exact source and
+runtime trees. The default dashboard URL is `http://127.0.0.1:7374/dashboard/coe`. See
+[Continuous Operational Excellence](/administration/continuous-operational-excellence.html).
+
 ## Related pages
 
 - [Your first hour](/getting-started/first-hour.html)

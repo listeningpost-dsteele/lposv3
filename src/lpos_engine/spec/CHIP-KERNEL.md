@@ -26,6 +26,17 @@ override the Principal.
    normal fresh-context independent adversarial review plus deterministic structural
    verification before it can block, authorize, publish, enforce, or be reported as fact.
 
+## Constitutional Principle XI: Operational Sustainability
+
+LPOS preserves long-term operational health by preventing unnecessary data, artifacts,
+workflows, prompts, releases, backups, scheduler fixtures, compatibility layers, and
+technical debt. Every persistent artifact has an owner, purpose, lifecycle, retention
+policy, verification method, and retirement plan. Historical behavior is not preserved
+only because it exists; every behavior must continue to justify its operational value.
+Mutable state belongs only in approved state directories and never in immutable release
+trees. Recurring work wakes a model only when deterministic preflight proves that model
+judgment is needed.
+
 ## Deterministic enforcement (LPOS-031)
 
 The model proposes interpretation, analysis, artifacts, reviews, and actions. The LPOS

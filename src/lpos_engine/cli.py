@@ -508,6 +508,16 @@ def build_parser() -> argparse.ArgumentParser:
     compliance.add_argument("--root", type=Path, default=None, help="Hermes root (default ~/.hermes or LPOS_HERMES_ROOT)")
     compliance.add_argument("--repo", type=Path, default=None, help="release checkout (default . or LPOS_REPO_ROOT)")
     compliance.set_defaults(func=cmd_compliance)
+
+    coe = sub.add_parser("coe", help="run Continuous Operational Excellence audits and dashboard")
+    coe.add_argument("action", nargs="?", default="audit", choices=["audit", "status", "report", "serve", "release-gate"])
+    coe.add_argument("--repo", type=Path, default=Path.cwd(), help="LPOS release checkout")
+    coe.add_argument("--hermes-root", type=Path, default=Path.home() / ".hermes")
+    coe.add_argument("--state-root", type=Path, default=Path.home() / ".local" / "state" / "lpos")
+    coe.add_argument("--dashboard-url", default="http://127.0.0.1:7374/dashboard/coe")
+    coe.add_argument("--host", default="127.0.0.1")
+    coe.add_argument("--port", type=int, default=7374)
+    coe.set_defaults(func=cmd_coe)
     return parser
 
 
@@ -544,6 +554,35 @@ def cmd_compliance(args: argparse.Namespace) -> int:
     if args.repo is not None:
         argv.append(f"--repo={args.repo}")
     return int(compliance_main(argv))
+
+
+def cmd_coe(args: argparse.Namespace) -> int:
+    from .coe import load_latest, run_audit, serve
+
+    if args.action in {"audit", "release-gate"}:
+        result = run_audit(
+            args.repo,
+            args.hermes_root,
+            args.state_root,
+            args.dashboard_url,
+            include_evaluations=args.action == "release-gate",
+        )
+        _print(result)
+        return 0 if result["release_ready"] else 1
+    if args.action == "status":
+        result = load_latest(args.state_root)
+        if not result:
+            raise FileNotFoundError("COE audit has not run")
+        _print(result)
+        return 0
+    if args.action == "report":
+        path = Path(args.state_root).expanduser().resolve() / "coe" / "report.md"
+        if not path.is_file():
+            raise FileNotFoundError("COE report has not been generated")
+        print(path.read_text(encoding="utf-8"), end="")
+        return 0
+    serve(args.state_root, args.host, args.port)
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:

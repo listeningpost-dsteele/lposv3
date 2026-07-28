@@ -126,3 +126,14 @@ The bundled local adapters are safe verification components, not hidden producti
 connectors. Real deployments supply model hosts, channel collectors, schedulers, secret
 management, and consequential action adapters. Their permissions and failure semantics are
 outside the core until registered and tested through the same adapter contracts.
+
+## Continuous Operational Excellence
+
+`lpos_engine.coe` is a deterministic operating-health control plane. It inspects the exact
+release checkout and configured Hermes root without invoking a model. Its audits cover
+release integrity, backup and scheduler governance, wake-agent efficiency, prompt drift,
+mutable versus immutable boundaries, storage efficiency, technical-debt lifecycle, and
+required documentation. It writes current status, append-only history, a human report, an
+email-ready report, and a self-contained dashboard only under the configured mutable state
+root. `lpos coe release-gate` combines these controls with the packaged deterministic
+evaluation corpus and returns nonzero when a critical control fails.

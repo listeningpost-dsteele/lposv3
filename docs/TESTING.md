@@ -7,6 +7,7 @@ python -m pytest
 lpos validate-schemas
 lpos doctor
 lpos evals
+lpos coe release-gate --repo . --hermes-root ~/.hermes --state-root /tmp/lpos-coe-state
 python -m compileall -q src
 ```
 
@@ -26,3 +27,9 @@ Before enabling a live model, channel, or action adapter, add deployment-specifi
 credentials, permission scope, sandbox execution, provider failure, rate limits, network
 partitions, duplicate requests, timeout after partial success, reconciliation, retention,
 redaction, backup, and recovery.
+
+The COE test suite uses isolated fixture repositories and Hermes roots. It proves that a
+failed immutable release verifier blocks readiness, scheduler fixtures and stale prompts
+produce evidence-bound findings, frequent ungated jobs reduce the wake-agent score, valid
+technical-debt records pass, and every report and dashboard artifact is written to mutable
+state rather than the release tree.

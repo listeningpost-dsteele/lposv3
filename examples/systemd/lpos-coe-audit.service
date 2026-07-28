@@ -1,0 +1,8 @@
+[Unit]
+Description=LPOS Continuous Operational Excellence daily audit
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=PYTHONUNBUFFERED=1
+ExecStart=%h/lpos/current/.venv/bin/lpos coe release-gate --repo %h/lpos/current --hermes-root %h/.hermes --state-root %h/.local/state/lpos --dashboard-url http://127.0.0.1:7374/dashboard/coe

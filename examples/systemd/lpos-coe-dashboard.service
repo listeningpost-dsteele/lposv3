@@ -1,0 +1,13 @@
+[Unit]
+Description=LPOS Continuous Operational Excellence dashboard
+After=network-online.target
+
+[Service]
+Type=simple
+Environment=PYTHONUNBUFFERED=1
+ExecStart=%h/lpos/current/.venv/bin/lpos coe serve --state-root %h/.local/state/lpos --host 127.0.0.1 --port 7374
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

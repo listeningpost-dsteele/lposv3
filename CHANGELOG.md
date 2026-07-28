@@ -2,6 +2,15 @@
 
 ## 4.5.0 (2026-07-26)
 
+Post-release candidate addendum: implements Continuous Operational Excellence as a
+deterministic `lpos coe` control plane. Daily audits now cover release integrity, backup and
+scheduler governance, wake-agent efficiency, prompt drift, mutable-state boundaries,
+storage, technical-debt lifecycle, documentation, security, engineering, and opportunity
+backlogs. The fail-closed release gate combines those audits with the packaged evaluation
+suite. Each run writes current JSON, append-only history, an email-ready report, and a
+localhost Operational Excellence Dashboard under mutable state. Constitutional Principle XI
+codifies operational sustainability. No publication is performed by the audit command.
+
 Quality-system release: adds the packaged `design-anti-slop-reviewer` skill and makes
 visual anti-slop review a required LPOS path for customer-facing websites, product
 interfaces, images, decks, and dashboards. CS-002 now blocks horizontal overflow,
