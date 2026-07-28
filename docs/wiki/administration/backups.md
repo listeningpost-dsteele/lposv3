@@ -43,9 +43,15 @@ Two properties protect the record itself: the `events` table is append-only (dat
 
 The upgrade discipline requires a database backup *before* the new release goes live: an upgrade replaces the complete release only after bundle verification, database backup, migration validation, and a passing `lpos doctor`. If you follow [Upgrading](/administration/upgrading.html), you get a pre-upgrade backup every time by construction.
 
-## Storage and retention
+## Storage, exclusions, and retention
 
-Context bundles, artifacts, action parameters, evidence, and audit events may contain sensitive business data. Keep backups on appropriately protected storage, and define retention, redaction, and access policies for them the same way you would for the live database. LPOS core does not provide encryption at rest — use encrypted disks for both the live state and the backups.
+Context bundles, artifacts, action parameters, evidence, and audit events may contain sensitive business data. Keep backups on appropriately protected storage, and define retention, redaction, and access policies for them the same way you would for the live database. LPOS core does not provide encryption at rest. Use encrypted disks for both the live state and the backups.
+
+Back up an explicit allowlist, not an entire home directory or Hermes installation. A state backup must exclude release trees, virtual environments, caches, build output, prior backup roots, authentication files, OAuth tokens, environment files, and credential stores. In particular, never recurse into `.skillclaw_backups`, `backups`, `.venv`, `build`, `dist`, `.pytest_cache`, `__pycache__`, or another migration snapshot.
+
+Set a bounded retention policy before enabling recurring snapshots. A safe default is seven daily state backups, four weekly backups, and one verified pre-upgrade backup. Keep the current release, one full rollback release, and at most one compact historical artifact. Every backup operation must report logical bytes, file count, excluded roots, and the oldest retained snapshot, then fail closed if the new snapshot exceeds its configured byte or file-count ceiling.
+
+A backup that includes credentials or another backup root is invalid. Quarantine or remove it after preserving only the minimum non-secret recovery evidence required for audit.
 
 ## Related pages
 

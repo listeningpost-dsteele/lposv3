@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from importlib.resources import files as resource_files
 from pathlib import Path
@@ -48,6 +49,31 @@ def _validate_schemas(schema_dir: Path | None = None) -> dict:
     from . import schema_check
 
     return schema_check.validate_for_cli(schema_dir)
+
+
+def _release_integrity(release_root: Path | None = None) -> dict:
+    """Run the release verifier when doctor is executing inside a release tree."""
+    candidates = [release_root] if release_root is not None else [Path(sys.prefix).resolve().parent, Path.cwd()]
+    root = next((Path(item).resolve() for item in candidates if item and (Path(item).resolve() / "verify_release.py").is_file()), None)
+    if root is None:
+        if release_root is not None:
+            return {"status": "failed", "root": str(Path(release_root).resolve()), "detail": "verify_release.py is missing"}
+        return {"status": "not_applicable", "detail": "no release tree detected"}
+    completed = subprocess.run(
+        [sys.executable, str(root / "verify_release.py")],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        timeout=120,
+        check=False,
+    )
+    detail = "\n".join(part.strip() for part in (completed.stdout, completed.stderr) if part.strip())
+    return {
+        "status": "passed" if completed.returncode == 0 else "failed",
+        "root": str(root),
+        "returncode": completed.returncode,
+        "detail": detail[-8000:],
+    }
 
 
 def cmd_version(args: argparse.Namespace) -> int:
@@ -342,6 +368,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     registry = CapabilityRegistry.default()
     workflows = load_all_workflows()
     schema_result = _validate_schemas(args.schema_dir)
+    release_integrity = _release_integrity(args.release_root)
     result = {
         "name": "LPOS",
         "version": __version__,
@@ -354,6 +381,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         "standing_operations": len(workflows),
         "benchmarks": len(benchmark_catalog()),
         "schemas": schema_result,
+        "release_integrity": release_integrity,
         "python": sys.version.split()[0],
     }
     if args.db is not None:
@@ -374,6 +402,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         or len(workflows) != 29
         or len(benchmark_catalog()) != 70
         or schema_result["schemas"] != 20
+        or release_integrity["status"] == "failed"
         or not perms_ok
     ):
         result["status"] = "unhealthy"
@@ -435,6 +464,8 @@ def build_parser() -> argparse.ArgumentParser:
     doctor = sub.add_parser("doctor", help="verify the integrated specification, runtime assets, and database")
     doctor.add_argument("--db", type=Path)
     doctor.add_argument("--schema-dir", type=Path, default=None)
+    doctor.add_argument("--release-root", type=Path, default=None,
+                        help="verify this immutable release tree; auto-detected from the active environment or cwd")
     doctor.add_argument("--hermes-root", type=Path, default=None,
                         help="also audit state-file permissions under this Hermes root")
     doctor.set_defaults(func=cmd_doctor)
