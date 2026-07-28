@@ -40,7 +40,7 @@ You have a new LPOS release and a running system you care about. The upgrade dis
     ```
 
     `init` applies any new checksummed migrations; drift in an already-applied migration stops startup rather than corrupting state. `doctor` must report healthy before the new release is considered live.
-6. **Run the evaluations**: `lpos evals` should pass everything (53/53 on v4.0.0).
+6. **Run the evaluations**: `lpos evals` should pass all 70 deterministic evaluations for v4.5.0.
 7. **Repoint whatever launches LPOS** (scheduled jobs, service supervision) at the new release directory's installed `lpos`, and keep the prior version's directory as your rollback path until you are confident.
 
 ## Rollback

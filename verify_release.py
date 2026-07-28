@@ -8,6 +8,7 @@ import json
 import re
 import sys
 import tomllib
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -233,6 +234,40 @@ def main() -> int:
     wheel_name = release.get("wheel")
     if not isinstance(wheel_name, str) or not (ROOT / "Packages" / wheel_name).is_file():
         fail("the offline LPOS v4 wheel named by RELEASE.json is missing", failures)
+    else:
+        wheel_path = ROOT / "Packages" / wheel_name
+        package_root = ROOT / "src" / "lpos_engine"
+        source_package_files = {
+            path.relative_to(ROOT / "src").as_posix(): path
+            for path in package_root.rglob("*")
+            if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"
+        }
+        try:
+            with zipfile.ZipFile(wheel_path) as wheel:
+                wheel_package_files = {
+                    name
+                    for name in wheel.namelist()
+                    if name.startswith("lpos_engine/") and not name.endswith("/")
+                }
+                missing_from_wheel = sorted(set(source_package_files) - wheel_package_files)
+                extra_in_wheel = sorted(wheel_package_files - set(source_package_files))
+                if missing_from_wheel:
+                    fail(
+                        "bundled wheel is missing package files: "
+                        + ", ".join(missing_from_wheel),
+                        failures,
+                    )
+                if extra_in_wheel:
+                    fail(
+                        "bundled wheel contains stale package files: "
+                        + ", ".join(extra_in_wheel),
+                        failures,
+                    )
+                for relative, source_path in sorted(source_package_files.items()):
+                    if relative in wheel_package_files and wheel.read(relative) != source_path.read_bytes():
+                        fail(f"bundled wheel package file differs from source: {relative}", failures)
+        except (OSError, zipfile.BadZipFile) as exc:
+            fail(f"bundled wheel is invalid: {exc}", failures)
 
     # User-facing release text must describe one v4 system rather than a layered historical bundle.
     retired_markers = (
