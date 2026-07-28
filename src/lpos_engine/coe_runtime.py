@@ -390,7 +390,7 @@ class AuditOrchestrator:
         verified = verify_release(release_root, expected_identity=identity, expected_commit=identity["git_commit"])
         scope = release_scope(identity, build_id=build_id, artifact_sha256=verified["artifact_sha256"])
         local = central_date()
-        key = daily_idempotency_key() if trigger in {"scheduled-daily", "backfill"} else f"coe-{trigger}:{identity['git_commit']}:{verified['artifact_sha256']}"
+        key = daily_idempotency_key() if trigger in {"scheduled-daily", "backfill"} else f"coe-{trigger}:{identity['git_commit']}:{verified['artifact_sha256']}:{sortable_id('attempt')}"
         owner = sortable_id("runner")
         if not self.store.acquire_lock(key, owner, 7200):
             raise ValueError(f"audit lock already held for {key}")
