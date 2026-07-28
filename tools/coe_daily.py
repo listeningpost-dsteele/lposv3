@@ -12,7 +12,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from lpos_engine.coe_runtime import AuditOrchestrator, central_date, dashboard_summary, render_daily_report
+from lpos_engine.coe_runtime import AuditOrchestrator, central_date, daily_idempotency_key, dashboard_summary, render_daily_report
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -83,7 +83,12 @@ def main() -> int:
             dependency_audit_command=["npm", "audit", "--omit=dev", "--audit-level=high", "--json"],
         )
     except sqlite3.IntegrityError:
-        existing = orchestrator.store.latest_audit()
+        with orchestrator.store.engine.connection() as connection:
+            row = connection.execute(
+                "SELECT audit_id FROM coe_audits WHERE idempotency_key = ?",
+                (daily_idempotency_key(),),
+            ).fetchone()
+        existing = orchestrator.store.audit(str(row["audit_id"])) if row else None
         if not existing or existing["trigger_name"] != "scheduled-daily" or existing["local_date"] != central_date():
             raise
         audit_id = existing["audit_id"]
