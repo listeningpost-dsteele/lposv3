@@ -116,7 +116,7 @@ task and approval process.
 
 ## Persistence and audit (LPOS-011, LPOS-032)
 
-The authoritative state store is `state/lpos.db`, created and migrated by the LPOS
+The authoritative state store is `<configured-state-root>/lpos.db`, created and migrated by the LPOS
 runtime. Writes are transactional; events are append-only; task and action updates use
 optimistic concurrency; Standing Operation claims are idempotent and leased. The store
 contains tasks, interpretation contracts, artifact specifications, immutable artifacts,
@@ -139,7 +139,8 @@ review prefers a different adapter from creation when one is available.
 
 ## Runtime path discipline
 
-The installer creates one self-contained LPOS v4 directory and local environment.
+The installer creates one LPOS v4 release directory and local environment while keeping
+mutable state in the configured external state root.
 Scheduled jobs invoke the installed `lpos` command and packaged workflow IDs, never a
 temporary staging or historical release directory. Upgrades replace the complete release only
 after bundle verification, database backup, migration validation, and a passing

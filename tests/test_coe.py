@@ -47,6 +47,15 @@ def test_audit_writes_dashboard_report_email_and_history(tmp_path: Path) -> None
     assert len((state / "coe" / "history.jsonl").read_text().splitlines()) == 1
 
 
+def test_mutable_database_inside_release_blocks_readiness(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    (repo / "state").mkdir()
+    (repo / "state" / "lpos.db").write_bytes(b"mutable")
+    result = run_audit(repo, tmp_path / "hermes", tmp_path / "state", "http://127.0.0.1:7374/dashboard/coe")
+    assert result["release_ready"] is False
+    assert "mutable_immutable_boundary" in result["release_blockers"]
+
+
 def test_failed_release_verifier_blocks_release(tmp_path: Path) -> None:
     repo = _repo(tmp_path, verifier_exit=4)
     hermes = tmp_path / "hermes"

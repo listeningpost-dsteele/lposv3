@@ -73,11 +73,11 @@ results remain untrusted until the same independent adversarial process passes.
 ## CLI
 
 ```console
-lpos sentinel status --db state/lpos.db
-lpos sentinel scan --db state/lpos.db --task-id TASK-...
-lpos sentinel reports --db state/lpos.db --unacknowledged
-lpos sentinel show --db state/lpos.db --report-id SREPORT-...
-lpos sentinel ack --db state/lpos.db --report-id SREPORT-... \
+lpos sentinel status --db ~/.local/state/lpos/lpos.db
+lpos sentinel scan --db ~/.local/state/lpos/lpos.db --task-id TASK-...
+lpos sentinel reports --db ~/.local/state/lpos/lpos.db --unacknowledged
+lpos sentinel show --db ~/.local/state/lpos/lpos.db --report-id SREPORT-...
+lpos sentinel ack --db ~/.local/state/lpos/lpos.db --report-id SREPORT-... \
   --acknowledged-by Principal --note "Accepted for remediation planning"
 ```
 

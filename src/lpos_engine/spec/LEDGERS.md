@@ -1,7 +1,7 @@
 # LPOS v4 State and Audit Contract
 
 The LPOS v4 runtime uses a transactional SQLite database as authoritative state. The
-default location is `state/lpos.db`. JSONL is produced only as a portable audit export.
+default location is `~/.local/state/lpos/lpos.db`, or another configured external state root. JSONL is produced only as a portable audit export.
 Secrets, provider credentials, authentication tokens, and private model reasoning never
 enter the database or export.
 
@@ -43,7 +43,7 @@ enter the database or export.
 Run:
 
 ```bash
-lpos export --db state/lpos.db --output state/events.jsonl
+lpos export --db ~/.local/state/lpos/lpos.db --output ~/.local/state/lpos/events.jsonl
 ```
 
 Each line is one immutable event in sequence order. The export is suitable for review,

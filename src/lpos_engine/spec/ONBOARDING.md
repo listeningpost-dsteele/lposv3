@@ -1,6 +1,6 @@
 # LPOS v4 First-Run Onboarding
 
-Run onboarding once after `INSTALL` completes and `lpos doctor --db state/lpos.db`
+Run onboarding once after `INSTALL` completes and `lpos doctor --db ~/.local/state/lpos/lpos.db`
 returns healthy. Ask in the current trusted session until a verified Principal channel
 is active. Keep the process to two concise question rounds.
 
@@ -49,8 +49,8 @@ runs trigger an SO-008 review rather than continued noise.
 Run the integrated local verification flow:
 
 ```bash
-lpos demo --workspace state/verification
-lpos doctor --db state/lpos.db
+lpos demo --workspace ~/.local/state/lpos/verification
+lpos doctor --db ~/.local/state/lpos/lpos.db
 ```
 
 Record the office identity, verified channels, model-class assignments, enabled operations,

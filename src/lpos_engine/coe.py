@@ -259,7 +259,7 @@ def _prompt_drift(jobs: list[dict[str, Any]], current_version: str) -> dict[str,
 def _mutable_immutable(repo: Path) -> dict[str, Any]:
     manifest = _json(repo / "RELEASE-MANIFEST.json", {})
     expected = set(manifest.get("files", {})) if isinstance(manifest, dict) else set()
-    ignored = {".git", ".venv", "state", ".pytest_cache", "dist", "build"}
+    ignored = {".git", ".venv", ".pytest_cache", "dist", "build"}
     mutable_suffixes = {".db", ".db-wal", ".db-shm", ".jsonl", ".log"}
     unlisted_mutable: list[str] = []
     for path in repo.rglob("*"):

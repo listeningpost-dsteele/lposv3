@@ -26,8 +26,8 @@ Inside the release directory:
 
 | Path | Contents |
 |---|---|
-| `state/lpos.db` | The authoritative database: every task, artifact, review, action, approval, evidence record, decision record, operation run, and completion report |
-| `state/verification/` | The record-only verification workspace from install/onboarding |
+| `~/.local/state/lpos/lpos.db` | The authoritative database: every task, artifact, review, action, approval, evidence record, decision record, operation run, and completion report |
+| `~/.local/state/lpos/verification/` | The record-only verification workspace from install/onboarding |
 | `src/lpos_engine/spec/` | The packaged operating specification (readable Markdown) |
 | `docs/` | System documentation, including this wiki's sources under `docs/wiki/` |
 
@@ -43,7 +43,7 @@ Under your home directory (module runtime metadata only — never your project f
 Not everything is a loose file: artifacts created through the task pipeline are stored immutably in the state database, keyed by artifact ID and SHA-256 content hash. To see a task's artifact and where its actions wrote files, use:
 
 ```bash
-lpos inspect --db state/lpos.db --task-id TASK-...
+lpos inspect --db ~/.local/state/lpos/lpos.db --task-id TASK-...
 ```
 
 The output includes the artifact (with its content hash) and every file action's parameters — including the exact paths written by the sandboxed file adapter. [Reading agent output](/working-with/reading-agent-output.html) walks through this output field by field.
@@ -51,7 +51,7 @@ The output includes the artifact (with its content hash) and every file action's
 ## When you truly cannot find it
 
 - Search the dashboard's Archive view — items restored in one action.
-- Run `lpos events --db state/lpos.db` and scan for the task or operation in question; every write left an event.
+- Run `lpos events --db ~/.local/state/lpos/lpos.db` and scan for the task or operation in question; every write left an event.
 - Check the dashboard's Hermes root configuration — a project outside the configured root will not be scanned.
 
 ## Related pages

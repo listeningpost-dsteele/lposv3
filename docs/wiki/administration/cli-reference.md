@@ -44,7 +44,7 @@ Validates the packaged executable JSON Schemas (or a directory you point it at).
 
 ### `lpos init --db PATH`
 
-Initializes (or migrates) the transactional state database at PATH, applying the checksummed migrations, and reports the migration list and an integrity check. The installer runs this for you against `state/lpos.db`.
+Initializes (or migrates) the transactional state database at PATH, applying the checksummed migrations, and reports the migration list and an integrity check. The installer runs this for you against `~/.local/state/lpos/lpos.db`.
 
 ### `lpos inspect --db PATH --task-id ID`
 

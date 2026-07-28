@@ -12,7 +12,7 @@ You want to be able to lose this machine and not lose your system's memory. The 
 
 | What | Where | Why |
 |---|---|---|
-| The state database | `state/lpos.db` | The authoritative record: tasks, contracts, specs, artifacts, reviews, actions, approvals, evidence, decisions, operation runs, completion reports, events |
+| The state database | `~/.local/state/lpos/lpos.db` by default | The authoritative record: tasks, contracts, specs, artifacts, reviews, actions, approvals, evidence, decisions, operation runs, completion reports, events |
 | JSONL event exports | wherever you write them | Portable, ordered, line-per-event audit snapshots |
 | Module state | `~/.hermes/dashboard/state.json`, `~/.hermes/monitor/` | Bucket/snooze/archive metadata and connector health history — small, and losing them degrades gracefully, but cheap to include |
 | Your project files | your Hermes project directories | The deliverables themselves |

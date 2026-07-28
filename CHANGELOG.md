@@ -9,7 +9,9 @@ storage, technical-debt lifecycle, documentation, security, engineering, and opp
 backlogs. The fail-closed release gate combines those audits with the packaged evaluation
 suite. Each run writes current JSON, append-only history, an email-ready report, and a
 localhost Operational Excellence Dashboard under mutable state. Constitutional Principle XI
-codifies operational sustainability. No publication is performed by the audit command.
+codifies operational sustainability. Installer-managed transactional state defaults to
+`~/.local/state/lpos`; paths inside an immutable release tree are rejected. No publication
+is performed by the audit command.
 
 Quality-system release: adds the packaged `design-anti-slop-reviewer` skill and makes
 visual anti-slop review a required LPOS path for customer-facing websites, product

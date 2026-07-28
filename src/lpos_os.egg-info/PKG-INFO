@@ -73,8 +73,9 @@ python install.py
 ```
 
 The installer verifies the release manifest, creates `.venv`, installs the bundled wheel
-offline, initializes `state/lpos.db`, validates the packaged schemas, runs `lpos doctor`,
-and executes the record-only local verification flow.
+offline, initializes `~/.local/state/lpos/lpos.db` by default, validates the packaged
+schemas, runs `lpos doctor`, and executes the record-only local verification flow. Use
+`--state-root` or `LPOS_STATE_ROOT` to select another approved mutable state directory.
 
 ## Use the installed CLI
 
@@ -82,7 +83,7 @@ macOS or Linux:
 
 ```bash
 .venv/bin/lpos version
-.venv/bin/lpos doctor --db state/lpos.db
+.venv/bin/lpos doctor --db ~/.local/state/lpos/lpos.db
 .venv/bin/lpos list-specialists
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks

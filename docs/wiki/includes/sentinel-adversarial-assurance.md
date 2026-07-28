@@ -59,9 +59,9 @@ the same adversarial review.
 ## Useful commands
 
 ```console
-lpos sentinel status --db state/lpos.db
-lpos sentinel reports --db state/lpos.db --unacknowledged
-lpos sentinel scan --db state/lpos.db --task-id TASK-...
+lpos sentinel status --db ~/.local/state/lpos/lpos.db
+lpos sentinel reports --db ~/.local/state/lpos/lpos.db --unacknowledged
+lpos sentinel scan --db ~/.local/state/lpos/lpos.db --task-id TASK-...
 ```
 
 Sentinel is a defense layer, not proof of security or compliance.

@@ -11,7 +11,7 @@ You want to know, quickly and with confidence, that LPOS is healthy — or exact
 ## Layer 1: `lpos doctor` — the one-command check
 
 ```bash
-lpos doctor --db state/lpos.db
+lpos doctor --db ~/.local/state/lpos/lpos.db
 ```
 
 Doctor verifies the integrated specification, runtime assets, and database in one pass and prints one JSON object:
@@ -50,7 +50,7 @@ Both record evidence for every run, so "how healthy has this system been?" is an
 
 ## A quick health checklist
 
-1. `lpos doctor --db state/lpos.db` says healthy.
+1. `lpos doctor --db ~/.local/state/lpos/lpos.db` says healthy.
 2. Dashboard health strip is green (or `~/.hermes/monitor/status.json` shows everything ok).
 3. No unread `LPOS ALERT` emails.
 4. `lpos evals` passes 70/70 (worth running after any upgrade).

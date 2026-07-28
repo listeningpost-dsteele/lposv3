@@ -6,7 +6,7 @@ order: 3
 
 # Onboarding walkthrough
 
-You have installed LPOS and `lpos doctor --db state/lpos.db` reports healthy. Onboarding is the one-time conversation that turns the installed engine into *your* system: it establishes who you are, discovers what adapters exist, verifies your channels, and deliberately switches on the recurring operations that make sense for you.
+You have installed LPOS and `lpos doctor --db ~/.local/state/lpos/lpos.db` reports healthy. Onboarding is the one-time conversation that turns the installed engine into *your* system: it establishes who you are, discovers what adapters exist, verifies your channels, and deliberately switches on the recurring operations that make sense for you.
 
 Onboarding runs once, in your current trusted session, and is kept to two concise question rounds. Until a verified Principal channel is active, all questions come to you through that trusted session.
 
@@ -47,8 +47,8 @@ The [Reference section](/includes/index.html) has one page per operation with it
 Onboarding finishes by running the integrated local verification flow and re-checking health:
 
 ```bash
-lpos demo --workspace state/verification
-lpos doctor --db state/lpos.db
+lpos demo --workspace ~/.local/state/lpos/verification
+lpos doctor --db ~/.local/state/lpos/lpos.db
 ```
 
 Then it records the installation record: the office identity, verified channels, model-class assignments, enabled operations, deferred operations, adapter safety boundaries, the verification result, and outstanding limitations. The rule throughout is honesty: nothing — no channel, adapter, review, or operation — is described as active unless its corresponding test actually passed.

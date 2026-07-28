@@ -243,6 +243,7 @@ tests/test_engine_review.py
 tests/test_evolution.py
 tests/test_hardening.py
 tests/test_identity_boundary.py
+tests/test_install_state_root.py
 tests/test_integration_boundaries.py
 tests/test_materiality_state.py
 tests/test_models.py
