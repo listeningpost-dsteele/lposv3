@@ -395,13 +395,13 @@
   "tools/build_release_archive.py": "f4a0a6829377a76a8aeee49289fc1a0e7f591350319ccef73f81ff3fa4109721",
   "tools/build_test_report.py": "27e650123dae92f36bfdf5b8f27fa8476745856261c49dbbb053b21ef8a29083",
   "tools/build_wiki.py": "187acb4d951146ddad0da4d2f1abe55262206ce6e3b261feec787c03997c8f0d",
-  "tools/coe_daily.py": "fac2ea624c984e57158c534414e897185ac942fe044ddb47ba0d5147f9044a05",
+  "tools/coe_daily.py": "96d04e87582877bc623edb06554331acf18962712974e459497b91acb294dea8",
   "tools/make_sbom.py": "21e132cf9e97dc10298afcb6fff320d9d688dcae9108dd6974f099cfb28ad085",
   "tools/reseal.py": "654a6aecb0bd2b3f74b89102088bc4bf831dc99c678137a10bd97b079e8a4ca4",
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
   "verify_release.py": "24547d3c86f26e51cc0a902c8d9eaa74d28028505630948fed450ca90932798a"
  },
- "generated_at": "2026-07-28T17:50:42Z",
+ "generated_at": "2026-07-28T17:55:50Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.5.0"
