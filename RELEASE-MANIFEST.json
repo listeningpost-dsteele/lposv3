@@ -350,8 +350,8 @@
   "src/lpos_engine/workflows/SO-029.json": "eb44f899b5f3e16ffe9e8b3ba4d3cc330c60fc3b38e26160764cbdc4345e288b",
   "src/lpos_engine/workflows/__init__.py": "e1744eefe5a0e258c3add550e95b55a3e3e75ada87cea21a25bed17a649491bb",
   "src/lpos_engine/workflows/catalog.json": "e83a86174a1f6f15ccc7a61db84156b2be4534d6eddd897b74a7df6fa82c9c0c",
-  "src/lpos_os.egg-info/PKG-INFO": "cf46b426545a8368b28d68c34c3d32e0e621eddc8feff297fa918038c1859019",
-  "src/lpos_os.egg-info/SOURCES.txt": "2e2490f15efc6a189a4187b5ce181fecd3c5d9548701be8ef617620024fe0fec",
+  "src/lpos_os.egg-info/PKG-INFO": "be871fb610c8970ba7fbebed27543609d48334bf90b782db955154a8ef70c07e",
+  "src/lpos_os.egg-info/SOURCES.txt": "9c04fb7a4fde72671420875387f286d0d80dcbc8e67d490b982e81df830e8399",
   "src/lpos_os.egg-info/dependency_links.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
   "src/lpos_os.egg-info/entry_points.txt": "20aa4ee6d9f26340fca25e6ff18ad73c540a348c735b6995cc771b4368aa174b",
   "src/lpos_os.egg-info/requires.txt": "edfad05063ec8f569393705726ddd543e56bf2d7b5e19163f38de3aee921da48",
@@ -400,7 +400,7 @@
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
   "verify_release.py": "24547d3c86f26e51cc0a902c8d9eaa74d28028505630948fed450ca90932798a"
  },
- "generated_at": "2026-07-28T16:04:06Z",
+ "generated_at": "2026-07-28T16:05:11Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.5.0"
