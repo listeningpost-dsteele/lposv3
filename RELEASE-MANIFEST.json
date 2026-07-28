@@ -1,7 +1,7 @@
 {
  "archive": "LPOS-v4.5.0-Complete.zip",
  "distribution_type": "integrated",
- "file_count": 395,
+ "file_count": 396,
  "files": {
   "CHANGELOG.md": "95fd3d90cff5fc971da04e40a0c6dc9c0a7c710e25658ef97d708f5d5399be56",
   "INSTALL.cmd": "2d455e27068464a27d7a0c18e77b336feb200a483fe4ab173998f1e237799401",
@@ -13,7 +13,7 @@
   "RELEASE-TEST-REPORT.md": "9d30f946c8ea440065459217552c799b5c84deccc83eade06a74af39d8d479df",
   "RELEASE.json": "602055bb2fbba5321e972a7c02446cdc799c1a10d09b5e6cc751cb0eeb14b7b1",
   "SBOM.json": "6d193ab75e839c27073899e81f53c7ff8fcc22b02225e46def35df82f50e11cd",
-  "acceptance/ACCEPTANCE_CHECKLIST.md": "9642cc37b88aeaef10e8f0d015ec7541ce794c4c9250828f2455af61d161b617",
+  "acceptance/ACCEPTANCE_CHECKLIST.md": "7ba804d44db84cdcb339c58f08920fa543ee7342e4ba66f699c629d384fb74e4",
   "config/artifact-lifecycle.json": "cc8d3d507affe9b8028a18dce2c2c802409d99bcec5d7b3483a00305c62f56a8",
   "config/backup-policy.json": "a2957119f61a03f5e2408805ab75783764ee522e1b96228e0a77f0de7b3b6643",
   "config/coe-gates.json": "c03662f75e783e3ff99fcb763cca4c41231c831dfb1638b15190e4334ecae602",
@@ -41,6 +41,7 @@
   "docs/architecture/coe/RELEASE_ASSURANCE.md": "75c6101ddeb1d53ac2562c880b899e93167dfbf4fdfcfdb5c18983a686145e02",
   "docs/architecture/coe/SECURITY.md": "674053ca3aec19e75b5582cc4406a0eef481e3e60c968ce0f51ae16e8effca94",
   "docs/implementation-evidence/COE-BASELINE.md": "82d7b80896b41ad3e50745318af724c7aeb60eaaa61c8647a87c47c8e04b481a",
+  "docs/implementation-evidence/COE-CLOSEOUT.md": "04532ab942753aee010204a510b23180304a04024bc8112bc700f037b0b04b41",
   "docs/implementation/COE-IMPLEMENTATION-ORDER.md": "c17c3e586c97cf86accbb8edad6ad31d15590918418322d1a36ef72781c293bf",
   "docs/passoff/LPOS-v4.5.0-COE.md": "ce4f01da08f723baf0ef8e944a1a61afe4d0e994606b547aaaec7f44372770de",
   "docs/wiki/administration/backups.md": "2fda7489359da0e185a26117e4f22a26028ed71718375a1345bd048111c44051",
@@ -399,7 +400,7 @@
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
   "verify_release.py": "24547d3c86f26e51cc0a902c8d9eaa74d28028505630948fed450ca90932798a"
  },
- "generated_at": "2026-07-28T15:54:38Z",
+ "generated_at": "2026-07-28T16:04:06Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.5.0"
