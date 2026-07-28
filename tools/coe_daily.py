@@ -65,9 +65,9 @@ def main() -> int:
         build_id=os.environ.get("COE_BUILD_ID", f"scheduled-{app_head[:12]}"),
         baseline_commit=app_baseline,
         deterministic_commands=[
-            {"executable": python, "arguments": ["-m", "pytest", "-p", "no:cacheprovider", "-q", str(lpos_repo / "tests")], "cwd": str(lpos_repo), "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-            {"executable": "npm", "arguments": ["run", "migrate"], "cwd": str(app_repo), "environment": test_environment},
-            {"executable": "npm", "arguments": ["run", "test"], "cwd": str(app_repo), "environment": test_environment},
+            {"name": "lpos-test-suite", "command": [python, "-m", "pytest", "-p", "no:cacheprovider", "-q", str(lpos_repo / "tests")], "cwd": str(lpos_repo), "env": {"PYTHONDONTWRITEBYTECODE": "1"}},
+            {"name": "chip-state-migration", "command": ["npm", "run", "migrate"], "cwd": str(app_repo), "env": test_environment},
+            {"name": "chip-test-suite", "command": ["npm", "run", "test"], "cwd": str(app_repo), "env": test_environment},
         ],
         source_repositories=[
             {"path": str(app_repo), "baseline_commit": app_baseline, "target_commit": app_head},
