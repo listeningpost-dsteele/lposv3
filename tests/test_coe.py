@@ -3,7 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from lpos_engine.coe import load_latest, run_audit
+import pytest
+
+from lpos_engine.coe import load_latest, run_audit, serve
 
 
 def _repo(tmp_path: Path, *, verifier_exit: int = 0) -> Path:
@@ -44,12 +46,58 @@ def test_audit_writes_dashboard_report_email_and_history(tmp_path: Path) -> None
     assert load_latest(state)["audit_id"] == result["audit_id"]
     assert "Operational health and release readiness" in (state / "coe" / "dashboard.html").read_text()
     assert "Subject: LPOS Continuous Operational Excellence Report" in (state / "coe" / "daily-email.md").read_text()
+    email = (state / "coe" / "daily-email.md").read_text()
+    assert result["generated_at"] in email
+    assert result["release_version"] in email
+    assert result["audit_id"] in email
+    assert result["dashboard_url"] in email
     assert len((state / "coe" / "history.jsonl").read_text().splitlines()) == 1
     assert result["audit_history"][-1]["audit_id"] == result["audit_id"]
     second = run_audit(repo, hermes, state, "http://127.0.0.1:7374/dashboard/coe")
     assert len((state / "coe" / "history.jsonl").read_text().splitlines()) == 2
     assert [item["audit_id"] for item in second["audit_history"]][-2:] == [result["audit_id"], second["audit_id"]]
     assert result["audit_id"] in (state / "coe" / "dashboard.html").read_text()
+
+
+def test_dashboard_escapes_release_version_and_keeps_state_outside_repo(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    payload = json.loads((repo / "RELEASE.json").read_text())
+    payload["version"] = "<script>alert(1)</script>"
+    (repo / "RELEASE.json").write_text(json.dumps(payload))
+    state = tmp_path / "external-state"
+    run_audit(repo, tmp_path / "hermes", state, "http://127.0.0.1:7374/dashboard/coe")
+    dashboard = (state / "coe" / "dashboard.html").read_text()
+    assert "<script>alert(1)</script>" not in dashboard
+    assert "&lt;script&gt;alert(1)&lt;/script&gt;" in dashboard
+    assert not (repo / "coe").exists()
+    assert not list(repo.rglob("daily-email.md"))
+
+
+def test_dashboard_refuses_non_loopback_binding(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("LPOS_COE_ALLOW_NONLOOPBACK", raising=False)
+    with pytest.raises(ValueError, match="refuses non-loopback"):
+        serve(tmp_path, host="0.0.0.0", port=0)
+
+
+def test_wake_gate_requires_an_explicit_false_result(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    hermes = tmp_path / "hermes"
+    scripts = hermes / "scripts"
+    scripts.mkdir(parents=True)
+    (scripts / "true_gate.py").write_text("print({'wakeAgent': True})\n")
+    (scripts / "false_gate.py").write_text("print({'wakeAgent': False})\n")
+    jobs = {
+        "jobs": [
+            {"id": "true", "name": "True gate", "schedule": "*/5 * * * *", "script": "true_gate.py", "prompt": "Current"},
+            {"id": "false", "name": "False gate", "schedule": "every 10m", "script": "false_gate.py", "prompt": "Current"},
+        ]
+    }
+    (hermes / "cron").mkdir()
+    (hermes / "cron" / "jobs.json").write_text(json.dumps(jobs))
+    result = run_audit(repo, hermes, tmp_path / "state", "http://127.0.0.1:7374/dashboard/coe")
+    wake = next(item for item in result["findings"] if item["domain"] == "wake_agent_efficiency")
+    assert wake["evidence"]["ungated_jobs"] == ["true"]
+    assert wake["evidence"]["wake_gated_jobs"] == ["false"]
 
 
 def test_mutable_database_inside_release_blocks_readiness(tmp_path: Path) -> None:
