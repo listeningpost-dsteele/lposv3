@@ -21,6 +21,8 @@ def make_release(root: Path) -> dict:
     (root / "package.json").write_text('{"version":"4.5.0"}\n', encoding="utf-8")
     (root / "assets").mkdir()
     (root / "assets" / "app.js").write_text("console.log('ok');\n", encoding="utf-8")
+    (root / "public" / "ops" / "status").mkdir(parents=True)
+    (root / "public" / "ops" / "status" / "index.html").write_text("immutable route asset\n", encoding="utf-8")
     return generate_manifest(root, release=IDENTITY, source_commit=COMMIT, build_id="build-1")
 
 
@@ -36,7 +38,7 @@ def test_clean_release_passes(tmp_path: Path) -> None:
     created = make_release(tmp_path)
     result = verify_release(tmp_path, expected_identity=IDENTITY, expected_commit=COMMIT)
     assert result["status"] == "pass"
-    assert result["file_count"] == 2
+    assert result["file_count"] == 3
     assert result["artifact_sha256"] == created["artifact_sha256"]
 
 

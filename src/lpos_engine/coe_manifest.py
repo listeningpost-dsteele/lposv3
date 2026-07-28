@@ -14,9 +14,10 @@ from .coe_contract import canonical_json, read_release_identity, sha256_bytes, s
 
 MANIFEST_NAME = "release-manifest.json"
 TOOL_VERSION = "lpos-release-manifest/1.0.0"
-FORBIDDEN_PARTS = {
-    ".git", ".terraform", "node_modules", "__pycache__", ".pytest_cache", "state", "reports",
-    "backups", "cache", ".venv", "dist", "build", "status", "runtime-state",
+FORBIDDEN_ANYWHERE = {".git", ".terraform", "node_modules", ".venv", "__pycache__", ".pytest_cache"}
+FORBIDDEN_TOP_LEVEL = {
+    "state", "status", "runtime-state", "reports", "logs", "backups",
+    "cache", "dist", "build",
 }
 FORBIDDEN_SUFFIXES = {".db", ".db-wal", ".db-shm", ".log", ".jsonl", ".tmp", ".pyc"}
 FORBIDDEN_NAMES = {".env", "credentials.json", "token.json", "auth.json", "cookies.json"}
@@ -36,8 +37,8 @@ def _safe_relative(value: str) -> PurePosixPath:
 def _is_mutable_path(path: PurePosixPath) -> bool:
     lowered = tuple(part.lower() for part in path.parts)
     return bool(
-        set(lowered) & FORBIDDEN_PARTS
-        or path.name.lower() in FORBIDDEN_NAMES
+        set(lowered) & FORBIDDEN_ANYWHERE
+        or (lowered and lowered[0] in FORBIDDEN_TOP_LEVEL)
         or any(path.name.lower().endswith(suffix) for suffix in FORBIDDEN_SUFFIXES)
     )
 
