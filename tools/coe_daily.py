@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import sqlite3
@@ -12,7 +13,8 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-from lpos_engine.coe_runtime import AuditOrchestrator, central_date, daily_idempotency_key, dashboard_summary, render_daily_report
+from lpos_engine.coe_contract import utc_now
+from lpos_engine.coe_runtime import AuditOrchestrator, central_date, daily_idempotency_key, dashboard_summary, render_daily_report, write_projection
 
 
 def _git(repo: Path, *args: str) -> str:
@@ -117,6 +119,25 @@ def main() -> int:
         )
         delivery_payload = delivery.get("delivery")
         delivery_status = str(delivery_payload.get("status", "unknown") if isinstance(delivery_payload, dict) else delivery.get("status", "unknown"))
+        if delivery_status == "delivered" and isinstance(delivery_payload, dict):
+            completed_at = utc_now()
+            if orchestrator.store.latest_delivery(result["audit"]["audit_id"]) is None:
+                orchestrator.store.record_delivery(
+                    result["audit"]["audit_id"],
+                    {
+                        "status": "delivered",
+                        "attempt_number": int(delivery_payload.get("attempt", 1)),
+                        "provider": "resend",
+                        "provider_message_id": delivery_payload.get("provider_message_id"),
+                        "report_hash": hashlib.sha256(report.encode("utf-8")).hexdigest(),
+                        "dashboard_url": f"{base_url}/dashboard/coe?audit={result['audit']['audit_id']}",
+                        "started_at": completed_at,
+                        "completed_at": completed_at,
+                    },
+                )
+            updated_summary = dashboard_summary(orchestrator.store, result["audit"]["audit_id"], public_base_url=base_url)
+            write_projection(orchestrator.store, updated_summary)
+            _post_json(f"{base_url}/api/v1/coe/import", token, {"summary": updated_summary})
     output = {
         "audit_id": result["audit"]["audit_id"],
         "status": result["audit"]["status"],
