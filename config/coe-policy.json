@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "timezone": "America/Chicago",
+  "cron": "0 3 * * *",
+  "evidence_retention_days": 365,
+  "report_retention_days": 365,
+  "maximum_gate_age_seconds": 7200,
+  "maximum_audit_runtime_ms": 7200000,
+  "required_production_flags": [
+    "COE_ENABLED",
+    "COE_SCHEDULE_ENABLED",
+    "COE_DASHBOARD_ENABLED",
+    "COE_EMAIL_ENABLED"
+  ],
+  "score_weights": {
+    "engineering": 0.20,
+    "security": 0.20,
+    "efficiency": 0.15,
+    "release_integrity": 0.15,
+    "documentation": 0.10,
+    "cost": 0.10,
+    "scheduler_health": 0.05,
+    "backup_health": 0.05
+  },
+  "open_critical_score_cap": 59,
+  "required_documentation_passoff": true,
+  "unknown_blocks_release": true
+}

@@ -249,7 +249,7 @@ class EventChainTests(unittest.TestCase):
 
         store = SQLiteStore(legacy)
         names = [item["migration_name"] for item in store.list_migrations()]
-        self.assertEqual(names, ["001_initial.sql", "002_event_chain.sql", "003_sentinel.sql"])
+        self.assertEqual(names, ["001_initial.sql", "002_event_chain.sql", "003_sentinel.sql", "004_coe.sql"])
         result = store.verify_event_chain()
         self.assertTrue(result["ok"])
         self.assertEqual(result["events"], 4)

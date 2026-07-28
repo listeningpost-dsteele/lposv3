@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "owner": "LPOS Platform Operations",
+  "purpose": "Recover mutable LPOS and Chip operational state without copying release caches or credentials",
+  "approved_sources": ["${COE_STATE_DIR}"],
+  "approved_destinations": ["${COE_BACKUP_DIR}"],
+  "exclusions": [".terraform", "node_modules", "__pycache__", ".pytest_cache", "cache", "backups", "credentials", "tokens"],
+  "maximum_total_bytes": 5368709120,
+  "maximum_file_count": 100000,
+  "maximum_single_file_bytes": 1073741824,
+  "encryption_required": true,
+  "forbidden_name_patterns": [".env", "credentials.json", "token.json", "auth.json", "private_key"],
+  "nested_backups_forbidden": true,
+  "restore_test_frequency_days": 7,
+  "maximum_restore_evidence_age_days": 7,
+  "retention_classes": {"daily": 14, "weekly": 8, "monthly": 12}
+}

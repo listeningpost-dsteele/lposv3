@@ -1,0 +1,99 @@
+openapi: 3.1.0
+info:
+  title: LPOS COE Private API
+  version: 4.5.0
+servers:
+  - url: https://chip.listeningpost.ai
+security:
+  - operatorBearer: []
+paths:
+  /api/v1/coe/summary:
+    get:
+      operationId: getCoeSummary
+      responses:
+        "200": {description: Persisted COE summary}
+        "401": {description: Authentication required}
+  /api/v1/coe/audits:
+    get:
+      operationId: listCoeAudits
+      parameters:
+        - {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 100}}
+        - {name: offset, in: query, schema: {type: integer, minimum: 0}}
+      responses:
+        "200": {description: Bounded audit list}
+  /api/v1/coe/audits/{auditId}:
+    get:
+      operationId: getCoeAudit
+      parameters:
+        - {name: auditId, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Audit, decision, and evidence}
+        "404": {description: Audit not found}
+  /api/v1/coe/findings:
+    get:
+      operationId: listCoeFindings
+      responses:
+        "200": {description: Findings}
+  /api/v1/coe/opportunities:
+    get:
+      operationId: listCoeOpportunities
+      responses:
+        "200": {description: Opportunities}
+  /api/v1/coe/opportunities/{opportunityId}/decision:
+    post:
+      operationId: decideCoeOpportunity
+      parameters:
+        - {name: opportunityId, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [decision, actor]
+              properties:
+                decision: {enum: [approved, rejected, deferred]}
+                actor: {type: string, minLength: 1}
+                reason: {type: string}
+      responses:
+        "201": {description: Append-only operator decision}
+        "400": {description: Invalid decision}
+  /api/v1/coe/technical-debt:
+    get:
+      operationId: listCoeTechnicalDebt
+      responses:
+        "200": {description: Technical debt lifecycle records}
+  /api/v1/coe/storage:
+    get:
+      operationId: getCoeStorage
+      responses:
+        "200": {description: Storage time series}
+  /api/v1/coe/scheduler:
+    get:
+      operationId: getCoeScheduler
+      responses:
+        "200": {description: Scheduler and wake decisions}
+  /api/v1/coe/backups:
+    get:
+      operationId: getCoeBackups
+      responses:
+        "200": {description: Backup and restore evidence}
+  /api/v1/coe/reports/{auditId}:
+    get:
+      operationId: getCoeReport
+      parameters:
+        - {name: auditId, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Rendered daily report}
+        "404": {description: Report not found}
+  /api/v1/operator/release-gate:
+    get:
+      operationId: getReleaseGate
+      responses:
+        "200": {description: Latest persisted release decision}
+components:
+  securitySchemes:
+    operatorBearer:
+      type: http
+      scheme: bearer

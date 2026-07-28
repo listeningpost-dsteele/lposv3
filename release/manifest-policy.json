@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "manifest_name": "release-manifest.json",
+  "allow_symlinks": false,
+  "allow_unlisted_files": false,
+  "mutable_path_components": ["state", "status", "runtime-state", "reports", "backups", "cache", ".terraform", "node_modules", "__pycache__", ".pytest_cache"],
+  "forbidden_names": [".env", "credentials.json", "token.json", "auth.json", "cookies.json"],
+  "path_format": "posix-relative",
+  "hash": "sha256",
+  "require_size": true,
+  "require_mode": true,
+  "require_source_commit": true,
+  "require_release_identity": true
+}

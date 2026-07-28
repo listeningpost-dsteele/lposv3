@@ -613,7 +613,7 @@ class StoreMigrationAndBindingTests(unittest.TestCase):
         migrations = self.store.list_migrations()
         self.assertEqual(
             [item["migration_name"] for item in migrations],
-            ["001_initial.sql", "002_event_chain.sql", "003_sentinel.sql"],
+            ["001_initial.sql", "002_event_chain.sql", "003_sentinel.sql", "004_coe.sql"],
         )
         self.assertEqual(len(migrations[0]["checksum"]), 64)
         self.assertEqual(self.store.integrity_check(), "ok")

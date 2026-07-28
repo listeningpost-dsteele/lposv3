@@ -1,215 +1,209 @@
 from __future__ import annotations
 
 import json
+import sqlite3
+import subprocess
+import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
 
-from lpos_engine.coe import load_latest, run_audit, serve
+from lpos_engine.coe import run_audit
+from lpos_engine.coe_contract import (
+    GATE_IDS,
+    ZERO_HASH,
+    canonical_json,
+    evidence_hash,
+    redact,
+    release_scope,
+    sha256_bytes,
+    sortable_id,
+    validate_gate_evidence,
+    verify_evidence_chain,
+)
+from lpos_engine.coe_runtime import GateRunner, ReleaseController, central_date, daily_idempotency_key, perform_backup_restore, wake_decision
+from lpos_engine.coe_store import COEStore
+
+RELEASE = {
+    "product": "chip-service",
+    "release_version": "4.5.0",
+    "release_channel": "stable",
+    "git_commit": "a" * 40,
+    "build_id": "build-1",
+    "artifact_sha256": "b" * 64,
+}
 
 
-def _repo(tmp_path: Path, *, verifier_exit: int = 0) -> Path:
-    repo = tmp_path / "release"
-    repo.mkdir()
-    (repo / "RELEASE.json").write_text('{"version":"4.5.0"}\n', encoding="utf-8")
-    (repo / "RELEASE-MANIFEST.json").write_text('{"files":{}}\n', encoding="utf-8")
-    (repo / "verify_release.py").write_text(
-        f"import sys\nprint('fixture verifier')\nsys.exit({verifier_exit})\n",
-        encoding="utf-8",
-    )
-    for relative in (
-        "README.md",
-        "CHANGELOG.md",
-        "docs/ARCHITECTURE.md",
-        "docs/TESTING.md",
-        "docs/wiki/administration/cli-reference.md",
-        "docs/wiki/administration/backups.md",
-    ):
-        target = repo / relative
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text("fixture\n", encoding="utf-8")
-    return repo
-
-
-def test_audit_writes_dashboard_report_email_and_history(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    hermes = tmp_path / "hermes"
-    (hermes / "cron").mkdir(parents=True)
-    (hermes / "cron" / "jobs.json").write_text('{"jobs":[]}\n', encoding="utf-8")
-    state = tmp_path / "state"
-
-    result = run_audit(repo, hermes, state, "http://127.0.0.1:7374/dashboard/coe")
-
-    assert result["release_ready"] is True
-    assert result["release_version"] == "4.5.0"
-    assert result["audit_id"].startswith("COE-")
-    assert load_latest(state)["audit_id"] == result["audit_id"]
-    assert "Operational health and release readiness" in (state / "coe" / "dashboard.html").read_text()
-    assert "Subject: LPOS Continuous Operational Excellence Report" in (state / "coe" / "daily-email.md").read_text()
-    email = (state / "coe" / "daily-email.md").read_text()
-    assert result["generated_at"] in email
-    assert result["release_version"] in email
-    assert result["audit_id"] in email
-    assert result["dashboard_url"] in email
-    assert len((state / "coe" / "history.jsonl").read_text().splitlines()) == 1
-    assert result["audit_history"][-1]["audit_id"] == result["audit_id"]
-    second = run_audit(repo, hermes, state, "http://127.0.0.1:7374/dashboard/coe")
-    assert len((state / "coe" / "history.jsonl").read_text().splitlines()) == 2
-    assert [item["audit_id"] for item in second["audit_history"]][-2:] == [result["audit_id"], second["audit_id"]]
-    assert result["audit_id"] in (state / "coe" / "dashboard.html").read_text()
-
-
-def test_dashboard_escapes_release_version_and_keeps_state_outside_repo(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    payload = json.loads((repo / "RELEASE.json").read_text())
-    payload["version"] = "<script>alert(1)</script>"
-    (repo / "RELEASE.json").write_text(json.dumps(payload))
-    state = tmp_path / "external-state"
-    run_audit(repo, tmp_path / "hermes", state, "http://127.0.0.1:7374/dashboard/coe")
-    dashboard = (state / "coe" / "dashboard.html").read_text()
-    assert "<script>alert(1)</script>" not in dashboard
-    assert "&lt;script&gt;alert(1)&lt;/script&gt;" in dashboard
-    assert not (repo / "coe").exists()
-    assert not list(repo.rglob("daily-email.md"))
-
-
-def test_dashboard_refuses_non_loopback_binding(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
-    monkeypatch.delenv("LPOS_COE_ALLOW_NONLOOPBACK", raising=False)
-    with pytest.raises(ValueError, match="refuses non-loopback"):
-        serve(tmp_path, host="0.0.0.0", port=0)
-
-
-def test_wake_gate_requires_an_explicit_false_result(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    hermes = tmp_path / "hermes"
-    scripts = hermes / "scripts"
-    scripts.mkdir(parents=True)
-    (scripts / "true_gate.py").write_text("print({'wakeAgent': True})\n")
-    (scripts / "false_gate.py").write_text("print({'wakeAgent': False})\n")
-    jobs = {
-        "jobs": [
-            {"id": "true", "name": "True gate", "schedule": "*/5 * * * *", "script": "true_gate.py", "prompt": "Current"},
-            {"id": "false", "name": "False gate", "schedule": "every 10m", "script": "false_gate.py", "prompt": "Current"},
-        ]
+def evidence(gate_id: str, audit_id: str, previous: str, status: str = "pass") -> dict:
+    record = {
+        "schema_version": 1,
+        "evidence_id": sortable_id("evidence"),
+        "audit_id": audit_id,
+        "gate_id": gate_id,
+        "gate_version": "1.0.0",
+        "status": status,
+        "started_at": "2026-07-28T12:00:00Z",
+        "completed_at": "2026-07-28T12:00:01Z",
+        "duration_ms": 1000,
+        "executable": sys.executable,
+        "arguments": ["-m", "test"],
+        "exit_code": 0 if status == "pass" else 1,
+        "signal": None,
+        "release": RELEASE,
+        "git_commit": RELEASE["git_commit"],
+        "input_hashes": {},
+        "checks": [{"check_id": "real-check", "status": "pass" if status == "pass" else "fail", "detail": "command ran"}],
+        "stdout_sha256": sha256_bytes(b""),
+        "stderr_sha256": sha256_bytes(b""),
+        "stdout_excerpt": "",
+        "stderr_excerpt": "",
+        "artifacts": [],
+        "previous_evidence_hash": previous,
+        "source": "command",
     }
-    (hermes / "cron").mkdir()
-    (hermes / "cron" / "jobs.json").write_text(json.dumps(jobs))
-    result = run_audit(repo, hermes, tmp_path / "state", "http://127.0.0.1:7374/dashboard/coe")
-    wake = next(item for item in result["findings"] if item["domain"] == "wake_agent_efficiency")
-    assert wake["evidence"]["ungated_jobs"] == ["true"]
-    assert wake["evidence"]["wake_gated_jobs"] == ["false"]
+    record["evidence_hash"] = evidence_hash(record, previous)
+    return record
 
 
-def test_mutable_database_inside_release_blocks_readiness(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    (repo / "state").mkdir()
-    (repo / "state" / "lpos.db").write_bytes(b"mutable")
-    result = run_audit(repo, tmp_path / "hermes", tmp_path / "state", "http://127.0.0.1:7374/dashboard/coe")
-    assert result["release_ready"] is False
-    assert "mutable_immutable_boundary" in result["release_blockers"]
+def create_audit(store: COEStore, audit_id: str) -> None:
+    store.create_audit(
+        audit_id=audit_id,
+        trigger="pre-release",
+        local_date="2026-07-28",
+        timezone_name="America/Chicago",
+        idempotency_key=f"pre-release:{audit_id}",
+        release_version="4.5.0",
+        git_commit=RELEASE["git_commit"],
+        artifact_sha256=RELEASE["artifact_sha256"],
+        baseline_audit_id=None,
+    )
 
 
-def test_failed_release_verifier_blocks_release(tmp_path: Path) -> None:
-    repo = _repo(tmp_path, verifier_exit=4)
-    hermes = tmp_path / "hermes"
-    state = tmp_path / "state"
-
-    result = run_audit(repo, hermes, state, "http://127.0.0.1:7374/dashboard/coe")
-
-    assert result["release_ready"] is False
-    assert "release_integrity" in result["release_blockers"]
+def test_missing_staged_release_is_fail_closed(tmp_path: Path) -> None:
+    result = run_audit(tmp_path, state_root=tmp_path / "state")
+    assert result["status"] == "blocked"
+    assert result["ready_for_dan_approval"] is False
+    assert result["gates"] == []
+    assert result["decision_reason_codes"] == ["STAGED_RELEASE_REQUIRED"]
 
 
-def test_scheduler_prompt_and_wake_agent_findings_are_evidence_based(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    hermes = tmp_path / "hermes"
-    (hermes / "cron").mkdir(parents=True)
-    jobs = {
-        "jobs": [
-            {
-                "id": "legacy",
-                "name": "Daily Check",
-                "enabled": True,
-                "schedule": "*/10 * * * *",
-                "prompt": "Use LPOS v3 from the current workdir.",
-            },
-            {
-                "id": "duplicate",
-                "name": "Daily Check",
-                "enabled": True,
-                "schedule": "0 8 * * *",
-                "prompt": "Current release only.",
-            },
-            {
-                "id": "fixture",
-                "name": "claim job",
-                "enabled": True,
-                "schedule": "0 9 * * *",
-                "prompt": "fixture",
-            },
-        ]
+def test_canonical_json_and_evidence_hash_are_stable() -> None:
+    assert canonical_json({"b": 2, "a": 1}) == '{"a":1,"b":2}'
+    first = evidence(GATE_IDS[0], "audit-1722168000000-0123456789abcdef", ZERO_HASH)
+    validate_gate_evidence(first, expected_previous_hash=ZERO_HASH)
+    assert len(first["evidence_hash"]) == 64
+
+
+def test_evidence_hash_tampering_fails() -> None:
+    record = evidence(GATE_IDS[0], "audit-1722168000000-0123456789abcdef", ZERO_HASH)
+    record["checks"][0]["detail"] = "changed"
+    with pytest.raises(ValueError, match="hash mismatch"):
+        validate_gate_evidence(record)
+
+
+def test_chain_requires_all_nine_gates() -> None:
+    audit_id = "audit-1722168000000-0123456789abcdef"
+    rows = []
+    previous = ZERO_HASH
+    for gate_id in GATE_IDS:
+        row = evidence(gate_id, audit_id, previous)
+        rows.append(row)
+        previous = row["evidence_hash"]
+    verify_evidence_chain(rows)
+    with pytest.raises(ValueError, match="incomplete"):
+        verify_evidence_chain(rows[:-1])
+
+
+def test_sqlite_evidence_and_decisions_are_append_only(tmp_path: Path) -> None:
+    store = COEStore(tmp_path)
+    audit_id = sortable_id("audit")
+    create_audit(store, audit_id)
+    row = evidence(GATE_IDS[0], audit_id, ZERO_HASH)
+    store.insert_evidence(row)
+    with pytest.raises(sqlite3.IntegrityError, match="append-only"):
+        with store.engine.transaction() as conn:
+            conn.execute("UPDATE coe_gate_evidence SET status='fail' WHERE evidence_id=?", (row["evidence_id"],))
+    decision = {"audit_id": audit_id, "status": "blocked", "decision_hash": "c" * 64}
+    store.insert_decision(audit_id, "blocked", decision["decision_hash"], decision)
+    with pytest.raises(sqlite3.IntegrityError, match="append-only"):
+        with store.engine.transaction() as conn:
+            conn.execute("DELETE FROM coe_release_decisions WHERE audit_id=?", (audit_id,))
+
+
+def test_release_controller_blocks_missing_evidence(tmp_path: Path) -> None:
+    store = COEStore(tmp_path)
+    audit_id = sortable_id("audit")
+    create_audit(store, audit_id)
+    decision = ReleaseController(store).decide(audit_id, RELEASE)
+    assert decision["status"] == "blocked"
+    assert "GATE_MISSING" in decision["decision_reason_codes"]
+    assert "DOCUMENTATION_PASSOFF_UNVERIFIED" in decision["decision_reason_codes"]
+
+
+def test_gate_runner_rejects_zero_exit_without_evidence(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    store = COEStore(tmp_path)
+    audit_id = sortable_id("audit")
+    create_audit(store, audit_id)
+
+    def fake_run(*args, **kwargs):
+        return subprocess.CompletedProcess(args[0], 0, stdout=b"ok", stderr=b"")
+
+    monkeypatch.setattr("lpos_engine.coe_runtime.subprocess.run", fake_run)
+    runner = GateRunner(store)
+    with pytest.raises(ValueError, match="did not create"):
+        runner.run(
+            "deterministic-tests",
+            {"audit_id": audit_id, "repo": str(tmp_path), "release": RELEASE},
+        )
+
+
+def test_redaction_covers_credentials_and_home_paths() -> None:
+    value = "Authorization: Bearer abc123 password=secretsecretsecret /Users/dan/private"
+    result = redact(value)
+    assert "abc123" not in result
+    assert "secretsecretsecret" not in result
+    assert "/Users/dan" not in result
+    assert result.count("[REDACTED]") >= 2
+
+
+def test_daily_idempotency_and_dst_use_central_date() -> None:
+    instant = datetime(2026, 11, 1, 6, 30, tzinfo=timezone.utc)
+    assert central_date(instant) == "2026-11-01"
+    assert daily_idempotency_key(instant) == "coe-daily:2026-11-01 America/Chicago"
+
+
+def test_audit_lock_prevents_overlap(tmp_path: Path) -> None:
+    store = COEStore(tmp_path)
+    assert store.acquire_lock("coe-daily:2026-07-28 America/Chicago", "first", 60) is True
+    assert store.acquire_lock("coe-daily:2026-07-28 America/Chicago", "second", 60) is False
+    store.release_lock("coe-daily:2026-07-28 America/Chicago", "first")
+    assert store.acquire_lock("coe-daily:2026-07-28 America/Chicago", "second", 60) is True
+
+
+def test_backup_restore_is_real_isolated_and_hash_verified(tmp_path: Path) -> None:
+    store = COEStore(tmp_path)
+    audit_id = sortable_id("audit")
+    create_audit(store, audit_id)
+    result = perform_backup_restore(store, audit_id)
+    assert result["status"] == "pass"
+    assert result["hash_verified"] is True
+    assert result["sqlite_integrity"] == "ok"
+    assert result["sentinel_records"] == 1
+    assert result["isolated"] is True
+
+
+def test_wake_policy_defaults_to_no_model_call() -> None:
+    decision = wake_decision(eligible=True, qualifying_input=False)
+    assert decision == {
+        "eligible": True,
+        "wakeAgent": False,
+        "reason_code": "NO_NEW_INPUT",
+        "decision_source": "deterministic-policy",
+        "model_invoked": False,
     }
-    (hermes / "cron" / "jobs.json").write_text(json.dumps(jobs), encoding="utf-8")
-
-    result = run_audit(repo, hermes, tmp_path / "state", "http://127.0.0.1:7374/dashboard/coe")
-    by_domain = {item["domain"]: item for item in result["findings"]}
-
-    assert by_domain["scheduler_governance"]["status"] == "warn"
-    assert by_domain["scheduler_governance"]["evidence"]["fixture_job_ids"] == ["fixture"]
-    assert by_domain["prompt_drift"]["evidence"]["drift"] == [{"job_id": "legacy", "match": "Use LPOS v3"}]
-    assert by_domain["wake_agent_efficiency"]["evidence"]["ungated_jobs"] == ["legacy"]
 
 
-def test_release_gate_records_deterministic_evaluations(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    result = run_audit(
-        repo,
-        tmp_path / "hermes",
-        tmp_path / "state",
-        "http://127.0.0.1:7374/dashboard/coe",
-        include_evaluations=True,
-    )
-    evaluation = next(item for item in result["findings"] if item["domain"] == "deterministic_evaluations")
-    assert evaluation["status"] == "pass"
-    assert evaluation["evidence"] == {"passed": 70, "failed": 0, "total": 70}
-
-
-def test_compatibility_job_requires_technical_debt_record(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    hermes = tmp_path / "hermes"
-    (hermes / "cron").mkdir(parents=True)
-    (hermes / "cron" / "jobs.json").write_text(
-        json.dumps({"jobs": [{"id": "compat", "name": "Reader", "prompt": "Read the compatibility ledger"}]}),
-        encoding="utf-8",
-    )
-    result = run_audit(repo, hermes, tmp_path / "state", "http://127.0.0.1:7374/dashboard/coe")
-    debt_result = next(item for item in result["findings"] if item["domain"] == "technical_debt_lifecycle")
-    assert debt_result["status"] == "warn"
-    assert debt_result["evidence"]["undocumented_compatibility"] is True
-
-
-def test_valid_technical_debt_record_passes(tmp_path: Path) -> None:
-    repo = _repo(tmp_path)
-    hermes = tmp_path / "hermes"
-    state = tmp_path / "state"
-    debt = state / "coe" / "technical-debt.json"
-    debt.parent.mkdir(parents=True)
-    debt.write_text(
-        json.dumps(
-            [
-                {
-                    "id": "TD-001",
-                    "owner": "Platform",
-                    "rationale": "Temporary compatibility boundary",
-                    "retirement_date": "2099-01-01",
-                    "migration_plan": "Import then remove",
-                    "status": "open",
-                }
-            ]
-        ),
-        encoding="utf-8",
-    )
-
-    result = run_audit(repo, hermes, state, "http://127.0.0.1:7374/dashboard/coe")
-    debt_result = next(item for item in result["findings"] if item["domain"] == "technical_debt_lifecycle")
-    assert debt_result["status"] == "pass"
+def test_release_scope_rejects_invalid_artifact() -> None:
+    with pytest.raises(ValueError, match="artifact"):
+        release_scope({"product": "x", "release_version": "4.5.0", "release_channel": "stable", "git_commit": "a" * 40}, build_id="x", artifact_sha256="bad")

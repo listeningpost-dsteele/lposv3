@@ -27,7 +27,7 @@ RELEASE_SCHEMA_ROOT = RUNTIME_ROOT / "schemas"
 class ShippedSchemasPassTests(unittest.TestCase):
     def test_all_17_packaged_schemas_pass_structural_validation(self):
         paths = sorted(PACKAGED_SCHEMA_ROOT.glob("*.schema.json"))
-        self.assertEqual(len(paths), 20)
+        self.assertEqual(len(paths), 22)
         results = check_schema_files(paths)
         for name, problems in results.items():
             with self.subTest(schema=name):
@@ -35,7 +35,7 @@ class ShippedSchemasPassTests(unittest.TestCase):
 
     def test_all_17_release_schemas_pass_structural_validation(self):
         paths = sorted(RELEASE_SCHEMA_ROOT.glob("*.schema.json"))
-        self.assertEqual(len(paths), 20)
+        self.assertEqual(len(paths), 22)
         results = check_schema_files(paths)
         for name, problems in results.items():
             with self.subTest(schema=name):
@@ -44,7 +44,7 @@ class ShippedSchemasPassTests(unittest.TestCase):
     def test_validate_for_cli_matches_cli_result_contract(self):
         result = validate_for_cli()
         self.assertEqual(sorted(result), ["root", "schemas", "status"])
-        self.assertEqual(result["schemas"], 20)
+        self.assertEqual(result["schemas"], 22)
         self.assertIsInstance(result["root"], str)
         self.assertIn(
             result["status"],

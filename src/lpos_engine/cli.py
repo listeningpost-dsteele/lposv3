@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from importlib.resources import files as resource_files
@@ -509,14 +510,17 @@ def build_parser() -> argparse.ArgumentParser:
     compliance.add_argument("--repo", type=Path, default=None, help="release checkout (default . or LPOS_REPO_ROOT)")
     compliance.set_defaults(func=cmd_compliance)
 
-    coe = sub.add_parser("coe", help="run Continuous Operational Excellence audits and dashboard")
-    coe.add_argument("action", nargs="?", default="audit", choices=["audit", "status", "report", "serve", "release-gate"])
+    coe = sub.add_parser("coe", help="run evidence-backed Continuous Operational Excellence controls")
+    coe.add_argument("action", nargs="?", default="audit", choices=["audit", "status", "report", "serve", "release-gate", "stage", "verify"])
     coe.add_argument("--repo", type=Path, default=Path.cwd(), help="LPOS release checkout")
-    coe.add_argument("--hermes-root", type=Path, default=Path.home() / ".hermes")
-    coe.add_argument("--state-root", type=Path, default=Path.home() / ".local" / "state" / "lpos")
-    coe.add_argument("--dashboard-url", default="http://127.0.0.1:7374/dashboard/coe")
+    coe.add_argument("--release-root", type=Path, default=None, help="complete staged release root")
+    coe.add_argument("--state-root", type=Path, default=Path.home() / ".hermes" / "state" / "chip-service")
+    coe.add_argument("--trigger", choices=["scheduled-daily", "manual", "pre-release", "post-deploy", "backfill"], default="manual")
+    coe.add_argument("--build-id", default=None)
+    coe.add_argument("--production", action="store_true")
+    coe.add_argument("--operator-token", default=None, help="private dashboard bearer token; prefer COE_OPERATOR_TOKEN")
     coe.add_argument("--host", default="127.0.0.1")
-    coe.add_argument("--port", type=int, default=7374)
+    coe.add_argument("--port", type=int, default=8765)
     coe.set_defaults(func=cmd_coe)
     return parser
 
@@ -557,18 +561,44 @@ def cmd_compliance(args: argparse.Namespace) -> int:
 
 
 def cmd_coe(args: argparse.Namespace) -> int:
-    from .coe import load_latest, run_audit, serve
+    from .coe import load_latest, render_report, run_audit, serve
+    from .coe_contract import sortable_id
+    from .coe_manifest import stage_release, verify_release
+    from .coe_runtime import dashboard_summary
+    from .coe_store import COEStore
 
     if args.action in {"audit", "release-gate"}:
+        configuration = {
+            name: os.environ.get(name)
+            for name in (
+                "COE_ENABLED", "COE_SCHEDULE_ENABLED", "COE_DASHBOARD_ENABLED", "COE_EMAIL_ENABLED",
+                "COE_TIMEZONE", "COE_CRON", "COE_STATE_DIR", "COE_REPORT_RECIPIENT",
+                "COE_EMAIL_TRANSPORT", "PUBLIC_BASE_URL", "COE_DASHBOARD_PATH",
+            )
+        }
         result = run_audit(
             args.repo,
-            args.hermes_root,
-            args.state_root,
-            args.dashboard_url,
-            include_evaluations=args.action == "release-gate",
+            release_root=args.release_root,
+            state_root=args.state_root,
+            trigger="pre-release" if args.action == "release-gate" else args.trigger,
+            build_id=args.build_id,
+            production=args.production,
+            configuration=configuration,
         )
         _print(result)
-        return 0 if result["release_ready"] else 1
+        decision = result.get("decision", result)
+        return 0 if decision.get("status") == "pass" else 1
+    if args.action == "stage":
+        if args.release_root is None:
+            raise ValueError("--release-root is required for staging")
+        manifest = stage_release(args.repo, args.release_root, build_id=args.build_id or sortable_id("build"))
+        _print(manifest)
+        return 0
+    if args.action == "verify":
+        if args.release_root is None:
+            raise ValueError("--release-root is required for verification")
+        _print(verify_release(args.release_root))
+        return 0
     if args.action == "status":
         result = load_latest(args.state_root)
         if not result:
@@ -576,12 +606,13 @@ def cmd_coe(args: argparse.Namespace) -> int:
         _print(result)
         return 0
     if args.action == "report":
-        path = Path(args.state_root).expanduser().resolve() / "coe" / "report.md"
-        if not path.is_file():
-            raise FileNotFoundError("COE report has not been generated")
-        print(path.read_text(encoding="utf-8"), end="")
+        store = COEStore(args.state_root)
+        latest = store.latest_audit()
+        if not latest:
+            raise FileNotFoundError("COE audit has not run")
+        print(render_report(dashboard_summary(store, latest["audit_id"]), state_root=args.state_root), end="")
         return 0
-    serve(args.state_root, args.host, args.port)
+    serve(args.state_root, host=args.host, port=args.port, operator_token=args.operator_token)
     return 0
 
 
