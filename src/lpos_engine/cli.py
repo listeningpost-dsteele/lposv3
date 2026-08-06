@@ -522,6 +522,10 @@ def build_parser() -> argparse.ArgumentParser:
     coe.add_argument("--host", default="127.0.0.1")
     coe.add_argument("--port", type=int, default=8765)
     coe.set_defaults(func=cmd_coe)
+
+    from .admission.__main__ import add_admission_parser
+    add_admission_parser(sub)
+
     return parser
 
 

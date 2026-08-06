@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lpos.dev/schemas/admission-run-manifest.schema.json",
+  "title": "Admission Run Manifest",
+  "description": "Frozen run manifest binding all inputs and prompts by canonical SHA-256.",
+  "type": "object",
+  "required": [
+    "suite_id",
+    "specialist_id",
+    "specialist_name",
+    "guild",
+    "model_class",
+    "craft_standards",
+    "capabilities",
+    "case_count",
+    "case_ids",
+    "case_classes",
+    "mandatory_case_ids",
+    "held_out_case_ids",
+    "suite_content_sha256",
+    "specialist_charter_sha256",
+    "guild_charter_sha256",
+    "craft_standard_sha256",
+    "baseline_prompt",
+    "pass_policy",
+    "rubric_dimensions",
+    "prepared_at",
+    "manifest_sha256"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "suite_id": {"type": "string"},
+    "specialist_id": {"type": "string"},
+    "specialist_name": {"type": "string"},
+    "guild": {"type": "string"},
+    "model_class": {"type": "string"},
+    "craft_standards": {"type": "array", "items": {"type": "string"}},
+    "capabilities": {"type": "array", "items": {"type": "string"}},
+    "case_count": {"type": "integer", "minimum": 8},
+    "case_ids": {"type": "array", "items": {"type": "string"}, "minItems": 8},
+    "case_classes": {"type": "array", "items": {"type": "string"}},
+    "mandatory_case_ids": {"type": "array", "items": {"type": "string"}},
+    "held_out_case_ids": {"type": "array", "items": {"type": "string"}},
+    "suite_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "specialist_charter_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "guild_charter_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "craft_standard_sha256": {"type": "object"},
+    "baseline_prompt": {
+      "type": "object",
+      "required": ["text", "prompt_sha256"],
+      "properties": {
+        "text": {"type": "string"},
+        "prompt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    },
+    "pass_policy": {
+      "type": "object",
+      "required": [
+        "minimum_repetitions",
+        "minimum_dimension_delta",
+        "minimum_overall_delta",
+        "minimum_candidate_win_rate",
+        "mandatory_cases_must_pass",
+        "critical_failure_veto",
+        "frozen"
+      ]
+    },
+    "rubric_dimensions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "prepared_at": {"type": "string"},
+    "manifest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

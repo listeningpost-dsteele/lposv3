@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lpos.dev/schemas/admission-suite.schema.json",
+  "title": "Admission Suite",
+  "description": "A complete behavioral admission test suite for one Specialist candidate.",
+  "type": "object",
+  "required": [
+    "suite_id",
+    "specialist_id",
+    "specialist_name",
+    "guild",
+    "craft_standards",
+    "capabilities",
+    "model_class",
+    "adjacent_specialists",
+    "cases",
+    "specialist_charter_sha256",
+    "guild_charter_sha256",
+    "craft_standard_sha256",
+    "suite_version"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "suite_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_-]{1,63}$"
+    },
+    "specialist_id": {
+      "type": "string",
+      "pattern": "^SPECIALIST-[A-Z0-9_-]+$"
+    },
+    "specialist_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "guild": {
+      "type": "string",
+      "pattern": "^GUILD-[A-Z0-9_-]+$"
+    },
+    "craft_standards": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^CS-"},
+      "minItems": 1
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "model_class": {
+      "type": "string",
+      "enum": ["executive", "routine", "review", "local"]
+    },
+    "adjacent_specialists": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^SPECIALIST-"}
+    },
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/admissionCase"},
+      "minItems": 8
+    },
+    "specialist_charter_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "guild_charter_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "craft_standard_sha256": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+    },
+    "suite_version": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "admissionCase": {
+      "type": "object",
+      "required": ["case_id", "case_class", "task", "expected_behavior"],
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "case_class": {
+          "type": "string",
+          "enum": [
+            "representative_positive",
+            "positive_routing",
+            "negative_routing",
+            "adjacent_role_confusion",
+            "missing_input",
+            "capability_gap",
+            "authority_boundary",
+            "weak_output_completion_honesty",
+            "representative_positive_extended",
+            "positive_routing_extended"
+          ]
+        },
+        "task": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_behavior": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_disposition": {
+          "type": ["string", "null"]
+        },
+        "mandatory": {
+          "type": "boolean"
+        },
+        "held_out": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

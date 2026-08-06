@@ -48,6 +48,7 @@ lpos_engine = [
   "workflows/*.json",
   "evals/*.json",
   "evolution/data/*.json",
+  "admission/data/*.json",
 ]
 
 [tool.pytest.ini_options]

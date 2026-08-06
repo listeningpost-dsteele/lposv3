@@ -1,0 +1,830 @@
+{
+  "specialist_count": 103,
+  "suite_count": 103,
+  "suites": [
+    {
+      "case_count": 8,
+      "content_sha256": "15ec98b244da3bcf62b14ad382a4ae5c27ce8c38bafc686cec2a31bed607ed66",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-ACCEPTANCE-TEST-ARCHITECT",
+      "specialist_name": "Acceptance Test Architect",
+      "suite_id": "ADM-ACCEPTANCETESTARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "62e711cdd9b67e2ab77308751ed32c416051030638e671d2bcf15868b05ed96d",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "specialist_id": "SPECIALIST-ACCESSIBILITY-AND-INCLUSIVE-DESIGN-SPECIALIST",
+      "specialist_name": "Accessibility and Inclusive Design Specialist",
+      "suite_id": "ADM-ACCESSIBILITYANDINCLUSIVEDESIGNSPECIALIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "3027cf3333e88831353953c942a7e1c1373ce87ed6d3a30ba34c741697cfc925",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
+      "specialist_id": "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD",
+      "specialist_name": "Adversarial Assurance Lead",
+      "suite_id": "ADM-ADVERSARIALASSURANCELEAD"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "7135cafaf9bb21cf4ed37286edd2c71e9ab61c8e047d3b888a5b3d83feb02371",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
+      "specialist_id": "SPECIALIST-ADVERSARIAL-FINDING-REVIEWER-AND-CLOSURE-VERIFIER",
+      "specialist_name": "Adversarial Finding Reviewer and Closure Verifier",
+      "suite_id": "ADM-ADVERSARIALFINDINGREVIEWERANDCLOSUREVERIFIER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "d5d0dc40488d4109ef39819b5d669f84fa8a36a80e414f7db5a15eb8ae6aa879",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-AGENT-RUNTIME-ENGINEER",
+      "specialist_name": "Agent Runtime Engineer",
+      "suite_id": "ADM-AGENTRUNTIMEENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "c94bf676f5d16741fdc8ecc61fcfc67836b81d15fbb9b1a358302b6fca071c4e",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-AI-BEHAVIOR-EVALUATION-ENGINEER",
+      "specialist_name": "AI Behavior Evaluation Engineer",
+      "suite_id": "ADM-AIBEHAVIOREVALUATIONENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "536679e717d6d4c8ce22c9ce6ab903c06d83cdef82b28f0d6e2c0d6cd8534205",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-AI-SYSTEMS-ARCHITECT",
+      "specialist_name": "AI Systems Architect",
+      "suite_id": "ADM-AISYSTEMSARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "ba9e03648ee14f4f5af0572ebeda43616e0f74f7e8d7eb9f53a7d25194494238",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "specialist_id": "SPECIALIST-ANALYTICS-ENGINEER-AND-METRIC-STEWARD",
+      "specialist_name": "Analytics Engineer and Metric Steward",
+      "suite_id": "ADM-ANALYTICSENGINEERANDMETRICSTEWARD"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "0546bdfecb573e582ae35d77a83ec9e0da4c0c6affd240e608704a50faaec103",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "specialist_id": "SPECIALIST-APPLICATION-SECURITY-ENGINEER",
+      "specialist_name": "Application Security Engineer",
+      "suite_id": "ADM-APPLICATIONSECURITYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "83c24b942394325528a236a9d2b239aa71bc223ee6be006e6b47bcd11baf91e5",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-ARTIFACT-AND-EXPERIENCE-QUALITY-REVIEWER",
+      "specialist_name": "Artifact and Experience Quality Reviewer",
+      "suite_id": "ADM-ARTIFACTANDEXPERIENCEQUALITYREVIEWER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "8e41f5f916f8b1611ada9b6d565f07e5ed9138a2c46445d798aa128cd536de92",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "specialist_id": "SPECIALIST-BRAND-DESIGNER",
+      "specialist_name": "Brand Designer",
+      "suite_id": "ADM-BRANDDESIGNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "6f33f36fa2a3e7c1d17018fb7ff9aa590816da5f844c90313dc12e1418b36bfe",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "specialist_id": "SPECIALIST-BRAND-STRATEGIST",
+      "specialist_name": "Brand Strategist",
+      "suite_id": "ADM-BRANDSTRATEGIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "cb5751f7bd0317fe112c5289699c0d2596d07ed2c9209190c16ec65a89de7bce",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "specialist_id": "SPECIALIST-BUSINESS-CASE-AND-INVESTMENT-ANALYST",
+      "specialist_name": "Business Case and Investment Analyst",
+      "suite_id": "ADM-BUSINESSCASEANDINVESTMENTANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "b0832fd7d18324690f36e5a5d23eab8e472cb5206667edb01d86b33e9d496b32",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "specialist_id": "SPECIALIST-CLOUD-AND-INFRASTRUCTURE-SECURITY-ENGINEER",
+      "specialist_name": "Cloud and Infrastructure Security Engineer",
+      "suite_id": "ADM-CLOUDANDINFRASTRUCTURESECURITYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "3ab043da37f860fe4f54a524994d6b9f1ea1899572255381b3df50a6270ec075",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
+      "specialist_name": "Code and Structural Test Engineer",
+      "suite_id": "ADM-CODEANDSTRUCTURALTESTENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "f3aee7b497cfbb561052a15d2cee70032eae4dbf6b959560c3e811ae8e71855b",
+      "guild": "GUILD-LEGAL-REGULATORY",
+      "specialist_id": "SPECIALIST-COMMERCIAL-CONTRACTS-ANALYST",
+      "specialist_name": "Commercial Contracts Analyst",
+      "suite_id": "ADM-COMMERCIALCONTRACTSANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "c5f76a97898643d5104a433ad741a33bbeb2abb62f248558ccb3bde3af83bfe5",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "specialist_id": "SPECIALIST-COMMERCIAL-COPYWRITER",
+      "specialist_name": "Commercial Copywriter",
+      "suite_id": "ADM-COMMERCIALCOPYWRITER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "4332fbc585bcd775c9372d60df5ec7b154a856cb805889c63175562c6b4be7dc",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "specialist_id": "SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST",
+      "specialist_name": "Competitive Intelligence Analyst",
+      "suite_id": "ADM-COMPETITIVEINTELLIGENCEANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "aab6a9ba22b9dcdd3fa223dac9c96ee60735e4f64a439c0b391e937e4257acbf",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
+      "specialist_id": "SPECIALIST-COMPLIANCE-PROGRAM-AND-EXTERNAL-ASSESSMENT-COORDINATOR",
+      "specialist_name": "Compliance Program and External Assessment Coordinator",
+      "suite_id": "ADM-COMPLIANCEPROGRAMANDEXTERNALASSESSMENTCOORDINATOR"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "13b2030bed13f1270c16abbe52ad15f20ac8a26098d5e1e3faba525565f6dc2b",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
+      "specialist_id": "SPECIALIST-CONSTITUTIONAL-AND-POLICY-STEWARD",
+      "specialist_name": "Constitutional and Policy Steward",
+      "suite_id": "ADM-CONSTITUTIONALANDPOLICYSTEWARD"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "fa6889eb61bff45a79e24f0bc8119f52522f220a38b7df33e9eb43b6bcf021ac",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "specialist_id": "SPECIALIST-CONTENT-DESIGNER",
+      "specialist_name": "Content Designer",
+      "suite_id": "ADM-CONTENTDESIGNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "d62fa1f8eb86635cbb5742d29e46585fce65657330d10eef5840355257c7e603",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "specialist_id": "SPECIALIST-CONTENT-MARKETING-STRATEGIST",
+      "specialist_name": "Content Marketing Strategist",
+      "suite_id": "ADM-CONTENTMARKETINGSTRATEGIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "6535397516740a03e20620f40c4c8d96a78eda5c5768ff4f3345781f55d99d15",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
+      "specialist_id": "SPECIALIST-CONTROL-EVIDENCE-AUDITOR",
+      "specialist_name": "Control Evidence Auditor",
+      "suite_id": "ADM-CONTROLEVIDENCEAUDITOR"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "0212ef4bafe0b966ff452d81f5c8aceb1a5da94890f8f99b8bf145298cd707eb",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
+      "specialist_id": "SPECIALIST-CONTROL-FRAMEWORK-ARCHITECT",
+      "specialist_name": "Control Framework Architect",
+      "suite_id": "ADM-CONTROLFRAMEWORKARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "67a8f6e809485d18194cccc0fe7770db3566f0b4e4255df5a208686a0d6d9dbd",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "specialist_id": "SPECIALIST-CUSTOMER-SUCCESS-STRATEGIST",
+      "specialist_name": "Customer Success Strategist",
+      "suite_id": "ADM-CUSTOMERSUCCESSSTRATEGIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "8ad4877751c5dab35c5ef98b435ffb55709d7750addedf77a52b01e0a10f41ce",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "specialist_id": "SPECIALIST-CUSTOMER-SUPPORT-OPERATIONS-SPECIALIST",
+      "specialist_name": "Customer Support Operations Specialist",
+      "suite_id": "ADM-CUSTOMERSUPPORTOPERATIONSSPECIALIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "9460d3d053f60f5f3fc89df319a4759def392a2dc83ecb7d7a58525d020bdd5f",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "specialist_id": "SPECIALIST-DATA-ANALYST",
+      "specialist_name": "Data Analyst",
+      "suite_id": "ADM-DATAANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "35757c0311707da932f703ebf03ca22c119674c022345cecc3e962e434464fb0",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "specialist_id": "SPECIALIST-DATABASE-RELIABILITY-ENGINEER",
+      "specialist_name": "Database Reliability Engineer",
+      "suite_id": "ADM-DATABASERELIABILITYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "31ffe74b0173f4f912bffa75da62ce3e7bbe1a16f34d33f1c9f4b41440643e10",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "specialist_id": "SPECIALIST-DATA-ENGINEER",
+      "specialist_name": "Data Engineer",
+      "suite_id": "ADM-DATAENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "65a4d72209ddf933e64cc9c2761efe060774fb9842164c00c11fa9a6884ab2e0",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "specialist_id": "SPECIALIST-DATA-QUALITY-AND-LINEAGE-ENGINEER",
+      "specialist_name": "Data Quality and Lineage Engineer",
+      "suite_id": "ADM-DATAQUALITYANDLINEAGEENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "7d109fa4cd7b5bb32a22468bfa7b09fe0450f8f4893c5ad09a11011ff63963fb",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
+      "specialist_id": "SPECIALIST-DECISION-ANALYST",
+      "specialist_name": "Decision Analyst",
+      "suite_id": "ADM-DECISIONANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "529b38bd1e0715197d7c1a7004ce36dc7a07fe4caf43c28f9b9e9c6becbac0fb",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "specialist_id": "SPECIALIST-DESIGN-SYSTEMS-DESIGNER",
+      "specialist_name": "Design Systems Designer",
+      "suite_id": "ADM-DESIGNSYSTEMSDESIGNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "8321ac91afb44c96f9f8e9a29677c2bb5f088afa687e0d1306cc14b1cb238219",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "specialist_id": "SPECIALIST-EDITOR",
+      "specialist_name": "Editor",
+      "suite_id": "ADM-EDITOR"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "821df309f7c3d100a16716d5c26c64d52918646ecb44451f648f2dbbe4e2cd5f",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "specialist_id": "SPECIALIST-EVIDENCE-INTEGRITY-ANALYST",
+      "specialist_name": "Evidence Integrity Analyst",
+      "suite_id": "ADM-EVIDENCEINTEGRITYANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "ec7dbfa1803d64668e259c12237931cfbcd1a609ab7291caa47a2195544b17b3",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "specialist_id": "SPECIALIST-EXECUTIVE-COMMUNICATIONS-WRITER",
+      "specialist_name": "Executive Communications Writer",
+      "suite_id": "ADM-EXECUTIVECOMMUNICATIONSWRITER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "53c7a406020996f57fbdb2081180c10eab6878d45c9d18eeeed5e15fb7b4f4ec",
+      "guild": "GUILD-PRINCIPAL-OPERATIONS",
+      "specialist_id": "SPECIALIST-EXECUTIVE-OFFICE-OPERATIONS-SPECIALIST",
+      "specialist_name": "Executive Office Operations Specialist",
+      "suite_id": "ADM-EXECUTIVEOFFICEOPERATIONSSPECIALIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "84ca18f391cb1f781314e58bb344045ceea008eb5fbfb2c6fd674f0fd1188708",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "specialist_id": "SPECIALIST-EXPERIMENTATION-AND-CAUSAL-INFERENCE-ANALYST",
+      "specialist_name": "Experimentation and Causal Inference Analyst",
+      "suite_id": "ADM-EXPERIMENTATIONANDCAUSALINFERENCEANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "4b3d6775832d4dcace1bf2577d5be8f20bc9a2dff55ac742e8adefc964f3e4c8",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "specialist_id": "SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST",
+      "specialist_name": "Financial Planning and Analysis Analyst",
+      "suite_id": "ADM-FINANCIALPLANNINGANDANALYSISANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "ed9738b3218714e8daaf4357b9e2bde78026d6263ce3aa4632e2e28383d66401",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "specialist_id": "SPECIALIST-FORECASTING-AND-PREDICTIVE-ANALYTICS-SPECIALIST",
+      "specialist_name": "Forecasting and Predictive Analytics Specialist",
+      "suite_id": "ADM-FORECASTINGANDPREDICTIVEANALYTICSSPECIALIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "30d7fdb2457e8c993eb40062dd57eb3a36c5c93ff81f01b1fa74d2453c6d65ef",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "specialist_id": "SPECIALIST-GROWTH-MARKETING-STRATEGIST",
+      "specialist_name": "Growth Marketing Strategist",
+      "suite_id": "ADM-GROWTHMARKETINGSTRATEGIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "90b152a4c70f938d8f40ae5866313aee4cd28a5d46832a517aa6b504e52b7197",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "specialist_id": "SPECIALIST-IDENTITY-AND-ACCESS-MANAGEMENT-ENGINEER",
+      "specialist_name": "Identity and Access Management Engineer",
+      "suite_id": "ADM-IDENTITYANDACCESSMANAGEMENTENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "460f3363a00a419de6894563f03feb3086da6883aad6883b9047031b655600ca",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "specialist_id": "SPECIALIST-INFORMATION-AND-PRESENTATION-DESIGNER",
+      "specialist_name": "Information and Presentation Designer",
+      "suite_id": "ADM-INFORMATIONANDPRESENTATIONDESIGNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "a0067e2a9413e36956bf7f2cf1a4cef2e8ebdbb1a3142dbb21d370c5c08add83",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "specialist_id": "SPECIALIST-INFRASTRUCTURE-AND-CLOUD-ENGINEER",
+      "specialist_name": "Infrastructure and Cloud Engineer",
+      "suite_id": "ADM-INFRASTRUCTUREANDCLOUDENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "6c716d974071c7781b5d84e1996a642d174fa7b6959af2ada7119afabac563f6",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "specialist_id": "SPECIALIST-INTEGRATION-ENGINEER",
+      "specialist_name": "Integration Engineer",
+      "suite_id": "ADM-INTEGRATIONENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "5e048bc3cdfffb2ca8bcfa9c8d32e985c9982c1d4bf4f322b0854949198173cb",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "specialist_id": "SPECIALIST-KNOWLEDGE-ARCHITECT",
+      "specialist_name": "Knowledge Architect",
+      "suite_id": "ADM-KNOWLEDGEARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "4db68836e8133a266ffa1a80f59f7efbe6fdd37298b23e8fc44b21a64515794a",
+      "guild": "GUILD-LEGAL-REGULATORY",
+      "specialist_id": "SPECIALIST-LEGAL-RESEARCH-ANALYST",
+      "specialist_name": "Legal Research Analyst",
+      "suite_id": "ADM-LEGALRESEARCHANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "bb493a61d54a07f4dd64668947fc3141968b32412e05a8af385732ededb9fbf2",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "specialist_id": "SPECIALIST-LIFECYCLE-MARKETING-STRATEGIST",
+      "specialist_name": "Lifecycle Marketing Strategist",
+      "suite_id": "ADM-LIFECYCLEMARKETINGSTRATEGIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "9e9f1bf48a7eb6a3dd2a437f84e62982248b2ae73f62b15e25cd1986dcb60875",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "specialist_id": "SPECIALIST-MARKET-RESEARCHER",
+      "specialist_name": "Market Researcher",
+      "suite_id": "ADM-MARKETRESEARCHER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "83836359ed78ff37c24f31d5e57d861ffb4c69dbca20e67e8528db11db834748",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-MODEL-AND-PROVIDER-EVALUATION-ENGINEER",
+      "specialist_name": "Model and Provider Evaluation Engineer",
+      "suite_id": "ADM-MODELANDPROVIDEREVALUATIONENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "54d77af668d49f20e90adf18587fe733bd4fb1d908738f616153cb5c22962a55",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-NONFUNCTIONAL-ASSURANCE-ENGINEER",
+      "specialist_name": "Nonfunctional Assurance Engineer",
+      "suite_id": "ADM-NONFUNCTIONALASSURANCEENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "1b12b7d6bcff78f527b43d032eb3799353a1b997740e6b516c306d2039d205c1",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "specialist_id": "SPECIALIST-OBSERVABILITY-ENGINEER",
+      "specialist_name": "Observability Engineer",
+      "suite_id": "ADM-OBSERVABILITYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "d28748989d89430c8449314372ef85aba78acc4ef6ab58ed30e6a80926bdaa93",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
+      "specialist_id": "SPECIALIST-OPEN-SOURCE-RELEASE-STEWARD",
+      "specialist_name": "Open-Source Release Steward",
+      "suite_id": "ADM-OPENSOURCERELEASESTEWARD"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "eeb969fc6bd757d3b3750f659cdd3a266eb60ab720223e015130906fc1e0cc9d",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
+      "specialist_id": "SPECIALIST-OPERATING-EFFECTIVENESS-ANALYST",
+      "specialist_name": "Operating Effectiveness Analyst",
+      "suite_id": "ADM-OPERATINGEFFECTIVENESSANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "61f8a6d3cd8142dc093942029995904b22ac54c66985a53d18fe01465476f58c",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-OPERATIONAL-EXCELLENCE-ANALYST",
+      "specialist_name": "Operational Excellence Analyst",
+      "suite_id": "ADM-OPERATIONALEXCELLENCEANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "5286aba71de2ba5d67c3d9c736946bf093560d43a54e66dc8cc0c8b62097eed9",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-OPERATIONS-SYSTEMS-ARCHITECT",
+      "specialist_name": "Operations Systems Architect",
+      "suite_id": "ADM-OPERATIONSSYSTEMSARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "1dcb0259b0b68bb5c4e63b0a51bd2e6b4099d5ec08abb88ab3dca9680cfdfaa2",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "specialist_id": "SPECIALIST-ORGANIZATIONAL-COMMUNICATIONS-STRATEGIST",
+      "specialist_name": "Organizational Communications Strategist",
+      "suite_id": "ADM-ORGANIZATIONALCOMMUNICATIONSSTRATEGIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "cf97ce1ebc25bdeca4826a37d28d80b324dce9c8b2904e8a6e4c8c69998ab2ab",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
+      "specialist_id": "SPECIALIST-PASSIVE-SECURITY-ASSESSMENT-ENGINEER",
+      "specialist_name": "Passive Security Assessment Engineer",
+      "suite_id": "ADM-PASSIVESECURITYASSESSMENTENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "72e5f011781db4cdef5331c1c39eaec45fb9c4f503508cdd8d2d9dddeccc7991",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
+      "specialist_id": "SPECIALIST-PENETRATION-TESTING-AND-RED-TEAM-ENGINEER",
+      "specialist_name": "Penetration Testing and Red Team Engineer",
+      "suite_id": "ADM-PENETRATIONTESTINGANDREDTEAMENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "327fc4c941d4c87853b6a8f485ffa502a6c035cbbdfe4534121f66c7a42ed33c",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "specialist_id": "SPECIALIST-PLATFORM-ENGINEER",
+      "specialist_name": "Platform Engineer",
+      "suite_id": "ADM-PLATFORMENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "2566a54f460de709e0b9063ce2a108d7a338e5e98cde86dcb13785c78a05b6d0",
+      "guild": "GUILD-PRODUCT-MANAGEMENT",
+      "specialist_id": "SPECIALIST-PLATFORM-PRODUCT-MANAGER",
+      "specialist_name": "Platform Product Manager",
+      "suite_id": "ADM-PLATFORMPRODUCTMANAGER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "8768aed4f8880ef09e4cde1e6cc39d780a48cb62b12343038f5f95ebf6a5acbe",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
+      "specialist_id": "SPECIALIST-PORTFOLIO-AND-INITIATIVE-STRATEGIST",
+      "specialist_name": "Portfolio and Initiative Strategist",
+      "suite_id": "ADM-PORTFOLIOANDINITIATIVESTRATEGIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "a6e08618866287f96210214768cf120df7bcc9fe8d98bfac9b7a04d04725fe8c",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "specialist_id": "SPECIALIST-PRICING-AND-PACKAGING-ECONOMIST",
+      "specialist_name": "Pricing and Packaging Economist",
+      "suite_id": "ADM-PRICINGANDPACKAGINGECONOMIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "a81025ba83bb21fbe472cea9d96495e3d14a8bb0459f55ef5b13c85491a5d3ee",
+      "guild": "GUILD-PRINCIPAL-OPERATIONS",
+      "specialist_id": "SPECIALIST-PRINCIPAL-CONTEXT-STEWARD",
+      "specialist_name": "Principal Context Steward",
+      "suite_id": "ADM-PRINCIPALCONTEXTSTEWARD"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "46c847096e45765ad5562c521d33e89a35c478505e8b055e9c0c01caa1278539",
+      "guild": "GUILD-LEGAL-REGULATORY",
+      "specialist_id": "SPECIALIST-PRIVACY-AND-PRODUCT-REGULATORY-ANALYST",
+      "specialist_name": "Privacy and Product Regulatory Analyst",
+      "suite_id": "ADM-PRIVACYANDPRODUCTREGULATORYANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "726a32d58004d60a55140bafd06bbfe106f435c3f8b7b3c3db0a300bab276546",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "specialist_id": "SPECIALIST-PRIVACY-ENGINEER",
+      "specialist_name": "Privacy Engineer",
+      "suite_id": "ADM-PRIVACYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "ea856d89bd6dca3887f405ffae8e8c98dd2462866e321a5652dd4c9b465e851d",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "specialist_id": "SPECIALIST-PRODUCT-DESIGNER",
+      "specialist_name": "Product Designer",
+      "suite_id": "ADM-PRODUCTDESIGNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "707a41d919d5ca5ce193b558c03be1483995f5cd87923c05fc62b4e5310b2305",
+      "guild": "GUILD-PRODUCT-MANAGEMENT",
+      "specialist_id": "SPECIALIST-PRODUCT-MANAGER",
+      "specialist_name": "Product Manager",
+      "suite_id": "ADM-PRODUCTMANAGER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "3649a9fb78f237ff9239582ffaabadd1618e4af0e55e1bc1e34a8ba1b2532ce9",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "specialist_id": "SPECIALIST-PRODUCT-MARKETING-MANAGER",
+      "specialist_name": "Product Marketing Manager",
+      "suite_id": "ADM-PRODUCTMARKETINGMANAGER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "256392104a657784c0300768e868981f7673adab4625c5b8a199b95fe2d3f7af",
+      "guild": "GUILD-PRODUCT-MANAGEMENT",
+      "specialist_id": "SPECIALIST-PRODUCT-OPERATIONS-LEAD",
+      "specialist_name": "Product Operations Lead",
+      "suite_id": "ADM-PRODUCTOPERATIONSLEAD"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "8454e0d56932503d03e67f0297435ee31eaaf746a663ab86666fbbc5b5573e69",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-PROMPT-AND-CONTEXT-SYSTEMS-ENGINEER",
+      "specialist_name": "Prompt and Context Systems Engineer",
+      "suite_id": "ADM-PROMPTANDCONTEXTSYSTEMSENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "49eb5c0298d5c8318e02111b8fb4560d8f1cfc7519785b03de16d066e0126d2a",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR",
+      "specialist_name": "Quality and Release Director",
+      "suite_id": "ADM-QUALITYANDRELEASEDIRECTOR"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "310ab902f1c2b58ce6aada7c587064940a55b0f5ca0d2de091d0447cf59340c4",
+      "guild": "GUILD-PRINCIPAL-OPERATIONS",
+      "specialist_id": "SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST",
+      "specialist_name": "Relationship Intelligence Specialist",
+      "suite_id": "ADM-RELATIONSHIPINTELLIGENCESPECIALIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "788341ae3ff6aa96f76de150cabe74e46124b22339506be0faab8243984d3953",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "specialist_id": "SPECIALIST-RELEASE-AND-DEPLOYMENT-ENGINEER",
+      "specialist_name": "Release and Deployment Engineer",
+      "suite_id": "ADM-RELEASEANDDEPLOYMENTENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "399718e5681b5fadc379e418e58a283ca5d66586fc89a1fef580c23a5dceb0b5",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-RELEASE-VERIFICATION-AUDITOR",
+      "specialist_name": "Release Verification Auditor",
+      "suite_id": "ADM-RELEASEVERIFICATIONAUDITOR"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "f47345991c9c77217786057d4369b9deb42745588571f166041e2c788d71402a",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
+      "specialist_id": "SPECIALIST-REPOSITORY-AND-CHANGE-GOVERNANCE-SPECIALIST",
+      "specialist_name": "Repository and Change Governance Specialist",
+      "suite_id": "ADM-REPOSITORYANDCHANGEGOVERNANCESPECIALIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "0839885ac29a5443c27450138be4a751ddbb20e85650ddde22aa37487c0fd36d",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "specialist_id": "SPECIALIST-RESEARCH-ANALYST",
+      "specialist_name": "Research Analyst",
+      "suite_id": "ADM-RESEARCHANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "47a3c786b811d08747aad2681c17955d981d8a1cbb0dad02e366c86b7988f4c7",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-RETRIEVAL-AND-MEMORY-ENGINEER",
+      "specialist_name": "Retrieval and Memory Engineer",
+      "suite_id": "ADM-RETRIEVALANDMEMORYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "7559edf0c59c593c654e7e3ff5f95c908f36f77cfb28b357f508ddad7757d16c",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "specialist_id": "SPECIALIST-REVENUE-OPERATIONS-ARCHITECT",
+      "specialist_name": "Revenue Operations Architect",
+      "suite_id": "ADM-REVENUEOPERATIONSARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "50e4b4f29c5ba86f1e368e99776418f76ae74a381624d4a3f7b77e7861ce339d",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-RUNBOOK-AND-RECOVERY-ENGINEER",
+      "specialist_name": "Runbook and Recovery Engineer",
+      "suite_id": "ADM-RUNBOOKANDRECOVERYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "a7bb78e2ddabbf6543ea50fafa9a06c4d6fded9f3b279d3ceb571c4539582482",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "specialist_id": "SPECIALIST-SALES-STRATEGY-AND-DEAL-ANALYST",
+      "specialist_name": "Sales Strategy and Deal Analyst",
+      "suite_id": "ADM-SALESSTRATEGYANDDEALANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "6bf49ae4bc056936d35c2f2cbdbb44dd44698535a92db96a289c905d3671fb5e",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
+      "specialist_id": "SPECIALIST-SCENARIO-AND-STRATEGIC-RISK-ANALYST",
+      "specialist_name": "Scenario and Strategic Risk Analyst",
+      "suite_id": "ADM-SCENARIOANDSTRATEGICRISKANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "9bc4b24da4538d7bac988fa5b8d079cd3818dec1cea2780f6f21b9db2e8af66b",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "specialist_id": "SPECIALIST-SECURITY-ARCHITECT",
+      "specialist_name": "Security Architect",
+      "suite_id": "ADM-SECURITYARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "bb4030676b225364c05f5cabdb800dc446d3179eb3b27188934d23a13aadd39b",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "specialist_id": "SPECIALIST-SECURITY-DETECTION-AND-INCIDENT-RESPONSE-ENGINEER",
+      "specialist_name": "Security Detection and Incident Response Engineer",
+      "suite_id": "ADM-SECURITYDETECTIONANDINCIDENTRESPONSEENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "08b94f8d6b285498cda09ab85692b778fbda21539a30462fb35426af0e1f4bee",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "specialist_id": "SPECIALIST-SERVICE-DESIGNER",
+      "specialist_name": "Service Designer",
+      "suite_id": "ADM-SERVICEDESIGNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "c9975b88f069700cae0f9cc3ea4731cee4076c36fd0d1a0e37755e2c13ef2332",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-SERVICE-OPERATIONS-ANALYST",
+      "specialist_name": "Service Operations Analyst",
+      "suite_id": "ADM-SERVICEOPERATIONSANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "dd08cd5d84f56e92aa3aadb1f741ebb5934f8717f5747760a747dfbc24f5c5ae",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "specialist_id": "SPECIALIST-SITE-RELIABILITY-ENGINEER",
+      "specialist_name": "Site Reliability Engineer",
+      "suite_id": "ADM-SITERELIABILITYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "5c7e735263de8374cefa2abb1bd42ad8f5f7ec923e15a3111c8ce759987500fa",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "specialist_id": "SPECIALIST-SOFTWARE-ARCHITECT",
+      "specialist_name": "Software Architect",
+      "suite_id": "ADM-SOFTWAREARCHITECT"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "e106b6249d45e0bb077ee21dfa5eebf851ce5c5bf4b39d897ac2b823e6488f29",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "specialist_id": "SPECIALIST-SOFTWARE-ENGINEER",
+      "specialist_name": "Software Engineer",
+      "suite_id": "ADM-SOFTWAREENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "66c0b943db94127fe23b44aacb1cbad8c2f1be4e1edbe6c87acfbde2b7297c3e",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "specialist_id": "SPECIALIST-SOFTWARE-MAINTENANCE-AND-DEBUGGING-ENGINEER",
+      "specialist_name": "Software Maintenance and Debugging Engineer",
+      "suite_id": "ADM-SOFTWAREMAINTENANCEANDDEBUGGINGENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "b531857725749c538cd761c004d4a57979e2932432503bd537203bda477d2fb3",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "specialist_id": "SPECIALIST-SOFTWARE-REVIEWER",
+      "specialist_name": "Software Reviewer",
+      "suite_id": "ADM-SOFTWAREREVIEWER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "d4981c890de04ca2b117498e8f665d81e0b2dd3b3e12ca4cbe88e2e6136e3a2c",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
+      "specialist_id": "SPECIALIST-STANDARDS-AND-CAPABILITY-GOVERNANCE-ANALYST",
+      "specialist_name": "Standards and Capability Governance Analyst",
+      "suite_id": "ADM-STANDARDSANDCAPABILITYGOVERNANCEANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "00f8d68ed8d61d721d46d36cafc32b61a12f966a55b106e9ab4210217083e4f6",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
+      "specialist_id": "SPECIALIST-STRATEGIC-PLANNER",
+      "specialist_name": "Strategic Planner",
+      "suite_id": "ADM-STRATEGICPLANNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "fe18f4e905e6980fa6d76cb6c74667098d5d8e7820c87a92aa2ac337de24cc2e",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-SYSTEM-AND-END-TO-END-TEST-ENGINEER",
+      "specialist_name": "System and End-to-End Test Engineer",
+      "suite_id": "ADM-SYSTEMANDENDTOENDTESTENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "33ba8781a1292cf22ab83e6b5aac8d716cfcb5fd0592abfe99207b61dbcd524c",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "specialist_id": "SPECIALIST-TECHNICAL-WRITER",
+      "specialist_name": "Technical Writer",
+      "suite_id": "ADM-TECHNICALWRITER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "08226015c31be46df3e018b1d16bee798ee4c1ee40ccd718c7a3d30f248008d9",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "specialist_id": "SPECIALIST-TECHNOLOGY-INTELLIGENCE-ANALYST",
+      "specialist_name": "Technology Intelligence Analyst",
+      "suite_id": "ADM-TECHNOLOGYINTELLIGENCEANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "857f1eb9f9ff26732d119f01328c623d647cec7474fa4d15292d04020980d94e",
+      "guild": "GUILD-LEGAL-REGULATORY",
+      "specialist_id": "SPECIALIST-TECHNOLOGY-IP-AND-OPEN-SOURCE-LICENSING-ANALYST",
+      "specialist_name": "Technology, IP, and Open-Source Licensing Analyst",
+      "suite_id": "ADM-TECHNOLOGYIPANDOPENSOURCELICENSINGANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "750533983f1eaeffd241f1b718f076369414fb89363e6fac0f0f8997b2a8be1a",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "specialist_id": "SPECIALIST-TEST-RELIABILITY-ENGINEER",
+      "specialist_name": "Test Reliability Engineer",
+      "suite_id": "ADM-TESTRELIABILITYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "0a68fcb3716164ea1eebc150b39d557deb69dc2b1849f066c304fcf7a38371ef",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "specialist_id": "SPECIALIST-THREAT-MODELING-SPECIALIST",
+      "specialist_name": "Threat Modeling Specialist",
+      "suite_id": "ADM-THREATMODELINGSPECIALIST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "1ac71d48b516922488b271edbf2b911bc2ab3000f095688191dc0195f66dbc16",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-TOOL-AND-CAPABILITY-ENGINEER",
+      "specialist_name": "Tool and Capability Engineer",
+      "suite_id": "ADM-TOOLANDCAPABILITYENGINEER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "7450d0655431fcaf66ad269f8c7f272d633028e98cda70a52d33e274b04bf42d",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "specialist_id": "SPECIALIST-UNIT-ECONOMICS-ANALYST",
+      "specialist_name": "Unit Economics Analyst",
+      "suite_id": "ADM-UNITECONOMICSANALYST"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "8ac6594a88bfda36742ee5659e6a058730cfa723b144faa38566d589ffbd64ee",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "specialist_id": "SPECIALIST-UX-RESEARCHER",
+      "specialist_name": "UX Researcher",
+      "suite_id": "ADM-UXRESEARCHER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "26f3183220a634cf3be58500fdd8a99e67798d60fe36892e07abec9041d4d6bf",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "specialist_id": "SPECIALIST-WEB-EXPERIENCE-DESIGNER",
+      "specialist_name": "Web Experience Designer",
+      "suite_id": "ADM-WEBEXPERIENCEDESIGNER"
+    },
+    {
+      "case_count": 8,
+      "content_sha256": "059b21f0c8cb696e73b1f7f221536c3f9ad10e79530f929a0b605ab3fe9077fc",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "specialist_id": "SPECIALIST-WORKFLOW-AUTOMATION-ENGINEER",
+      "specialist_name": "Workflow Automation Engineer",
+      "suite_id": "ADM-WORKFLOWAUTOMATIONENGINEER"
+    }
+  ]
+}

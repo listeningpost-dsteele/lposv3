@@ -179,8 +179,8 @@ def main() -> int:
     package_schema_dir = ROOT / "src" / "lpos_engine" / "schemas"
     root_schema_names = sorted(path.name for path in root_schema_dir.glob("*.schema.json"))
     package_schema_names = sorted(path.name for path in package_schema_dir.glob("*.schema.json"))
-    if root_schema_names != package_schema_names or len(root_schema_names) != 22:
-        fail("root and packaged schema sets are not the same 22 schemas", failures)
+    if root_schema_names != package_schema_names or len(root_schema_names) != 25:
+        fail("root and packaged schema sets are not the same 25 schemas", failures)
     else:
         for name in root_schema_names:
             root_path = root_schema_dir / name

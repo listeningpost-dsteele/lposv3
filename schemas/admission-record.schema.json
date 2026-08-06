@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lpos.dev/schemas/admission-record.schema.json",
+  "title": "Admission Record",
+  "description": "Draft admission record emitted by the scoring phase. Never activates a Specialist.",
+  "type": "object",
+  "required": [
+    "record_type",
+    "suite_id",
+    "specialist_id",
+    "specialist_name",
+    "guild",
+    "case_count",
+    "win_rate",
+    "mandatory_all_pass",
+    "critical_failure_present",
+    "min_dimension_delta",
+    "mean_overall_delta",
+    "dimension_deltas",
+    "pass_policy",
+    "decision",
+    "activated",
+    "case_scores",
+    "scored_at"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "record_type": {
+      "type": "string",
+      "const": "draft_admission_record"
+    },
+    "suite_id": {"type": "string"},
+    "specialist_id": {"type": "string"},
+    "specialist_name": {"type": "string"},
+    "guild": {"type": "string"},
+    "case_count": {"type": "integer", "minimum": 1},
+    "win_rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "mandatory_all_pass": {"type": "boolean"},
+    "critical_failure_present": {"type": "boolean"},
+    "min_dimension_delta": {"type": "number"},
+    "mean_overall_delta": {"type": "number"},
+    "dimension_deltas": {
+      "type": "object",
+      "additionalProperties": {"type": "number"}
+    },
+    "pass_policy": {"type": "object"},
+    "decision": {
+      "type": "string",
+      "enum": ["admit", "do_not_admit"]
+    },
+    "activated": {
+      "type": "boolean",
+      "const": false
+    },
+    "case_scores": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/caseScore"}
+    },
+    "scored_at": {"type": "string"},
+    "judgment_freeze_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  },
+  "$defs": {
+    "caseScore": {
+      "type": "object",
+      "required": [
+        "case_id",
+        "candidate_arm",
+        "candidate_scores",
+        "baseline_scores",
+        "candidate_overall",
+        "baseline_overall",
+        "delta",
+        "candidate_wins",
+        "mandatory",
+        "critical_failure"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {"type": "string"},
+        "candidate_arm": {"type": "string"},
+        "candidate_scores": {
+          "type": "object",
+          "additionalProperties": {"type": "number"}
+        },
+        "baseline_scores": {
+          "type": "object",
+          "additionalProperties": {"type": "number"}
+        },
+        "candidate_overall": {"type": "number"},
+        "baseline_overall": {"type": "number"},
+        "delta": {"type": "number"},
+        "candidate_wins": {"type": "boolean"},
+        "mandatory": {"type": "boolean"},
+        "critical_failure": {"type": "boolean"}
+      }
+    }
+  }
+}
