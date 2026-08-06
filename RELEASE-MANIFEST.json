@@ -11,8 +11,8 @@
   "NOTICE-SKILLOPT.md": "3bc8eff1de51844350ffddff31fee66d0caea3a9639658309f425d6a89e6a933",
   "Packages/lpos_os-4.7.0-py3-none-any.whl": "ee082e6efbbb99e9d558be017844ec6bc45ad9a528ff38d064bdc3b041684be7",
   "README.md": "0298fadbbda8572646af20c292e1d6236355b8432e506ebd75a61e9cfd8f9db2",
-  "RELEASE-TEST-REPORT.md": "8d1d678d39c81c7f241b4cf320fc670be34f822fb6a16cd273220b38a95cb35f",
-  "RELEASE.json": "8c6050fe933b938e129ac84984d88b039be3d0af63777b2f1e111a7e21110816",
+  "RELEASE-TEST-REPORT.md": "9ecac3989dc4947d7f1adbf7455484386ad081071446bcdf7799da0b9ae5438a",
+  "RELEASE.json": "546c0782f55b76f15092e6a07bbaaa61fa4612885c98afdc9f76d9a2b5b1e274",
   "SBOM.json": "aa0a77e7fb9a962b5409570ed040c6a916a67e2ed45f4509af2803ac4a9cfd72",
   "acceptance/ACCEPTANCE_CHECKLIST.md": "2c517bee06122ece0970c0aa0d29e007469b10fa1e44e4763cb7419cf6e4d1bb",
   "admission-build-report.md": "d920cc161e24937e03984e6ba337d6b429f22d2092d6830aec1dd69f03da5c68",
@@ -773,7 +773,7 @@
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
   "verify_release.py": "bd28b6175ed95c514dd1d209daae412a17b3180e65558672c181b687eb56b5df"
  },
- "generated_at": "2026-08-06T17:44:20Z",
+ "generated_at": "2026-08-06T17:45:56Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.7.0"
