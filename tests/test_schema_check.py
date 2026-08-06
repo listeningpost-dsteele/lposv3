@@ -25,7 +25,7 @@ RELEASE_SCHEMA_ROOT = RUNTIME_ROOT / "schemas"
 
 
 class ShippedSchemasPassTests(unittest.TestCase):
-    def test_all_17_packaged_schemas_pass_structural_validation(self):
+    def test_all_25_packaged_schemas_pass_structural_validation(self):
         paths = sorted(PACKAGED_SCHEMA_ROOT.glob("*.schema.json"))
         self.assertEqual(len(paths), 25)
         results = check_schema_files(paths)
@@ -33,7 +33,7 @@ class ShippedSchemasPassTests(unittest.TestCase):
             with self.subTest(schema=name):
                 self.assertEqual(problems, [])
 
-    def test_all_17_release_schemas_pass_structural_validation(self):
+    def test_all_25_release_schemas_pass_structural_validation(self):
         paths = sorted(RELEASE_SCHEMA_ROOT.glob("*.schema.json"))
         self.assertEqual(len(paths), 25)
         results = check_schema_files(paths)
