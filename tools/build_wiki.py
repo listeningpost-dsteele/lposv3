@@ -57,6 +57,7 @@ class Page:
     order: float
     markdown: str
     generated: bool = False
+    nav_visible: bool = True
 
     @property
     def url(self) -> str:
@@ -436,33 +437,69 @@ def generate_standing_operation_pages(repo: Path) -> list[Page]:
     return pages
 
 
-def generate_specialists_page(repo: Path) -> Page:
-    index_text = (repo / "src" / "lpos_engine" / "spec" / "SPECIALIST-INDEX.md").read_text(
-        encoding="utf-8"
+def generate_expert_corpus_pages(repo: Path) -> list[Page]:
+    """Generate the browsable 4.7 candidate Guild, Specialist, and standard corpus."""
+    catalog_path = repo / "src" / "lpos_engine" / "config" / "candidate_catalog.json"
+    catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    source_hash = catalog["source"]["sha256"]
+    spec_root = repo / "src" / "lpos_engine" / "spec"
+    groups = (
+        ("guild", "Guilds", "guilds", 1.0),
+        ("specialist", "Specialists", "specialists", 2.0),
+        ("craft-standard", "Craft Standards", "craft-standards", 3.0),
     )
-    # Drop the file's own H1 and reuse the rest verbatim (table, fallback map, policy).
-    body = re.sub(r"^#\s+.*\n", "", index_text, count=1).strip("\n")
-    md = (
-        "# Specialists\n\n"
-        "LPOS routes work across 32 canonical specialists. Specialists are compiled "
-        "roles the model assumes at routing time, grouped into guilds for "
-        "accountability; capabilities determine execution. The table below is the "
-        "packaged specialist index. You can print the same registry, including each "
-        "specialist's capabilities and model class, with `lpos list-specialists`.\n\n"
-        + body
-        + "\n\n## Related pages\n\n"
-        + "- [Core concepts](/welcome/concepts.html)\n"
-        + "- [Everything LPOS includes](/includes/index.html)\n"
-        + "- [CLI reference](/administration/cli-reference.html)\n"
-    )
-    return Page(
-        slug="reference/specialists",
-        title="Specialists",
-        section="reference",
-        order=1,
-        markdown=md,
-        generated=True,
-    )
+    pages: list[Page] = []
+    for entity_type, title, slug_dir, order in groups:
+        entities = [item for item in catalog["entities"] if item["entity_type"] == entity_type]
+        rows = ["| ID | Professional source |", "|---|---|"]
+        for position, item in enumerate(entities, start=1):
+            entity_id = item["entity_id"]
+            slug = f"reference/{slug_dir}/{entity_id.lower()}"
+            rows.append(f"| `{entity_id}` | [{item['title']}](/reference/{slug_dir}/{entity_id.lower()}.html) |")
+            source = (spec_root / item["path"]).read_text(encoding="utf-8")
+            _meta, source = parse_frontmatter(source)
+            source = source.lstrip()
+            source = re.sub(r"^<!-- Generated from .*? -->\n\n?", "", source, count=1)
+            source = re.sub(
+                rf"^#\s+{re.escape(item['title'])}\s*\n+",
+                "",
+                source,
+                count=1,
+            )
+            pages.append(
+                Page(
+                    slug=slug,
+                    title=item["title"],
+                    section="reference",
+                    order=order + position / 1000,
+                    markdown=(
+                        f"# {item['title']}\n\n"
+                        f"`{entity_id}` · LPOS 4.7 candidate professional source · not yet runtime-active\n\n"
+                        f"Source SHA-256: `{item['content_sha256']}`\n\n"
+                        + source
+                        + f"\n\n[Back to {title}](/reference/{slug_dir}.html)\n"
+                    ),
+                    generated=True,
+                )
+            )
+        pages.append(
+            Page(
+                slug=f"reference/{slug_dir}",
+                title=title,
+                section="reference",
+                order=order,
+                markdown=(
+                    f"# LPOS 4.7 Candidate {title}\n\n"
+                    "These professional sources are approved candidate material. Publication here does "
+                    "not claim runtime activation or completed behavioral admission.\n\n"
+                    f"Corpus source SHA-256: `{source_hash}`\n\n"
+                    f"Count: **{len(entities)}**\n\n"
+                    + "\n".join(rows)
+                ),
+                generated=True,
+            )
+        )
+    return pages
 
 
 def generate_skills_page(repo: Path) -> Page:
@@ -756,6 +793,8 @@ def build_nav(pages: list[Page], current: Page | None, depth: int) -> str:
     prefix = "../" * depth
     by_section: dict[str, list[Page]] = {}
     for page in pages:
+        if not page.nav_visible:
+            continue
         by_section.setdefault(page.section, []).append(page)
     parts: list[str] = []
     for slug, title in SECTIONS:
@@ -897,7 +936,7 @@ def build(repo: Path, out: Path) -> dict:
     version = read_version(repo)
     pages = collect_source_pages(repo)
     pages.extend(generate_standing_operation_pages(repo))
-    pages.append(generate_specialists_page(repo))
+    pages.extend(generate_expert_corpus_pages(repo))
     pages.append(generate_skills_page(repo))
 
     slugs = [p.slug for p in pages]
