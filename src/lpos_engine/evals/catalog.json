@@ -1,227 +1,227 @@
 {
   "benchmarks": [
     {
-      "component_id": "SPECIALIST-001",
+      "component_id": "SPECIALIST-STRATEGIC-PLANNER",
       "fixture": "BENCH-S001.json",
       "id": "BENCH-S001"
     },
     {
-      "component_id": "SPECIALIST-002",
+      "component_id": "SPECIALIST-DECISION-ANALYST",
       "fixture": "BENCH-S002.json",
       "id": "BENCH-S002"
     },
     {
-      "component_id": "SPECIALIST-003",
+      "component_id": "SPECIALIST-EVIDENCE-INTEGRITY-ANALYST",
       "fixture": "BENCH-S003.json",
       "id": "BENCH-S003"
     },
     {
-      "component_id": "SPECIALIST-004",
+      "component_id": "SPECIALIST-SCENARIO-AND-STRATEGIC-RISK-ANALYST",
       "fixture": "BENCH-S004.json",
       "id": "BENCH-S004"
     },
     {
-      "component_id": "SPECIALIST-005",
+      "component_id": "SPECIALIST-PORTFOLIO-AND-INITIATIVE-STRATEGIST",
       "fixture": "BENCH-S005.json",
       "id": "BENCH-S005"
     },
     {
-      "component_id": "SPECIALIST-006",
+      "component_id": "SPECIALIST-RESEARCH-ANALYST",
       "fixture": "BENCH-S006.json",
       "id": "BENCH-S006"
     },
     {
-      "component_id": "SPECIALIST-007",
+      "component_id": "SPECIALIST-TECHNOLOGY-INTELLIGENCE-ANALYST",
       "fixture": "BENCH-S007.json",
       "id": "BENCH-S007"
     },
     {
-      "component_id": "SPECIALIST-008",
+      "component_id": "SPECIALIST-EVIDENCE-INTEGRITY-ANALYST",
       "fixture": "BENCH-S008.json",
       "id": "BENCH-S008"
     },
     {
-      "component_id": "SPECIALIST-009",
+      "component_id": "SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST",
       "fixture": "BENCH-S009.json",
       "id": "BENCH-S009"
     },
     {
-      "component_id": "SPECIALIST-010",
+      "component_id": "SPECIALIST-MARKET-RESEARCHER",
       "fixture": "BENCH-S010.json",
       "id": "BENCH-S010"
     },
     {
-      "component_id": "SPECIALIST-011",
+      "component_id": "SPECIALIST-SOFTWARE-ARCHITECT",
       "fixture": "BENCH-S011.json",
       "id": "BENCH-S011"
     },
     {
-      "component_id": "SPECIALIST-012",
+      "component_id": "SPECIALIST-SOFTWARE-ENGINEER",
       "fixture": "BENCH-S012.json",
       "id": "BENCH-S012"
     },
     {
-      "component_id": "SPECIALIST-013",
+      "component_id": "SPECIALIST-SOFTWARE-REVIEWER",
       "fixture": "BENCH-S013.json",
       "id": "BENCH-S013"
     },
     {
-      "component_id": "SPECIALIST-014",
+      "component_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
       "fixture": "BENCH-S014.json",
       "id": "BENCH-S014"
     },
     {
-      "component_id": "SPECIALIST-015",
+      "component_id": "SPECIALIST-SOFTWARE-MAINTENANCE-AND-DEBUGGING-ENGINEER",
       "fixture": "BENCH-S015.json",
       "id": "BENCH-S015"
     },
     {
-      "component_id": "SPECIALIST-016",
+      "component_id": "SPECIALIST-SERVICE-OPERATIONS-ANALYST",
       "fixture": "BENCH-S016.json",
       "id": "BENCH-S016"
     },
     {
-      "component_id": "SPECIALIST-017",
+      "component_id": "SPECIALIST-WORKFLOW-AUTOMATION-ENGINEER",
       "fixture": "BENCH-S017.json",
       "id": "BENCH-S017"
     },
     {
-      "component_id": "SPECIALIST-018",
+      "component_id": "SPECIALIST-PORTFOLIO-AND-INITIATIVE-STRATEGIST",
       "fixture": "BENCH-S018.json",
       "id": "BENCH-S018"
     },
     {
-      "component_id": "SPECIALIST-019",
+      "component_id": "SPECIALIST-EXECUTIVE-COMMUNICATIONS-WRITER",
       "fixture": "BENCH-S019.json",
       "id": "BENCH-S019"
     },
     {
-      "component_id": "SPECIALIST-020",
+      "component_id": "SPECIALIST-TECHNICAL-WRITER",
       "fixture": "BENCH-S020.json",
       "id": "BENCH-S020"
     },
     {
-      "component_id": "SPECIALIST-021",
+      "component_id": "SPECIALIST-EDITOR",
       "fixture": "BENCH-S021.json",
       "id": "BENCH-S021"
     },
     {
-      "component_id": "SPECIALIST-022",
+      "component_id": "SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST",
       "fixture": "BENCH-S022.json",
       "id": "BENCH-S022"
     },
     {
-      "component_id": "SPECIALIST-023",
+      "component_id": "SPECIALIST-PRICING-AND-PACKAGING-ECONOMIST",
       "fixture": "BENCH-S023.json",
       "id": "BENCH-S023"
     },
     {
-      "component_id": "SPECIALIST-024",
+      "component_id": "SPECIALIST-SECURITY-ARCHITECT",
       "fixture": "BENCH-S024.json",
       "id": "BENCH-S024"
     },
     {
-      "component_id": "SPECIALIST-025",
+      "component_id": "SPECIALIST-THREAT-MODELING-SPECIALIST",
       "fixture": "BENCH-S025.json",
       "id": "BENCH-S025"
     },
     {
-      "component_id": "SPECIALIST-026",
+      "component_id": "SPECIALIST-LEGAL-RESEARCH-ANALYST",
       "fixture": "BENCH-S026.json",
       "id": "BENCH-S026"
     },
     {
-      "component_id": "SPECIALIST-027",
+      "component_id": "SPECIALIST-PRODUCT-MANAGER",
       "fixture": "BENCH-S027.json",
       "id": "BENCH-S027"
     },
     {
-      "component_id": "SPECIALIST-028",
+      "component_id": "SPECIALIST-UX-RESEARCHER",
       "fixture": "BENCH-S028.json",
       "id": "BENCH-S028"
     },
     {
-      "component_id": "SPECIALIST-029",
+      "component_id": "SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST",
       "fixture": "BENCH-S029.json",
       "id": "BENCH-S029"
     },
     {
-      "component_id": "SPECIALIST-030",
+      "component_id": "SPECIALIST-DATA-ANALYST",
       "fixture": "BENCH-S030.json",
       "id": "BENCH-S030"
     },
     {
-      "component_id": "SPECIALIST-031",
+      "component_id": "SPECIALIST-OPERATIONS-SYSTEMS-ARCHITECT",
       "fixture": "BENCH-S031.json",
       "id": "BENCH-S031"
     },
     {
-      "component_id": "SPECIALIST-032",
+      "component_id": "SPECIALIST-PRODUCT-DESIGNER",
       "fixture": "BENCH-S032.json",
       "id": "BENCH-S032"
     },
     {
-      "component_id": "SPECIALIST-033",
+      "component_id": "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD",
       "fixture": "BENCH-S033.json",
       "id": "BENCH-S033"
     },
     {
-      "component_id": "SPECIALIST-034",
+      "component_id": "SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR",
       "fixture": "BENCH-S034.json",
       "id": "BENCH-S034"
     },
     {
-      "component_id": "SPECIALIST-035",
+      "component_id": "SPECIALIST-SOFTWARE-REVIEWER",
       "fixture": "BENCH-S035.json",
       "id": "BENCH-S035"
     },
     {
-      "component_id": "SPECIALIST-036",
+      "component_id": "SPECIALIST-ACCEPTANCE-TEST-ARCHITECT",
       "fixture": "BENCH-S036.json",
       "id": "BENCH-S036"
     },
     {
-      "component_id": "SPECIALIST-037",
+      "component_id": "SPECIALIST-ACCEPTANCE-TEST-ARCHITECT",
       "fixture": "BENCH-S037.json",
       "id": "BENCH-S037"
     },
     {
-      "component_id": "SPECIALIST-038",
+      "component_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
       "fixture": "BENCH-S038.json",
       "id": "BENCH-S038"
     },
     {
-      "component_id": "SPECIALIST-039",
+      "component_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
       "fixture": "BENCH-S039.json",
       "id": "BENCH-S039"
     },
     {
-      "component_id": "SPECIALIST-040",
+      "component_id": "SPECIALIST-SYSTEM-AND-END-TO-END-TEST-ENGINEER",
       "fixture": "BENCH-S040.json",
       "id": "BENCH-S040"
     },
     {
-      "component_id": "SPECIALIST-041",
+      "component_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
       "fixture": "BENCH-S041.json",
       "id": "BENCH-S041"
     },
     {
-      "component_id": "SPECIALIST-042",
+      "component_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
       "fixture": "BENCH-S042.json",
       "id": "BENCH-S042"
     },
     {
-      "component_id": "SPECIALIST-043",
+      "component_id": "SPECIALIST-SOFTWARE-REVIEWER",
       "fixture": "BENCH-S043.json",
       "id": "BENCH-S043"
     },
     {
-      "component_id": "SPECIALIST-044",
+      "component_id": "SPECIALIST-TEST-RELIABILITY-ENGINEER",
       "fixture": "BENCH-S044.json",
       "id": "BENCH-S044"
     },
     {
-      "component_id": "SPECIALIST-045",
+      "component_id": "SPECIALIST-RELEASE-VERIFICATION-AUDITOR",
       "fixture": "BENCH-S045.json",
       "id": "BENCH-S045"
     },

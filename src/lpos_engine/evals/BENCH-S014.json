@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-014",
+  "component_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,12 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-007",
-      "CS-008"
+      "CS-QA-001",
+      "CS-QA-005"
     ],
-    "lead_guild": "Engineering",
-    "lead_specialist": "SPECIALIST-014",
+    "lead_guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+    "lead_specialist": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
     "missing_capabilities": [],
     "model_class": "review"
   },
@@ -54,7 +53,7 @@
   "objective": "Verify that fixed Test Engineer work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Test Engineer deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-014.",
+    "Lead specialist is SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

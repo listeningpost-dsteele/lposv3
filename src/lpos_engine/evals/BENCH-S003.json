@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-003",
+  "component_id": "SPECIALIST-EVIDENCE-INTEGRITY-ANALYST",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,13 +17,12 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-005",
-      "CS-014",
-      "CS-016"
+      "CS-RINT-001",
+      "CS-RINT-003",
+      "CS-003"
     ],
-    "lead_guild": "Executive",
-    "lead_specialist": "SPECIALIST-003",
+    "lead_guild": "GUILD-RESEARCH-INTELLIGENCE",
+    "lead_specialist": "SPECIALIST-EVIDENCE-INTEGRITY-ANALYST",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -55,7 +54,7 @@
   "objective": "Verify that fixed Evidence Analyst work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Evidence Analyst deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-003.",
+    "Lead specialist is SPECIALIST-EVIDENCE-INTEGRITY-ANALYST.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-034",
+  "component_id": "SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,12 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-007",
-      "CS-008"
+      "CS-QA-001",
+      "CS-QA-002"
     ],
-    "lead_guild": "Code Testing",
-    "lead_specialist": "SPECIALIST-034",
+    "lead_guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+    "lead_specialist": "SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -52,7 +51,7 @@
   "objective": "Verify that bounded Code Test Director work routes to SPECIALIST-034 with complete capability coverage.",
   "scenario": "The Principal requests Code Test Director work on a code change; verification is deterministic and record-only.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-034.",
+    "Lead specialist is SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR.",
     "All requested capabilities are covered.",
     "CS-003, CS-007, CS-008 are mapped.",
     "No external action is executed."

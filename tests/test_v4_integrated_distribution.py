@@ -72,11 +72,14 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         available = {item.name for item in packaged.iterdir()}
         self.assertTrue(expected.issubset(available))
 
-    def test_all_45_specialists_are_canonical_and_routable(self) -> None:
+    def test_all_103_candidate_specialists_are_canonical_and_routable(self) -> None:
         registry = CapabilityRegistry.default()
-        expected_ids = tuple(f"SPECIALIST-{index:03d}" for index in range(1, 46))
+        expected_ids = tuple(
+            path.stem for path in sorted((self.package_root / "spec" / "specialists").glob("*.md"))
+        )
         actual_ids = tuple(profile.specialist_id for profile in registry.profiles)
         self.assertEqual(actual_ids, expected_ids)
+        self.assertEqual(len(actual_ids), 103)
         self.assertTrue(all(profile.capabilities for profile in registry.profiles))
         self.assertTrue(all(profile.craft_standards for profile in registry.profiles))
 
@@ -109,10 +112,15 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         )
         self.assertEqual(tuple(item["id"] for item in entries), expected_ids)
         self.assertEqual(tuple(item["id"] for item in fixtures), expected_ids)
+        runtime_ids = {profile.specialist_id for profile in CapabilityRegistry.default().profiles}
+        benchmark_specialists = {
+            item["component_id"] for item in fixtures if item["component_type"] == "specialist"
+        }
         self.assertEqual(
-            {item["component_id"] for item in fixtures if item["component_type"] == "specialist"},
-            {f"SPECIALIST-{index:03d}" for index in range(1, 46)},
+            len([item for item in fixtures if item["component_type"] == "specialist"]),
+            45,
         )
+        self.assertTrue(benchmark_specialists.issubset(runtime_ids))
         self.assertEqual(
             {item["component_id"] for item in fixtures if item["component_type"] == "standing_operation"},
             {*(f"SO-{index:03d}" for index in range(1, 22)), "SO-026", "SO-027", "SO-028", "SO-029"},
@@ -197,7 +205,7 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertEqual(report["name"], "LPOS")
         self.assertEqual(report["version"], "4.6.0")
         self.assertEqual(report["status"], "healthy")
-        self.assertEqual(report["specialists"], 45)
+        self.assertEqual(report["specialists"], 103)
         self.assertEqual(report["standing_operations"], 29)
         self.assertEqual(report["benchmarks"], 70)
         self.assertEqual(report["schemas"]["schemas"], 22)

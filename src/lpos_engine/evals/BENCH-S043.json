@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-043",
+  "component_id": "SPECIALIST-SOFTWARE-REVIEWER",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-007",
-      "CS-008"
+      "CS-SWE-001",
+      "CS-SWE-006"
     ],
-    "lead_guild": "Code Testing",
-    "lead_specialist": "SPECIALIST-043",
+    "lead_guild": "GUILD-SOFTWARE-ENGINEERING",
+    "lead_specialist": "SPECIALIST-SOFTWARE-REVIEWER",
     "missing_capabilities": [],
     "model_class": "review"
   },
@@ -50,7 +50,7 @@
   "objective": "Verify that bounded Architecture Fitness Analyst work routes to SPECIALIST-043 with complete capability coverage.",
   "scenario": "The Principal requests Architecture Fitness Analyst work on a code change; verification is deterministic and record-only.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-043.",
+    "Lead specialist is SPECIALIST-SOFTWARE-REVIEWER.",
     "All requested capabilities are covered.",
     "CS-007, CS-008 are mapped.",
     "No external action is executed."

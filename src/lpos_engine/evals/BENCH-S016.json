@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-016",
+  "component_id": "SPECIALIST-SERVICE-OPERATIONS-ANALYST",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,12 +17,13 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-013",
-      "CS-016"
+      "CS-OPS-001",
+      "CS-OPS-002",
+      "CS-OPS-004",
+      "CS-OPS-006"
     ],
-    "lead_guild": "Operations",
-    "lead_specialist": "SPECIALIST-016",
+    "lead_guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+    "lead_specialist": "SPECIALIST-SERVICE-OPERATIONS-ANALYST",
     "missing_capabilities": [],
     "model_class": "routine"
   },
@@ -54,7 +55,7 @@
   "objective": "Verify that fixed Operations Manager work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Operations Manager deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-016.",
+    "Lead specialist is SPECIALIST-SERVICE-OPERATIONS-ANALYST.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

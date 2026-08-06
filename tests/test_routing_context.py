@@ -22,14 +22,21 @@ class RoutingTests(unittest.TestCase):
 
     def test_single_complete_engineering_profile(self):
         route = self.router.route(("software_architecture", "testing"))
-        self.assertEqual(route.lead_specialist, "SPECIALIST-011")
+        selected = {route.lead_specialist, *route.supporting_specialists}
+        self.assertIn("SPECIALIST-SOFTWARE-ARCHITECT", selected)
+        self.assertIn("SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER", selected)
         self.assertFalse(route.missing_capabilities)
-        self.assertIn("CS-007", route.craft_standards)
 
     def test_multiple_profiles_cover_cross_domain_request(self):
         route = self.router.route(("software_implementation", "customer_communication"))
         selected = {route.lead_specialist, *route.supporting_specialists}
-        self.assertEqual(selected, {"SPECIALIST-012", "SPECIALIST-019"})
+        self.assertEqual(
+            selected,
+            {
+                "SPECIALIST-SOFTWARE-ENGINEER",
+                "SPECIALIST-EXECUTIVE-COMMUNICATIONS-WRITER",
+            },
+        )
         self.assertFalse(route.missing_capabilities)
 
     def test_missing_capability_is_explicit(self):
@@ -39,7 +46,7 @@ class RoutingTests(unittest.TestCase):
 
     def test_empty_request_defaults_to_executive_coordination(self):
         route = self.router.route(())
-        self.assertEqual(route.lead_specialist, "SPECIALIST-001")
+        self.assertEqual(route.lead_specialist, "SPECIALIST-STRATEGIC-PLANNER")
 
     def test_duplicate_profile_ids_rejected(self):
         profile = SpecialistProfile.from_dict(
@@ -70,6 +77,10 @@ class ContextTests(unittest.TestCase):
             "# Standards\n\n## CS-003 Artifact\nArtifact body.\n\n## CS-999 Other\nDo not load.\n",
             encoding="utf-8",
         )
+        (self.root / "guilds").mkdir()
+        (self.root / "guilds" / "GUILD-ENGINEERING.md").write_text(
+            "# Engineering Guild\nGuild operating instructions.\n", encoding="utf-8"
+        )
         (self.root / "skills" / "independent-reviewer" / "SKILL.md").write_text(
             "# Reviewer\nUse only the envelope.", encoding="utf-8"
         )
@@ -77,7 +88,7 @@ class ContextTests(unittest.TestCase):
         self.task = TaskEnvelope(
             task_id="TASK-1",
             principal_instruction="Build it",
-            lead_guild="Engineering",
+            lead_guild="GUILD-ENGINEERING",
             lead_specialist="SPECIALIST-001",
             craft_standards=("CS-003",),
             required_capabilities=("software_architecture",),
@@ -107,8 +118,32 @@ class ContextTests(unittest.TestCase):
         )
         self.assertIn("Alpha body", bundle.content)
         self.assertIn("Artifact body", bundle.content)
+        self.assertIn("Guild operating instructions", bundle.content)
         self.assertNotIn("Beta body", bundle.content)
         self.assertNotIn("Do not load", bundle.content)
+
+    def test_packaged_candidate_loads_exact_guild_specialist_and_standards(self):
+        route = CapabilityRouter(CapabilityRegistry.default()).route(("research",))
+        task = TaskEnvelope.from_dict(
+            {
+                **self.task.to_dict(),
+                "lead_guild": route.lead_guild,
+                "lead_specialist": route.lead_specialist,
+                "supporting_specialists": list(route.supporting_specialists),
+                "craft_standards": list(route.craft_standards),
+            }
+        )
+        bundle = ContextCompiler(SpecRepository.packaged()).compile_task(
+            task=task,
+            interpretation=self.contract,
+            artifact_specification=self.spec,
+        )
+        self.assertEqual(route.lead_guild, "GUILD-RESEARCH-INTELLIGENCE")
+        self.assertEqual(route.lead_specialist, "SPECIALIST-RESEARCH-ANALYST")
+        self.assertIn("Professional identity", bundle.content)
+        self.assertIn("Research and Intelligence Guild Charter", bundle.content)
+        self.assertIn("Research and Intelligence Practice Standard", bundle.content)
+        self.assertFalse(bundle.missing_components)
 
     def test_missing_component_is_reported(self):
         task = TaskEnvelope.from_dict({**self.task.to_dict(), "lead_specialist": "SPECIALIST-404"})

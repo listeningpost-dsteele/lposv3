@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-022",
+  "component_id": "SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,12 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-010"
+      "CS-FINE-001",
+      "CS-FINE-002",
+      "CS-FINE-006"
     ],
-    "lead_guild": "Finance",
-    "lead_specialist": "SPECIALIST-022",
+    "lead_guild": "GUILD-FINANCE-ECONOMICS",
+    "lead_specialist": "SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -53,7 +54,7 @@
   "objective": "Verify that fixed Financial Analyst work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Financial Analyst deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-022.",
+    "Lead specialist is SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

@@ -21,7 +21,7 @@
   "properties": {
     "id": {"type": "string", "pattern": "^BENCH-[SO][0-9]{3}$"},
     "component_type": {"enum": ["specialist", "standing_operation"]},
-    "component_id": {"type": "string", "pattern": "^(SPECIALIST|SO)-[0-9]{3}$"},
+    "component_id": {"type": "string", "pattern": "^(SPECIALIST-(?:[0-9]{3}|[A-Z0-9]+(?:-[A-Z0-9]+)*)|SO-[0-9]{3})$"},
     "objective": {"type": "string", "minLength": 1},
     "fixture_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
     "scenario": {"type": "string", "minLength": 1},

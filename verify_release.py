@@ -145,9 +145,14 @@ def main() -> int:
 
         specialists = registry_package.get("specialists", [])
         specialist_ids = [item.get("specialist_id") for item in specialists if isinstance(item, dict)]
-        expected_specialists = [f"SPECIALIST-{number:03d}" for number in range(1, 46)]
+        expected_specialists = [
+            path.stem
+            for path in sorted(
+                (ROOT / "src" / "lpos_engine" / "spec" / "specialists").glob("SPECIALIST-*.md")
+            )
+        ]
         if specialist_ids != expected_specialists:
-            fail("capability registry does not contain canonical SPECIALIST-001 through SPECIALIST-045", failures)
+            fail("capability registry does not match the canonical 4.7 specialist corpus", failures)
 
         operations = workflow_catalog.get("operations", [])
         operation_ids = [item.get("so_id") for item in operations if isinstance(item, dict)]
@@ -281,7 +286,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 45 specialists, 29 Standing Operations, 70 benchmarks, 22 schemas."
+        f"{len(expected_files)} immutable files, 103 specialists, 29 Standing Operations, 70 benchmarks, 22 schemas."
     )
     return 0
 

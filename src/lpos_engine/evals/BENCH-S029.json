@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-029",
+  "component_id": "SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-015"
+      "CS-PRINC-001",
+      "CS-PRINC-003"
     ],
-    "lead_guild": "Relationship Intelligence",
-    "lead_specialist": "SPECIALIST-029",
+    "lead_guild": "GUILD-PRINCIPAL-OPERATIONS",
+    "lead_specialist": "SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST",
     "missing_capabilities": [],
     "model_class": "routine"
   },
@@ -52,7 +52,7 @@
   "objective": "Verify that fixed Relationship Analyst work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Relationship Analyst deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-029.",
+    "Lead specialist is SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

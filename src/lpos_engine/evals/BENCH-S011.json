@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-011",
+  "component_id": "SPECIALIST-SOFTWARE-ARCHITECT",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,12 +17,12 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-007",
-      "CS-008"
+      "CS-SWE-001",
+      "CS-SWE-002",
+      "CS-SWE-006"
     ],
-    "lead_guild": "Engineering",
-    "lead_specialist": "SPECIALIST-011",
+    "lead_guild": "GUILD-SOFTWARE-ENGINEERING",
+    "lead_specialist": "SPECIALIST-SOFTWARE-ARCHITECT",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -54,7 +54,7 @@
   "objective": "Verify that fixed Software Architect work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Software Architect deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-011.",
+    "Lead specialist is SPECIALIST-SOFTWARE-ARCHITECT.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

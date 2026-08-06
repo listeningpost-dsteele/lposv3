@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-025",
+  "component_id": "SPECIALIST-THREAT-MODELING-SPECIALIST",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-009"
+      "CS-SEC-001",
+      "CS-SEC-003"
     ],
-    "lead_guild": "Security",
-    "lead_specialist": "SPECIALIST-025",
+    "lead_guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+    "lead_specialist": "SPECIALIST-THREAT-MODELING-SPECIALIST",
     "missing_capabilities": [],
     "model_class": "review"
   },
@@ -52,7 +52,7 @@
   "objective": "Verify that fixed Threat Analyst work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Threat Analyst deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-025.",
+    "Lead specialist is SPECIALIST-THREAT-MODELING-SPECIALIST.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-044",
+  "component_id": "SPECIALIST-TEST-RELIABILITY-ENGINEER",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,10 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-008"
+      "CS-QA-001",
+      "CS-QA-007"
     ],
-    "lead_guild": "Code Testing",
-    "lead_specialist": "SPECIALIST-044",
+    "lead_guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+    "lead_specialist": "SPECIALIST-TEST-RELIABILITY-ENGINEER",
     "missing_capabilities": [],
     "model_class": "review"
   },
@@ -49,7 +50,7 @@
   "objective": "Verify that bounded Test Reliability Analyst work routes to SPECIALIST-044 with complete capability coverage.",
   "scenario": "The Principal requests Test Reliability Analyst work on a code change; verification is deterministic and record-only.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-044.",
+    "Lead specialist is SPECIALIST-TEST-RELIABILITY-ENGINEER.",
     "All requested capabilities are covered.",
     "CS-008 are mapped.",
     "No external action is executed."

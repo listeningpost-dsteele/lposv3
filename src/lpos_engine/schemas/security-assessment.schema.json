@@ -285,7 +285,7 @@
       ]
     },
     "specialist_id": {
-      "const": "SPECIALIST-033"
+      "const": "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD"
     },
     "started_at": {
       "format": "date-time",

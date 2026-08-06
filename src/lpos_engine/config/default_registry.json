@@ -1,810 +1,2471 @@
 {
   "schema_version": 4,
   "os_version": "4.6.0",
+  "registry_version": "4.7.0-candidate",
+  "activation_status": "active_candidate",
+  "source_catalog": "candidate_catalog.json",
   "specialists": [
     {
-      "specialist_id": "SPECIALIST-001",
-      "name": "Strategic Planner",
-      "guild": "Executive",
+      "specialist_id": "SPECIALIST-ACCEPTANCE-TEST-ARCHITECT",
+      "name": "Acceptance Test Architect",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
       "capabilities": [
-        "executive_coordination",
-        "strategy",
-        "strategic_planning",
-        "scenario_planning",
-        "planning",
-        "objectives"
+        "acceptance",
+        "acceptance_criteria_design",
+        "acceptance_test",
+        "acceptance_test_architect",
+        "acceptance_test_authoring",
+        "behavior_contract_protection",
+        "behavior_specification",
+        "edge_case_analysis",
+        "executable_specification",
+        "quality_release_assurance",
+        "test"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-005",
-        "CS-014",
-        "CS-016"
-      ],
-      "model_class": "executive",
-      "priority": 10
-    },
-    {
-      "specialist_id": "SPECIALIST-002",
-      "name": "Decision Analyst",
-      "guild": "Executive",
-      "capabilities": [
-        "decision_support",
-        "decision_analysis",
-        "tradeoff_analysis",
-        "recommendations",
-        "confidence_assessment"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-005",
-        "CS-014",
-        "CS-016"
-      ],
-      "model_class": "executive",
-      "priority": 12
-    },
-    {
-      "specialist_id": "SPECIALIST-003",
-      "name": "Evidence Analyst",
-      "guild": "Executive",
-      "capabilities": [
-        "evidence_synthesis",
-        "measurement",
-        "outcome_evaluation",
-        "evidence_management",
-        "fact_checking"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-005",
-        "CS-014",
-        "CS-016"
-      ],
-      "model_class": "executive",
-      "priority": 14
-    },
-    {
-      "specialist_id": "SPECIALIST-004",
-      "name": "Risk Analyst",
-      "guild": "Executive",
-      "capabilities": [
-        "risk_triage",
-        "risk_analysis",
-        "scenario_analysis",
-        "mitigation_planning"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-005",
-        "CS-014",
-        "CS-016"
-      ],
-      "model_class": "executive",
-      "priority": 14
-    },
-    {
-      "specialist_id": "SPECIALIST-005",
-      "name": "Initiative Manager",
-      "guild": "Executive",
-      "capabilities": [
-        "initiative_management",
-        "dependency_tracking",
-        "execution_planning",
-        "portfolio_tracking"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-005",
-        "CS-014",
-        "CS-016"
-      ],
-      "model_class": "routine",
-      "priority": 20
-    },
-    {
-      "specialist_id": "SPECIALIST-006",
-      "name": "Research Analyst",
-      "guild": "Research",
-      "capabilities": [
-        "research",
-        "evidence_synthesis",
-        "source_evaluation",
-        "fact_checking",
-        "literature_review"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-004"
-      ],
-      "model_class": "executive",
-      "priority": 20
-    },
-    {
-      "specialist_id": "SPECIALIST-007",
-      "name": "Technology Scout",
-      "guild": "Research",
-      "capabilities": [
-        "technology_scouting",
-        "technology_research",
-        "weak_signal_detection",
-        "innovation_research"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-004"
-      ],
-      "model_class": "executive",
-      "priority": 22
-    },
-    {
-      "specialist_id": "SPECIALIST-008",
-      "name": "Source Validator",
-      "guild": "Research",
-      "capabilities": [
-        "source_evaluation",
-        "source_validation",
-        "fact_checking",
-        "recency_analysis",
-        "independence_analysis"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-004"
+        "CS-QA-001",
+        "CS-QA-003"
       ],
       "model_class": "review",
-      "priority": 8
+      "priority": 20,
+      "charter_path": "specialists/SPECIALIST-ACCEPTANCE-TEST-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-009",
-      "name": "Competitive Intelligence Analyst",
-      "guild": "Research",
+      "specialist_id": "SPECIALIST-ACCESSIBILITY-AND-INCLUSIVE-DESIGN-SPECIALIST",
+      "name": "Accessibility and Inclusive Design Specialist",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
       "capabilities": [
-        "competitive_intelligence",
-        "market_positioning",
-        "competitor_research",
-        "evidence_synthesis"
+        "accessibility",
+        "accessibility_and_inclusive_design_specialist",
+        "accessibility_inclusive",
+        "design",
+        "experience_design",
+        "inclusive",
+        "inclusive_design"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-004"
+        "CS-EXP-001",
+        "CS-EXP-008",
+        "CS-003"
       ],
       "model_class": "executive",
-      "priority": 22
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-ACCESSIBILITY-AND-INCLUSIVE-DESIGN-SPECIALIST.md",
+      "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-010",
-      "name": "Market Research Analyst",
-      "guild": "Research",
+      "specialist_id": "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD",
+      "name": "Adversarial Assurance Lead",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
       "capabilities": [
-        "market_research",
-        "demand_analysis",
-        "segmentation",
-        "customer_research",
-        "evidence_synthesis"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-004"
-      ],
-      "model_class": "executive",
-      "priority": 22
-    },
-    {
-      "specialist_id": "SPECIALIST-011",
-      "name": "Software Architect",
-      "guild": "Engineering",
-      "capabilities": [
-        "software_architecture",
-        "system_design",
-        "data_modeling",
-        "integration_architecture",
-        "security_review"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-007",
-        "CS-008"
-      ],
-      "model_class": "executive",
-      "priority": 5
-    },
-    {
-      "specialist_id": "SPECIALIST-012",
-      "name": "Software Engineer",
-      "guild": "Engineering",
-      "capabilities": [
-        "software_implementation",
-        "automation",
-        "integration",
-        "code_generation",
-        "data_modeling"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-007",
-        "CS-008"
-      ],
-      "model_class": "executive",
-      "priority": 14
-    },
-    {
-      "specialist_id": "SPECIALIST-013",
-      "name": "Code Reviewer",
-      "guild": "Engineering",
-      "capabilities": [
-        "code_review",
-        "security_review",
-        "quality_assurance",
+        "adversarial",
+        "adversarial_assurance",
+        "adversarial_assurance_lead",
+        "adversarial_security_assurance",
+        "adversarial_testing",
+        "artifact_security_scanning",
+        "assurance",
+        "penetration_test_planning",
         "regression_detection",
-        "policy_audit",
-        "independent_review"
+        "remediation_planning",
+        "security_review",
+        "threat_modeling"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-007",
-        "CS-008"
+        "CS-ADV-001",
+        "CS-ADV-002"
       ],
-      "model_class": "review",
-      "priority": 6
+      "model_class": "executive",
+      "priority": 4,
+      "charter_path": "specialists/SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD.md",
+      "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-014",
-      "name": "Test Engineer",
-      "guild": "Engineering",
+      "specialist_id": "SPECIALIST-ADVERSARIAL-FINDING-REVIEWER-AND-CLOSURE-VERIFIER",
+      "name": "Adversarial Finding Reviewer and Closure Verifier",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
       "capabilities": [
-        "testing",
+        "adversarial",
+        "adversarial_finding",
+        "adversarial_finding_reviewer_and_closure_verifier",
+        "adversarial_security_assurance",
+        "closure",
+        "closure_verifier",
+        "finding",
+        "finding_closure",
+        "verifier"
+      ],
+      "craft_standards": [
+        "CS-ADV-001",
+        "CS-ADV-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-ADVERSARIAL-FINDING-REVIEWER-AND-CLOSURE-VERIFIER.md",
+      "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-AGENT-RUNTIME-ENGINEER",
+      "name": "Agent Runtime Engineer",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "capabilities": [
+        "agent",
+        "agent_runtime",
+        "agent_runtime_engineer",
+        "ai_systems_orchestration_engineering",
+        "runtime"
+      ],
+      "craft_standards": [
+        "CS-AI-001",
+        "CS-AI-005",
+        "CS-AI-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-AGENT-RUNTIME-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-AI-BEHAVIOR-EVALUATION-ENGINEER",
+      "name": "AI Behavior Evaluation Engineer",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "capabilities": [
+        "ai",
+        "ai_behavior",
+        "ai_behavior_evaluation_engineer",
+        "ai_systems_orchestration_engineering",
+        "behavior",
+        "behavior_evaluation",
+        "evaluation"
+      ],
+      "craft_standards": [
+        "CS-AI-001",
+        "CS-AI-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-AI-BEHAVIOR-EVALUATION-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-AI-SYSTEMS-ARCHITECT",
+      "name": "AI Systems Architect",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "capabilities": [
+        "ai",
+        "ai_systems",
+        "ai_systems_architect",
+        "ai_systems_orchestration_engineering",
+        "systems"
+      ],
+      "craft_standards": [
+        "CS-AI-001",
+        "CS-AI-002",
+        "CS-AI-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-AI-SYSTEMS-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-ANALYTICS-ENGINEER-AND-METRIC-STEWARD",
+      "name": "Analytics Engineer and Metric Steward",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "capabilities": [
+        "analytics",
+        "analytics_engineer_and_metric_steward",
+        "analytics_metric",
+        "data_analytics",
+        "metric"
+      ],
+      "craft_standards": [
+        "CS-DATA-001",
+        "CS-DATA-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-ANALYTICS-ENGINEER-AND-METRIC-STEWARD.md",
+      "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-APPLICATION-SECURITY-ENGINEER",
+      "name": "Application Security Engineer",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "capabilities": [
+        "application",
+        "application_security",
+        "application_security_engineer",
+        "security",
+        "security_privacy_engineering"
+      ],
+      "craft_standards": [
+        "CS-SEC-001",
+        "CS-SEC-004"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-APPLICATION-SECURITY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-ARTIFACT-AND-EXPERIENCE-QUALITY-REVIEWER",
+      "name": "Artifact and Experience Quality Reviewer",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "capabilities": [
+        "artifact",
+        "artifact_and_experience_quality_reviewer",
+        "artifact_experience",
+        "experience",
+        "experience_quality",
+        "quality",
+        "quality_release_assurance"
+      ],
+      "craft_standards": [
+        "CS-QA-001",
+        "CS-QA-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-ARTIFACT-AND-EXPERIENCE-QUALITY-REVIEWER.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-BRAND-DESIGNER",
+      "name": "Brand Designer",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "capabilities": [
+        "brand",
+        "brand_designer",
+        "market_brand_growth"
+      ],
+      "craft_standards": [
+        "CS-MBG-001",
+        "CS-MBG-003",
+        "CS-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-BRAND-DESIGNER.md",
+      "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-BRAND-STRATEGIST",
+      "name": "Brand Strategist",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "capabilities": [
+        "brand",
+        "brand_strategist",
+        "market_brand_growth",
+        "strategist"
+      ],
+      "craft_standards": [
+        "CS-MBG-001",
+        "CS-MBG-002"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-BRAND-STRATEGIST.md",
+      "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-BUSINESS-CASE-AND-INVESTMENT-ANALYST",
+      "name": "Business Case and Investment Analyst",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "capabilities": [
+        "business",
+        "business_case",
+        "business_case_and_investment_analyst",
+        "case",
+        "case_investment",
+        "finance_economics",
+        "investment"
+      ],
+      "craft_standards": [
+        "CS-FINE-001",
+        "CS-FINE-003",
+        "CS-FINE-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-BUSINESS-CASE-AND-INVESTMENT-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-CLOUD-AND-INFRASTRUCTURE-SECURITY-ENGINEER",
+      "name": "Cloud and Infrastructure Security Engineer",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "capabilities": [
+        "cloud",
+        "cloud_and_infrastructure_security_engineer",
+        "cloud_infrastructure",
+        "infrastructure",
+        "infrastructure_security",
+        "security",
+        "security_privacy_engineering"
+      ],
+      "craft_standards": [
+        "CS-SEC-001",
+        "CS-SEC-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CLOUD-AND-INFRASTRUCTURE-SECURITY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
+      "name": "Code and Structural Test Engineer",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "capabilities": [
+        "boundary_testing",
+        "characterization_testing",
+        "code",
+        "code_and_structural_test_engineer",
+        "code_structural",
+        "failure_injection",
+        "failure_mode_testing",
+        "fuzz_testing",
+        "invariant_testing",
+        "legacy_behavior_baselining",
+        "mutation_testing",
+        "property_testing",
+        "quality_assurance",
+        "quality_release_assurance",
+        "regression_detection",
+        "structural",
+        "structural_test",
+        "test",
         "test_design",
-        "quality_assurance",
-        "regression_detection",
-        "failure_injection"
+        "test_strength_analysis",
+        "testing",
+        "unit_testing"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-007",
-        "CS-008"
+        "CS-QA-001",
+        "CS-QA-005"
       ],
       "model_class": "review",
-      "priority": 7
+      "priority": 7,
+      "charter_path": "specialists/SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-015",
-      "name": "Debugging Specialist",
-      "guild": "Engineering",
+      "specialist_id": "SPECIALIST-COMMERCIAL-CONTRACTS-ANALYST",
+      "name": "Commercial Contracts Analyst",
+      "guild": "GUILD-LEGAL-REGULATORY",
       "capabilities": [
-        "debugging",
-        "root_cause_analysis",
-        "incident_diagnosis",
-        "corrective_action"
+        "commercial",
+        "commercial_contracts",
+        "commercial_contracts_analyst",
+        "contracts",
+        "legal_regulatory"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-007",
-        "CS-008"
+        "CS-LEGAL-001",
+        "CS-LEGAL-003"
       ],
       "model_class": "executive",
-      "priority": 15
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-COMMERCIAL-CONTRACTS-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-016",
-      "name": "Operations Manager",
-      "guild": "Operations",
+      "specialist_id": "SPECIALIST-COMMERCIAL-COPYWRITER",
+      "name": "Commercial Copywriter",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
       "capabilities": [
-        "operations",
-        "operational_coordination",
-        "incident_response",
-        "process_improvement",
-        "scheduling"
+        "commercial",
+        "commercial_copywriter",
+        "copywriter",
+        "market_brand_growth"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-013",
-        "CS-016"
-      ],
-      "model_class": "routine",
-      "priority": 18
-    },
-    {
-      "specialist_id": "SPECIALIST-017",
-      "name": "Workflow Coordinator",
-      "guild": "Operations",
-      "capabilities": [
-        "workflow_design",
-        "workflow_coordination",
-        "scheduling",
-        "state_tracking",
-        "process_improvement"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-013",
-        "CS-016"
-      ],
-      "model_class": "routine",
-      "priority": 16
-    },
-    {
-      "specialist_id": "SPECIALIST-018",
-      "name": "Dependency Manager",
-      "guild": "Operations",
-      "capabilities": [
-        "dependency_management",
-        "dependency_tracking",
-        "execution_planning",
-        "blocker_resolution"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-013",
-        "CS-016"
-      ],
-      "model_class": "routine",
-      "priority": 18
-    },
-    {
-      "specialist_id": "SPECIALIST-019",
-      "name": "Executive Writer",
-      "guild": "Communications",
-      "capabilities": [
-        "writing",
-        "executive_communication",
-        "brief_writing",
-        "decision_communication",
-        "customer_communication"
-      ],
-      "craft_standards": [
-        "CS-003",
+        "CS-MBG-001",
         "CS-001",
-        "CS-014",
-        "CS-018"
-      ],
-      "model_class": "routine",
-      "priority": 12
-    },
-    {
-      "specialist_id": "SPECIALIST-020",
-      "name": "Technical Writer",
-      "guild": "Communications",
-      "capabilities": [
-        "writing",
-        "technical_writing",
-        "documentation",
-        "developer_communication"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-001",
-        "CS-014",
-        "CS-018"
-      ],
-      "model_class": "routine",
-      "priority": 14
-    },
-    {
-      "specialist_id": "SPECIALIST-021",
-      "name": "Editor",
-      "guild": "Communications",
-      "capabilities": [
-        "editing",
-        "writing_review",
-        "clarity_improvement",
-        "meaning_preservation"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-001",
-        "CS-014",
-        "CS-018"
-      ],
-      "model_class": "review",
-      "priority": 8
-    },
-    {
-      "specialist_id": "SPECIALIST-022",
-      "name": "Financial Analyst",
-      "guild": "Finance",
-      "capabilities": [
-        "financial_analysis",
-        "budgeting",
-        "forecasting",
-        "roi_analysis",
-        "cost_analysis"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-010"
+        "CS-003"
       ],
       "model_class": "executive",
-      "priority": 20
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-COMMERCIAL-COPYWRITER.md",
+      "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-023",
-      "name": "Pricing Analyst",
-      "guild": "Finance",
+      "specialist_id": "SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST",
+      "name": "Competitive Intelligence Analyst",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
       "capabilities": [
-        "pricing",
-        "packaging",
-        "unit_economics",
-        "revenue_analysis"
+        "competitive",
+        "competitive_intelligence",
+        "competitive_intelligence_analyst",
+        "competitor_research",
+        "evidence_synthesis",
+        "intelligence",
+        "market_positioning",
+        "research_intelligence"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-010"
+        "CS-RINT-001",
+        "CS-RINT-003",
+        "CS-RINT-005"
       ],
       "model_class": "executive",
-      "priority": 20
+      "priority": 22,
+      "charter_path": "specialists/SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-024",
-      "name": "Security Architect",
-      "guild": "Security",
+      "specialist_id": "SPECIALIST-COMPLIANCE-PROGRAM-AND-EXTERNAL-ASSESSMENT-COORDINATOR",
+      "name": "Compliance Program and External Assessment Coordinator",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
       "capabilities": [
-        "security_architecture",
-        "security_review",
-        "threat_mitigation",
-        "least_privilege",
-        "privacy_engineering"
+        "assessment",
+        "compliance",
+        "compliance_control_assurance",
+        "compliance_program",
+        "compliance_program_and_external_assessment_coordinator",
+        "external",
+        "external_assessment",
+        "program",
+        "program_external"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-009"
+        "CS-COMP-001",
+        "CS-COMP-005"
       ],
       "model_class": "executive",
-      "priority": 8
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-COMPLIANCE-PROGRAM-AND-EXTERNAL-ASSESSMENT-COORDINATOR.md",
+      "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-025",
-      "name": "Threat Analyst",
-      "guild": "Security",
+      "specialist_id": "SPECIALIST-CONSTITUTIONAL-AND-POLICY-STEWARD",
+      "name": "Constitutional and Policy Steward",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
       "capabilities": [
-        "threat_modeling",
-        "attack_surface_analysis",
-        "security_review",
-        "risk_analysis"
+        "constitutional",
+        "constitutional_and_policy_steward",
+        "constitutional_policy",
+        "governance_open_source",
+        "policy"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-009"
-      ],
-      "model_class": "review",
-      "priority": 8
-    },
-    {
-      "specialist_id": "SPECIALIST-026",
-      "name": "Legal Analyst",
-      "guild": "Legal",
-      "capabilities": [
-        "legal_analysis",
-        "contract_analysis",
-        "legal_risk",
-        "policy_interpretation"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-011"
+        "CS-GOV-001",
+        "CS-GOV-002"
       ],
       "model_class": "executive",
-      "priority": 20
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CONSTITUTIONAL-AND-POLICY-STEWARD.md",
+      "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-027",
-      "name": "Product Manager",
-      "guild": "Product",
+      "specialist_id": "SPECIALIST-CONTENT-DESIGNER",
+      "name": "Content Designer",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
       "capabilities": [
-        "product_management",
-        "requirements",
-        "prioritization",
-        "product_strategy",
-        "outcome_definition"
+        "content",
+        "content_designer",
+        "experience_design"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-006"
+        "CS-EXP-001",
+        "CS-EXP-006",
+        "CS-EXP-008",
+        "CS-003"
       ],
       "model_class": "executive",
-      "priority": 18
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CONTENT-DESIGNER.md",
+      "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-028",
-      "name": "Customer Insights Analyst",
-      "guild": "Customer Intelligence",
+      "specialist_id": "SPECIALIST-CONTENT-MARKETING-STRATEGIST",
+      "name": "Content Marketing Strategist",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
       "capabilities": [
-        "customer_research",
-        "customer_insights",
-        "needs_analysis",
-        "evidence_synthesis"
+        "content",
+        "content_marketing",
+        "content_marketing_strategist",
+        "market_brand_growth",
+        "marketing",
+        "marketing_strategist",
+        "strategist"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-015",
-        "CS-006"
-      ],
-      "model_class": "executive",
-      "priority": 20
-    },
-    {
-      "specialist_id": "SPECIALIST-029",
-      "name": "Relationship Analyst",
-      "guild": "Relationship Intelligence",
-      "capabilities": [
-        "relationship_analysis",
-        "stakeholder_analysis",
-        "follow_up_planning",
-        "communication_context"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-015"
-      ],
-      "model_class": "routine",
-      "priority": 20
-    },
-    {
-      "specialist_id": "SPECIALIST-030",
-      "name": "Data Analyst",
-      "guild": "Data Intelligence",
-      "capabilities": [
-        "data_analysis",
-        "metrics",
-        "trend_analysis",
-        "data_quality",
-        "measurement"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-012"
-      ],
-      "model_class": "executive",
-      "priority": 18
-    },
-    {
-      "specialist_id": "SPECIALIST-031",
-      "name": "Automation Architect",
-      "guild": "Automation",
-      "capabilities": [
-        "automation",
-        "workflow_design",
-        "integration_architecture",
-        "observability",
-        "reliability_engineering"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-013"
-      ],
-      "model_class": "executive",
-      "priority": 14
-    },
-    {
-      "specialist_id": "SPECIALIST-032",
-      "name": "Web & Product Designer",
-      "guild": "Design",
-      "capabilities": [
-        "product_design",
-        "web_design",
-        "interaction_design",
-        "visual_design",
-        "baseline_preservation"
-      ],
-      "craft_standards": [
-        "CS-003",
-        "CS-002",
+        "CS-MBG-001",
+        "CS-MBG-007",
         "CS-001"
       ],
       "model_class": "executive",
-      "priority": 18
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CONTENT-MARKETING-STRATEGIST.md",
+      "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-033",
-      "name": "Adversarial Assurance Engineer",
-      "guild": "Sentinel Adversarial Assurance",
+      "specialist_id": "SPECIALIST-CONTROL-EVIDENCE-AUDITOR",
+      "name": "Control Evidence Auditor",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
       "capabilities": [
-        "adversarial_testing",
-        "artifact_security_scanning",
-        "penetration_test_planning",
-        "security_review",
-        "threat_modeling",
-        "remediation_planning",
-        "regression_detection"
+        "auditor",
+        "compliance_control_assurance",
+        "control",
+        "control_evidence",
+        "control_evidence_auditor",
+        "evidence",
+        "evidence_auditor"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-008",
-        "CS-009"
+        "CS-COMP-001",
+        "CS-COMP-003"
       ],
       "model_class": "executive",
-      "priority": 4
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CONTROL-EVIDENCE-AUDITOR.md",
+      "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-034",
-      "name": "Code Test Director",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-CONTROL-FRAMEWORK-ARCHITECT",
+      "name": "Control Framework Architect",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
+      "capabilities": [
+        "compliance_control_assurance",
+        "control",
+        "control_framework",
+        "control_framework_architect",
+        "framework"
+      ],
+      "craft_standards": [
+        "CS-COMP-001",
+        "CS-COMP-002"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CONTROL-FRAMEWORK-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-CUSTOMER-SUCCESS-STRATEGIST",
+      "name": "Customer Success Strategist",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "capabilities": [
+        "customer",
+        "customer_success",
+        "customer_success_strategist",
+        "revenue_customer_operations",
+        "strategist",
+        "success",
+        "success_strategist"
+      ],
+      "craft_standards": [
+        "CS-REV-001",
+        "CS-REV-004"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CUSTOMER-SUCCESS-STRATEGIST.md",
+      "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-CUSTOMER-SUPPORT-OPERATIONS-SPECIALIST",
+      "name": "Customer Support Operations Specialist",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "capabilities": [
+        "customer",
+        "customer_support",
+        "customer_support_operations_specialist",
+        "operations",
+        "revenue_customer_operations",
+        "support",
+        "support_operations"
+      ],
+      "craft_standards": [
+        "CS-REV-001",
+        "CS-REV-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-CUSTOMER-SUPPORT-OPERATIONS-SPECIALIST.md",
+      "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-DATA-ANALYST",
+      "name": "Data Analyst",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "capabilities": [
+        "data",
+        "data_analysis",
+        "data_analyst",
+        "data_analytics",
+        "data_quality",
+        "measurement",
+        "metrics",
+        "trend_analysis"
+      ],
+      "craft_standards": [
+        "CS-DATA-001",
+        "CS-DATA-004"
+      ],
+      "model_class": "executive",
+      "priority": 18,
+      "charter_path": "specialists/SPECIALIST-DATA-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-DATA-ENGINEER",
+      "name": "Data Engineer",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "capabilities": [
+        "data",
+        "data_analytics",
+        "data_engineer"
+      ],
+      "craft_standards": [
+        "CS-DATA-001",
+        "CS-DATA-002"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-DATA-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-DATA-QUALITY-AND-LINEAGE-ENGINEER",
+      "name": "Data Quality and Lineage Engineer",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "capabilities": [
+        "data",
+        "data_analytics",
+        "data_quality",
+        "data_quality_and_lineage_engineer",
+        "lineage",
+        "quality",
+        "quality_lineage"
+      ],
+      "craft_standards": [
+        "CS-DATA-001",
+        "CS-DATA-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-DATA-QUALITY-AND-LINEAGE-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-DATABASE-RELIABILITY-ENGINEER",
+      "name": "Database Reliability Engineer",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "capabilities": [
+        "database",
+        "database_reliability",
+        "database_reliability_engineer",
+        "platform_reliability_engineering",
+        "reliability"
+      ],
+      "craft_standards": [
+        "CS-PLAT-001",
+        "CS-PLAT-003",
+        "CS-PLAT-004",
+        "CS-PLAT-005",
+        "CS-PLAT-006",
+        "CS-PLAT-007"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-DATABASE-RELIABILITY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-DECISION-ANALYST",
+      "name": "Decision Analyst",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
+      "capabilities": [
+        "confidence_assessment",
+        "decision",
+        "decision_analysis",
+        "decision_analyst",
+        "decision_support",
+        "recommendations",
+        "strategy_decisions_portfolio",
+        "tradeoff_analysis"
+      ],
+      "craft_standards": [
+        "CS-STRAT-001",
+        "CS-STRAT-003"
+      ],
+      "model_class": "executive",
+      "priority": 12,
+      "charter_path": "specialists/SPECIALIST-DECISION-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-DESIGN-SYSTEMS-DESIGNER",
+      "name": "Design Systems Designer",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "capabilities": [
+        "design",
+        "design_systems",
+        "design_systems_designer",
+        "experience_design",
+        "systems"
+      ],
+      "craft_standards": [
+        "CS-EXP-001",
+        "CS-EXP-007",
+        "CS-EXP-008",
+        "CS-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-DESIGN-SYSTEMS-DESIGNER.md",
+      "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-EDITOR",
+      "name": "Editor",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "capabilities": [
+        "clarity_improvement",
+        "communications_knowledge",
+        "editing",
+        "editor",
+        "meaning_preservation",
+        "writing_review"
+      ],
+      "craft_standards": [
+        "CS-COMK-001",
+        "CS-COMK-005"
+      ],
+      "model_class": "review",
+      "priority": 8,
+      "charter_path": "specialists/SPECIALIST-EDITOR.md",
+      "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-EVIDENCE-INTEGRITY-ANALYST",
+      "name": "Evidence Integrity Analyst",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "capabilities": [
+        "evidence",
+        "evidence_integrity",
+        "evidence_integrity_analyst",
+        "evidence_management",
+        "evidence_synthesis",
+        "fact_checking",
+        "independence_analysis",
+        "integrity",
+        "measurement",
+        "outcome_evaluation",
+        "recency_analysis",
+        "research_intelligence",
+        "source_evaluation",
+        "source_validation"
+      ],
+      "craft_standards": [
+        "CS-RINT-001",
+        "CS-RINT-003",
+        "CS-003"
+      ],
+      "model_class": "review",
+      "priority": 8,
+      "charter_path": "specialists/SPECIALIST-EVIDENCE-INTEGRITY-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-EXECUTIVE-COMMUNICATIONS-WRITER",
+      "name": "Executive Communications Writer",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "capabilities": [
+        "brief_writing",
+        "communications",
+        "communications_knowledge",
+        "communications_writer",
+        "customer_communication",
+        "decision_communication",
+        "executive",
+        "executive_communication",
+        "executive_communications",
+        "executive_communications_writer",
+        "writer",
+        "writing"
+      ],
+      "craft_standards": [
+        "CS-COMK-001",
+        "CS-COMK-002",
+        "CS-COMK-005"
+      ],
+      "model_class": "routine",
+      "priority": 12,
+      "charter_path": "specialists/SPECIALIST-EXECUTIVE-COMMUNICATIONS-WRITER.md",
+      "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-EXECUTIVE-OFFICE-OPERATIONS-SPECIALIST",
+      "name": "Executive Office Operations Specialist",
+      "guild": "GUILD-PRINCIPAL-OPERATIONS",
+      "capabilities": [
+        "executive",
+        "executive_office",
+        "executive_office_operations_specialist",
+        "office",
+        "office_operations",
+        "operations",
+        "principal_operations"
+      ],
+      "craft_standards": [
+        "CS-PRINC-001",
+        "CS-PRINC-002"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-EXECUTIVE-OFFICE-OPERATIONS-SPECIALIST.md",
+      "guild_charter_path": "guilds/GUILD-PRINCIPAL-OPERATIONS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-EXPERIMENTATION-AND-CAUSAL-INFERENCE-ANALYST",
+      "name": "Experimentation and Causal Inference Analyst",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "capabilities": [
+        "causal",
+        "causal_inference",
+        "data_analytics",
+        "experimentation",
+        "experimentation_and_causal_inference_analyst",
+        "experimentation_causal",
+        "inference"
+      ],
+      "craft_standards": [
+        "CS-DATA-001",
+        "CS-DATA-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-EXPERIMENTATION-AND-CAUSAL-INFERENCE-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST",
+      "name": "Financial Planning and Analysis Analyst",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "capabilities": [
+        "analysis",
+        "budgeting",
+        "cost_analysis",
+        "finance_economics",
+        "financial",
+        "financial_analysis",
+        "financial_planning",
+        "financial_planning_and_analysis_analyst",
+        "forecasting",
+        "planning",
+        "planning_analysis",
+        "roi_analysis"
+      ],
+      "craft_standards": [
+        "CS-FINE-001",
+        "CS-FINE-002",
+        "CS-FINE-006"
+      ],
+      "model_class": "executive",
+      "priority": 20,
+      "charter_path": "specialists/SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-FORECASTING-AND-PREDICTIVE-ANALYTICS-SPECIALIST",
+      "name": "Forecasting and Predictive Analytics Specialist",
+      "guild": "GUILD-DATA-ANALYTICS",
+      "capabilities": [
+        "analytics",
+        "data_analytics",
+        "forecasting",
+        "forecasting_and_predictive_analytics_specialist",
+        "forecasting_predictive",
+        "predictive",
+        "predictive_analytics"
+      ],
+      "craft_standards": [
+        "CS-DATA-001",
+        "CS-DATA-007"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-FORECASTING-AND-PREDICTIVE-ANALYTICS-SPECIALIST.md",
+      "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-GROWTH-MARKETING-STRATEGIST",
+      "name": "Growth Marketing Strategist",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "capabilities": [
+        "growth",
+        "growth_marketing",
+        "growth_marketing_strategist",
+        "market_brand_growth",
+        "marketing",
+        "marketing_strategist",
+        "strategist"
+      ],
+      "craft_standards": [
+        "CS-MBG-001",
+        "CS-MBG-005",
+        "CS-019"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-GROWTH-MARKETING-STRATEGIST.md",
+      "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-IDENTITY-AND-ACCESS-MANAGEMENT-ENGINEER",
+      "name": "Identity and Access Management Engineer",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "capabilities": [
+        "access",
+        "access_management",
+        "identity",
+        "identity_access",
+        "identity_and_access_management_engineer",
+        "management",
+        "security_privacy_engineering"
+      ],
+      "craft_standards": [
+        "CS-SEC-001",
+        "CS-SEC-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-IDENTITY-AND-ACCESS-MANAGEMENT-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-INFORMATION-AND-PRESENTATION-DESIGNER",
+      "name": "Information and Presentation Designer",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "capabilities": [
+        "communications_knowledge",
+        "information",
+        "information_and_presentation_designer",
+        "information_presentation",
+        "presentation"
+      ],
+      "craft_standards": [
+        "CS-COMK-001",
+        "CS-COMK-007",
+        "CS-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-INFORMATION-AND-PRESENTATION-DESIGNER.md",
+      "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-INFRASTRUCTURE-AND-CLOUD-ENGINEER",
+      "name": "Infrastructure and Cloud Engineer",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "capabilities": [
+        "cloud",
+        "infrastructure",
+        "infrastructure_and_cloud_engineer",
+        "infrastructure_cloud",
+        "platform_reliability_engineering"
+      ],
+      "craft_standards": [
+        "CS-PLAT-001",
+        "CS-PLAT-003",
+        "CS-PLAT-004",
+        "CS-PLAT-005",
+        "CS-PLAT-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-INFRASTRUCTURE-AND-CLOUD-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-INTEGRATION-ENGINEER",
+      "name": "Integration Engineer",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "capabilities": [
+        "integration",
+        "integration_engineer",
+        "software_engineering"
+      ],
+      "craft_standards": [
+        "CS-SWE-001",
+        "CS-SWE-004",
+        "CS-SWE-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-INTEGRATION-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-KNOWLEDGE-ARCHITECT",
+      "name": "Knowledge Architect",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "capabilities": [
+        "communications_knowledge",
+        "knowledge",
+        "knowledge_architect"
+      ],
+      "craft_standards": [
+        "CS-COMK-001",
+        "CS-COMK-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-KNOWLEDGE-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-LEGAL-RESEARCH-ANALYST",
+      "name": "Legal Research Analyst",
+      "guild": "GUILD-LEGAL-REGULATORY",
+      "capabilities": [
+        "contract_analysis",
+        "legal",
+        "legal_analysis",
+        "legal_regulatory",
+        "legal_research",
+        "legal_research_analyst",
+        "legal_risk",
+        "policy_interpretation",
+        "research"
+      ],
+      "craft_standards": [
+        "CS-LEGAL-001",
+        "CS-LEGAL-002"
+      ],
+      "model_class": "executive",
+      "priority": 20,
+      "charter_path": "specialists/SPECIALIST-LEGAL-RESEARCH-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-LIFECYCLE-MARKETING-STRATEGIST",
+      "name": "Lifecycle Marketing Strategist",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "capabilities": [
+        "lifecycle",
+        "lifecycle_marketing",
+        "lifecycle_marketing_strategist",
+        "market_brand_growth",
+        "marketing",
+        "marketing_strategist",
+        "strategist"
+      ],
+      "craft_standards": [
+        "CS-MBG-001",
+        "CS-MBG-006",
+        "CS-001"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-LIFECYCLE-MARKETING-STRATEGIST.md",
+      "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-MARKET-RESEARCHER",
+      "name": "Market Researcher",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "capabilities": [
+        "customer_research",
+        "demand_analysis",
+        "evidence_synthesis",
+        "market",
+        "market_research",
+        "market_researcher",
+        "research_intelligence",
+        "researcher",
+        "segmentation"
+      ],
+      "craft_standards": [
+        "CS-RINT-001",
+        "CS-RINT-003",
+        "CS-RINT-004"
+      ],
+      "model_class": "executive",
+      "priority": 22,
+      "charter_path": "specialists/SPECIALIST-MARKET-RESEARCHER.md",
+      "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-MODEL-AND-PROVIDER-EVALUATION-ENGINEER",
+      "name": "Model and Provider Evaluation Engineer",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "capabilities": [
+        "ai_systems_orchestration_engineering",
+        "evaluation",
+        "model",
+        "model_and_provider_evaluation_engineer",
+        "model_provider",
+        "provider",
+        "provider_evaluation"
+      ],
+      "craft_standards": [
+        "CS-AI-001",
+        "CS-AI-004",
+        "CS-AI-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-MODEL-AND-PROVIDER-EVALUATION-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-NONFUNCTIONAL-ASSURANCE-ENGINEER",
+      "name": "Nonfunctional Assurance Engineer",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "capabilities": [
+        "assurance",
+        "nonfunctional",
+        "nonfunctional_assurance",
+        "nonfunctional_assurance_engineer",
+        "quality_release_assurance"
+      ],
+      "craft_standards": [
+        "CS-QA-001",
+        "CS-QA-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-NONFUNCTIONAL-ASSURANCE-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-OBSERVABILITY-ENGINEER",
+      "name": "Observability Engineer",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "capabilities": [
+        "observability",
+        "observability_engineer",
+        "platform_reliability_engineering"
+      ],
+      "craft_standards": [
+        "CS-PLAT-001",
+        "CS-PLAT-004",
+        "CS-PLAT-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-OBSERVABILITY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-OPEN-SOURCE-RELEASE-STEWARD",
+      "name": "Open-Source Release Steward",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
+      "capabilities": [
+        "governance_open_source",
+        "open",
+        "open_source",
+        "open_source_release_steward",
+        "release",
+        "source",
+        "source_release"
+      ],
+      "craft_standards": [
+        "CS-GOV-001",
+        "CS-GOV-004"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-OPEN-SOURCE-RELEASE-STEWARD.md",
+      "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-OPERATING-EFFECTIVENESS-ANALYST",
+      "name": "Operating Effectiveness Analyst",
+      "guild": "GUILD-COMPLIANCE-CONTROL-ASSURANCE",
+      "capabilities": [
+        "compliance_control_assurance",
+        "effectiveness",
+        "operating",
+        "operating_effectiveness",
+        "operating_effectiveness_analyst"
+      ],
+      "craft_standards": [
+        "CS-COMP-001",
+        "CS-COMP-004"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-OPERATING-EFFECTIVENESS-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-OPERATIONAL-EXCELLENCE-ANALYST",
+      "name": "Operational Excellence Analyst",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "capabilities": [
+        "excellence",
+        "operational",
+        "operational_excellence",
+        "operational_excellence_analyst",
+        "operations_automation_engineering"
+      ],
+      "craft_standards": [
+        "CS-OPS-001",
+        "CS-OPS-004",
+        "CS-OPS-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-OPERATIONAL-EXCELLENCE-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-OPERATIONS-SYSTEMS-ARCHITECT",
+      "name": "Operations Systems Architect",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "capabilities": [
+        "automation",
+        "integration_architecture",
+        "observability",
+        "operations",
+        "operations_automation_engineering",
+        "operations_systems",
+        "operations_systems_architect",
+        "reliability_engineering",
+        "systems",
+        "workflow_design"
+      ],
+      "craft_standards": [
+        "CS-OPS-001",
+        "CS-OPS-002",
+        "CS-OPS-004"
+      ],
+      "model_class": "executive",
+      "priority": 14,
+      "charter_path": "specialists/SPECIALIST-OPERATIONS-SYSTEMS-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-ORGANIZATIONAL-COMMUNICATIONS-STRATEGIST",
+      "name": "Organizational Communications Strategist",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
+      "capabilities": [
+        "communications",
+        "communications_knowledge",
+        "communications_strategist",
+        "organizational",
+        "organizational_communications",
+        "organizational_communications_strategist",
+        "strategist"
+      ],
+      "craft_standards": [
+        "CS-COMK-001",
+        "CS-COMK-003",
+        "CS-COMK-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-ORGANIZATIONAL-COMMUNICATIONS-STRATEGIST.md",
+      "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PASSIVE-SECURITY-ASSESSMENT-ENGINEER",
+      "name": "Passive Security Assessment Engineer",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
+      "capabilities": [
+        "adversarial_security_assurance",
+        "assessment",
+        "passive",
+        "passive_security",
+        "passive_security_assessment_engineer",
+        "security",
+        "security_assessment"
+      ],
+      "craft_standards": [
+        "CS-ADV-001",
+        "CS-ADV-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PASSIVE-SECURITY-ASSESSMENT-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PENETRATION-TESTING-AND-RED-TEAM-ENGINEER",
+      "name": "Penetration Testing and Red Team Engineer",
+      "guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
+      "capabilities": [
+        "adversarial_security_assurance",
+        "penetration",
+        "penetration_testing",
+        "penetration_testing_and_red_team_engineer",
+        "red",
+        "red_team",
+        "team",
+        "testing",
+        "testing_red"
+      ],
+      "craft_standards": [
+        "CS-ADV-001",
+        "CS-ADV-004"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PENETRATION-TESTING-AND-RED-TEAM-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PLATFORM-ENGINEER",
+      "name": "Platform Engineer",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "capabilities": [
+        "platform",
+        "platform_engineer",
+        "platform_reliability_engineering"
+      ],
+      "craft_standards": [
+        "CS-PLAT-001",
+        "CS-PLAT-002",
+        "CS-PLAT-004",
+        "CS-PLAT-005",
+        "CS-PLAT-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PLATFORM-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PLATFORM-PRODUCT-MANAGER",
+      "name": "Platform Product Manager",
+      "guild": "GUILD-PRODUCT-MANAGEMENT",
+      "capabilities": [
+        "platform",
+        "platform_product",
+        "platform_product_manager",
+        "product",
+        "product_management"
+      ],
+      "craft_standards": [
+        "CS-PROD-001",
+        "CS-PROD-002"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PLATFORM-PRODUCT-MANAGER.md",
+      "guild_charter_path": "guilds/GUILD-PRODUCT-MANAGEMENT.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PORTFOLIO-AND-INITIATIVE-STRATEGIST",
+      "name": "Portfolio and Initiative Strategist",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
+      "capabilities": [
+        "blocker_resolution",
+        "dependency_management",
+        "dependency_tracking",
+        "execution_planning",
+        "initiative",
+        "initiative_management",
+        "initiative_strategist",
+        "portfolio",
+        "portfolio_and_initiative_strategist",
+        "portfolio_initiative",
+        "portfolio_tracking",
+        "strategist",
+        "strategy_decisions_portfolio"
+      ],
+      "craft_standards": [
+        "CS-STRAT-001",
+        "CS-STRAT-005"
+      ],
+      "model_class": "routine",
+      "priority": 18,
+      "charter_path": "specialists/SPECIALIST-PORTFOLIO-AND-INITIATIVE-STRATEGIST.md",
+      "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRICING-AND-PACKAGING-ECONOMIST",
+      "name": "Pricing and Packaging Economist",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "capabilities": [
+        "economist",
+        "finance_economics",
+        "packaging",
+        "packaging_economist",
+        "pricing",
+        "pricing_and_packaging_economist",
+        "pricing_packaging",
+        "revenue_analysis",
+        "unit_economics"
+      ],
+      "craft_standards": [
+        "CS-FINE-001",
+        "CS-FINE-005",
+        "CS-FINE-006"
+      ],
+      "model_class": "executive",
+      "priority": 20,
+      "charter_path": "specialists/SPECIALIST-PRICING-AND-PACKAGING-ECONOMIST.md",
+      "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRINCIPAL-CONTEXT-STEWARD",
+      "name": "Principal Context Steward",
+      "guild": "GUILD-PRINCIPAL-OPERATIONS",
+      "capabilities": [
+        "context",
+        "principal",
+        "principal_context",
+        "principal_context_steward",
+        "principal_operations"
+      ],
+      "craft_standards": [
+        "CS-PRINC-001",
+        "CS-PRINC-004"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PRINCIPAL-CONTEXT-STEWARD.md",
+      "guild_charter_path": "guilds/GUILD-PRINCIPAL-OPERATIONS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRIVACY-AND-PRODUCT-REGULATORY-ANALYST",
+      "name": "Privacy and Product Regulatory Analyst",
+      "guild": "GUILD-LEGAL-REGULATORY",
+      "capabilities": [
+        "legal_regulatory",
+        "privacy",
+        "privacy_and_product_regulatory_analyst",
+        "privacy_product",
+        "product",
+        "product_regulatory",
+        "regulatory"
+      ],
+      "craft_standards": [
+        "CS-LEGAL-001",
+        "CS-LEGAL-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PRIVACY-AND-PRODUCT-REGULATORY-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRIVACY-ENGINEER",
+      "name": "Privacy Engineer",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "capabilities": [
+        "privacy",
+        "privacy_engineer",
+        "security_privacy_engineering"
+      ],
+      "craft_standards": [
+        "CS-SEC-001",
+        "CS-SEC-007"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PRIVACY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRODUCT-DESIGNER",
+      "name": "Product Designer",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "capabilities": [
+        "baseline_preservation",
+        "experience_design",
+        "interaction_design",
+        "product",
+        "product_design",
+        "product_designer",
+        "visual_design",
+        "web_design"
+      ],
+      "craft_standards": [
+        "CS-EXP-001",
+        "CS-EXP-003",
+        "CS-EXP-006",
+        "CS-EXP-007",
+        "CS-EXP-008",
+        "CS-003"
+      ],
+      "model_class": "executive",
+      "priority": 18,
+      "charter_path": "specialists/SPECIALIST-PRODUCT-DESIGNER.md",
+      "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRODUCT-MANAGER",
+      "name": "Product Manager",
+      "guild": "GUILD-PRODUCT-MANAGEMENT",
+      "capabilities": [
+        "outcome_definition",
+        "prioritization",
+        "product",
+        "product_management",
+        "product_manager",
+        "product_strategy",
+        "requirements"
+      ],
+      "craft_standards": [
+        "CS-PROD-001"
+      ],
+      "model_class": "executive",
+      "priority": 18,
+      "charter_path": "specialists/SPECIALIST-PRODUCT-MANAGER.md",
+      "guild_charter_path": "guilds/GUILD-PRODUCT-MANAGEMENT.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRODUCT-MARKETING-MANAGER",
+      "name": "Product Marketing Manager",
+      "guild": "GUILD-MARKET-BRAND-GROWTH",
+      "capabilities": [
+        "market_brand_growth",
+        "marketing",
+        "product",
+        "product_marketing",
+        "product_marketing_manager"
+      ],
+      "craft_standards": [
+        "CS-MBG-001",
+        "CS-MBG-004",
+        "CS-001"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PRODUCT-MARKETING-MANAGER.md",
+      "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PRODUCT-OPERATIONS-LEAD",
+      "name": "Product Operations Lead",
+      "guild": "GUILD-PRODUCT-MANAGEMENT",
+      "capabilities": [
+        "operations",
+        "product",
+        "product_management",
+        "product_operations",
+        "product_operations_lead"
+      ],
+      "craft_standards": [
+        "CS-PROD-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PRODUCT-OPERATIONS-LEAD.md",
+      "guild_charter_path": "guilds/GUILD-PRODUCT-MANAGEMENT.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-PROMPT-AND-CONTEXT-SYSTEMS-ENGINEER",
+      "name": "Prompt and Context Systems Engineer",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "capabilities": [
+        "ai_systems_orchestration_engineering",
+        "context",
+        "context_systems",
+        "prompt",
+        "prompt_and_context_systems_engineer",
+        "prompt_context",
+        "systems"
+      ],
+      "craft_standards": [
+        "CS-AI-001",
+        "CS-AI-003",
+        "CS-AI-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-PROMPT-AND-CONTEXT-SYSTEMS-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR",
+      "name": "Quality and Release Director",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
       "capabilities": [
         "criticality_classification",
         "gauntlet_selection",
-        "test_coordination",
-        "release_evidence_ownership"
+        "quality",
+        "quality_and_release_director",
+        "quality_release",
+        "quality_release_assurance",
+        "release",
+        "release_evidence_ownership",
+        "test_coordination"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-007",
-        "CS-008"
+        "CS-QA-001",
+        "CS-QA-002"
       ],
       "model_class": "executive",
-      "priority": 4
+      "priority": 4,
+      "charter_path": "specialists/SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-035",
-      "name": "Change Necessity Analyst",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST",
+      "name": "Relationship Intelligence Specialist",
+      "guild": "GUILD-PRINCIPAL-OPERATIONS",
       "capabilities": [
+        "communication_context",
+        "follow_up_planning",
+        "intelligence",
+        "principal_operations",
+        "relationship",
+        "relationship_analysis",
+        "relationship_intelligence",
+        "relationship_intelligence_specialist",
+        "stakeholder_analysis"
+      ],
+      "craft_standards": [
+        "CS-PRINC-001",
+        "CS-PRINC-003"
+      ],
+      "model_class": "routine",
+      "priority": 20,
+      "charter_path": "specialists/SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST.md",
+      "guild_charter_path": "guilds/GUILD-PRINCIPAL-OPERATIONS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-RELEASE-AND-DEPLOYMENT-ENGINEER",
+      "name": "Release and Deployment Engineer",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "capabilities": [
+        "deployment",
+        "platform_reliability_engineering",
+        "release",
+        "release_and_deployment_engineer",
+        "release_deployment"
+      ],
+      "craft_standards": [
+        "CS-PLAT-001",
+        "CS-PLAT-003",
+        "CS-PLAT-004",
+        "CS-PLAT-005",
+        "CS-PLAT-006",
+        "CS-PLAT-007"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-RELEASE-AND-DEPLOYMENT-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-RELEASE-VERIFICATION-AUDITOR",
+      "name": "Release Verification Auditor",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+      "capabilities": [
+        "auditor",
+        "evidence_audit",
+        "gate_verification",
+        "quality_release_assurance",
+        "release",
+        "release_verification",
+        "release_verification_auditor",
+        "verification",
+        "verification_auditor"
+      ],
+      "craft_standards": [
+        "CS-QA-001",
+        "CS-QA-002",
+        "CS-QA-008"
+      ],
+      "model_class": "executive",
+      "priority": 6,
+      "charter_path": "specialists/SPECIALIST-RELEASE-VERIFICATION-AUDITOR.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-REPOSITORY-AND-CHANGE-GOVERNANCE-SPECIALIST",
+      "name": "Repository and Change Governance Specialist",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
+      "capabilities": [
+        "change",
+        "change_governance",
+        "governance",
+        "governance_open_source",
+        "repository",
+        "repository_and_change_governance_specialist",
+        "repository_change"
+      ],
+      "craft_standards": [
+        "CS-GOV-001",
+        "CS-GOV-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-REPOSITORY-AND-CHANGE-GOVERNANCE-SPECIALIST.md",
+      "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-RESEARCH-ANALYST",
+      "name": "Research Analyst",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
+      "capabilities": [
+        "evidence_synthesis",
+        "fact_checking",
+        "literature_review",
+        "research",
+        "research_analyst",
+        "research_intelligence",
+        "source_evaluation"
+      ],
+      "craft_standards": [
+        "CS-RINT-001",
+        "CS-RINT-002",
+        "CS-RINT-003"
+      ],
+      "model_class": "executive",
+      "priority": 20,
+      "charter_path": "specialists/SPECIALIST-RESEARCH-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-RETRIEVAL-AND-MEMORY-ENGINEER",
+      "name": "Retrieval and Memory Engineer",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "capabilities": [
+        "ai_systems_orchestration_engineering",
+        "memory",
+        "retrieval",
+        "retrieval_and_memory_engineer",
+        "retrieval_memory"
+      ],
+      "craft_standards": [
+        "CS-AI-001",
+        "CS-AI-006",
+        "CS-AI-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-RETRIEVAL-AND-MEMORY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-REVENUE-OPERATIONS-ARCHITECT",
+      "name": "Revenue Operations Architect",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "capabilities": [
+        "operations",
+        "revenue",
+        "revenue_customer_operations",
+        "revenue_operations",
+        "revenue_operations_architect"
+      ],
+      "craft_standards": [
+        "CS-REV-001",
+        "CS-REV-002"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-REVENUE-OPERATIONS-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-RUNBOOK-AND-RECOVERY-ENGINEER",
+      "name": "Runbook and Recovery Engineer",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "capabilities": [
+        "operations_automation_engineering",
+        "recovery",
+        "runbook",
+        "runbook_and_recovery_engineer",
+        "runbook_recovery"
+      ],
+      "craft_standards": [
+        "CS-OPS-001",
+        "CS-OPS-003",
+        "CS-OPS-005"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-RUNBOOK-AND-RECOVERY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SALES-STRATEGY-AND-DEAL-ANALYST",
+      "name": "Sales Strategy and Deal Analyst",
+      "guild": "GUILD-REVENUE-CUSTOMER-OPERATIONS",
+      "capabilities": [
+        "deal",
+        "revenue_customer_operations",
+        "sales",
+        "sales_strategy",
+        "sales_strategy_and_deal_analyst",
+        "strategy",
+        "strategy_deal"
+      ],
+      "craft_standards": [
+        "CS-REV-001",
+        "CS-REV-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-SALES-STRATEGY-AND-DEAL-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SCENARIO-AND-STRATEGIC-RISK-ANALYST",
+      "name": "Scenario and Strategic Risk Analyst",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
+      "capabilities": [
+        "mitigation_planning",
+        "risk",
+        "risk_analysis",
+        "risk_triage",
+        "scenario",
+        "scenario_analysis",
+        "scenario_and_strategic_risk_analyst",
+        "scenario_strategic",
+        "strategic",
+        "strategic_risk",
+        "strategy_decisions_portfolio"
+      ],
+      "craft_standards": [
+        "CS-STRAT-001",
+        "CS-STRAT-004"
+      ],
+      "model_class": "executive",
+      "priority": 14,
+      "charter_path": "specialists/SPECIALIST-SCENARIO-AND-STRATEGIC-RISK-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SECURITY-ARCHITECT",
+      "name": "Security Architect",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "capabilities": [
+        "least_privilege",
+        "privacy_engineering",
+        "security",
+        "security_architect",
+        "security_architecture",
+        "security_privacy_engineering",
+        "security_review",
+        "threat_mitigation"
+      ],
+      "craft_standards": [
+        "CS-SEC-001",
+        "CS-SEC-002",
+        "CS-SEC-003"
+      ],
+      "model_class": "executive",
+      "priority": 8,
+      "charter_path": "specialists/SPECIALIST-SECURITY-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SECURITY-DETECTION-AND-INCIDENT-RESPONSE-ENGINEER",
+      "name": "Security Detection and Incident Response Engineer",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+      "capabilities": [
+        "detection",
+        "detection_incident",
+        "incident",
+        "incident_response",
+        "response",
+        "security",
+        "security_detection",
+        "security_detection_and_incident_response_engineer",
+        "security_privacy_engineering"
+      ],
+      "craft_standards": [
+        "CS-SEC-001",
+        "CS-SEC-008"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-SECURITY-DETECTION-AND-INCIDENT-RESPONSE-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SERVICE-DESIGNER",
+      "name": "Service Designer",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "capabilities": [
+        "experience_design",
+        "service",
+        "service_designer"
+      ],
+      "craft_standards": [
+        "CS-EXP-001",
+        "CS-EXP-004",
+        "CS-EXP-006",
+        "CS-EXP-008",
+        "CS-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-SERVICE-DESIGNER.md",
+      "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SERVICE-OPERATIONS-ANALYST",
+      "name": "Service Operations Analyst",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "capabilities": [
+        "incident_response",
+        "operational_coordination",
+        "operations",
+        "operations_automation_engineering",
+        "process_improvement",
+        "scheduling",
+        "service",
+        "service_operations",
+        "service_operations_analyst"
+      ],
+      "craft_standards": [
+        "CS-OPS-001",
+        "CS-OPS-002",
+        "CS-OPS-004",
+        "CS-OPS-006"
+      ],
+      "model_class": "routine",
+      "priority": 18,
+      "charter_path": "specialists/SPECIALIST-SERVICE-OPERATIONS-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SITE-RELIABILITY-ENGINEER",
+      "name": "Site Reliability Engineer",
+      "guild": "GUILD-PLATFORM-RELIABILITY-ENGINEERING",
+      "capabilities": [
+        "platform_reliability_engineering",
+        "reliability",
+        "site",
+        "site_reliability",
+        "site_reliability_engineer"
+      ],
+      "craft_standards": [
+        "CS-PLAT-001",
+        "CS-PLAT-004",
+        "CS-PLAT-005",
+        "CS-PLAT-006",
+        "CS-PLAT-007"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-SITE-RELIABILITY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SOFTWARE-ARCHITECT",
+      "name": "Software Architect",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "capabilities": [
+        "data_modeling",
+        "integration_architecture",
+        "security_review",
+        "software",
+        "software_architect",
+        "software_architecture",
+        "software_engineering",
+        "system_design"
+      ],
+      "craft_standards": [
+        "CS-SWE-001",
+        "CS-SWE-002",
+        "CS-SWE-006"
+      ],
+      "model_class": "executive",
+      "priority": 5,
+      "charter_path": "specialists/SPECIALIST-SOFTWARE-ARCHITECT.md",
+      "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SOFTWARE-ENGINEER",
+      "name": "Software Engineer",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "capabilities": [
+        "automation",
+        "code_generation",
+        "data_modeling",
+        "integration",
+        "software",
+        "software_engineer",
+        "software_engineering",
+        "software_implementation"
+      ],
+      "craft_standards": [
+        "CS-SWE-001",
+        "CS-SWE-003",
+        "CS-SWE-006"
+      ],
+      "model_class": "executive",
+      "priority": 14,
+      "charter_path": "specialists/SPECIALIST-SOFTWARE-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SOFTWARE-MAINTENANCE-AND-DEBUGGING-ENGINEER",
+      "name": "Software Maintenance and Debugging Engineer",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "capabilities": [
+        "corrective_action",
+        "debugging",
+        "incident_diagnosis",
+        "maintenance",
+        "maintenance_debugging",
+        "root_cause_analysis",
+        "software",
+        "software_engineering",
+        "software_maintenance",
+        "software_maintenance_and_debugging_engineer"
+      ],
+      "craft_standards": [
+        "CS-SWE-001",
+        "CS-SWE-005",
+        "CS-SWE-006"
+      ],
+      "model_class": "executive",
+      "priority": 15,
+      "charter_path": "specialists/SPECIALIST-SOFTWARE-MAINTENANCE-AND-DEBUGGING-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-SOFTWARE-REVIEWER",
+      "name": "Software Reviewer",
+      "guild": "GUILD-SOFTWARE-ENGINEERING",
+      "capabilities": [
+        "architecture_fitness",
+        "code_review",
+        "complexity_analysis",
         "defect_reproduction",
+        "dependency_analysis",
+        "duplication_detection",
+        "independent_review",
         "need_to_change_analysis",
+        "policy_audit",
+        "quality_assurance",
+        "regression_detection",
+        "security_review",
+        "software",
+        "software_engineering",
+        "software_reviewer",
         "stale_bug_detection"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-008"
+        "CS-SWE-001",
+        "CS-SWE-006"
       ],
       "model_class": "review",
-      "priority": 20
+      "priority": 6,
+      "charter_path": "specialists/SPECIALIST-SOFTWARE-REVIEWER.md",
+      "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-036",
-      "name": "Acceptance Criteria Analyst",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-STANDARDS-AND-CAPABILITY-GOVERNANCE-ANALYST",
+      "name": "Standards and Capability Governance Analyst",
+      "guild": "GUILD-GOVERNANCE-OPEN-SOURCE",
       "capabilities": [
-        "acceptance_criteria_design",
-        "behavior_specification",
-        "edge_case_analysis"
+        "capability",
+        "capability_governance",
+        "governance",
+        "governance_open_source",
+        "standards",
+        "standards_and_capability_governance_analyst",
+        "standards_capability"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-008"
+        "CS-GOV-001",
+        "CS-GOV-003"
       ],
-      "model_class": "review",
-      "priority": 20
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-STANDARDS-AND-CAPABILITY-GOVERNANCE-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-037",
-      "name": "Acceptance Test Architect",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-STRATEGIC-PLANNER",
+      "name": "Strategic Planner",
+      "guild": "GUILD-STRATEGY-DECISIONS-PORTFOLIO",
       "capabilities": [
-        "acceptance_test_authoring",
-        "behavior_contract_protection",
-        "executable_specification"
+        "executive_coordination",
+        "objectives",
+        "planner",
+        "planning",
+        "scenario_planning",
+        "strategic",
+        "strategic_planner",
+        "strategic_planning",
+        "strategy",
+        "strategy_decisions_portfolio"
       ],
       "craft_standards": [
-        "CS-007",
-        "CS-008"
+        "CS-STRAT-001",
+        "CS-STRAT-002"
       ],
-      "model_class": "routine",
-      "priority": 22
+      "model_class": "executive",
+      "priority": 10,
+      "charter_path": "specialists/SPECIALIST-STRATEGIC-PLANNER.md",
+      "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-038",
-      "name": "Characterization Test Engineer",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-SYSTEM-AND-END-TO-END-TEST-ENGINEER",
+      "name": "System and End-to-End Test Engineer",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
       "capabilities": [
-        "characterization_testing",
-        "legacy_behavior_baselining"
-      ],
-      "craft_standards": [
-        "CS-007",
-        "CS-008"
-      ],
-      "model_class": "routine",
-      "priority": 24
-    },
-    {
-      "specialist_id": "SPECIALIST-039",
-      "name": "Unit Test Engineer",
-      "guild": "Code Testing",
-      "capabilities": [
-        "unit_testing",
-        "boundary_testing",
-        "failure_mode_testing"
-      ],
-      "craft_standards": [
-        "CS-007",
-        "CS-008"
-      ],
-      "model_class": "routine",
-      "priority": 24
-    },
-    {
-      "specialist_id": "SPECIALIST-040",
-      "name": "Integration and System Test Engineer",
-      "guild": "Code Testing",
-      "capabilities": [
+        "contract_testing",
+        "end",
+        "end_test",
+        "end_to",
         "integration_testing",
+        "quality_release_assurance",
+        "system",
+        "system_and_end_to_end_test_engineer",
+        "system_end",
         "system_testing",
-        "contract_testing"
+        "test",
+        "to",
+        "to_end"
       ],
       "craft_standards": [
-        "CS-007",
-        "CS-008"
+        "CS-QA-001",
+        "CS-QA-004"
       ],
       "model_class": "routine",
-      "priority": 24
+      "priority": 24,
+      "charter_path": "specialists/SPECIALIST-SYSTEM-AND-END-TO-END-TEST-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-041",
-      "name": "Property and Invariant Test Engineer",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-TECHNICAL-WRITER",
+      "name": "Technical Writer",
+      "guild": "GUILD-COMMUNICATIONS-KNOWLEDGE",
       "capabilities": [
-        "property_testing",
-        "invariant_testing",
-        "fuzz_testing"
+        "communications_knowledge",
+        "developer_communication",
+        "documentation",
+        "technical",
+        "technical_writer",
+        "technical_writing",
+        "writer",
+        "writing"
       ],
       "craft_standards": [
-        "CS-007",
-        "CS-008"
+        "CS-COMK-001",
+        "CS-COMK-004",
+        "CS-COMK-005",
+        "CS-003"
       ],
       "model_class": "routine",
-      "priority": 26
+      "priority": 14,
+      "charter_path": "specialists/SPECIALIST-TECHNICAL-WRITER.md",
+      "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-042",
-      "name": "Mutation Test Analyst",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-TECHNOLOGY-INTELLIGENCE-ANALYST",
+      "name": "Technology Intelligence Analyst",
+      "guild": "GUILD-RESEARCH-INTELLIGENCE",
       "capabilities": [
-        "mutation_testing",
-        "test_strength_analysis"
+        "innovation_research",
+        "intelligence",
+        "research_intelligence",
+        "technology",
+        "technology_intelligence",
+        "technology_intelligence_analyst",
+        "technology_research",
+        "technology_scouting",
+        "weak_signal_detection"
       ],
       "craft_standards": [
-        "CS-008"
+        "CS-RINT-001",
+        "CS-RINT-003",
+        "CS-RINT-006"
       ],
-      "model_class": "review",
-      "priority": 26
+      "model_class": "executive",
+      "priority": 22,
+      "charter_path": "specialists/SPECIALIST-TECHNOLOGY-INTELLIGENCE-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-043",
-      "name": "Architecture Fitness Analyst",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-TECHNOLOGY-IP-AND-OPEN-SOURCE-LICENSING-ANALYST",
+      "name": "Technology, IP, and Open-Source Licensing Analyst",
+      "guild": "GUILD-LEGAL-REGULATORY",
       "capabilities": [
-        "architecture_fitness",
-        "complexity_analysis",
-        "dependency_analysis",
-        "duplication_detection"
+        "ip",
+        "ip_open",
+        "legal_regulatory",
+        "licensing",
+        "open",
+        "open_source",
+        "source",
+        "source_licensing",
+        "technology",
+        "technology_ip",
+        "technology_ip_and_open_source_licensing_analyst"
       ],
       "craft_standards": [
-        "CS-007",
-        "CS-008"
+        "CS-LEGAL-001",
+        "CS-LEGAL-004"
       ],
-      "model_class": "review",
-      "priority": 22
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-TECHNOLOGY-IP-AND-OPEN-SOURCE-LICENSING-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-044",
-      "name": "Test Reliability Analyst",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-TEST-RELIABILITY-ENGINEER",
+      "name": "Test Reliability Engineer",
+      "guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
       "capabilities": [
         "flaky_test_detection",
         "nondeterminism_analysis",
-        "test_isolation_analysis"
+        "quality_release_assurance",
+        "reliability",
+        "test",
+        "test_isolation_analysis",
+        "test_reliability",
+        "test_reliability_engineer"
       ],
       "craft_standards": [
-        "CS-008"
+        "CS-QA-001",
+        "CS-QA-007"
       ],
       "model_class": "review",
-      "priority": 26
+      "priority": 26,
+      "charter_path": "specialists/SPECIALIST-TEST-RELIABILITY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
+      "runtime_lifecycle": "active_candidate"
     },
     {
-      "specialist_id": "SPECIALIST-045",
-      "name": "Release Verification Auditor",
-      "guild": "Code Testing",
+      "specialist_id": "SPECIALIST-THREAT-MODELING-SPECIALIST",
+      "name": "Threat Modeling Specialist",
+      "guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
       "capabilities": [
-        "release_verification",
-        "evidence_audit",
-        "gate_verification"
+        "attack_surface_analysis",
+        "modeling",
+        "risk_analysis",
+        "security_privacy_engineering",
+        "security_review",
+        "threat",
+        "threat_modeling",
+        "threat_modeling_specialist"
       ],
       "craft_standards": [
-        "CS-003",
-        "CS-008",
-        "CS-009"
+        "CS-SEC-001",
+        "CS-SEC-003"
+      ],
+      "model_class": "review",
+      "priority": 8,
+      "charter_path": "specialists/SPECIALIST-THREAT-MODELING-SPECIALIST.md",
+      "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-TOOL-AND-CAPABILITY-ENGINEER",
+      "name": "Tool and Capability Engineer",
+      "guild": "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING",
+      "capabilities": [
+        "ai_systems_orchestration_engineering",
+        "capability",
+        "tool",
+        "tool_and_capability_engineer",
+        "tool_capability"
+      ],
+      "craft_standards": [
+        "CS-AI-001",
+        "CS-AI-007",
+        "CS-AI-008"
       ],
       "model_class": "executive",
-      "priority": 6
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-TOOL-AND-CAPABILITY-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-UNIT-ECONOMICS-ANALYST",
+      "name": "Unit Economics Analyst",
+      "guild": "GUILD-FINANCE-ECONOMICS",
+      "capabilities": [
+        "economics",
+        "finance_economics",
+        "unit",
+        "unit_economics",
+        "unit_economics_analyst"
+      ],
+      "craft_standards": [
+        "CS-FINE-001",
+        "CS-FINE-004",
+        "CS-FINE-006"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-UNIT-ECONOMICS-ANALYST.md",
+      "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-UX-RESEARCHER",
+      "name": "UX Researcher",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "capabilities": [
+        "customer_insights",
+        "customer_research",
+        "evidence_synthesis",
+        "experience_design",
+        "needs_analysis",
+        "researcher",
+        "ux",
+        "ux_researcher"
+      ],
+      "craft_standards": [
+        "CS-EXP-001",
+        "CS-EXP-002",
+        "CS-EXP-008"
+      ],
+      "model_class": "executive",
+      "priority": 20,
+      "charter_path": "specialists/SPECIALIST-UX-RESEARCHER.md",
+      "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-WEB-EXPERIENCE-DESIGNER",
+      "name": "Web Experience Designer",
+      "guild": "GUILD-EXPERIENCE-DESIGN",
+      "capabilities": [
+        "experience",
+        "experience_design",
+        "web",
+        "web_experience",
+        "web_experience_designer"
+      ],
+      "craft_standards": [
+        "CS-EXP-001",
+        "CS-EXP-005",
+        "CS-EXP-006",
+        "CS-EXP-007",
+        "CS-EXP-008",
+        "CS-003"
+      ],
+      "model_class": "executive",
+      "priority": 100,
+      "charter_path": "specialists/SPECIALIST-WEB-EXPERIENCE-DESIGNER.md",
+      "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
+      "runtime_lifecycle": "active_candidate"
+    },
+    {
+      "specialist_id": "SPECIALIST-WORKFLOW-AUTOMATION-ENGINEER",
+      "name": "Workflow Automation Engineer",
+      "guild": "GUILD-OPERATIONS-AUTOMATION-ENGINEERING",
+      "capabilities": [
+        "automation",
+        "operations_automation_engineering",
+        "process_improvement",
+        "scheduling",
+        "state_tracking",
+        "workflow",
+        "workflow_automation",
+        "workflow_automation_engineer",
+        "workflow_coordination",
+        "workflow_design"
+      ],
+      "craft_standards": [
+        "CS-OPS-001",
+        "CS-OPS-003",
+        "CS-OPS-005"
+      ],
+      "model_class": "routine",
+      "priority": 16,
+      "charter_path": "specialists/SPECIALIST-WORKFLOW-AUTOMATION-ENGINEER.md",
+      "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
+      "runtime_lifecycle": "active_candidate"
     }
   ]
 }

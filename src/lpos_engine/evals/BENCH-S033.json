@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-033",
+  "component_id": "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -16,9 +16,12 @@
     "missing-capability set"
   ],
   "expected": {
-    "craft_standards": ["CS-003", "CS-008", "CS-009"],
-    "lead_guild": "Sentinel Adversarial Assurance",
-    "lead_specialist": "SPECIALIST-033",
+    "craft_standards": [
+      "CS-ADV-001",
+      "CS-ADV-002"
+    ],
+    "lead_guild": "GUILD-ADVERSARIAL-SECURITY-ASSURANCE",
+    "lead_specialist": "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -48,7 +51,7 @@
   "objective": "Verify that bounded Sentinel work routes to SPECIALIST-033 with complete capability coverage.",
   "scenario": "The Principal requests passive adversarial assurance for one exact artifact; active exploitation and external actions are not authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-033.",
+    "Lead specialist is SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD.",
     "All requested capabilities are covered.",
     "CS-003, CS-008, and CS-009 are mapped.",
     "No external action is executed and output is not self-approved."

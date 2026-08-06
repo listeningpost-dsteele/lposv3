@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-027",
+  "component_id": "SPECIALIST-PRODUCT-MANAGER",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,10 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-006"
+      "CS-PROD-001"
     ],
-    "lead_guild": "Product",
-    "lead_specialist": "SPECIALIST-027",
+    "lead_guild": "GUILD-PRODUCT-MANAGEMENT",
+    "lead_specialist": "SPECIALIST-PRODUCT-MANAGER",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -53,7 +52,7 @@
   "objective": "Verify that fixed Product Manager work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Product Manager deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-027.",
+    "Lead specialist is SPECIALIST-PRODUCT-MANAGER.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

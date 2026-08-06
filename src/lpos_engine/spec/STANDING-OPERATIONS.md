@@ -1729,7 +1729,7 @@ owner: Principal
 machine:
   owner: Sentinel Adversarial Assurance Guild
   specialists: [adversarial-assurance-engineer, independent-reviewer]
-  specialist_ids: [SPECIALIST-033]
+  specialist_ids: [SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD]
   type: standing_operation
   slug: continuous-adversarial-assurance
   trigger: event_and_scheduled
@@ -1800,7 +1800,7 @@ owner: Listening Post
 machine:
   owner: Code Testing Guild
   specialists: [code-test-director, change-necessity-analyst, release-verification-auditor]
-  specialist_ids: [SPECIALIST-034, SPECIALIST-035, SPECIALIST-045]
+  specialist_ids: [SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR, SPECIALIST-SOFTWARE-REVIEWER, SPECIALIST-RELEASE-VERIFICATION-AUDITOR]
   type: standing_operation
   slug: code-test-gauntlet
   trigger: event_and_scheduled
@@ -1845,7 +1845,7 @@ owner: Listening Post
 machine:
   owner: Code Testing Guild
   specialists: [test-reliability-analyst, mutation-test-analyst, architecture-fitness-analyst]
-  specialist_ids: [SPECIALIST-044, SPECIALIST-042, SPECIALIST-043]
+  specialist_ids: [SPECIALIST-TEST-RELIABILITY-ENGINEER, SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER, SPECIALIST-SOFTWARE-REVIEWER]
   type: standing_operation
   slug: test-suite-health-review
   trigger: scheduled
@@ -1886,7 +1886,7 @@ owner: Listening Post
 machine:
   owner: Code Testing Guild
   specialists: [release-verification-auditor, mutation-test-analyst, property-and-invariant-test-engineer]
-  specialist_ids: [SPECIALIST-045, SPECIALIST-042, SPECIALIST-041]
+  specialist_ids: [SPECIALIST-RELEASE-VERIFICATION-AUDITOR, SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER, SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER]
   type: standing_operation
   slug: critical-path-hardening
   trigger: event_and_scheduled

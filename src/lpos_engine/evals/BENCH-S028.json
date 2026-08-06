@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-028",
+  "component_id": "SPECIALIST-UX-RESEARCHER",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,12 +17,12 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-015",
-      "CS-006"
+      "CS-EXP-001",
+      "CS-EXP-002",
+      "CS-EXP-008"
     ],
-    "lead_guild": "Customer Intelligence",
-    "lead_specialist": "SPECIALIST-028",
+    "lead_guild": "GUILD-EXPERIENCE-DESIGN",
+    "lead_specialist": "SPECIALIST-UX-RESEARCHER",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -53,7 +53,7 @@
   "objective": "Verify that fixed Customer Insights Analyst work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Customer Insights Analyst deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-028.",
+    "Lead specialist is SPECIALIST-UX-RESEARCHER.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

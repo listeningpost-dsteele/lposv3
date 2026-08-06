@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-024",
+  "component_id": "SPECIALIST-SECURITY-ARCHITECT",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,12 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-009"
+      "CS-SEC-001",
+      "CS-SEC-002",
+      "CS-SEC-003"
     ],
-    "lead_guild": "Security",
-    "lead_specialist": "SPECIALIST-024",
+    "lead_guild": "GUILD-SECURITY-PRIVACY-ENGINEERING",
+    "lead_specialist": "SPECIALIST-SECURITY-ARCHITECT",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -53,7 +54,7 @@
   "objective": "Verify that fixed Security Architect work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Security Architect deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-024.",
+    "Lead specialist is SPECIALIST-SECURITY-ARCHITECT.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

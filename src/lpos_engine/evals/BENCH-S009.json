@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-009",
+  "component_id": "SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,12 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-004"
+      "CS-RINT-001",
+      "CS-RINT-003",
+      "CS-RINT-005"
     ],
-    "lead_guild": "Research",
-    "lead_specialist": "SPECIALIST-009",
+    "lead_guild": "GUILD-RESEARCH-INTELLIGENCE",
+    "lead_specialist": "SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -52,7 +53,7 @@
   "objective": "Verify that fixed Competitive Intelligence Analyst work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Competitive Intelligence Analyst deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-009.",
+    "Lead specialist is SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

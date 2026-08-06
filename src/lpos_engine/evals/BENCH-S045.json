@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-045",
+  "component_id": "SPECIALIST-RELEASE-VERIFICATION-AUDITOR",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,12 +17,12 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-008",
-      "CS-009"
+      "CS-QA-001",
+      "CS-QA-002",
+      "CS-QA-008"
     ],
-    "lead_guild": "Code Testing",
-    "lead_specialist": "SPECIALIST-045",
+    "lead_guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+    "lead_specialist": "SPECIALIST-RELEASE-VERIFICATION-AUDITOR",
     "missing_capabilities": [],
     "model_class": "executive"
   },
@@ -51,7 +51,7 @@
   "objective": "Verify that bounded Release Verification Auditor work routes to SPECIALIST-045 with complete capability coverage.",
   "scenario": "The Principal requests Release Verification Auditor work on a code change; verification is deterministic and record-only.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-045.",
+    "Lead specialist is SPECIALIST-RELEASE-VERIFICATION-AUDITOR.",
     "All requested capabilities are covered.",
     "CS-003, CS-008, CS-009 are mapped.",
     "No external action is executed."

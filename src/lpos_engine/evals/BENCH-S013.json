@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-013",
+  "component_id": "SPECIALIST-SOFTWARE-REVIEWER",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,12 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-007",
-      "CS-008"
+      "CS-SWE-001",
+      "CS-SWE-006"
     ],
-    "lead_guild": "Engineering",
-    "lead_specialist": "SPECIALIST-013",
+    "lead_guild": "GUILD-SOFTWARE-ENGINEERING",
+    "lead_specialist": "SPECIALIST-SOFTWARE-REVIEWER",
     "missing_capabilities": [],
     "model_class": "review"
   },
@@ -55,7 +54,7 @@
   "objective": "Verify that fixed Code Reviewer work routes to the canonical specialist with complete capability coverage.",
   "scenario": "The Principal requests a bounded Code Reviewer deliverable using the supplied fixture facts; no external action is authorized.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-013.",
+    "Lead specialist is SPECIALIST-SOFTWARE-REVIEWER.",
     "All required capabilities are covered.",
     "Mapped craft standards are present.",
     "No external action is executed."

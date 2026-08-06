@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-036",
+  "component_id": "SPECIALIST-ACCEPTANCE-TEST-ARCHITECT",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-003",
-      "CS-008"
+      "CS-QA-001",
+      "CS-QA-003"
     ],
-    "lead_guild": "Code Testing",
-    "lead_specialist": "SPECIALIST-036",
+    "lead_guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+    "lead_specialist": "SPECIALIST-ACCEPTANCE-TEST-ARCHITECT",
     "missing_capabilities": [],
     "model_class": "review"
   },
@@ -50,7 +50,7 @@
   "objective": "Verify that bounded Acceptance Criteria Analyst work routes to SPECIALIST-036 with complete capability coverage.",
   "scenario": "The Principal requests Acceptance Criteria Analyst work on a code change; verification is deterministic and record-only.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-036.",
+    "Lead specialist is SPECIALIST-ACCEPTANCE-TEST-ARCHITECT.",
     "All requested capabilities are covered.",
     "CS-003, CS-008 are mapped.",
     "No external action is executed."

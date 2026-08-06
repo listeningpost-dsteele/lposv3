@@ -21,6 +21,9 @@ class SpecialistProfile:
     craft_standards: tuple[str, ...]
     model_class: str
     priority: int = 100
+    charter_path: str | None = None
+    guild_charter_path: str | None = None
+    runtime_lifecycle: str = "active"
 
     def __post_init__(self) -> None:
         require_id("specialist_id", self.specialist_id)
@@ -30,6 +33,10 @@ class SpecialistProfile:
             raise ValidationError(f"{self.specialist_id} has no capabilities")
         if self.model_class not in MODEL_CLASSES:
             raise ValidationError(f"unknown model class: {self.model_class}")
+        if self.runtime_lifecycle not in {"active", "active_candidate"}:
+            raise ValidationError(
+                f"{self.specialist_id} is not active: {self.runtime_lifecycle}"
+            )
 
     @classmethod
     def from_dict(cls, value: Mapping[str, Any]) -> "SpecialistProfile":

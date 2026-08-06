@@ -1,5 +1,5 @@
 {
-  "component_id": "SPECIALIST-038",
+  "component_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
   "component_type": "specialist",
   "evaluation": {
     "assertions": [
@@ -17,11 +17,11 @@
   ],
   "expected": {
     "craft_standards": [
-      "CS-007",
-      "CS-008"
+      "CS-QA-001",
+      "CS-QA-005"
     ],
-    "lead_guild": "Code Testing",
-    "lead_specialist": "SPECIALIST-038",
+    "lead_guild": "GUILD-QUALITY-RELEASE-ASSURANCE",
+    "lead_specialist": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
     "missing_capabilities": [],
     "model_class": "routine"
   },
@@ -50,7 +50,7 @@
   "objective": "Verify that bounded Characterization Test Engineer work routes to SPECIALIST-038 with complete capability coverage.",
   "scenario": "The Principal requests Characterization Test Engineer work on a code change; verification is deterministic and record-only.",
   "success_criteria": [
-    "Lead specialist is SPECIALIST-038.",
+    "Lead specialist is SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER.",
     "All requested capabilities are covered.",
     "CS-007, CS-008 are mapped.",
     "No external action is executed."

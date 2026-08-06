@@ -650,9 +650,11 @@ class SentinelConstitutionAndDistributionTests(unittest.TestCase):
             (self.root / "src" / "lpos_engine" / "config" / "default_registry.json").read_text()
         )
         specialist = next(
-            item for item in registry["specialists"] if item["specialist_id"] == "SPECIALIST-033"
+            item
+            for item in registry["specialists"]
+            if item["specialist_id"] == "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD"
         )
-        self.assertEqual(specialist["guild"], "Sentinel Adversarial Assurance")
+        self.assertEqual(specialist["guild"], "GUILD-ADVERSARIAL-SECURITY-ASSURANCE")
         self.assertIn("adversarial_testing", specialist["capabilities"])
         workflow = json.loads(
             (self.root / "src" / "lpos_engine" / "workflows" / "SO-026.json").read_text()
@@ -665,7 +667,10 @@ class SentinelConstitutionAndDistributionTests(unittest.TestCase):
         self.assertEqual(entry["title"], "Continuous Adversarial Assurance")
         self.assertTrue(entry["enabled_by_default"])
         charter = (self.root / "src" / "lpos_engine" / "spec" / "STANDING-OPERATIONS.md").read_text()
-        self.assertIn("SPECIALIST-033", charter[charter.index("SO-026"):])
+        self.assertIn(
+            "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD",
+            charter[charter.index("SO-026"):],
+        )
         docs = (self.root / "docs" / "SENTINEL.md").read_text()
         self.assertIn("passive", docs.casefold())
         self.assertIn("separate", docs.casefold())

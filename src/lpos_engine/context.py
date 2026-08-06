@@ -25,6 +25,12 @@ _COMPONENT_FILES = {
     "BENCH-": "BENCHMARKS.md",
 }
 
+_COMPONENT_DIRECTORIES = {
+    "GUILD-": "guilds",
+    "SPECIALIST-": "specialists",
+    "CS-": "craft-standards",
+}
+
 
 class SpecRepository:
     """Read only requested sections from the canonical LPOS v4 specification."""
@@ -52,6 +58,18 @@ class SpecRepository:
     def load_component(self, component_id: str) -> tuple[str | None, str]:
         if self.root is None:
             return None, ""
+        directory = next(
+            (
+                directory
+                for prefix, directory in _COMPONENT_DIRECTORIES.items()
+                if component_id.startswith(prefix)
+            ),
+            None,
+        )
+        if directory is not None:
+            direct_path = self.root / directory / f"{component_id}.md"
+            if direct_path.is_file():
+                return str(direct_path), direct_path.read_text(encoding="utf-8")
         filename = next(
             (filename for prefix, filename in _COMPONENT_FILES.items() if component_id.startswith(prefix)),
             None,
@@ -129,6 +147,7 @@ class ContextCompiler:
         component_ids = tuple(
             dict.fromkeys(
                 (
+                    task.lead_guild,
                     task.lead_specialist,
                     *task.supporting_specialists,
                     *task.craft_standards,
