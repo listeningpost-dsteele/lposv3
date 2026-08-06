@@ -10,6 +10,7 @@ One page per release, newest first. Every patch that changes user-facing behavio
 
 ## Releases
 
+- [4.7.0: guild and specialist expert capability system](/patch-notes/4-7-0.html)
 - [4.6.0: verified continuity release](/patch-notes/4-6-0.html)
 - [4.5.0: writing and design quality gates](/patch-notes/4-5-0.html)
 - [4.4.0 — The Code Testing Guild: an executable code-verification gauntlet (additive; GUILD-040, SPECIALIST-034–045, SO-027/028/029)](/patch-notes/4-4-0.html)

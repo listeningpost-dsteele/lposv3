@@ -7,11 +7,11 @@
   "external_action_default": "record-only",
   "name": "LPOS",
   "python_requires": ">=3.11",
-  "schemas": 22,
+  "schemas": 25,
   "specialists": 103,
   "standing_operations": 29,
   "state_backend": "SQLite",
-  "tests": 426,
+  "tests": 472,
   "version": "4.7.0",
   "wheel": "lpos_os-4.7.0-py3-none-any.whl"
 }
