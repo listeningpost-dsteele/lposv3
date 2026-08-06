@@ -1,9 +1,9 @@
 {
   "schema_version": 4,
-  "os_version": "4.6.0",
-  "registry_version": "4.7.0-candidate",
-  "activation_status": "active_candidate",
-  "source_catalog": "candidate_catalog.json",
+  "os_version": "4.7.0",
+  "registry_version": "4.7.0",
+  "activation_status": "active",
+  "source_catalog": "default_registry.json",
   "specialists": [
     {
       "specialist_id": "SPECIALIST-ACCEPTANCE-TEST-ARCHITECT",
@@ -30,7 +30,7 @@
       "priority": 20,
       "charter_path": "specialists/SPECIALIST-ACCEPTANCE-TEST-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-ACCESSIBILITY-AND-INCLUSIVE-DESIGN-SPECIALIST",
@@ -54,7 +54,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-ACCESSIBILITY-AND-INCLUSIVE-DESIGN-SPECIALIST.md",
       "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD",
@@ -82,7 +82,7 @@
       "priority": 4,
       "charter_path": "specialists/SPECIALIST-ADVERSARIAL-ASSURANCE-LEAD.md",
       "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-ADVERSARIAL-FINDING-REVIEWER-AND-CLOSURE-VERIFIER",
@@ -107,7 +107,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-ADVERSARIAL-FINDING-REVIEWER-AND-CLOSURE-VERIFIER.md",
       "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-AGENT-RUNTIME-ENGINEER",
@@ -129,7 +129,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-AGENT-RUNTIME-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-AI-BEHAVIOR-EVALUATION-ENGINEER",
@@ -152,7 +152,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-AI-BEHAVIOR-EVALUATION-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-AI-SYSTEMS-ARCHITECT",
@@ -174,7 +174,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-AI-SYSTEMS-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-ANALYTICS-ENGINEER-AND-METRIC-STEWARD",
@@ -195,7 +195,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-ANALYTICS-ENGINEER-AND-METRIC-STEWARD.md",
       "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-APPLICATION-SECURITY-ENGINEER",
@@ -216,7 +216,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-APPLICATION-SECURITY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-ARTIFACT-AND-EXPERIENCE-QUALITY-REVIEWER",
@@ -239,7 +239,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-ARTIFACT-AND-EXPERIENCE-QUALITY-REVIEWER.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-BRAND-DESIGNER",
@@ -259,7 +259,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-BRAND-DESIGNER.md",
       "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-BRAND-STRATEGIST",
@@ -279,7 +279,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-BRAND-STRATEGIST.md",
       "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-BUSINESS-CASE-AND-INVESTMENT-ANALYST",
@@ -303,7 +303,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-BUSINESS-CASE-AND-INVESTMENT-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CLOUD-AND-INFRASTRUCTURE-SECURITY-ENGINEER",
@@ -326,7 +326,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CLOUD-AND-INFRASTRUCTURE-SECURITY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER",
@@ -364,7 +364,7 @@
       "priority": 7,
       "charter_path": "specialists/SPECIALIST-CODE-AND-STRUCTURAL-TEST-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-COMMERCIAL-CONTRACTS-ANALYST",
@@ -385,7 +385,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-COMMERCIAL-CONTRACTS-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-COMMERCIAL-COPYWRITER",
@@ -406,7 +406,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-COMMERCIAL-COPYWRITER.md",
       "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST",
@@ -431,7 +431,7 @@
       "priority": 22,
       "charter_path": "specialists/SPECIALIST-COMPETITIVE-INTELLIGENCE-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-COMPLIANCE-PROGRAM-AND-EXTERNAL-ASSESSMENT-COORDINATOR",
@@ -456,7 +456,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-COMPLIANCE-PROGRAM-AND-EXTERNAL-ASSESSMENT-COORDINATOR.md",
       "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CONSTITUTIONAL-AND-POLICY-STEWARD",
@@ -477,7 +477,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CONSTITUTIONAL-AND-POLICY-STEWARD.md",
       "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CONTENT-DESIGNER",
@@ -498,7 +498,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CONTENT-DESIGNER.md",
       "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CONTENT-MARKETING-STRATEGIST",
@@ -522,7 +522,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CONTENT-MARKETING-STRATEGIST.md",
       "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CONTROL-EVIDENCE-AUDITOR",
@@ -545,7 +545,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CONTROL-EVIDENCE-AUDITOR.md",
       "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CONTROL-FRAMEWORK-ARCHITECT",
@@ -566,7 +566,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CONTROL-FRAMEWORK-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CUSTOMER-SUCCESS-STRATEGIST",
@@ -589,7 +589,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CUSTOMER-SUCCESS-STRATEGIST.md",
       "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-CUSTOMER-SUPPORT-OPERATIONS-SPECIALIST",
@@ -612,7 +612,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-CUSTOMER-SUPPORT-OPERATIONS-SPECIALIST.md",
       "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-DATA-ANALYST",
@@ -636,7 +636,7 @@
       "priority": 18,
       "charter_path": "specialists/SPECIALIST-DATA-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-DATA-ENGINEER",
@@ -655,7 +655,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-DATA-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-DATA-QUALITY-AND-LINEAGE-ENGINEER",
@@ -678,7 +678,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-DATA-QUALITY-AND-LINEAGE-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-DATABASE-RELIABILITY-ENGINEER",
@@ -703,7 +703,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-DATABASE-RELIABILITY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-DECISION-ANALYST",
@@ -727,7 +727,7 @@
       "priority": 12,
       "charter_path": "specialists/SPECIALIST-DECISION-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-DESIGN-SYSTEMS-DESIGNER",
@@ -750,7 +750,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-DESIGN-SYSTEMS-DESIGNER.md",
       "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-EDITOR",
@@ -772,7 +772,7 @@
       "priority": 8,
       "charter_path": "specialists/SPECIALIST-EDITOR.md",
       "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-EVIDENCE-INTEGRITY-ANALYST",
@@ -803,7 +803,7 @@
       "priority": 8,
       "charter_path": "specialists/SPECIALIST-EVIDENCE-INTEGRITY-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-EXECUTIVE-COMMUNICATIONS-WRITER",
@@ -832,7 +832,7 @@
       "priority": 12,
       "charter_path": "specialists/SPECIALIST-EXECUTIVE-COMMUNICATIONS-WRITER.md",
       "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-EXECUTIVE-OFFICE-OPERATIONS-SPECIALIST",
@@ -855,7 +855,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-EXECUTIVE-OFFICE-OPERATIONS-SPECIALIST.md",
       "guild_charter_path": "guilds/GUILD-PRINCIPAL-OPERATIONS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-EXPERIMENTATION-AND-CAUSAL-INFERENCE-ANALYST",
@@ -878,7 +878,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-EXPERIMENTATION-AND-CAUSAL-INFERENCE-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST",
@@ -907,7 +907,7 @@
       "priority": 20,
       "charter_path": "specialists/SPECIALIST-FINANCIAL-PLANNING-AND-ANALYSIS-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-FORECASTING-AND-PREDICTIVE-ANALYTICS-SPECIALIST",
@@ -930,7 +930,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-FORECASTING-AND-PREDICTIVE-ANALYTICS-SPECIALIST.md",
       "guild_charter_path": "guilds/GUILD-DATA-ANALYTICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-GROWTH-MARKETING-STRATEGIST",
@@ -954,7 +954,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-GROWTH-MARKETING-STRATEGIST.md",
       "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-IDENTITY-AND-ACCESS-MANAGEMENT-ENGINEER",
@@ -977,7 +977,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-IDENTITY-AND-ACCESS-MANAGEMENT-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-INFORMATION-AND-PRESENTATION-DESIGNER",
@@ -999,7 +999,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-INFORMATION-AND-PRESENTATION-DESIGNER.md",
       "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-INFRASTRUCTURE-AND-CLOUD-ENGINEER",
@@ -1023,7 +1023,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-INFRASTRUCTURE-AND-CLOUD-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-INTEGRATION-ENGINEER",
@@ -1043,7 +1043,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-INTEGRATION-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-KNOWLEDGE-ARCHITECT",
@@ -1062,7 +1062,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-KNOWLEDGE-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-LEGAL-RESEARCH-ANALYST",
@@ -1087,7 +1087,7 @@
       "priority": 20,
       "charter_path": "specialists/SPECIALIST-LEGAL-RESEARCH-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-LIFECYCLE-MARKETING-STRATEGIST",
@@ -1111,7 +1111,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-LIFECYCLE-MARKETING-STRATEGIST.md",
       "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-MARKET-RESEARCHER",
@@ -1137,7 +1137,7 @@
       "priority": 22,
       "charter_path": "specialists/SPECIALIST-MARKET-RESEARCHER.md",
       "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-MODEL-AND-PROVIDER-EVALUATION-ENGINEER",
@@ -1161,7 +1161,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-MODEL-AND-PROVIDER-EVALUATION-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-NONFUNCTIONAL-ASSURANCE-ENGINEER",
@@ -1182,7 +1182,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-NONFUNCTIONAL-ASSURANCE-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-OBSERVABILITY-ENGINEER",
@@ -1202,7 +1202,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-OBSERVABILITY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-OPEN-SOURCE-RELEASE-STEWARD",
@@ -1225,7 +1225,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-OPEN-SOURCE-RELEASE-STEWARD.md",
       "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-OPERATING-EFFECTIVENESS-ANALYST",
@@ -1246,7 +1246,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-OPERATING-EFFECTIVENESS-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-COMPLIANCE-CONTROL-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-OPERATIONAL-EXCELLENCE-ANALYST",
@@ -1268,7 +1268,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-OPERATIONAL-EXCELLENCE-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-OPERATIONS-SYSTEMS-ARCHITECT",
@@ -1295,7 +1295,7 @@
       "priority": 14,
       "charter_path": "specialists/SPECIALIST-OPERATIONS-SYSTEMS-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-ORGANIZATIONAL-COMMUNICATIONS-STRATEGIST",
@@ -1319,7 +1319,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-ORGANIZATIONAL-COMMUNICATIONS-STRATEGIST.md",
       "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PASSIVE-SECURITY-ASSESSMENT-ENGINEER",
@@ -1342,7 +1342,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PASSIVE-SECURITY-ASSESSMENT-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PENETRATION-TESTING-AND-RED-TEAM-ENGINEER",
@@ -1367,7 +1367,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PENETRATION-TESTING-AND-RED-TEAM-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-ADVERSARIAL-SECURITY-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PLATFORM-ENGINEER",
@@ -1389,7 +1389,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PLATFORM-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PLATFORM-PRODUCT-MANAGER",
@@ -1410,7 +1410,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PLATFORM-PRODUCT-MANAGER.md",
       "guild_charter_path": "guilds/GUILD-PRODUCT-MANAGEMENT.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PORTFOLIO-AND-INITIATIVE-STRATEGIST",
@@ -1439,7 +1439,7 @@
       "priority": 18,
       "charter_path": "specialists/SPECIALIST-PORTFOLIO-AND-INITIATIVE-STRATEGIST.md",
       "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRICING-AND-PACKAGING-ECONOMIST",
@@ -1465,7 +1465,7 @@
       "priority": 20,
       "charter_path": "specialists/SPECIALIST-PRICING-AND-PACKAGING-ECONOMIST.md",
       "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRINCIPAL-CONTEXT-STEWARD",
@@ -1486,7 +1486,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PRINCIPAL-CONTEXT-STEWARD.md",
       "guild_charter_path": "guilds/GUILD-PRINCIPAL-OPERATIONS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRIVACY-AND-PRODUCT-REGULATORY-ANALYST",
@@ -1509,7 +1509,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PRIVACY-AND-PRODUCT-REGULATORY-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRIVACY-ENGINEER",
@@ -1528,7 +1528,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PRIVACY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRODUCT-DESIGNER",
@@ -1556,7 +1556,7 @@
       "priority": 18,
       "charter_path": "specialists/SPECIALIST-PRODUCT-DESIGNER.md",
       "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRODUCT-MANAGER",
@@ -1578,7 +1578,7 @@
       "priority": 18,
       "charter_path": "specialists/SPECIALIST-PRODUCT-MANAGER.md",
       "guild_charter_path": "guilds/GUILD-PRODUCT-MANAGEMENT.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRODUCT-MARKETING-MANAGER",
@@ -1600,7 +1600,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PRODUCT-MARKETING-MANAGER.md",
       "guild_charter_path": "guilds/GUILD-MARKET-BRAND-GROWTH.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PRODUCT-OPERATIONS-LEAD",
@@ -1620,7 +1620,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PRODUCT-OPERATIONS-LEAD.md",
       "guild_charter_path": "guilds/GUILD-PRODUCT-MANAGEMENT.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-PROMPT-AND-CONTEXT-SYSTEMS-ENGINEER",
@@ -1644,7 +1644,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-PROMPT-AND-CONTEXT-SYSTEMS-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR",
@@ -1669,7 +1669,7 @@
       "priority": 4,
       "charter_path": "specialists/SPECIALIST-QUALITY-AND-RELEASE-DIRECTOR.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST",
@@ -1694,7 +1694,7 @@
       "priority": 20,
       "charter_path": "specialists/SPECIALIST-RELATIONSHIP-INTELLIGENCE-SPECIALIST.md",
       "guild_charter_path": "guilds/GUILD-PRINCIPAL-OPERATIONS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-RELEASE-AND-DEPLOYMENT-ENGINEER",
@@ -1719,7 +1719,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-RELEASE-AND-DEPLOYMENT-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-RELEASE-VERIFICATION-AUDITOR",
@@ -1745,7 +1745,7 @@
       "priority": 6,
       "charter_path": "specialists/SPECIALIST-RELEASE-VERIFICATION-AUDITOR.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-REPOSITORY-AND-CHANGE-GOVERNANCE-SPECIALIST",
@@ -1768,7 +1768,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-REPOSITORY-AND-CHANGE-GOVERNANCE-SPECIALIST.md",
       "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-RESEARCH-ANALYST",
@@ -1792,7 +1792,7 @@
       "priority": 20,
       "charter_path": "specialists/SPECIALIST-RESEARCH-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-RETRIEVAL-AND-MEMORY-ENGINEER",
@@ -1814,7 +1814,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-RETRIEVAL-AND-MEMORY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-REVENUE-OPERATIONS-ARCHITECT",
@@ -1835,7 +1835,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-REVENUE-OPERATIONS-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-RUNBOOK-AND-RECOVERY-ENGINEER",
@@ -1857,7 +1857,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-RUNBOOK-AND-RECOVERY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SALES-STRATEGY-AND-DEAL-ANALYST",
@@ -1880,7 +1880,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-SALES-STRATEGY-AND-DEAL-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-REVENUE-CUSTOMER-OPERATIONS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SCENARIO-AND-STRATEGIC-RISK-ANALYST",
@@ -1907,7 +1907,7 @@
       "priority": 14,
       "charter_path": "specialists/SPECIALIST-SCENARIO-AND-STRATEGIC-RISK-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SECURITY-ARCHITECT",
@@ -1932,7 +1932,7 @@
       "priority": 8,
       "charter_path": "specialists/SPECIALIST-SECURITY-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SECURITY-DETECTION-AND-INCIDENT-RESPONSE-ENGINEER",
@@ -1957,7 +1957,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-SECURITY-DETECTION-AND-INCIDENT-RESPONSE-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SERVICE-DESIGNER",
@@ -1979,7 +1979,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-SERVICE-DESIGNER.md",
       "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SERVICE-OPERATIONS-ANALYST",
@@ -2006,7 +2006,7 @@
       "priority": 18,
       "charter_path": "specialists/SPECIALIST-SERVICE-OPERATIONS-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SITE-RELIABILITY-ENGINEER",
@@ -2030,7 +2030,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-SITE-RELIABILITY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-PLATFORM-RELIABILITY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SOFTWARE-ARCHITECT",
@@ -2055,7 +2055,7 @@
       "priority": 5,
       "charter_path": "specialists/SPECIALIST-SOFTWARE-ARCHITECT.md",
       "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SOFTWARE-ENGINEER",
@@ -2080,7 +2080,7 @@
       "priority": 14,
       "charter_path": "specialists/SPECIALIST-SOFTWARE-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SOFTWARE-MAINTENANCE-AND-DEBUGGING-ENGINEER",
@@ -2107,7 +2107,7 @@
       "priority": 15,
       "charter_path": "specialists/SPECIALIST-SOFTWARE-MAINTENANCE-AND-DEBUGGING-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SOFTWARE-REVIEWER",
@@ -2139,7 +2139,7 @@
       "priority": 6,
       "charter_path": "specialists/SPECIALIST-SOFTWARE-REVIEWER.md",
       "guild_charter_path": "guilds/GUILD-SOFTWARE-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-STANDARDS-AND-CAPABILITY-GOVERNANCE-ANALYST",
@@ -2162,7 +2162,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-STANDARDS-AND-CAPABILITY-GOVERNANCE-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-GOVERNANCE-OPEN-SOURCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-STRATEGIC-PLANNER",
@@ -2188,7 +2188,7 @@
       "priority": 10,
       "charter_path": "specialists/SPECIALIST-STRATEGIC-PLANNER.md",
       "guild_charter_path": "guilds/GUILD-STRATEGY-DECISIONS-PORTFOLIO.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-SYSTEM-AND-END-TO-END-TEST-ENGINEER",
@@ -2217,7 +2217,7 @@
       "priority": 24,
       "charter_path": "specialists/SPECIALIST-SYSTEM-AND-END-TO-END-TEST-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-TECHNICAL-WRITER",
@@ -2243,7 +2243,7 @@
       "priority": 14,
       "charter_path": "specialists/SPECIALIST-TECHNICAL-WRITER.md",
       "guild_charter_path": "guilds/GUILD-COMMUNICATIONS-KNOWLEDGE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-TECHNOLOGY-INTELLIGENCE-ANALYST",
@@ -2269,7 +2269,7 @@
       "priority": 22,
       "charter_path": "specialists/SPECIALIST-TECHNOLOGY-INTELLIGENCE-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-RESEARCH-INTELLIGENCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-TECHNOLOGY-IP-AND-OPEN-SOURCE-LICENSING-ANALYST",
@@ -2296,7 +2296,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-TECHNOLOGY-IP-AND-OPEN-SOURCE-LICENSING-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-LEGAL-REGULATORY.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-TEST-RELIABILITY-ENGINEER",
@@ -2320,7 +2320,7 @@
       "priority": 26,
       "charter_path": "specialists/SPECIALIST-TEST-RELIABILITY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-QUALITY-RELEASE-ASSURANCE.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-THREAT-MODELING-SPECIALIST",
@@ -2344,7 +2344,7 @@
       "priority": 8,
       "charter_path": "specialists/SPECIALIST-THREAT-MODELING-SPECIALIST.md",
       "guild_charter_path": "guilds/GUILD-SECURITY-PRIVACY-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-TOOL-AND-CAPABILITY-ENGINEER",
@@ -2366,7 +2366,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-TOOL-AND-CAPABILITY-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-UNIT-ECONOMICS-ANALYST",
@@ -2388,7 +2388,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-UNIT-ECONOMICS-ANALYST.md",
       "guild_charter_path": "guilds/GUILD-FINANCE-ECONOMICS.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-UX-RESEARCHER",
@@ -2413,7 +2413,7 @@
       "priority": 20,
       "charter_path": "specialists/SPECIALIST-UX-RESEARCHER.md",
       "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-WEB-EXPERIENCE-DESIGNER",
@@ -2438,7 +2438,7 @@
       "priority": 100,
       "charter_path": "specialists/SPECIALIST-WEB-EXPERIENCE-DESIGNER.md",
       "guild_charter_path": "guilds/GUILD-EXPERIENCE-DESIGN.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     },
     {
       "specialist_id": "SPECIALIST-WORKFLOW-AUTOMATION-ENGINEER",
@@ -2465,7 +2465,7 @@
       "priority": 16,
       "charter_path": "specialists/SPECIALIST-WORKFLOW-AUTOMATION-ENGINEER.md",
       "guild_charter_path": "guilds/GUILD-OPERATIONS-AUTOMATION-ENGINEERING.md",
-      "runtime_lifecycle": "active_candidate"
+      "runtime_lifecycle": "active"
     }
   ]
 }

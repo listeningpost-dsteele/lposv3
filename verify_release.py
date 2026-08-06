@@ -136,7 +136,7 @@ def main() -> int:
             str(registry_package.get("os_version")),
             str(workflow_catalog.get("os_version")),
         }
-        if versions != {"4.6.0"}:
+        if versions != {"4.7.0"}:
             fail(f"version fields are not synchronized: {sorted(versions)}", failures)
         if release.get("distribution_type") != "integrated":
             fail("RELEASE.json does not declare an integrated distribution", failures)
@@ -179,8 +179,8 @@ def main() -> int:
     package_schema_dir = ROOT / "src" / "lpos_engine" / "schemas"
     root_schema_names = sorted(path.name for path in root_schema_dir.glob("*.schema.json"))
     package_schema_names = sorted(path.name for path in package_schema_dir.glob("*.schema.json"))
-    if root_schema_names != package_schema_names or len(root_schema_names) != 25:
-        fail("root and packaged schema sets are not the same 25 schemas", failures)
+    if root_schema_names != package_schema_names or len(root_schema_names) != 22:
+        fail("root and packaged schema sets are not the same 22 schemas", failures)
     else:
         for name in root_schema_names:
             root_path = root_schema_dir / name
@@ -232,7 +232,7 @@ def main() -> int:
             fail(f"benchmark identity mismatch: {fixture_name}", failures)
 
     kernel = ROOT / "src" / "lpos_engine" / "spec" / "CHIP-KERNEL.md"
-    if not kernel.is_file() or "# Chip Kernel v4.6.0" not in kernel.read_text(encoding="utf-8"):
+    if not kernel.is_file() or "# Chip Kernel v4.7.0" not in kernel.read_text(encoding="utf-8"):
         fail("the packaged v4 kernel is missing or has the wrong version", failures)
 
     wheel_name = release.get("wheel")
@@ -286,7 +286,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 103 specialists, 29 Standing Operations, 70 benchmarks, 25 schemas."
+        f"{len(expected_files)} immutable files, 103 specialists, 29 Standing Operations, 70 benchmarks, 22 schemas."
     )
     return 0
 

@@ -163,7 +163,7 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    print("\nLPOS v4.6.0 installation completed successfully.")
+    print("\nLPOS v4.7.0 installation completed successfully.")
     print(f"  Operating system: {root}")
     print(f"  Transactional state: {database}")
     print(f"  Verification flow: {verification_status}")

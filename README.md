@@ -1,4 +1,4 @@
-# LPOS v4.6.0
+# LPOS v4.7.0
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -8,8 +8,10 @@ ship together under one version.
 The packaged v4 specification is loaded by the engine automatically and is the
 specification the v4 runtime enforces.
 
-LPOS v4.6.0 is a continuity release of the fully verified v4.5 operating system.
-Product Studio is not included and remains deferred.
+LPOS v4.7.0 is the expert capability system release, expanding the specialist corpus
+from 45 to 103 specialists across 20 guilds with 122 craft standards and 103
+behavioral admission suites. The expert corpus is frozen. Product Studio is not included
+and remains deferred.
 
 ## What is included
 
@@ -75,8 +77,8 @@ macOS or Linux:
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks
 .venv/bin/lpos evals
-.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.6.0-stage
-.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.6.0-stage --state-root ~/.hermes/state/chip-service
+.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.7.0-stage
+.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.7.0-stage --state-root ~/.hermes/state/chip-service
 COE_OPERATOR_TOKEN=<secure-value> .venv/bin/lpos coe serve --state-root ~/.hermes/state/chip-service
 ```
 
@@ -108,12 +110,11 @@ consequential-action adapter records an approved action without performing it.
 ## Repository layout
 
 ```text
-src/lpos_engine/
-  spec/          Canonical v4 operating specification
+  src/lpos_engine/spec/          Canonical v4 operating specification
   schemas/       Executable JSON Schemas
   workflows/     SO-001 through SO-029 workflow definitions
   evals/         70 fixed benchmark fixtures and evaluator
-  config/        45-specialist capability registry
+  config/        103-specialist capability registry
   sql/           Checksummed database migrations
   adapters/      Model and action adapter boundaries
   coe*.py        COE contracts, verifier, evidence store, gates, controller, APIs, and reports

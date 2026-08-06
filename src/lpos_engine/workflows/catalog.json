@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "os_version": "4.6.0",
+  "os_version": "4.7.0",
   "operations": [
     {
       "so_id": "SO-001",

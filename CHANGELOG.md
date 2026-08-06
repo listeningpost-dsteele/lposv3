@@ -1,5 +1,9 @@
 # LPOS Changelog
 
+## 4.7.0 (2026-08-05)
+
+Expert capability system release: expands the LPOS specialist corpus from 45 to 103 specialists across 20 guilds with 122 craft standards and 103 behavioral admission suites. The expert corpus is frozen as the authoritative 4.7 capability set. All prior v4.6.0 authority, review, evidence, security, Code Testing Guild, Continuous Operational Excellence, record-only external-action, and rollback controls are preserved.
+
 ## 4.6.0 (2026-08-05)
 
 Continuity release of the complete verified LPOS 4.5 operating system under the 4.6.0
