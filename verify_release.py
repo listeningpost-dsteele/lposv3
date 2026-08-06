@@ -286,7 +286,7 @@ def main() -> int:
 
     print(
         "LPOS v4 release verification passed: "
-        f"{len(expected_files)} immutable files, 103 specialists, 29 Standing Operations, 70 benchmarks, 22 schemas."
+        f"{len(expected_files)} immutable files, 103 specialists, 29 Standing Operations, 70 benchmarks, 25 schemas."
     )
     return 0
 
