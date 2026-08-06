@@ -5,7 +5,7 @@ Python: 3.11
 
 ## Results
 
-- Full suite on the 4.7 candidate: `python -m pytest -q`, **485 passed, 2 skipped, 0 failures** from **487 collected tests**.
+- Full suite on the 4.7 candidate: `python -m pytest -q`, **486 passed, 2 skipped, 0 failures** from **488 collected tests**.
 - Focused admission, publication, and packaged-quality contracts: **75 passed, 0 failures**.
 - Release verification: **769 immutable files, 103 specialists, 29 Standing Operations, 70 benchmarks, and 25 schemas**.
 - Doctor reports LPOS 4.7.0 healthy after resealing.

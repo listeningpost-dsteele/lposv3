@@ -450,7 +450,7 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--schema-dir", type=Path, default=None)
     validate.set_defaults(func=cmd_validate_schemas)
 
-    specialists = sub.add_parser("list-specialists", help="show the 45 capability-routable specialists")
+    specialists = sub.add_parser("list-specialists", help="show the 103 capability-routable specialists")
     specialists.set_defaults(func=cmd_list_specialists)
 
     workflows = sub.add_parser("list-workflows", help="show the 29 packaged Standing Operations")

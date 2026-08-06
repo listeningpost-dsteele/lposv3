@@ -11,6 +11,7 @@ from pathlib import Path
 
 import lpos_engine
 from lpos_engine.context import SpecRepository
+from lpos_engine.cli import build_parser
 from lpos_engine.evals import catalog as benchmark_catalog
 from lpos_engine.evals import load_all as load_all_benchmarks
 from lpos_engine.evals import run_core_evaluations
@@ -82,6 +83,9 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertEqual(len(actual_ids), 103)
         self.assertTrue(all(profile.capabilities for profile in registry.profiles))
         self.assertTrue(all(profile.craft_standards for profile in registry.profiles))
+
+    def test_cli_reports_the_active_103_specialist_inventory(self) -> None:
+        self.assertIn("show the 103 capability-routable specialists", build_parser().format_help())
 
     def test_all_29_standing_operations_are_executable_definitions(self) -> None:
         entries = catalog()
