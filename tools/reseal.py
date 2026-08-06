@@ -48,8 +48,13 @@ def main() -> int:
             + ", ".join(sorted(unapproved))
         )
     release = json.loads((ROOT / "RELEASE.json").read_text(encoding="utf-8"))
+    tracked = subprocess.check_output(
+        ["git", "ls-files", "-z"],
+        cwd=ROOT,
+    )
     files: dict[str, str] = {}
-    for path in sorted(ROOT.rglob("*")):
+    for item in sorted(value for value in tracked.split(b"\0") if value):
+        path = ROOT / item.decode("utf-8")
         if not path.is_file():
             continue
         relative = path.relative_to(ROOT)

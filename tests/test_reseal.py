@@ -16,6 +16,7 @@ def test_reseal_refuses_uncommitted_release_inputs(tmp_path: Path) -> None:
     (root / "tools").mkdir(parents=True)
     shutil.copy2(Path(__file__).resolve().parents[1] / "tools" / "reseal.py", root / "tools" / "reseal.py")
     (root / "payload.txt").write_text("committed\n", encoding="utf-8")
+    (root / ".gitignore").write_text("*.ignored\n", encoding="utf-8")
     (root / "RELEASE.json").write_text(
         json.dumps({"archive": "fixture.zip", "distribution_type": "fixture", "name": "fixture", "version": "1"}) + "\n",
         encoding="utf-8",
@@ -32,6 +33,7 @@ def test_reseal_refuses_uncommitted_release_inputs(tmp_path: Path) -> None:
     assert "refusing to reseal with uncommitted release inputs" in blocked.stderr
 
     _git(root, "restore", "payload.txt")
+    (root / "local.ignored").write_text("must not enter release\n", encoding="utf-8")
     release = json.loads((root / "RELEASE.json").read_text(encoding="utf-8"))
     release["version"] = "1.0.1"
     (root / "RELEASE.json").write_text(json.dumps(release) + "\n", encoding="utf-8")
@@ -39,3 +41,5 @@ def test_reseal_refuses_uncommitted_release_inputs(tmp_path: Path) -> None:
     assert allowed.returncode == 0, allowed.stderr
     assert (root / "RELEASE-MANIFEST.json").is_file()
     assert (root / "SHA256SUMS").is_file()
+    manifest = json.loads((root / "RELEASE-MANIFEST.json").read_text(encoding="utf-8"))
+    assert "local.ignored" not in manifest["files"]
