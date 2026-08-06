@@ -399,7 +399,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     perms_ok = result.get("state_permissions", {"status": "ok"}).get("status") != "insecure"
     if (
         not kernel
-        or len(registry.profiles) != 45
+        or len(registry.profiles) != 103
         or len(workflows) != 29
         or len(benchmark_catalog()) != 70
         or schema_result["schemas"] != 22
