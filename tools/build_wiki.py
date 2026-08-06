@@ -955,13 +955,13 @@ def build(repo: Path, out: Path) -> dict:
     for page in pages:
         target = out / (page.slug + ".html")
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(page_html(page, pages, version), encoding="utf-8")
+        target.write_text(page_html(page, pages, version).replace("—", "-"), encoding="utf-8")
         search_index.append(
             {
                 "url": page.url,
                 "title": page.title,
                 "section": SECTION_TITLES.get(page.section, page.section),
-                "text": strip_tags(markdown_to_html(page.markdown))[:6000],
+                "text": strip_tags(markdown_to_html(page.markdown)).replace("—", "-")[:6000],
             }
         )
     (out / "search-index.json").write_text(
@@ -980,7 +980,9 @@ def build(repo: Path, out: Path) -> dict:
 
     combined_path = out.parent / "LPOS-User-Guide.html"
     combined_path.parent.mkdir(parents=True, exist_ok=True)
-    combined_path.write_text(combined_guide_html(pages, version), encoding="utf-8")
+    combined_path.write_text(
+        combined_guide_html(pages, version).replace("—", "-"), encoding="utf-8"
+    )
 
     return {
         "version": version,
