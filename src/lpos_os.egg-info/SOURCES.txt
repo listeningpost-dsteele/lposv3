@@ -8,6 +8,11 @@ src/lpos_engine/approvals.py
 src/lpos_engine/canonical.py
 src/lpos_engine/cli.py
 src/lpos_engine/coe.py
+src/lpos_engine/coe_contract.py
+src/lpos_engine/coe_gate.py
+src/lpos_engine/coe_manifest.py
+src/lpos_engine/coe_runtime.py
+src/lpos_engine/coe_store.py
 src/lpos_engine/context.py
 src/lpos_engine/engine.py
 src/lpos_engine/errors.py
@@ -42,7 +47,12 @@ src/lpos_engine/compliance/ledger.py
 src/lpos_engine/compliance/remediation.py
 src/lpos_engine/compliance/report.py
 src/lpos_engine/config/__init__.py
+src/lpos_engine/config/artifact-lifecycle.json
+src/lpos_engine/config/backup-policy.json
+src/lpos_engine/config/coe-gates.json
+src/lpos_engine/config/coe-policy.json
 src/lpos_engine/config/default_registry.json
+src/lpos_engine/config/prompt-drift-allowlist.json
 src/lpos_engine/dashboard/__init__.py
 src/lpos_engine/dashboard/__main__.py
 src/lpos_engine/dashboard/scanner.py
@@ -146,6 +156,7 @@ src/lpos_engine/schemas/approval-request.schema.json
 src/lpos_engine/schemas/artifact-specification.schema.json
 src/lpos_engine/schemas/artifact.schema.json
 src/lpos_engine/schemas/benchmark-definition.schema.json
+src/lpos_engine/schemas/coe-gate-evidence.schema.json
 src/lpos_engine/schemas/completion-report.schema.json
 src/lpos_engine/schemas/context-bundle.schema.json
 src/lpos_engine/schemas/decision-record.schema.json
@@ -153,6 +164,7 @@ src/lpos_engine/schemas/evidence-record.schema.json
 src/lpos_engine/schemas/interpretation-contract.schema.json
 src/lpos_engine/schemas/message-identity.schema.json
 src/lpos_engine/schemas/principal-security-report.schema.json
+src/lpos_engine/schemas/release-manifest.schema.json
 src/lpos_engine/schemas/review-envelope.schema.json
 src/lpos_engine/schemas/review-result.schema.json
 src/lpos_engine/schemas/security-assessment-review.schema.json
@@ -193,6 +205,7 @@ src/lpos_engine/spec/skills/test-evidence-auditor/SKILL.md
 src/lpos_engine/sql/001_initial.sql
 src/lpos_engine/sql/002_event_chain.sql
 src/lpos_engine/sql/003_sentinel.sql
+src/lpos_engine/sql/004_coe.sql
 src/lpos_engine/sql/__init__.py
 src/lpos_engine/workflows/SO-001.json
 src/lpos_engine/workflows/SO-002.json
@@ -235,6 +248,8 @@ tests/test_approvals_actions.py
 tests/test_cli_doctor_release_integrity.py
 tests/test_code_testing.py
 tests/test_coe.py
+tests/test_coe_api.py
+tests/test_coe_manifest.py
 tests/test_compliance.py
 tests/test_compliance_evidence.py
 tests/test_dashboard.py
@@ -253,6 +268,7 @@ tests/test_operations.py
 tests/test_publication.py
 tests/test_quality_skills.py
 tests/test_release_portability.py
+tests/test_reseal.py
 tests/test_routing_context.py
 tests/test_schema_check.py
 tests/test_schemas_cli_adapters.py

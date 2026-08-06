@@ -136,7 +136,7 @@ def main() -> int:
             str(registry_package.get("os_version")),
             str(workflow_catalog.get("os_version")),
         }
-        if versions != {"4.5.0"}:
+        if versions != {"4.6.0"}:
             fail(f"version fields are not synchronized: {sorted(versions)}", failures)
         if release.get("distribution_type") != "integrated":
             fail("RELEASE.json does not declare an integrated distribution", failures)
@@ -227,7 +227,7 @@ def main() -> int:
             fail(f"benchmark identity mismatch: {fixture_name}", failures)
 
     kernel = ROOT / "src" / "lpos_engine" / "spec" / "CHIP-KERNEL.md"
-    if not kernel.is_file() or "# Chip Kernel v4.5.0" not in kernel.read_text(encoding="utf-8"):
+    if not kernel.is_file() or "# Chip Kernel v4.6.0" not in kernel.read_text(encoding="utf-8"):
         fail("the packaged v4 kernel is missing or has the wrong version", failures)
 
     wheel_name = release.get("wheel")

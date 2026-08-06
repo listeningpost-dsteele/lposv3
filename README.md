@@ -1,4 +1,4 @@
-# LPOS v4.5.0
+# LPOS v4.6.0
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -7,6 +7,9 @@ ship together under one version.
 
 The packaged v4 specification is loaded by the engine automatically and is the
 specification the v4 runtime enforces.
+
+LPOS v4.6.0 is a continuity release of the fully verified v4.5 operating system.
+Product Studio is not included and remains deferred.
 
 ## What is included
 
@@ -72,8 +75,8 @@ macOS or Linux:
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks
 .venv/bin/lpos evals
-.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.5.0-stage
-.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.5.0-stage --state-root ~/.hermes/state/chip-service
+.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.6.0-stage
+.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.6.0-stage --state-root ~/.hermes/state/chip-service
 COE_OPERATOR_TOKEN=<secure-value> .venv/bin/lpos coe serve --state-root ~/.hermes/state/chip-service
 ```
 

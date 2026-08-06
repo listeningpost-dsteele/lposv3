@@ -15,7 +15,7 @@ This section is the inventory: every module and capability in your installation,
 - **45 specialists across the guilds** — see the auto-generated [Specialists](/reference/specialists.html) page, built from the packaged specialist index. `lpos list-specialists` prints the same registry with full capability lists.
 - **29 Standing Operations (SO-001 through SO-029)** — each has its own reference page, generated from the packaged workflow catalog and operation definitions, with its default schedule, requirements, specialists, and workflow steps. Start from [SO-001: Executive Brief](/reference/so-001.html) or browse the Reference section in the sidebar. `lpos list-workflows` prints the catalog.
 - **70 benchmark fixtures** — 45 specialist cases and 25 Standing Operation cases; `lpos evals` runs the deterministic core evaluations against all of them.
-- **20 executable JSON Schemas** — the machine contracts for every runtime entity, validated by `lpos validate-schemas`.
+- **22 executable JSON Schemas** — the machine contracts for every runtime entity, validated by `lpos validate-schemas`.
 - **Packaged skills** — procedure documents the runtime loads on demand, including the load-bearing `independent-reviewer` and `quality-router`. See the auto-generated [Packaged skills](/reference/skills.html) page.
 - **Transactional SQLite state with append-only events** — the audit backbone; see [Backups](/administration/backups.html) and [Reading agent output](/working-with/reading-agent-output.html).
 - **Adapter boundaries** — the provider-neutral subprocess protocol for model hosts, plus the record-only consequential-action adapter and sandboxed local-file adapter for safe verification. See [Connector setup](/administration/connector-setup.html).

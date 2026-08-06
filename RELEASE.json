@@ -1,8 +1,8 @@
 {
-  "archive": "LPOS-v4.5.0-Complete.zip",
+  "archive": "LPOS-v4.6.0-Complete.zip",
   "audit_model": "append-only events",
   "benchmarks": 70,
-  "description": "Complete LPOS v4 operating-system distribution with command-backed Continuous Operational Excellence, nine independent release gates, append-only tamper-evident evidence, immutable application manifests, deterministic daily governance, private operational reporting, and all prior v4.5 quality controls preserved",
+  "description": "LPOS v4.6 continuity release of the complete verified v4.5 operating system, with Product Studio excluded and deferred, command-backed Continuous Operational Excellence, nine independent release gates, append-only tamper-evident evidence, immutable application manifests, deterministic daily governance, private operational reporting, and all prior quality controls preserved",
   "distribution_type": "integrated",
   "external_action_default": "record-only",
   "name": "LPOS",
@@ -12,6 +12,6 @@
   "standing_operations": 29,
   "state_backend": "SQLite",
   "tests": 426,
-  "version": "4.5.0",
-  "wheel": "lpos_os-4.5.0-py3-none-any.whl"
+  "version": "4.6.0",
+  "wheel": "lpos_os-4.6.0-py3-none-any.whl"
 }

@@ -128,7 +128,7 @@ def _escape(value: str) -> str:
 
 
 class COEHandler(BaseHTTPRequestHandler):
-    server_version = "LPOS-COE/4.5.0"
+    server_version = "LPOS-COE/4.6.0"
 
     @property
     def app(self) -> "COEServer":

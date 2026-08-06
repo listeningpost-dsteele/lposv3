@@ -43,7 +43,7 @@ All three routes run the same Python installer. Two optional flags:
 
 The installer is deliberately transparent — it prints each command before running it. In order, it:
 
-1. **Verifies the release** by running `verify_release.py`, which checks every file against the SHA-256 manifest, confirms version synchronization across the release metadata, registry, and workflow catalog, and validates the 32 specialists, 21 Standing Operations, 53 benchmarks, and 17 schemas.
+1. **Verifies the release** by running `verify_release.py`, which checks every file against the SHA-256 manifest, confirms version synchronization across release metadata, the registry, and the workflow catalog, and validates 45 specialists, 29 Standing Operations, 70 benchmarks, and 22 schemas.
 2. **Creates a local Python environment** at `.venv` inside the release directory (or reuses an existing one).
 3. **Installs the bundled wheel offline** with `pip install --no-index`, then runs `pip check`.
 4. **Smoke-tests the CLI**: `lpos version` and `lpos validate-schemas` via the module form.
@@ -65,7 +65,7 @@ On Windows:
 .\.venv\Scripts\lpos.exe doctor --db state\lpos.db
 ```
 
-`doctor` should report `"status": "healthy"` with 32 specialists, 21 standing operations, and 53 benchmarks. The direct module form also works anywhere: `.venv/bin/python -m lpos_engine --help`.
+`doctor` should report `"status": "healthy"` with 45 specialists, 29 Standing Operations, 70 benchmarks, and 22 schemas. The direct module form also works anywhere: `.venv/bin/python -m lpos_engine --help`.
 
 ## If the installer stops
 

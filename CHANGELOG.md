@@ -1,5 +1,14 @@
 # LPOS Changelog
 
+## 4.6.0 (2026-08-05)
+
+Continuity release of the complete verified LPOS 4.5 operating system under the 4.6.0
+release identity. Release metadata, package identity, installer output, runtime catalogs,
+kernel, evaluations, API description, and wiki are synchronized at 4.6.0. Product Studio
+is excluded and deferred. No new runtime capability is introduced; all existing authority,
+review, evidence, security, Code Testing Guild, Continuous Operational Excellence,
+record-only external-action, and rollback controls are preserved.
+
 ## 4.5.0 (2026-07-26)
 
 COE closeout: replaces summary-style self-assurance with nine independent command gates,

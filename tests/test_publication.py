@@ -28,7 +28,7 @@ class ReleaseGateTests(unittest.TestCase):
     def quality_evidence(**overrides: object) -> dict[str, object]:
         artifact_hash = "a" * 64
         evidence: dict[str, object] = {
-            "artifact_id": "LPOS-v4.5.0",
+            "artifact_id": "LPOS-v4.6.0",
             "artifact_sha256": artifact_hash,
             "artifact_kind": "customer-facing-release",
             "required_skills_loaded": ["anti-slop-editor", "design-anti-slop-reviewer"],
@@ -54,7 +54,7 @@ class ReleaseGateTests(unittest.TestCase):
         result = verify_release_gates({"repo_root": str(REPO_ROOT), "skip_verifier": True,
                                        "verifier_passed": True})
         self.assertTrue(all(result["gates"].values()))
-        self.assertEqual(result["version"], "4.5.0")
+        self.assertEqual(result["version"], "4.6.0")
 
     def test_release_gates_fail_loudly_on_an_empty_tree(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
