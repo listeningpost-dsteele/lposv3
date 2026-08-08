@@ -212,7 +212,7 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertEqual(report["specialists"], 103)
         self.assertEqual(report["standing_operations"], 29)
         self.assertEqual(report["benchmarks"], 70)
-        self.assertEqual(report["schemas"]["schemas"], 25)
+        self.assertEqual(report["schemas"]["schemas"], 28)
         self.assertEqual(report["database"]["integrity"], "ok")
 
     def test_package_has_no_runtime_dependency_on_a_separate_spec_tree(self) -> None:
