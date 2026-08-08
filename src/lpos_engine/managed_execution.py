@@ -420,8 +420,11 @@ class ManagedExecution:
             "Work only in the current exact workdir. Do not delegate, substitute roles, publish, deploy, email, or perform any external action. "
             f"Create the concrete artifact at {self.request.artifact_path}. After the artifact exists, calculate its exact SHA-256 and write "
             f"{self.receipt_path} as JSON with schema lpos.managed-contribution.v1, run_id {self.run_id}, specialist_id "
-            f"{self.request.specialist_id}, status completed or capability_gap or failed, artifact_path, artifact_sha256, summary, "
-            "capability_gap array, and evidence array. A capability gap is terminal. Do not ask the parent or another specialist to replace you. "
+            f"{self.request.specialist_id}, status completed or capability_gap or failed, artifact_path exactly "
+            f"{json.dumps(self.request.artifact_path)} as the configured relative path, artifact_sha256, summary, capability_gap array, "
+            "and evidence array. artifact_path must be that exact relative string; never use an absolute, canonical, or workspace-prefixed path. "
+            "evidence must match the contribution schema: a JSON array whose items are non-empty strings. "
+            "A capability gap is terminal. Do not ask the parent or another specialist to replace you. "
             f"Consolidated corrections from the independent reviewer: {correction_text}\n\nCOMPILED CONTRACT:\n{canonical_json(contract)}"
         )
 
@@ -429,6 +432,10 @@ class ManagedExecution:
         receipt = ContributionReceipt.from_path(self.receipt_path)
         if receipt.run_id != self.run_id or receipt.specialist_id != self.request.specialist_id:
             raise ValidationError("contribution receipt identity does not match managed run")
+        if receipt.artifact_path != self.request.artifact_path:
+            raise ValidationError(
+                f"contribution receipt artifact_path must equal the exact configured relative path: {self.request.artifact_path}"
+            )
         artifact = _resolve_inside(self.request.workdir, receipt.artifact_path, field_name="artifact_path")
         expected = _resolve_inside(self.request.workdir, self.request.artifact_path, field_name="artifact_path")
         if artifact != expected:
@@ -513,7 +520,20 @@ class ManagedExecution:
             if completed.returncode != 0:
                 self._persist(ManagedStatus.FAILED, failure="creator_process_failed", correction_cycle=cycle)
                 return json.loads(self.state_path.read_text(encoding="utf-8"))
-            final_receipt = self._validate_contribution()
+            try:
+                final_receipt = self._validate_contribution()
+            except ValidationError as exc:
+                diagnostic = str(exc)
+                corrections = (f"Correct the invalid contribution receipt: {diagnostic}",)
+                if cycle >= self.request.max_corrections:
+                    self._persist(
+                        ManagedStatus.FAILED,
+                        failure="contribution_receipt_invalid",
+                        diagnostic=diagnostic,
+                        correction_cycle=cycle,
+                    )
+                    return json.loads(self.state_path.read_text(encoding="utf-8"))
+                continue
             if final_receipt.status == "capability_gap":
                 self._persist(
                     ManagedStatus.CAPABILITY_GAP,

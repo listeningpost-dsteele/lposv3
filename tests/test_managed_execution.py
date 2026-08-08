@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from lpos_engine.errors import ValidationError
 from lpos_engine.managed_execution import ManagedExecution, ManagedRunRequest, RiskTier
@@ -23,12 +24,19 @@ if "COMPILED CONTRACT:\n" in prompt:
     artifact.parent.mkdir(parents=True, exist_ok=True)
     artifact.write_text("managed artifact\n", encoding="utf-8")
     sha = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    correction_text = prompt.split("Consolidated corrections from the independent reviewer: ", 1)[1].split("\n\n", 1)[0]
+    instruction = contract["task"]["principal_instruction"]
+    artifact_path = artifact_rel
+    if "absolute receipt once" in instruction and correction_text == "[]":
+        artifact_path = str(artifact.resolve())
+    if "absolute receipt always" in instruction:
+        artifact_path = str(artifact.resolve())
     receipt = {
         "schema": "lpos.managed-contribution.v1",
         "run_id": contract["run_id"],
         "specialist_id": contract["task"]["lead_specialist"],
         "status": "completed",
-        "artifact_path": artifact_rel,
+        "artifact_path": artifact_path,
         "artifact_sha256": sha,
         "summary": "created fixture artifact",
         "capability_gap": [],
@@ -104,6 +112,47 @@ class ManagedExecutionTests(unittest.TestCase):
         self.assertEqual(result["source"]["sha256"], result["review"]["source_sha256"])
         self.assertEqual(result["correction_cycles"], 0)
         self.assertTrue(all(item["passed"] for item in result["checks"]))
+
+    def test_creator_prompt_requires_exact_relative_artifact_path_and_schema_evidence(self):
+        execution = ManagedExecution(self.request(artifact_path="reports/result.txt"))
+        prompt = execution._creator_prompt({"contract": "fixture"})
+        self.assertIn('artifact_path exactly "reports/result.txt" as the configured relative path', prompt)
+        self.assertIn("must be that exact relative string", prompt)
+        self.assertIn("never use an absolute, canonical, or workspace-prefixed path", prompt)
+        self.assertIn("evidence must match the contribution schema", prompt)
+        self.assertIn("a JSON array whose items are non-empty strings", prompt)
+
+    def test_absolute_first_receipt_is_corrected_once_then_reviewed(self):
+        execution = ManagedExecution(self.request(instruction="Create fixture with absolute receipt once."))
+        result = execution.run()
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["correction_cycles"], 1)
+        self.assertEqual(result["artifact"]["path"], "result.txt")
+        self.assertTrue((execution.evidence_dir / "cycle-0-creator-process.json").is_file())
+        self.assertTrue((execution.evidence_dir / "cycle-1-creator-process.json").is_file())
+        self.assertFalse((execution.evidence_dir / "cycle-0-review-process.json").exists())
+        self.assertTrue((execution.evidence_dir / "cycle-1-review-process.json").is_file())
+
+    def test_repeated_invalid_receipt_fails_at_limit_without_review_or_extra_correction(self):
+        execution = ManagedExecution(
+            self.request(instruction="Create fixture with absolute receipt always.", max_corrections=1)
+        )
+        result = execution.run()
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["failure"], "contribution_receipt_invalid")
+        self.assertEqual(result["correction_cycle"], 1)
+        self.assertIn("must equal the exact configured relative path", result["diagnostic"])
+        self.assertTrue((execution.evidence_dir / "cycle-0-creator-process.json").is_file())
+        self.assertTrue((execution.evidence_dir / "cycle-1-creator-process.json").is_file())
+        self.assertFalse((execution.evidence_dir / "cycle-2-creator-process.json").exists())
+        self.assertFalse((execution.evidence_dir / "cycle-0-review-process.json").exists())
+        self.assertFalse((execution.evidence_dir / "cycle-1-review-process.json").exists())
+
+    def test_unexpected_contribution_validation_error_is_not_swallowed(self):
+        execution = ManagedExecution(self.request())
+        with mock.patch.object(execution, "_validate_contribution", side_effect=RuntimeError("unexpected")):
+            with self.assertRaisesRegex(RuntimeError, "unexpected"):
+                execution.run()
 
     def test_capability_gap_is_terminal_before_child_execution(self):
         result = ManagedExecution(self.request(required_capabilities=("not-a-real-capability",))).run()
