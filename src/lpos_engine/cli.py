@@ -441,7 +441,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         or len(registry.profiles) != 103
         or len(workflows) != 29
         or len(benchmark_catalog()) != 70
-        or schema_result["schemas"] != 25
+        or schema_result["schemas"] != 28
         or release_integrity["status"] == "failed"
         or not perms_ok
     ):
