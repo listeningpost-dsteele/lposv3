@@ -11,7 +11,7 @@
   "NOTICE-SKILLOPT.md": "3bc8eff1de51844350ffddff31fee66d0caea3a9639658309f425d6a89e6a933",
   "Packages/lpos_os-4.8.0-py3-none-any.whl": "3f832daf3e1ab21091f9237efaede9c796b11f5fb0ef3a314cdd79e813d17a93",
   "README.md": "ed3c605f3b51d6e1fb8ad5cbd9442bb804e24a74e187bf361a0f496299c6351c",
-  "RELEASE-TEST-REPORT.md": "cd3a922cf1a06700cfbf03679733c7049840942df286bf7cb44988fbec6c45eb",
+  "RELEASE-TEST-REPORT.md": "737f58a897ea7f42268a621d77f87cb21f838d65fdc1807428ee4da362f55ad3",
   "RELEASE.json": "29ee7d7591c0765602334315a461730ae2cb298319e631c735497bde9e392d85",
   "SBOM.json": "aa0a77e7fb9a962b5409570ed040c6a916a67e2ed45f4509af2803ac4a9cfd72",
   "acceptance/ACCEPTANCE_CHECKLIST.md": "2c517bee06122ece0970c0aa0d29e007469b10fa1e44e4763cb7419cf6e4d1bb",
@@ -244,7 +244,7 @@
   "src/lpos_engine/admission/validate.py": "bbdf01116460bbc2f50a9670fb7d0e721f815cdae696e7227c445c10a0bc938d",
   "src/lpos_engine/approvals.py": "afa766052e5cefb766a05a631feaad4b8e42e21350b0b4be829761d32f6232af",
   "src/lpos_engine/canonical.py": "159f8e7d4fb4579dd192fd74c4fb9b81ebcfe94d0dbc6bd144190d6607eda2b0",
-  "src/lpos_engine/cli.py": "9e3d79f802a728135988904e29bc25c3a143d44c3cb88614da479c0b9268e1b6",
+  "src/lpos_engine/cli.py": "77be0b5ecc9d8a489d248e383e9d94eea3981a0619d09375872983fe72ae1891",
   "src/lpos_engine/code_testing/__init__.py": "94ed0fc1fed289f65af4cd6c3a6a1ec3e5971e14a22b436c2ba45bbdcb1cadfc",
   "src/lpos_engine/code_testing/__main__.py": "37ad24c2ea26a68846e88c7882709ef6aa409e63b12c73ceaf05371e06f2363e",
   "src/lpos_engine/code_testing/criticality.py": "2291acdd2794463bc64b97c72ff60ec488062b979191387b6575636e70a9c1a0",
@@ -769,7 +769,7 @@
   "tests/test_state_permissions.py": "ede7d2af0b258644a833593e9dd4a2109a70e9a99ce85e60619103c1cb586b15",
   "tests/test_store.py": "0eee5c8721993244e65cee755430a2685142bfbb1fbb1472a2a23e22811d0575",
   "tests/test_subprocess_sandbox.py": "a9e16918944e0d7a3c922bdbc0fd277aa6955e69a32c3c4dcb28c68c0bfcf738",
-  "tests/test_v4_integrated_distribution.py": "c744a00da5414c59c16cf068013c9a26df1e0edf658bb01d99c26c64d038144e",
+  "tests/test_v4_integrated_distribution.py": "9cc986e99cab1306f44582968604ca1454449ec9923cf0c4fa1ad3a21082af06",
   "tests/test_wiki.py": "ab54c3cdfa0c1acecb8f6b7d3677d03b60a57bba9bd078e41920015b67520032",
   "tools/build_admission_corpus.py": "57cc3e8db26527cd1a6ac5b3ef283e68b8d7ede3c84c3b60e7978f6fd5754dc6",
   "tools/build_expert_corpus.py": "2b569ebe60b82ea4d7ed7ad0020b0a0d8be634a4d57f9a8818e5b69f92ece9da",
@@ -781,9 +781,9 @@
   "tools/make_sbom.py": "21e132cf9e97dc10298afcb6fff320d9d688dcae9108dd6974f099cfb28ad085",
   "tools/reseal.py": "8af71344b046685dc7d0d4775059d4c44a044a98c789a545741c43962e32a858",
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
-  "verify_release.py": "9bb38be7dbb7c3cd9e04092404da10d6374bc3dbc5eb2521b4f2a5d140d0bbf6"
+  "verify_release.py": "9ebe69d1e60e43468e92ca17b38ba583350909dbe9f51a26696306cd2580d0f8"
  },
- "generated_at": "2026-08-08T16:42:29Z",
+ "generated_at": "2026-08-08T16:54:28Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.8.0"
