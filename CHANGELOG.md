@@ -1,5 +1,9 @@
 # LPOS Changelog
 
+## 4.8.0 (2026-08-08)
+
+Managed-execution release: adds `lpos managed-run` for bounded exact-specialist work in an exact Git worktree. Preflight binds repository identity, optional HEAD, capabilities, risk-tier toolsets, and preserved receipts; deterministic checks and a different specialist's review bind completion to exact source and artifact hashes; capability gaps are terminal and corrections are capped at two cycles. Adds three strict receipt/state schemas and six deterministic integration tests. No paid-model canary or external action is part of the candidate build.
+
 ## 4.7.0 (2026-08-05)
 
 Expert capability system release: expands the LPOS specialist corpus from 45 to 103 specialists across 20 guilds with 122 craft standards and 103 behavioral admission suites. The expert corpus is frozen as the authoritative 4.7 capability set. All prior v4.6.0 authority, review, evidence, security, Code Testing Guild, Continuous Operational Excellence, record-only external-action, and rollback controls are preserved.

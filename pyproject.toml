@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lpos-os"
-version = "4.7.0"
-description = "LPOS v4.7: integrated agent operating system specification, deterministic control plane, schemas, workflows, and expert capability system"
+version = "4.8.0"
+description = "LPOS v4.8: integrated agent operating system with bounded specialist-led managed execution"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Listening Post / LPOS"}]

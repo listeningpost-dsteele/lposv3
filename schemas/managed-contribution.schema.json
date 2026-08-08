@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lpos.dev/schemas/managed-contribution.schema.json",
+  "title": "LPOS Managed Contribution Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "run_id", "specialist_id", "status", "artifact_path", "artifact_sha256", "summary", "capability_gap", "evidence"],
+  "properties": {
+    "schema": {"const": "lpos.managed-contribution.v1"},
+    "run_id": {"type": "string", "minLength": 3},
+    "specialist_id": {"type": "string", "minLength": 3},
+    "status": {"enum": ["completed", "capability_gap", "failed"]},
+    "artifact_path": {"type": "string"},
+    "artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "summary": {"type": "string", "minLength": 1},
+    "capability_gap": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  }
+}

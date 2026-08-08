@@ -18,11 +18,11 @@ Shows the installed LPOS name and version.
 
 ### `lpos doctor [--db PATH] [--schema-dir PATH]`
 
-Verifies the integrated specification, runtime assets, and (with `--db`) the database. Reports kernel load, specialist/operation/benchmark counts, schema validation, Python version, database integrity, and migrations. Exits nonzero and reports `unhealthy` if the kernel is missing or the counts are not 45 / 29 / 70. See [Checking system health](/working-with/checking-system-health.html).
+Verifies the integrated specification, runtime assets, and (with `--db`) the database. Reports kernel load, specialist/operation/benchmark counts, schema validation, Python version, database integrity, and migrations. Exits nonzero and reports `unhealthy` if the kernel is missing or the expected 103 specialists, 29 operations, 70 benchmarks, and 28 schemas are not present. See [Checking system health](/working-with/checking-system-health.html).
 
 ### `lpos list-specialists`
 
-Prints the 45 capability-routable specialists: id, name, guild, model class, capabilities, and craft standards.
+Prints the 103 capability-routable specialists: id, name, guild, model class, capabilities, and craft standards.
 
 ### `lpos list-workflows`
 
@@ -83,6 +83,10 @@ Appends a Principal acknowledgement without mutating, suppressing, downgrading, 
 Live or destructive penetration testing is not provided by these commands. A future active runner must remain separately disabled by default and satisfy an exact, time-bounded, isolated-environment action approval; the candidate includes only the fail-closed authorization gate.
 
 ## Verification command
+
+### `lpos managed-run`
+
+Runs one exact creator specialist in an exact Git worktree, then requires deterministic checks and a different specialist's hash-bound review before completion. Required flags are `--workdir`, `--specialist`, `--reviewer`, `--artifact`, and exactly one of `--instruction` or `--instruction-file`. Use repeatable `--require-capability`, `--toolsets`, `--check`, and `--preserve-receipt` flags; `--expected-repo` and `--expected-head` fail closed on repository drift. Risk tiers are `read-only`, `local-implementation`, and `consequential`; the last also requires `--authorize-consequential`. Exit codes are 0 for completed, 2 for a terminal capability gap, and 1 for other failure. See `docs/MANAGED-EXECUTION.md`.
 
 ### `lpos demo --workspace PATH [--spec-root PATH] [--principal-email ADDR]`
 

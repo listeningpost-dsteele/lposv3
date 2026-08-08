@@ -143,8 +143,8 @@ def build(root: Path) -> dict[str, Any]:
         raise ValueError(f"expected 103 specialists, found {len(profiles)}")
     return {
         "schema_version": 4,
-        "os_version": "4.7.0",
-        "registry_version": "4.7.0",
+        "os_version": "4.8.0",
+        "registry_version": "4.8.0",
         "activation_status": "active",
         "source_catalog": "default_registry.json",
         "specialists": profiles,

@@ -1,17 +1,17 @@
 {
-  "archive": "LPOS-v4.7.0-Complete.zip",
+  "archive": "LPOS-v4.8.0-Complete.zip",
   "audit_model": "append-only events",
   "benchmarks": 70,
-  "description": "LPOS v4.7 expert capability system release: expanded from 45 to 103 specialists, 20 guild charters, 122 craft standards, and 103 behavioral admission suites. Expert corpus frozen. All prior v4.6.0 authority, review, evidence, security, Code Testing Guild, Continuous Operational Excellence, record-only external-action, and rollback controls preserved.",
+  "description": "LPOS v4.8 managed-execution release: bounded exact-specialist execution in an exact Git worktree, risk-tier tool allowlists, preserved-receipt preflight, deterministic checks, strict machine-readable receipts, hash-bound independent review, and at most two consolidated correction cycles. The frozen 4.7 expert corpus and all prior authority, evidence, security, record-only external-action, and rollback controls are preserved.",
   "distribution_type": "integrated",
   "external_action_default": "record-only",
   "name": "LPOS",
   "python_requires": ">=3.11",
-  "schemas": 25,
+  "schemas": 28,
   "specialists": 103,
   "standing_operations": 29,
   "state_backend": "SQLite",
-  "tests": 488,
-  "version": "4.7.0",
-  "wheel": "lpos_os-4.7.0-py3-none-any.whl"
+  "tests": 494,
+  "version": "4.8.0",
+  "wheel": "lpos_os-4.8.0-py3-none-any.whl"
 }

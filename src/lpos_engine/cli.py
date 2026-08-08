@@ -363,6 +363,45 @@ def cmd_evals(args: argparse.Namespace) -> int:
     return 0 if result["failed"] == 0 else 1
 
 
+def cmd_managed_run(args: argparse.Namespace) -> int:
+    """Run one exact specialist through bounded managed execution."""
+    from .managed_execution import ManagedExecution, ManagedRunRequest, RiskTier
+
+    if bool(args.instruction) == bool(args.instruction_file):
+        raise ValueError("supply exactly one of --instruction or --instruction-file")
+    instruction = (
+        args.instruction
+        if args.instruction is not None
+        else args.instruction_file.read_text(encoding="utf-8")
+    )
+    request = ManagedRunRequest(
+        instruction=instruction,
+        workdir=args.workdir,
+        specialist_id=args.specialist,
+        reviewer_id=args.reviewer,
+        artifact_path=args.artifact,
+        required_capabilities=tuple(args.require_capability),
+        toolsets=tuple(item for group in args.toolsets for item in group.split(",") if item),
+        checks=tuple(args.check),
+        risk_tier=RiskTier(args.risk_tier),
+        state_root=args.state_root,
+        hermes_command=args.hermes_command,
+        expected_repo=args.expected_repo,
+        expected_head=args.expected_head,
+        authorize_consequential=args.authorize_consequential,
+        timeout_seconds=args.timeout,
+        max_corrections=args.max_corrections,
+        preserved_receipts=tuple(args.preserve_receipt),
+    )
+    result = ManagedExecution(request).run()
+    _print(result)
+    if result["status"] == "completed":
+        return 0
+    if result["status"] == "capability_gap":
+        return 2
+    return 1
+
+
 def cmd_doctor(args: argparse.Namespace) -> int:
     repository = SpecRepository.packaged()
     kernel_ref, kernel = repository.load_kernel()
@@ -461,6 +500,39 @@ def build_parser() -> argparse.ArgumentParser:
 
     evals = sub.add_parser("evals", help="run deterministic core evaluations against all fixtures")
     evals.set_defaults(func=cmd_evals)
+
+    managed = sub.add_parser(
+        "managed-run",
+        help="run one exact specialist with deterministic preflight, independent review, and bounded corrections",
+    )
+    instruction_group = managed.add_mutually_exclusive_group(required=True)
+    instruction_group.add_argument("--instruction")
+    instruction_group.add_argument("--instruction-file", type=Path)
+    managed.add_argument("--workdir", type=Path, required=True, help="exact Git repository root used by every child")
+    managed.add_argument("--specialist", required=True, help="exact creator specialist ID")
+    managed.add_argument("--reviewer", required=True, help="different exact reviewer specialist ID")
+    managed.add_argument("--artifact", required=True, help="concrete artifact path relative to the workdir")
+    managed.add_argument("--require-capability", action="append", default=[])
+    managed.add_argument("--toolsets", action="append", default=[], help="Hermes toolsets, repeat or comma-separate")
+    managed.add_argument("--check", action="append", default=[], help="deterministic argv command, repeat for multiple checks")
+    managed.add_argument(
+        "--risk-tier",
+        choices=["read-only", "local-implementation", "consequential"],
+        default="local-implementation",
+    )
+    managed.add_argument("--state-root", type=Path, help="managed evidence root, default WORKDIR/.lpos-managed")
+    managed.add_argument("--expected-repo", type=Path, help="fail preflight unless this is the exact Git root")
+    managed.add_argument("--expected-head", help="fail preflight unless HEAD is this exact commit")
+    managed.add_argument("--preserve-receipt", type=Path, action="append", default=[])
+    managed.add_argument("--hermes-command", default="hermes")
+    managed.add_argument("--timeout", type=int, default=1800)
+    managed.add_argument("--max-corrections", type=int, choices=[0, 1, 2], default=2)
+    managed.add_argument(
+        "--authorize-consequential",
+        action="store_true",
+        help="separate explicit authorization required for the consequential risk tier",
+    )
+    managed.set_defaults(func=cmd_managed_run)
 
     doctor = sub.add_parser("doctor", help="verify the integrated specification, runtime assets, and database")
     doctor.add_argument("--db", type=Path)

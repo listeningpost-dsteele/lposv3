@@ -1,4 +1,4 @@
-# LPOS v4.7.0
+# LPOS v4.8.0
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -8,10 +8,9 @@ ship together under one version.
 The packaged v4 specification is loaded by the engine automatically and is the
 specification the v4 runtime enforces.
 
-LPOS v4.7.0 is the expert capability system release, expanding the specialist corpus
-from 45 to 103 specialists across 20 guilds with 122 craft standards and 103
-behavioral admission suites. The expert corpus is frozen. Product Studio is not included
-and remains deferred.
+LPOS v4.8.0 adds bounded specialist-led managed execution while preserving the frozen
+4.7 expert capability corpus: 103 specialists across 20 guilds, 122 craft standards,
+and 103 behavioral admission suites. Product Studio is not included and remains deferred.
 
 ## What is included
 
@@ -20,7 +19,9 @@ and remains deferred.
 - Typed TaskEnvelope, InterpretationContract, ArtifactSpecification, ReviewEnvelope,
   ActionPlan, ApprovalGrant, EvidenceRecord, DecisionRecord, and CompletionReport objects.
 - Deterministic task and action state machines.
-- Capability-first routing across all 45 LPOS specialists by their canonical IDs.
+- Capability-first routing across all 103 LPOS specialists by their canonical IDs.
+- Bounded managed execution with exact worktree/head preflight, risk-tier tool allowlists,
+  deterministic checks, strict receipts, and hash-bound independent review.
 - Five-gate material-artifact review with a fresh isolated review context.
 - Exact-action approval bound to the canonical SHA-256 action payload.
 - Verified Principal identities, expiry, replay protection, and one-time approval
@@ -77,8 +78,8 @@ macOS or Linux:
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks
 .venv/bin/lpos evals
-.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.7.0-stage
-.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.7.0-stage --state-root ~/.hermes/state/chip-service
+.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.8.0-stage
+.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.8.0-stage --state-root ~/.hermes/state/chip-service
 COE_OPERATOR_TOKEN=<secure-value> .venv/bin/lpos coe serve --state-root ~/.hermes/state/chip-service
 ```
 

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lpos.dev/schemas/managed-review.schema.json",
+  "title": "LPOS Managed Review Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "run_id", "reviewer_id", "decision", "artifact_sha256", "source_sha256", "corrections", "evidence_reviewed", "summary"],
+  "properties": {
+    "schema": {"const": "lpos.managed-review.v1"},
+    "run_id": {"type": "string", "minLength": 3},
+    "reviewer_id": {"type": "string", "minLength": 3},
+    "decision": {"enum": ["PASS", "REJECT"]},
+    "artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "corrections": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "evidence_reviewed": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "summary": {"type": "string", "minLength": 1}
+  },
+  "allOf": [
+    {"if": {"properties": {"decision": {"const": "REJECT"}}}, "then": {"properties": {"corrections": {"minItems": 1}}}}
+  ]
+}
