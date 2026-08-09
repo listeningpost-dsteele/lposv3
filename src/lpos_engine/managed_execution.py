@@ -71,16 +71,19 @@ def _resolve_inside(root: Path, relative: str, *, field_name: str) -> Path:
 
 
 def source_snapshot(workdir: Path, *, excluded: Sequence[Path] = ()) -> dict[str, Any]:
-    """Return a canonical hash over exact source bytes, excluding managed evidence."""
+    """Return a canonical hash over exact source bytes, excluding managed evidence and generated artifacts."""
     excluded_resolved = tuple(path.resolve() for path in excluded)
+    generated_prefixes = {"release", "public/ops", "public/route-manifest.json", "docs/evidence"}
     files: dict[str, str] = {}
     for path in sorted(workdir.rglob("*")):
         if not path.is_file() or ".git" in path.relative_to(workdir).parts:
             continue
+        relative = path.relative_to(workdir).as_posix()
+        if any(relative.startswith(prefix) for prefix in generated_prefixes):
+            continue
         resolved = path.resolve()
         if any(resolved == item or item in resolved.parents for item in excluded_resolved):
             continue
-        relative = path.relative_to(workdir).as_posix()
         files[relative] = _sha256_file(path)
     return {"sha256": digest(files), "file_count": len(files), "files": files}
 
