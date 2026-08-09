@@ -73,7 +73,7 @@ def _resolve_inside(root: Path, relative: str, *, field_name: str) -> Path:
 def source_snapshot(workdir: Path, *, excluded: Sequence[Path] = ()) -> dict[str, Any]:
     """Return a canonical hash over exact source bytes, excluding managed evidence and generated artifacts."""
     excluded_resolved = tuple(path.resolve() for path in excluded)
-    generated_prefixes = {"release", "public", "docs/evidence", "node_modules"}
+    generated_prefixes = {"release", "public", "docs/evidence", "node_modules", "state", ".hermes", ".lpos-managed"}
     files: dict[str, str] = {}
     for path in sorted(workdir.rglob("*")):
         if not path.is_file() or ".git" in path.relative_to(workdir).parts:
