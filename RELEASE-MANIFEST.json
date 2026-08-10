@@ -778,9 +778,9 @@
   "tools/make_sbom.py": "21e132cf9e97dc10298afcb6fff320d9d688dcae9108dd6974f099cfb28ad085",
   "tools/reseal.py": "8af71344b046685dc7d0d4775059d4c44a044a98c789a545741c43962e32a858",
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
-  "verify_release.py": "d1c6b6ed0a2b068491c483b75359af42197304ec8b2ac94f0499cd8abcbe486f"
+  "verify_release.py": "2e22ea82228ebc99daec179a1c171ca65b43297d641899376aa4680f8f9aa427"
  },
- "generated_at": "2026-08-10T15:02:55Z",
+ "generated_at": "2026-08-10T15:10:39Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.8.1"
