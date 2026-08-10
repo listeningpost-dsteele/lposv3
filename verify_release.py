@@ -7,7 +7,12 @@ import hashlib
 import json
 import re
 import sys
-import tomllib
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python < 3.11 has no stdlib tomllib
+    tomllib = None
+
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -112,8 +117,19 @@ def main() -> int:
         fail(f"manifest entry is not an immutable file: {relative}", failures)
 
     try:
-        project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-        project_version = project["project"]["version"]
+        pyproject_text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+        if tomllib is not None:
+            project = tomllib.loads(pyproject_text)
+            project_version = project["project"]["version"]
+        else:
+            project_section = re.search(r"(?ms)^\[project\]\s*(.*?)(?=^\[|\Z)", pyproject_text)
+            version_match = re.search(
+                r'(?m)^version\s*=\s*["\']([^"\']+)["\']',
+                project_section.group(1) if project_section else "",
+            )
+            if version_match is None:
+                raise KeyError("project.version")
+            project_version = version_match.group(1)
         package_init = (ROOT / "src" / "lpos_engine" / "__init__.py").read_text(encoding="utf-8")
         match = re.search(r'^__version__\s*=\s*["\']([^"\']+)["\']', package_init, re.MULTILINE)
         package_version = match.group(1) if match else None
