@@ -19,14 +19,20 @@ class QualitySkillContractTests(unittest.TestCase):
         self.assertIn("desktop and mobile", design)
         self.assertIn("fabricated customer proof", design)
 
-    def test_quality_router_and_cs002_require_both_gates(self) -> None:
-        router = (SKILLS / "quality-router" / "SKILL.md").read_text(encoding="utf-8")
+    def test_cs002_requires_both_gates_without_ceremony_router(self) -> None:
         standards = (ROOT / "src" / "lpos_engine" / "spec" / "CRAFT-STANDARDS.md").read_text(encoding="utf-8")
-        self.assertIn("skills/anti-slop-editor/SKILL.md", router)
-        self.assertIn("skills/design-anti-slop-reviewer/SKILL.md", router)
-        self.assertIn("Missing required skills must fail validation", router)
         self.assertIn("zero deterministic blockers", standards)
         self.assertIn("placeholder or fabricated proof", standards)
+        for removed in (
+            "quality-router",
+            "system-auditor",
+            "test-evidence-auditor",
+            "acceptance-spec-reviewer",
+        ):
+            self.assertFalse(
+                (SKILLS / removed / "SKILL.md").exists(),
+                f"{removed} was removed as ceremony in 4.8.1",
+            )
 
     def test_release_metadata_points_to_versioned_quality_release(self) -> None:
         release = json.loads((ROOT / "RELEASE.json").read_text(encoding="utf-8"))
