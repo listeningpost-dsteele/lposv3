@@ -1,7 +1,7 @@
 {
   "schema_version": 4,
-  "os_version": "4.8.0",
-  "registry_version": "4.8.0",
+  "os_version": "4.8.1",
+  "registry_version": "4.8.1",
   "activation_status": "active",
   "source_catalog": "default_registry.json",
   "specialists": [

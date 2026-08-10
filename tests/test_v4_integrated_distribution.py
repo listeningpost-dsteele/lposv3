@@ -43,7 +43,7 @@ class IntegratedV4DistributionTests(unittest.TestCase):
             operation_catalog["os_version"],
             release["version"],
         }
-        self.assertEqual(versions, {"4.8.0"})
+        self.assertEqual(versions, {"4.8.1"})
         self.assertIn("# Chip Kernel v4.8.0", kernel)
         self.assertEqual(release["distribution_type"], "integrated")
 
@@ -207,7 +207,7 @@ class IntegratedV4DistributionTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         report = json.loads(completed.stdout)
         self.assertEqual(report["name"], "LPOS")
-        self.assertEqual(report["version"], "4.8.0")
+        self.assertEqual(report["version"], "4.8.1")
         self.assertEqual(report["status"], "healthy")
         self.assertEqual(report["specialists"], 103)
         self.assertEqual(report["standing_operations"], 29)
@@ -236,7 +236,7 @@ class IntegratedV4DistributionTests(unittest.TestCase):
             )
         self.assertEqual(completed.returncode, 0, completed.stderr)
         result = json.loads(completed.stdout)
-        self.assertEqual(result["os_version"], "4.8.0")
+        self.assertEqual(result["os_version"], "4.8.1")
         self.assertEqual(result["completion_report"]["status"], "completed")
         self.assertEqual(result["external_action_mode"], "record-only")
 

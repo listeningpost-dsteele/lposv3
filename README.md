@@ -1,4 +1,4 @@
-# LPOS v4.8.0
+# LPOS v4.8.1
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -78,8 +78,8 @@ macOS or Linux:
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks
 .venv/bin/lpos evals
-.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.8.0-stage
-.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.8.0-stage --state-root ~/.hermes/state/chip-service
+.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.8.1-stage
+.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.8.1-stage --state-root ~/.hermes/state/chip-service
 COE_OPERATOR_TOKEN=<secure-value> .venv/bin/lpos coe serve --state-root ~/.hermes/state/chip-service
 ```
 

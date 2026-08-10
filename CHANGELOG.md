@@ -1,5 +1,9 @@
 # LPOS Changelog
 
+## 4.8.1 (2026-08-10)
+
+Lean patch release: removes 4 ceremony skills (quality-router, system-auditor, test-evidence-auditor, acceptance-spec-reviewer) and fixes managed-execution source_snapshot to exclude generated artifacts, public/, node_modules/, state/, .hermes/, and .lpos-managed/ so hash-bound reviews no longer fail on non-source files. All 4.8.0 managed-execution controls and prior authority, evidence, security, record-only external-action, and rollback controls are preserved.
+
 ## 4.8.0 (2026-08-08)
 
 Managed-execution release: adds `lpos managed-run` for bounded exact-specialist work in an exact Git worktree. Preflight binds repository identity, optional HEAD, capabilities, risk-tier toolsets, and preserved receipts; deterministic checks and a different specialist's review bind completion to exact source and artifact hashes; capability gaps are terminal and corrections are capped at two cycles. Adds three strict receipt/state schemas and six deterministic integration tests. No paid-model canary or external action is part of the candidate build.

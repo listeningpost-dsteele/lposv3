@@ -365,7 +365,7 @@ class ManagedExecution:
                 "Bind review to exact source and artifact SHA-256 hashes.",
                 "Require a different specialist in a fresh context to pass the final candidate.",
             ),
-            spec_ref="LPOS-v4.8.0:managed-execution",
+            spec_ref="LPOS-v4.8.1:managed-execution",
         )
         artifact_spec = ArtifactSpecification(
             artifact_id=f"ART-{self.run_id.split('-', 1)[1]}",

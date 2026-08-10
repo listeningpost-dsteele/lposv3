@@ -1,8 +1,8 @@
 {
-  "archive": "LPOS-v4.8.0-Complete.zip",
+  "archive": "LPOS-v4.8.1-Complete.zip",
   "audit_model": "append-only events",
   "benchmarks": 70,
-  "description": "LPOS v4.8 managed-execution release: bounded exact-specialist execution in an exact Git worktree, risk-tier tool allowlists, preserved-receipt preflight, deterministic checks, strict machine-readable receipts, hash-bound independent review, and at most two consolidated correction cycles. The frozen 4.7 expert corpus and all prior authority, evidence, security, record-only external-action, and rollback controls are preserved.",
+  "description": "LPOS v4.8.1 lean managed-execution release: bounded exact-specialist execution in an exact Git worktree, risk-tier tool allowlists, preserved-receipt preflight, deterministic checks, strict machine-readable receipts, hash-bound independent review, and at most two consolidated correction cycles. This patch removes 4 ceremony skills (quality-router, system-auditor, test-evidence-auditor, acceptance-spec-reviewer) and fixes managed-execution source_snapshot to exclude generated artifacts, public/, node_modules/, state/, .hermes/, and .lpos-managed/ so reviews no longer fail on non-source files. The frozen 4.7 expert corpus and all prior authority, evidence, security, record-only external-action, and rollback controls are preserved.",
   "distribution_type": "integrated",
   "external_action_default": "record-only",
   "name": "LPOS",
@@ -12,6 +12,6 @@
   "standing_operations": 29,
   "state_backend": "SQLite",
   "tests": 498,
-  "version": "4.8.0",
-  "wheel": "lpos_os-4.8.0-py3-none-any.whl"
+  "version": "4.8.1",
+  "wheel": "lpos_os-4.8.1-py3-none-any.whl"
 }

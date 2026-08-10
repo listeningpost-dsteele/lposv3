@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: lpos-os
-Version: 4.8.0
+Version: 4.8.1
 Summary: LPOS v4.8: integrated agent operating system with bounded specialist-led managed execution
 Author: Listening Post / LPOS
 Classifier: Programming Language :: Python :: 3
@@ -15,7 +15,7 @@ Requires-Dist: jsonschema>=4.20; extra == "dev"
 Requires-Dist: pytest>=8; extra == "dev"
 Dynamic: license-file
 
-# LPOS v4.8.0
+# LPOS v4.8.1
 
 LPOS v4 is a single, integrated agent operating-system distribution. The operating
 specification, deterministic control plane, capability registry, executable schemas,
@@ -95,8 +95,8 @@ macOS or Linux:
 .venv/bin/lpos list-workflows
 .venv/bin/lpos list-benchmarks
 .venv/bin/lpos evals
-.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.8.0-stage
-.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.8.0-stage --state-root ~/.hermes/state/chip-service
+.venv/bin/lpos coe stage --repo . --release-root /tmp/lpos-4.8.1-stage
+.venv/bin/lpos coe release-gate --repo . --release-root /tmp/lpos-4.8.1-stage --state-root ~/.hermes/state/chip-service
 COE_OPERATOR_TOKEN=<secure-value> .venv/bin/lpos coe serve --state-root ~/.hermes/state/chip-service
 ```
 
