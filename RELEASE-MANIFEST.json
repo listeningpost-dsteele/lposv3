@@ -782,7 +782,7 @@
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
   "verify_release.py": "320a265356773be29c99c485a2e830819c255b388845be4205066520861e8a8d"
  },
- "generated_at": "2026-08-12T16:33:46Z",
+ "generated_at": "2026-08-12T16:34:00Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.8.2"
