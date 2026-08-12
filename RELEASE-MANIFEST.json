@@ -19,7 +19,7 @@
   "config/backup-policy.json": "a2957119f61a03f5e2408805ab75783764ee522e1b96228e0a77f0de7b3b6643",
   "config/coe-gates.json": "c03662f75e783e3ff99fcb763cca4c41231c831dfb1638b15190e4334ecae602",
   "config/coe-policy.json": "4524ee99fd2c7b43e3abd423a23eb8d9d244f4f5e41a28a51ff4a9c7f3917b89",
-  "config/default_registry.json": "5f0b939df644bcb75f0dd0cae76358c54186c02deda35a0ad912645e544aa8db",
+  "config/default_registry.json": "534297967eb6d45f73e34c0388f29849dc98b3818c6f014104e1582613afba1b",
   "config/prompt-drift-allowlist.json": "4c426f45679f744c456e072460f89df2623b1eb980f5db71dff3526c7714b377",
   "docs/ADAPTER-PROTOCOL.md": "8e6edaf5a7c3b0f61ca781487853575c8c3eece5113a0aa8200fc26f5ba02c49",
   "docs/ARCHITECTURE.md": "3347b4aaec03e20a0518212ffa72f5d790ee3ba62b5574b3d236925e03fb88a5",
@@ -782,7 +782,7 @@
   "tools/sign_release.py": "a01383cdd060d5dfc4cd935cccff4baeead20080a7d1c75096c65029a2256ae0",
   "verify_release.py": "320a265356773be29c99c485a2e830819c255b388845be4205066520861e8a8d"
  },
- "generated_at": "2026-08-12T16:32:33Z",
+ "generated_at": "2026-08-12T16:33:10Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
  "version": "4.8.2"
