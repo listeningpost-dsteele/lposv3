@@ -110,7 +110,7 @@ def run_core_evaluations() -> dict[str, Any]:
         )
     passed = sum(item["status"] == "PASS" for item in results)
     return {
-        "os_version": "4.8.1",
+        "os_version": "4.8.2",
         "evaluation_type": "deterministic_core",
         "total": len(results),
         "passed": passed,
