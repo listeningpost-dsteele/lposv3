@@ -10,6 +10,7 @@ One page per release, newest first. Every patch that changes user-facing behavio
 
 ## Releases
 
+- [4.8.2: mandatory enforcement gates](/patch-notes/4-8-2.html)
 - [4.8.1: lean managed execution](/patch-notes/4-8-1.html)
 - [4.8.0: managed execution](/patch-notes/4-8-0.html)
 - [4.7.0: guild and specialist expert capability system](/patch-notes/4-7-0.html)

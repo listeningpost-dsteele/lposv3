@@ -36,9 +36,9 @@ class QualitySkillContractTests(unittest.TestCase):
 
     def test_release_metadata_points_to_versioned_quality_release(self) -> None:
         release = json.loads((ROOT / "RELEASE.json").read_text(encoding="utf-8"))
-        self.assertEqual(release["version"], "4.8.1")
-        self.assertEqual(release["archive"], "LPOS-v4.8.1-Complete.zip")
-        self.assertEqual(release["wheel"], "lpos_os-4.8.1-py3-none-any.whl")
+        self.assertEqual(release["version"], "4.8.2")
+        self.assertEqual(release["archive"], "LPOS-v4.8.2-Complete.zip")
+        self.assertEqual(release["wheel"], "lpos_os-4.8.2-py3-none-any.whl")
 
     def test_built_wheel_contains_design_skill_and_reference(self) -> None:
         release = json.loads((ROOT / "RELEASE.json").read_text(encoding="utf-8"))

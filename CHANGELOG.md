@@ -1,5 +1,9 @@
 # LPOS Changelog
 
+## 4.8.2 (2026-08-12)
+
+Enforcement Gates release: adds mandatory enforcement gates that move advisory rules into code that executes at choke points the agent cannot skip. Five gates: pre-commit hook (anti-slop lint + tests), pre-deploy gate (re-runs lint + tests + approval artifact check), process artifacts (approvals the agent cannot self-issue), model separation enforcement, and copy ownership. Tiered enforcement: tier 1 trivial (lint + tests), tier 2 standard (+ guild review + local approval), tier 3 material (+ full review + production approval). New CLI: `lpos gate init/check/status/lint`. Adds `src/lpos_engine/gates.py` and `tests/test_gates.py`. All prior managed-execution, authority, evidence, security, record-only external-action, and rollback controls preserved.
+
 ## 4.8.1 (2026-08-10)
 
 Lean patch release: removes 4 ceremony skills (quality-router, system-auditor, test-evidence-auditor, acceptance-spec-reviewer) and fixes managed-execution source_snapshot to exclude generated artifacts, public/, node_modules/, state/, .hermes/, and .lpos-managed/ so hash-bound reviews no longer fail on non-source files. All 4.8.0 managed-execution controls and prior authority, evidence, security, record-only external-action, and rollback controls are preserved.

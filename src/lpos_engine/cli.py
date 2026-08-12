@@ -598,7 +598,90 @@ def build_parser() -> argparse.ArgumentParser:
     from .admission.__main__ import add_admission_parser
     add_admission_parser(sub)
 
+    # -- v4.8.2: enforcement gates -----------------------------------------
+    gate = sub.add_parser("gate", help="install and manage mandatory enforcement gates")
+    gate_actions = gate.add_subparsers(dest="gate_action", required=True)
+
+    gate_init = gate_actions.add_parser("init", help="install gates into a target repo")
+    gate_init.add_argument("repo", type=Path, help="target git repository")
+    gate_init.add_argument("--force", action="store_true", help="overwrite existing hooks")
+    gate_init.set_defaults(func=cmd_gate)
+
+    gate_check = gate_actions.add_parser("check", help="run gate check on changed files")
+    gate_check.add_argument("repo", type=Path, help="repository to check")
+    gate_check.add_argument("--files", nargs="*", default=None, help="changed files (auto-detected if omitted)")
+    gate_check.add_argument("--skip-tests", action="store_true")
+    gate_check.add_argument("--tier", type=int, choices=[1, 2, 3], default=None)
+    gate_check.set_defaults(func=cmd_gate)
+
+    gate_status = gate_actions.add_parser("status", help="show gate installation status")
+    gate_status.add_argument("repo", type=Path, nargs="?", default=Path.cwd(), help="repository to check")
+    gate_status.set_defaults(func=cmd_gate)
+
+    gate_lint = gate_actions.add_parser("lint", help="run anti-slop lint on files")
+    gate_lint.add_argument("files", nargs="+", type=Path, help="files to lint")
+    gate_lint.add_argument("--strict", action="store_true", help="warnings become blocks")
+    gate_lint.set_defaults(func=cmd_gate)
+
     return parser
+
+
+def cmd_gate(args: argparse.Namespace) -> int:
+    """LPOS v4.8.2 Enforcement Gates CLI."""
+    from .gates import (
+        GATE_VERSION,
+        init_gates,
+        status_gates,
+        lint_files,
+        run_gate_check,
+    )
+
+    action = args.gate_action
+
+    if action == "init":
+        result = init_gates(args.repo, force=args.force)
+        _print(result)
+        return 0 if "error" not in result else 1
+
+    if action == "status":
+        result = status_gates(args.repo)
+        _print(result)
+        return 0
+
+    if action == "lint":
+        result = lint_files(args.files, strict=args.strict)
+        _print(result.to_dict())
+        return 0 if result.passed else 1
+
+    if action == "check":
+        workdir = args.repo.resolve()
+        files = args.files
+        if files is None:
+            # Auto-detect from git
+            try:
+                result = subprocess.run(
+                    ["git", "diff", "--cached", "--name-only", "--diff-filter=ACM"],
+                    cwd=str(workdir),
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                )
+                files = [f for f in result.stdout.splitlines() if f]
+            except Exception:
+                files = []
+        if not files:
+            _print({"gate": "check", "passed": True, "detail": "No changed files"})
+            return 0
+        result = run_gate_check(
+            workdir,
+            files,
+            tier_override=args.tier,
+            skip_tests=args.skip_tests,
+        )
+        _print(result.to_dict())
+        return 0 if result.passed else 1
+
+    return 1
 
 
 def cmd_dashboard(args: argparse.Namespace) -> int:

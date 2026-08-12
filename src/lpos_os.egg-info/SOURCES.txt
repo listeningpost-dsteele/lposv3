@@ -16,6 +16,7 @@ src/lpos_engine/coe_store.py
 src/lpos_engine/context.py
 src/lpos_engine/engine.py
 src/lpos_engine/errors.py
+src/lpos_engine/gates.py
 src/lpos_engine/managed_execution.py
 src/lpos_engine/materiality.py
 src/lpos_engine/models.py
@@ -618,6 +619,7 @@ tests/test_dashboard.py
 tests/test_dashboard_security.py
 tests/test_engine_review.py
 tests/test_evolution.py
+tests/test_gates.py
 tests/test_hardening.py
 tests/test_identity_boundary.py
 tests/test_install_state_root.py

@@ -1,5 +1,5 @@
 {
- "archive": "LPOS-v4.8.1-Complete.zip",
+ "archive": "LPOS-v4.8.2-Complete.zip",
  "distribution_type": "integrated",
  "file_count": 776,
  "files": {
@@ -9,7 +9,7 @@
   "INSTALL.ps1": "cc6deeec1c4de47e61102d99595caec5cd45eba3e851dac96753266b64a955b4",
   "INSTALL.sh": "890863fc18279ed90a61b2100528131176787c6f44f9fcb8dc25b77bdc449390",
   "NOTICE-SKILLOPT.md": "3bc8eff1de51844350ffddff31fee66d0caea3a9639658309f425d6a89e6a933",
-  "Packages/lpos_os-4.8.1-py3-none-any.whl": "d616288645e0155cc4d3dd35bda307cb28e98c53142c4edcdf58b59cea073b25",
+  "Packages/lpos_os-4.8.2-py3-none-any.whl": "5b2277cc0f7e4701da197c5bed75c628e17d4ed519423bdc391be32050381aa5",
   "README.md": "f7b7ae2d5499476be336a31db575c64d704e7860423e21c363dc8d698bde4b1c",
   "RELEASE-TEST-REPORT.md": "e00f57b1ad45ea10468e1b4eea99863fe910a627c6e9ef292436fcc104934dcf",
   "RELEASE.json": "6f96a0c6a6683e0931afc68e05bbb1c6a59f76eb3c66ab960f86106f79d1c7dc",
@@ -783,5 +783,5 @@
  "generated_at": "2026-08-10T15:10:39Z",
  "hash_algorithm": "sha256",
  "name": "LPOS",
- "version": "4.8.1"
+ "version": "4.8.2"
 }
