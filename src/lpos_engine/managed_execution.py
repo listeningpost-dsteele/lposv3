@@ -16,6 +16,7 @@ from .canonical import canonical_json, digest, new_id, normalize_token, require_
 from .context import ContextCompiler, SpecRepository
 from .errors import ValidationError
 from .models import ArtifactSpecification, InterpretationContract, TaskEnvelope
+from .model_routing import bind_hermes_command
 from .routing import CapabilityRegistry, SpecialistProfile
 from .store import secure_mkdir
 
@@ -68,6 +69,41 @@ def _resolve_inside(root: Path, relative: str, *, field_name: str) -> Path:
     if resolved != root and root not in resolved.parents:
         raise ValidationError(f"{field_name} escapes the managed workdir")
     return resolved
+
+
+def _receipt_schema(value: Mapping[str, Any], expected: str) -> str:
+    """Accept `schema` or `$schema` when the value is the LPOS receipt type.
+
+    Reviewers often emit JSON Schema's `$schema` key with the LPOS type name.
+    A real JSON Schema URL in `$schema` must not override a valid `schema`.
+    """
+    declared = value.get("schema")
+    if declared == expected:
+        return str(declared)
+    alt = value.get("$schema")
+    if alt == expected:
+        return str(alt)
+    return str(declared or alt or "")
+
+
+def _receipt_text_items(value: Any) -> tuple[str, ...]:
+    """Normalize receipt arrays to non-empty strings.
+
+    Some reviewers emit correction objects instead of strings. Keep the
+    human-readable issue text so a well-formed REJECT still parses.
+    """
+    if not isinstance(value, (list, tuple)):
+        return ()
+    items: list[str] = []
+    for item in value:
+        if isinstance(item, str) and item.strip():
+            items.append(item.strip())
+            continue
+        if isinstance(item, Mapping):
+            text = item.get("issue") or item.get("summary") or item.get("id")
+            if isinstance(text, str) and text.strip():
+                items.append(text.strip())
+    return tuple(items)
 
 
 def source_snapshot(workdir: Path, *, excluded: Sequence[Path] = ()) -> dict[str, Any]:
@@ -125,15 +161,15 @@ class ContributionReceipt:
         except (OSError, ValueError) as exc:
             raise ValidationError(f"contribution receipt is missing or invalid: {path}") from exc
         receipt = cls(
-            schema=value.get("schema", ""),
+            schema=_receipt_schema(value, "lpos.managed-contribution.v1"),
             run_id=value.get("run_id", ""),
             specialist_id=value.get("specialist_id", ""),
             status=value.get("status", ""),
             artifact_path=value.get("artifact_path", ""),
             artifact_sha256=value.get("artifact_sha256", ""),
             summary=value.get("summary", ""),
-            capability_gap=tuple(value.get("capability_gap", ())),
-            evidence=tuple(value.get("evidence", ())),
+            capability_gap=_receipt_text_items(value.get("capability_gap", ())),
+            evidence=_receipt_text_items(value.get("evidence", ())),
         )
         if receipt.schema != "lpos.managed-contribution.v1":
             raise ValidationError("contribution receipt has the wrong schema")
@@ -166,14 +202,14 @@ class ReviewReceipt:
         except (OSError, ValueError) as exc:
             raise ValidationError(f"review receipt is missing or invalid: {path}") from exc
         receipt = cls(
-            schema=value.get("schema", ""),
+            schema=_receipt_schema(value, "lpos.managed-review.v1"),
             run_id=value.get("run_id", ""),
             reviewer_id=value.get("reviewer_id", ""),
             decision=value.get("decision", ""),
             artifact_sha256=value.get("artifact_sha256", ""),
             source_sha256=value.get("source_sha256", ""),
-            corrections=tuple(value.get("corrections", ())),
-            evidence_reviewed=tuple(value.get("evidence_reviewed", ())),
+            corrections=_receipt_text_items(value.get("corrections", ())),
+            evidence_reviewed=_receipt_text_items(value.get("evidence_reviewed", ())),
             summary=value.get("summary", ""),
         )
         if receipt.schema != "lpos.managed-review.v1":
@@ -202,6 +238,7 @@ class ManagedRunRequest:
     expected_repo: Path | None = None
     expected_head: str | None = None
     authorize_consequential: bool = False
+    authorize_model_override: bool = False
     timeout_seconds: int = 1800
     max_corrections: int = 2
     preserved_receipts: tuple[Path, ...] = ()
@@ -277,9 +314,6 @@ class ManagedExecution:
         workdir = self.request.workdir
         if not workdir.is_dir():
             gaps.append("workdir_missing")
-        executable = shutil.which(self.request.hermes_command)
-        if executable is None:
-            gaps.append("hermes_cli_missing")
         git_root = None
         head = None
         if workdir.is_dir():
@@ -307,6 +341,31 @@ class ManagedExecution:
         gaps.extend(f"specialist_capability:{item}" for item in sorted(missing))
         if creator.specialist_id == reviewer.specialist_id:
             gaps.append("reviewer_not_independent")
+
+        # Gate: guild model routing (v4.8.3). Bare `hermes` is auto-bound to the
+        # guild wrapper when available; wrong explicit lanes fail closed.
+        # Must run BEFORE hermes existence check so auto-bind can replace bare hermes.
+        route = bind_hermes_command(
+            specialist_id=creator.specialist_id,
+            guild=creator.guild,
+            model_class=creator.model_class,
+            hermes_command=self.request.hermes_command,
+            authorize_override=self.request.authorize_model_override,
+        )
+        routing_evidence = route.to_dict()
+        if not route.ok:
+            gaps.extend(route.gaps or ["model_routing_failed"])
+        elif route.bound_command:
+            self.request.hermes_command = route.bound_command
+
+        executable = shutil.which(self.request.hermes_command)
+        if executable is None:
+            as_path = Path(self.request.hermes_command).expanduser()
+            if as_path.is_file() and os.access(as_path, os.X_OK):
+                executable = str(as_path.resolve())
+            else:
+                gaps.append("hermes_cli_missing")
+
         preserved = []
         for path in self.request.preserved_receipts:
             target = path.expanduser().resolve()
@@ -319,6 +378,8 @@ class ManagedExecution:
             "git_root": str(git_root) if git_root else None,
             "head": head,
             "hermes_executable": executable,
+            "hermes_command": self.request.hermes_command,
+            "model_routing": routing_evidence,
             "requested_toolsets": list(self.request.toolsets),
             "required_capabilities": list(self.request.required_capabilities),
             "preserved_receipts": preserved,
@@ -365,7 +426,7 @@ class ManagedExecution:
                 "Bind review to exact source and artifact SHA-256 hashes.",
                 "Require a different specialist in a fresh context to pass the final candidate.",
             ),
-            spec_ref="LPOS-v4.8.2:managed-execution",
+            spec_ref="LPOS-v4.8.3:managed-execution",
         )
         artifact_spec = ArtifactSpecification(
             artifact_id=f"ART-{self.run_id.split('-', 1)[1]}",

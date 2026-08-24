@@ -1,4 +1,4 @@
-"""Tests for LPOS v4.8.2 Mandatory Enforcement Gates."""
+"""Tests for LPOS Enforcement Gates."""
 
 from __future__ import annotations
 
@@ -296,7 +296,8 @@ class TestRunGateCheck(unittest.TestCase):
 
 class TestGateVersion(unittest.TestCase):
     def test_version_is_set(self):
-        self.assertTrue(GATE_VERSION.startswith("1.0.0"))
+        self.assertTrue(GATE_VERSION.startswith("1."))
+        self.assertIn("lpos", GATE_VERSION)
 
 
 if __name__ == "__main__":

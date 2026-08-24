@@ -40,4 +40,4 @@ __all__ = [
     "CompletionReport",
 ]
 
-__version__ = "4.8.2"
+__version__ = "4.8.3"

@@ -27,3 +27,5 @@ One page per release, newest first. Every patch that changes user-facing behavio
 
 - [Upgrading](/administration/upgrading.html)
 - [How this wiki works](/documentation/how-the-wiki-works.html)
+
+- [4.8.3](4-8-3.md) — Model routing enforcement

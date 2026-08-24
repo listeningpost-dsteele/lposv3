@@ -1,8 +1,8 @@
 {
-  "archive": "LPOS-v4.8.2-Complete.zip",
+  "archive": "LPOS-v4.8.3-Complete.zip",
   "audit_model": "append-only events",
   "benchmarks": 70,
-  "description": "LPOS v4.8.2 enforcement-gates release: adds mandatory enforcement gates that move advisory rules into code that executes at choke points the agent cannot skip. Five gates: pre-commit hook (anti-slop lint + tests), pre-deploy gate (re-runs lint + tests + approval artifact check), process artifacts (approvals the agent cannot self-issue), model separation enforcement, and copy ownership. Tiered enforcement: tier 1 trivial (lint + tests), tier 2 standard (+ guild review + local approval), tier 3 material (+ full review + production approval). New CLI: lpos gate init/check/status/lint. All prior managed-execution, authority, evidence, security, record-only external-action, and rollback controls preserved.",
+  "description": "LPOS v4.8.3 model-routing enforcement release: makes guild-to-model lanes executable. managed-run fails closed unless --hermes-command matches the guild lane (or auto-binds bare hermes to the required wrapper). New CLI: lpos route list/resolve/check/install-wrappers. Adds model_routing.py, config/model_routing.json, and tests. Prior enforcement gates and managed-execution controls preserved.",
   "distribution_type": "integrated",
   "external_action_default": "record-only",
   "name": "LPOS",
@@ -11,7 +11,7 @@
   "specialists": 103,
   "standing_operations": 29,
   "state_backend": "SQLite",
-  "tests": 536,
-  "version": "4.8.2",
-  "wheel": "lpos_os-4.8.2-py3-none-any.whl"
+  "tests": 551,
+  "version": "4.8.3",
+  "wheel": "lpos_os-4.8.3-py3-none-any.whl"
 }

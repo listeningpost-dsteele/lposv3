@@ -389,6 +389,7 @@ def cmd_managed_run(args: argparse.Namespace) -> int:
         expected_repo=args.expected_repo,
         expected_head=args.expected_head,
         authorize_consequential=args.authorize_consequential,
+        authorize_model_override=bool(getattr(args, "authorize_model_override", False)),
         timeout_seconds=args.timeout,
         max_corrections=args.max_corrections,
         preserved_receipts=tuple(args.preserve_receipt),
@@ -532,6 +533,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="separate explicit authorization required for the consequential risk tier",
     )
+    managed.add_argument(
+        "--authorize-model-override",
+        action="store_true",
+        help="break-glass: allow a hermes-command that does not match the guild model lane",
+    )
     managed.set_defaults(func=cmd_managed_run)
 
     doctor = sub.add_parser("doctor", help="verify the integrated specification, runtime assets, and database")
@@ -623,7 +629,135 @@ def build_parser() -> argparse.ArgumentParser:
     gate_lint.add_argument("--strict", action="store_true", help="warnings become blocks")
     gate_lint.set_defaults(func=cmd_gate)
 
+    # -- v4.8.3: executable guild model routing ----------------------------
+    route = sub.add_parser(
+        "route",
+        help="resolve and enforce guild model lanes (wrappers) for managed execution",
+    )
+    route_actions = route.add_subparsers(dest="route_action", required=True)
+
+    route_list = route_actions.add_parser("list", help="show the active guild model routing table")
+    route_list.add_argument("--config", type=Path, default=None, help="optional routing config JSON")
+    route_list.set_defaults(func=cmd_route)
+
+    route_resolve = route_actions.add_parser("resolve", help="resolve the required lane for a guild or specialist")
+    route_resolve.add_argument("--guild", default=None, help="guild id (e.g. GUILD-SOFTWARE-ENGINEERING)")
+    route_resolve.add_argument("--specialist", default=None, help="specialist id (looks up guild from registry)")
+    route_resolve.add_argument("--model-class", default=None, help="model_class fallback when guild is unmapped")
+    route_resolve.add_argument("--config", type=Path, default=None)
+    route_resolve.set_defaults(func=cmd_route)
+
+    route_check = route_actions.add_parser(
+        "check",
+        help="validate a hermes-command against the required lane (exit 0/1)",
+    )
+    route_check.add_argument("--guild", default=None)
+    route_check.add_argument("--specialist", default=None)
+    route_check.add_argument("--model-class", default="executive")
+    route_check.add_argument("--hermes-command", default="hermes")
+    route_check.add_argument("--authorize-model-override", action="store_true")
+    route_check.add_argument("--config", type=Path, default=None)
+    route_check.set_defaults(func=cmd_route)
+
+    route_wrappers = route_actions.add_parser(
+        "install-wrappers",
+        help="write portable lane wrapper scripts into a bin directory",
+    )
+    route_wrappers.add_argument(
+        "--target-dir",
+        type=Path,
+        default=Path.home() / ".hermes" / "bin",
+        help="directory for hermes-* wrappers (default ~/.hermes/bin)",
+    )
+    route_wrappers.add_argument("--hermes-binary", default=None, help="hermes executable to exec")
+    route_wrappers.add_argument("--force", action="store_true")
+    route_wrappers.add_argument("--config", type=Path, default=None)
+    route_wrappers.set_defaults(func=cmd_route)
+
     return parser
+
+
+def cmd_route(args: argparse.Namespace) -> int:
+    """LPOS v4.8.3 guild model routing CLI."""
+    from .model_routing import (
+        bind_hermes_command,
+        install_wrapper_scripts,
+        list_routes,
+        load_routing_config,
+        resolve_guild_lane,
+        resolve_specialist_lane,
+    )
+    from .routing import CapabilityRegistry
+
+    cfg = load_routing_config(args.config) if getattr(args, "config", None) else load_routing_config()
+    action = args.route_action
+
+    if action == "list":
+        _print(list_routes(cfg))
+        return 0
+
+    if action == "install-wrappers":
+        result = install_wrapper_scripts(
+            args.target_dir,
+            hermes_binary=args.hermes_binary,
+            force=args.force,
+            config=cfg,
+        )
+        _print(result)
+        return 0
+
+    guild = getattr(args, "guild", None)
+    specialist = getattr(args, "specialist", None)
+    model_class = getattr(args, "model_class", None) or "executive"
+
+    if specialist and not guild:
+        registry = CapabilityRegistry.default()
+        matches = [item for item in registry.profiles if item.specialist_id == specialist]
+        if not matches:
+            _print({"ok": False, "error": f"unknown specialist: {specialist}"})
+            return 1
+        guild = matches[0].guild
+        model_class = matches[0].model_class
+
+    if not guild and action in {"resolve", "check"}:
+        _print({"ok": False, "error": "supply --guild or --specialist"})
+        return 1
+    assert guild is not None
+
+    if action == "resolve":
+        if specialist:
+            lane = resolve_specialist_lane(
+                specialist_id=specialist,
+                guild=guild,
+                model_class=model_class,
+                config=cfg,
+            )
+        else:
+            lane = resolve_guild_lane(guild, model_class=model_class, config=cfg)
+        _print(
+            {
+                "ok": True,
+                "guild": guild,
+                "specialist_id": specialist,
+                "model_class": model_class,
+                "lane": lane.to_dict(),
+            }
+        )
+        return 0
+
+    if action == "check":
+        decision = bind_hermes_command(
+            specialist_id=specialist or "UNKNOWN",
+            guild=guild,
+            model_class=model_class,
+            hermes_command=args.hermes_command,
+            config=cfg,
+            authorize_override=bool(getattr(args, "authorize_model_override", False)),
+        )
+        _print(decision.to_dict())
+        return 0 if decision.ok else 1
+
+    return 1
 
 
 def cmd_gate(args: argparse.Namespace) -> int:

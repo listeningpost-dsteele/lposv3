@@ -9,7 +9,13 @@ from pathlib import Path
 from unittest import mock
 
 from lpos_engine.errors import ValidationError
-from lpos_engine.managed_execution import ManagedExecution, ManagedRunRequest, RiskTier
+from lpos_engine.managed_execution import (
+    ContributionReceipt,
+    ManagedExecution,
+    ManagedRunRequest,
+    ReviewReceipt,
+    RiskTier,
+)
 
 
 FAKE_HERMES = r'''#!/usr/bin/env python3
@@ -177,6 +183,93 @@ class ManagedExecutionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValidationError, "relative path"):
             self.request(artifact_path="../escape.txt")
         self.assertFalse((self.root / "escape.txt").exists())
+
+    def test_review_receipt_accepts_dollar_schema_alias(self):
+        path = self.root / "review.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "$schema": "lpos.managed-review.v1",
+                    "run_id": "MRUN-FIXTURE",
+                    "reviewer_id": "SPECIALIST-SOFTWARE-REVIEWER",
+                    "decision": "PASS",
+                    "artifact_sha256": "a" * 64,
+                    "source_sha256": "b" * 64,
+                    "corrections": [],
+                    "evidence_reviewed": ["artifact hash"],
+                    "summary": "dollar-schema fixture passed",
+                }
+            ),
+            encoding="utf-8",
+        )
+        receipt = ReviewReceipt.from_path(path)
+        self.assertEqual(receipt.schema, "lpos.managed-review.v1")
+        self.assertEqual(receipt.decision, "PASS")
+
+    def test_review_receipt_prefers_schema_over_jsonschema_url(self):
+        path = self.root / "review-url.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "$schema": "https://json-schema.org/draft/2020-12/schema",
+                    "schema": "lpos.managed-review.v1",
+                    "run_id": "MRUN-FIXTURE",
+                    "reviewer_id": "SPECIALIST-SOFTWARE-REVIEWER",
+                    "decision": "PASS",
+                    "artifact_sha256": "a" * 64,
+                    "source_sha256": "b" * 64,
+                    "corrections": [],
+                    "evidence_reviewed": ["artifact hash"],
+                    "summary": "json-schema url must not win",
+                }
+            ),
+            encoding="utf-8",
+        )
+        receipt = ReviewReceipt.from_path(path)
+        self.assertEqual(receipt.schema, "lpos.managed-review.v1")
+
+    def test_review_receipt_normalizes_object_corrections(self):
+        path = self.root / "review-objects.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "$schema": "lpos.managed-review.v1",
+                    "run_id": "MRUN-FIXTURE",
+                    "reviewer_id": "SPECIALIST-SOFTWARE-REVIEWER",
+                    "decision": "REJECT",
+                    "artifact_sha256": "a" * 64,
+                    "source_sha256": "b" * 64,
+                    "corrections": [{"id": "CORRECTION-001", "issue": "example miss"}],
+                    "evidence_reviewed": ["artifact hash"],
+                    "summary": "object corrections still parse",
+                }
+            ),
+            encoding="utf-8",
+        )
+        receipt = ReviewReceipt.from_path(path)
+        self.assertEqual(receipt.corrections, ("example miss",))
+
+    def test_contribution_receipt_accepts_dollar_schema_alias(self):
+        path = self.root / "contribution.json"
+        path.write_text(
+            json.dumps(
+                {
+                    "$schema": "lpos.managed-contribution.v1",
+                    "run_id": "MRUN-FIXTURE",
+                    "specialist_id": "SPECIALIST-SOFTWARE-ENGINEER",
+                    "status": "completed",
+                    "artifact_path": "result.txt",
+                    "artifact_sha256": "a" * 64,
+                    "summary": "dollar-schema contribution",
+                    "capability_gap": [],
+                    "evidence": ["artifact written"],
+                }
+            ),
+            encoding="utf-8",
+        )
+        receipt = ContributionReceipt.from_path(path)
+        self.assertEqual(receipt.schema, "lpos.managed-contribution.v1")
+        self.assertEqual(receipt.status, "completed")
 
 
 if __name__ == "__main__":

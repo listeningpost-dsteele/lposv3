@@ -34,7 +34,7 @@ from pathlib import Path
 # Version + constants
 # ---------------------------------------------------------------------------
 
-GATE_VERSION = "1.0.0-lpos482"
+GATE_VERSION = "1.1.0-lpos483"
 
 TIER_TRIVIAL = 1
 TIER_STANDARD = 2

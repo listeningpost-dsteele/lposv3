@@ -1,5 +1,9 @@
 # LPOS Changelog
 
+## 4.8.3 (2026-08-13)
+
+Model-routing enforcement release: the guild routing table is no longer advisory. `lpos managed-run` fails closed unless `--hermes-command` matches the creator specialist's guild lane, and bare `hermes` is auto-bound to the required wrapper when present. New module `src/lpos_engine/model_routing.py` and packaged table `src/lpos_engine/config/model_routing.json` (override via `LPOS_MODEL_ROUTING_CONFIG` or `~/.hermes/lpos-model-routing.json`; emergency disable via `LPOS_MODEL_ROUTING_ENFORCE=0`). New CLI: `lpos route list|resolve|check|install-wrappers`. Break-glass: `--authorize-model-override`. Portable wrappers for other operators via `lpos route install-wrappers`. Managed receipts now accept `$schema` as an alias for `schema` when the value is the LPOS receipt type, and normalize object-shaped correction arrays to text so a valid second review cannot crash the run. All prior 4.8.2 enforcement gates and managed-execution controls preserved.
+
 ## 4.8.2 (2026-08-12)
 
 Enforcement Gates release: adds mandatory enforcement gates that move advisory rules into code that executes at choke points the agent cannot skip. Five gates: pre-commit hook (anti-slop lint + tests), pre-deploy gate (re-runs lint + tests + approval artifact check), process artifacts (approvals the agent cannot self-issue), model separation enforcement, and copy ownership. Tiered enforcement: tier 1 trivial (lint + tests), tier 2 standard (+ guild review + local approval), tier 3 material (+ full review + production approval). New CLI: `lpos gate init/check/status/lint`. Adds `src/lpos_engine/gates.py` and `tests/test_gates.py`. All prior managed-execution, authority, evidence, security, record-only external-action, and rollback controls preserved.

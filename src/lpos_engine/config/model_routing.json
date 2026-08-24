@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.0",
+  "routing_version": "1.4.0-lpos483",
+  "description": "Executable guild-to-model lane table. managed-run fails closed unless --hermes-command matches the lane for the creator specialist's guild. Override with LPOS_MODEL_ROUTING_CONFIG or ~/.hermes/lpos-model-routing.json.",
+  "enforce": true,
+  "auto_bind_default_hermes": true,
+  "wrapper_bin_dirs": [
+    "~/.hermes/bin",
+    "/usr/local/bin"
+  ],
+  "model_class_defaults": {
+    "executive": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    },
+    "review": {
+      "wrapper": "hermes-gpt56",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-sol",
+      "family": "gpt"
+    },
+    "routine": {
+      "wrapper": "hermes-qwen35",
+      "provider": "framework",
+      "model": "qwen3.5:122b-a10b",
+      "family": "framework"
+    }
+  },
+  "guild_lanes": {
+    "GUILD-SOFTWARE-ENGINEERING": {
+      "wrapper": "hermes-gpt56",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-sol",
+      "family": "gpt"
+    },
+    "GUILD-QUALITY-RELEASE-ASSURANCE": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    },
+    "GUILD-PLATFORM-RELIABILITY-ENGINEERING": {
+      "wrapper": "hermes-glm51",
+      "provider": "zai",
+      "model": "glm-5.1",
+      "family": "glm"
+    },
+    "GUILD-SECURITY-PRIVACY-ENGINEERING": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    },
+    "GUILD-ADVERSARIAL-SECURITY-ASSURANCE": {
+      "wrapper": "hermes-gpt56",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-sol",
+      "family": "gpt"
+    },
+    "GUILD-COMPLIANCE-CONTROL-ASSURANCE": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    },
+    "GUILD-AI-SYSTEMS-ORCHESTRATION-ENGINEERING": {
+      "wrapper": "hermes-k27c",
+      "provider": "kimi-coding",
+      "model": "kimi-k2.7-code",
+      "family": "kimi"
+    },
+    "GUILD-OPERATIONS-AUTOMATION-ENGINEERING": {
+      "wrapper": "hermes-laguna",
+      "provider": "framework",
+      "model": "laguna-xs-2.1",
+      "family": "framework"
+    },
+    "GUILD-DATA-ANALYTICS": {
+      "wrapper": "hermes-qwen35",
+      "provider": "framework",
+      "model": "qwen3.5:122b-a10b",
+      "family": "framework"
+    },
+    "GUILD-RESEARCH-INTELLIGENCE": {
+      "wrapper": "hermes-k2t",
+      "provider": "kimi-coding",
+      "model": "kimi-k2-thinking",
+      "family": "kimi",
+      "fallback_wrapper": "hermes-glm52"
+    },
+    "GUILD-STRATEGY-DECISIONS-PORTFOLIO": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    },
+    "GUILD-EXPERIENCE-DESIGN": {
+      "wrapper": "hermes-gpt56",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-sol",
+      "family": "gpt"
+    },
+    "GUILD-COMMUNICATIONS-KNOWLEDGE": {
+      "wrapper": "hermes-gpt54m",
+      "provider": "openai-codex",
+      "model": "gpt-5.4-mini",
+      "family": "gpt"
+    },
+    "GUILD-MARKET-BRAND-GROWTH": {
+      "wrapper": "hermes-glm5",
+      "provider": "zai",
+      "model": "glm-5",
+      "family": "glm"
+    },
+    "GUILD-FINANCE-ECONOMICS": {
+      "wrapper": "hermes-glm5",
+      "provider": "zai",
+      "model": "glm-5",
+      "family": "glm"
+    },
+    "GUILD-LEGAL-REGULATORY": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    },
+    "GUILD-GOVERNANCE-OPEN-SOURCE": {
+      "wrapper": "hermes-glm5",
+      "provider": "zai",
+      "model": "glm-5",
+      "family": "glm"
+    },
+    "GUILD-PRINCIPAL-OPERATIONS": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    },
+    "GUILD-REVENUE-CUSTOMER-OPERATIONS": {
+      "wrapper": "hermes-gpt56",
+      "provider": "openai-codex",
+      "model": "gpt-5.6-sol",
+      "family": "gpt"
+    },
+    "GUILD-PRODUCT-MANAGEMENT": {
+      "wrapper": "hermes-glm52",
+      "provider": "zai",
+      "model": "glm-5.2",
+      "family": "glm"
+    }
+  },
+  "bare_hermes_names": ["hermes", "hermes-agent"]
+}

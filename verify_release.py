@@ -152,7 +152,7 @@ def main() -> int:
             str(registry_package.get("os_version")),
             str(workflow_catalog.get("os_version")),
         }
-        if versions != {"4.8.2"}:
+        if versions != {"4.8.3"}:
             fail(f"version fields are not synchronized: {sorted(versions)}", failures)
         if release.get("distribution_type") != "integrated":
             fail("RELEASE.json does not declare an integrated distribution", failures)
